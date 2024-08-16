@@ -117,6 +117,7 @@ import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
+import com.zrp200.rkpd2.items.DuelistGrass;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.armor.glyphs.AntiMagic;
 import com.zrp200.rkpd2.items.armor.glyphs.Potential;
@@ -521,6 +522,9 @@ public abstract class Char extends Actor {
 
 			if (enemy.buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
 				dmg *= 0.2f;
+			}
+			if (enemy.buff(DuelistGrass.GrassitateResistance.class) != null){
+				dmg *= 0.6f;
 			}
 
 			if ( buff(Weakness.class) != null ){

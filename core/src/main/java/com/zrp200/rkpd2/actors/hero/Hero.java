@@ -1961,6 +1961,9 @@ public class Hero extends Char {
 			if (buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
 				dmg *= 0.2f;
 			}
+			if (buff(DuelistGrass.GrassitateResistance.class) != null){
+				dmg *= 0.6f;
+			}
 		}
 
 		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );

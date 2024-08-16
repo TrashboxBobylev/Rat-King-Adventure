@@ -3,12 +3,23 @@ package com.zrp200.rkpd2.items;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.Statistics;
+import com.zrp200.rkpd2.actors.Actor;
+import com.zrp200.rkpd2.actors.buffs.AllyBuff;
+import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
+import com.zrp200.rkpd2.actors.buffs.Healing;
+import com.zrp200.rkpd2.actors.buffs.LostInventory;
+import com.zrp200.rkpd2.actors.buffs.Recharging;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.CellEmitter;
+import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
@@ -38,6 +49,7 @@ public class DuelistGrass extends Item {
     }
 
     public static String AC_IMBUE = "IMBUE";
+    public static String AC_EAT   = "EAT";
     public static final int CHARGE_FROM_GRASS = 3;
 
     public static int getAbilityGrassCost() {
@@ -49,6 +61,8 @@ public class DuelistGrass extends Item {
         ArrayList<String> actions = super.actions(hero);
         if (hero.hasTalent(Talent.GRASSY_OFFENSE))
             actions.add(AC_IMBUE);
+        if (hero.hasTalent(Talent.GRASS_MUNCHING))
+            actions.add(AC_EAT);
         return actions;
     }
 
@@ -62,6 +76,72 @@ public class DuelistGrass extends Item {
             curUser = hero;
             GameScene.selectItem( itemSelector );
 
+        } else if (action.equals(AC_EAT)) {
+            if (quantity < 8){
+                GLog.w( Messages.get(this, "not_enough"));
+                return;
+            }
+
+            if (quantity() <= 8){
+                detachAll(curUser.belongings.backpack);
+            } else {
+                quantity(quantity() - 8);
+            }
+
+            GLog.i( Messages.get(this, "eat_msg") );
+
+            SpellSprite.show( hero, SpellSprite.FOOD );
+            Sample.INSTANCE.play( Assets.Sounds.EAT );
+
+            hero.sprite.operate(hero.pos);
+            hero.sprite.centerEmitter().start(LeafParticle.LEVEL_SPECIFIC, 0.05f, 20);
+            Sample.INSTANCE.play(Assets.Sounds.PLANT);
+            GameScene.flash(0x8824d342, false);
+            Sample.INSTANCE.play(Assets.Sounds.SCAN);
+            Talent.onFoodEaten(hero, 1f, this);
+
+            Statistics.foodEaten++;
+            Badges.validateFoodEaten();
+
+            int meditateTime = 5 * hero.pointsInTalent(Talent.GRASS_MUNCHING);
+
+            for (int i = 0; i < meditateTime; i++) hero.spendConstant(Actor.TICK);
+
+            for (Buff b : hero.buffs()){
+                if (b.type == Buff.buffType.NEGATIVE
+                        && !(b instanceof AllyBuff)
+                        && !(b instanceof LostInventory)){
+                    b.detach();
+                }
+            }
+
+            if (hero.pointsInTalent(Talent.GRASS_MUNCHING) > 2){
+                int toHeal = Math.round((hero.HT - hero.HP)/5f);
+                if (toHeal > 0) {
+                    Buff.affect(hero, Healing.class).setHeal(toHeal, 0, 1);
+                }
+                Buff.affect(hero, GrassitateResistance.class, hero.cooldown());
+            }
+
+            Actor.addDelayed(new Actor() {
+
+                {
+                    actPriority = VFX_PRIO;
+                }
+
+                @Override
+                protected boolean act() {
+                    if (hero.pointsInTalent(Talent.GRASS_MUNCHING) > 1){
+                        Buff.affect(hero, Recharging.class, 7f * (meditateTime / 5 - 1));
+                        Buff.affect(hero, ArtifactRecharge.class).prolong(7f * (meditateTime / 5 - 1)).ignoreHornOfPlenty = false;
+                    }
+                    Actor.remove(this);
+                    return true;
+                }
+            }, hero.cooldown()-1);
+
+            hero.next();
+            hero.busy();
         }
     }
 
@@ -153,6 +233,12 @@ public class DuelistGrass extends Item {
             if (item != null) {
                 DuelistGrass.this.imbue((MeleeWeapon) item);
             }
+        }
+    };
+
+    public static class GrassitateResistance extends FlavourBuff {
+        {
+            actPriority = HERO_PRIO+1; //ends just before the hero acts
         }
     };
 
