@@ -55,6 +55,7 @@ import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
+import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.items.bombs.Bomb;
@@ -157,11 +158,19 @@ public class ElementalStrike extends ArmorAbility {
 		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
 
 		int maxDist = 4 + hero.pointsInTalent(Talent.ELEMENTAL_REACH);
+		int degrees = 65 + 10*hero.pointsInTalent(Talent.ELEMENTAL_REACH);
+		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_SWIPE)){
+			MeleeWeapon.Charger charge = Dungeon.hero.buff(MeleeWeapon.Charger.class);
+			if (charge != null){
+                maxDist = Math.round(maxDist * (1f + charge.charges[0] * (0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE))));
+				degrees = Math.round(degrees * (1f + charge.charges[0] * (0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE))));
+			}
+		}
 		int dist = Math.min(aim.dist, maxDist);
 
 		ConeAOE cone = new ConeAOE(aim,
 				dist,
-				65 + 10*hero.pointsInTalent(Talent.ELEMENTAL_REACH),
+				degrees,
 				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
 
 		KindOfWeapon w = hero.belongings.weapon();
@@ -241,6 +250,12 @@ public class ElementalStrike extends ArmorAbility {
 		}
 
 		float powerMulti = 1f + 0.30f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
+		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_SWIPE)){
+			MeleeWeapon.Charger charge = Dungeon.hero.buff(MeleeWeapon.Charger.class);
+			if (charge != null){
+				powerMulti += charge.charges[0]*(0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
+			}
+		}
 
 		//*** Kinetic ***
 		if (ench instanceof Kinetic){
@@ -296,6 +311,12 @@ public class ElementalStrike extends ArmorAbility {
 
 		float powerMulti = 1f + 0.30f*Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
 		final float MAX_POWER = 1f + 0.30f*4;
+		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_SWIPE)){
+			MeleeWeapon.Charger charge = Dungeon.hero.buff(MeleeWeapon.Charger.class);
+			if (charge != null){
+				powerMulti += charge.charges[0]*(0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
+			}
+		}
 
 		//*** Blazing ***
 		if (ench instanceof Blazing){
@@ -377,6 +398,15 @@ public class ElementalStrike extends ArmorAbility {
 	private void perCharEffect(ConeAOE cone, Hero hero, Char primaryTarget, Weapon.Enchantment ench) {
 
 		float powerMulti = 1f + 0.30f * Dungeon.hero.pointsInTalent(Talent.STRIKING_FORCE);
+
+		if (hero.hasTalent(Talent.EMPOWERED_SWIPE)){
+			MeleeWeapon.Charger charge = hero.buff(MeleeWeapon.Charger.class);
+			if (charge != null){
+				powerMulti += charge.charges[0]*(0.05f + 0.025f * hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
+				charge.charges[0] = 0;
+				Item.updateQuickslot();
+			}
+		}
 
 		ArrayList<Char> affected = new ArrayList<>();
 
@@ -596,7 +626,7 @@ public class ElementalStrike extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.ELEMENTAL_REACH, Talent.STRIKING_FORCE, Talent.DIRECTED_POWER, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.ELEMENTAL_REACH, Talent.STRIKING_FORCE, Talent.DIRECTED_POWER, Talent.EMPOWERED_SWIPE, Talent.HEROIC_ENERGY};
 	}
 
 }
