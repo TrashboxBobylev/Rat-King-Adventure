@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.BlobImmunity;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Doom;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
@@ -43,6 +44,7 @@ import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
+import com.zrp200.rkpd2.items.rings.RingOfWealth;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -172,6 +174,11 @@ public class Challenge extends ArmorAbility {
 		Buff.affect(targetCh, DuelParticipant.class);
 		Buff.affect(hero, DuelParticipant.class);
 		if (targetCh instanceof Mob){
+			if (hero.hasTalent(Talent.DUNGEONS_CHAMPIONSHIP) && !bossTarget){
+				for (int i = 0; i < 1 + hero.pointsInTalent(Talent.DUNGEONS_CHAMPIONSHIP); i++){
+					ChampionEnemy.rollForChampionInstantly((Mob) targetCh);
+				}
+			}
 			((Mob) targetCh).aggro(hero);
 		}
 
@@ -191,7 +198,7 @@ public class Challenge extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.CLOSE_THE_GAP, Talent.INVIGORATING_VICTORY, Talent.ELIMINATION_MATCH, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.CLOSE_THE_GAP, Talent.INVIGORATING_VICTORY, Talent.ELIMINATION_MATCH, Talent.DUNGEONS_CHAMPIONSHIP, Talent.HEROIC_ENERGY};
 	}
 
 	public static class EliminationMatchTracker extends FlavourBuff{};
@@ -270,6 +277,13 @@ public class Challenge extends ArmorAbility {
 							Dungeon.hero.HP += hpToHeal;
 							Dungeon.hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.33f, 6 );
 							Dungeon.hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(hpToHeal), FloatingText.HEALING );
+						}
+					}
+
+					if (Dungeon.hero.hasTalent(Talent.DUNGEONS_CHAMPIONSHIP) && !Char.hasProp(target, Char.Property.BOSS)){
+						for (int i = 0; i < -1 + Dungeon.hero.pointsInTalent(Talent.DUNGEONS_CHAMPIONSHIP)*2; i++){
+							Dungeon.level.drop(RingOfWealth.genConsumableDrop(12), target.pos).sprite.drop();
+							RingOfWealth.showFlareForBonusDrop(target.sprite);
 						}
 					}
 				}
