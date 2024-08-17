@@ -77,14 +77,22 @@ public class WarpPile {
     }
 
     public interface WarpEffect extends Callback {
-        void doEffect(Hero target, float warpAmount);
+        void doEffect(Char target, float warpAmount);
+
+        default boolean affectsNonHero(){
+            return true;
+        }
 
         @Override
         default void call(){
+            call(Dungeon.hero);
+        }
+
+        default void call(Char ch){
             float warpAmount = Warp.stacks();
             Sample.INSTANCE.play(Assets.Sounds.CURSED);
             GLog.d(Messages.get(this, "message"));
-            doEffect(Dungeon.hero, warpAmount);
+            doEffect(ch, warpAmount);
         }
     }
 
@@ -116,64 +124,76 @@ public class WarpPile {
     }
 
     public static class DegradeEffect implements WarpEffect {
+
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Degrade.class, 12 + warpAmount / 5);
         }
     }
 
     public static class VertigoEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Vertigo.class, 6 + warpAmount / 8);
         }
     }
 
     public static class VulnerableEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Vulnerable.class, 12 + warpAmount / 4);
         }
     }
 
     public static class BlindnessEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Blindness.class, 8 + warpAmount / 5);
         }
     }
 
     public static class ScamEffect implements WarpEffect {
+
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Scam.class, 20 + warpAmount / 3);
         }
     }
 
     public static class AdrenalineEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Adrenaline.class, 5 + warpAmount / 12);
         }
     }
 
     public static class FireEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.affect(target, Burning.class).reignite(target, 3);
         }
     }
 
     public static class AntimagicEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.affect(target, MagicImmune.class, 6 + warpAmount / 7);
         }
     }
 
     public static class SlowEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.affect(target, Slow.class, 4 + warpAmount / 9);
         }
     }
@@ -196,7 +216,7 @@ public class WarpPile {
 
     public static class ColdEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, Frost.class, 5 + warpAmount / 9);
             Buff.prolong(target, Chill.class, 8 + warpAmount / 7);
         }
@@ -204,28 +224,38 @@ public class WarpPile {
 
     public static class ShrinkEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, TimedShrink.class, 6 + warpAmount / 8);
         }
     }
 
     public static class VisionEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong(target, MagicalSight.class, 5 + warpAmount / 12);
         }
     }
 
     public static class RegrowthEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             GameScene.add( Blob.seed(target.pos, Math.round(40 + warpAmount / 4), Regrowth.class));
         }
     }
 
     public static class HungerEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             Hunger hunger = Buff.affect(target, Hunger.class);
             hunger.affectHunger( Hunger.STARVING - hunger.hunger());
         }
@@ -233,7 +263,7 @@ public class WarpPile {
 
     public static class SpawnEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             if (Dungeon.level.mobLimit() > 0)
                 for (int i = 0; i < 1 + warpAmount / 30; i++)
                     Dungeon.level.spawnMob(35);
@@ -242,7 +272,12 @@ public class WarpPile {
 
     public static class RetributionEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             float hpPercent = (getMaxWarp() - warpAmount)/ getMaxWarp();
             float power = Math.min( 4f, 4.45f*hpPercent);
 
@@ -264,14 +299,24 @@ public class WarpPile {
 
     public static class EmpoweredDegradeEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong( target, PowerfulDegrade.class, 8 + warpAmount / 11 );
         }
     }
 
     public static class WarpClearEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             Warp.modify(warpAmount/EFFECT_BASE);
         }
     }
@@ -291,7 +336,7 @@ public class WarpPile {
 
     public static class SummonEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             int nMobs = 1;
             if (Random.Int( 2 ) == 0) {
                 nMobs++;
@@ -322,7 +367,7 @@ public class WarpPile {
 
             for (Integer point : respawnPoints) {
                 EnemyImage mob = new EnemyImage();
-                mob.duplicate(target, (int) (warpAmount*1.5f));
+                mob.duplicate(Dungeon.hero, (int) (warpAmount*1.5f));
                 mob.state = mob.WANDERING;
                 Buff.affect(mob, Doom.class);
                 mob.pos = point;
@@ -376,7 +421,7 @@ public class WarpPile {
 
     public static class WarpingEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             CellEmitter.get(target.pos).start(Speck.factory(Speck.LIGHT), 0.2f, 3);
             Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
 
@@ -429,7 +474,7 @@ public class WarpPile {
 
     public static class EmpoweredSpawnEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             for (int i = 0; i < Dungeon.level.mobLimit(); i++)
                 Dungeon.level.spawnMob(35);
         }
@@ -437,14 +482,19 @@ public class WarpPile {
 
     public static class CursingEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public boolean affectsNonHero() {
+            return false;
+        }
+
+        @Override
+        public void doEffect(Char target, float warpAmount) {
             CursingTrap.curse( (Hero) target );
         }
     }
 
     public static class CrazyBanditEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Buff.prolong( target, Blindness.class, 10 + warpAmount / 8 );
             Buff.affect( target, Poison.class ).set(7 + warpAmount / 11 );
             Buff.prolong( target, Cripple.class, 10 + warpAmount / 8);
@@ -453,7 +503,7 @@ public class WarpPile {
 
     public static class RechargeEffect implements WarpEffect {
         @Override
-        public void doEffect(Hero target, float warpAmount) {
+        public void doEffect(Char target, float warpAmount) {
             Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
             PathFinder.buildDistanceMap( target.pos, BArray.not( Dungeon.level.solid, null ), 3 );
             for (int i = 0; i < PathFinder.distance.length; i++) {
