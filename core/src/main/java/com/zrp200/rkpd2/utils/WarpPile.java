@@ -91,7 +91,10 @@ public class WarpPile {
         default void call(Char ch){
             float warpAmount = Warp.stacks();
             Sample.INSTANCE.play(Assets.Sounds.CURSED);
-            GLog.d(Messages.get(this, "message"));
+            if (ch instanceof Hero)
+                GLog.d(Messages.get(this, "message"));
+            else
+                ch.sprite.showStatus(WarpPile.COLOR, Messages.get(this, "message"));
             doEffect(ch, warpAmount);
         }
     }

@@ -25,6 +25,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.Delayer;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -50,6 +51,7 @@ import com.zrp200.rkpd2.sprites.MirrorSprite;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.TargetHealthIndicator;
 import com.zrp200.rkpd2.utils.GLog;
+import com.zrp200.rkpd2.utils.WarpPile;
 
 public class Feint extends ArmorAbility {
 
@@ -70,6 +72,14 @@ public class Feint extends ArmorAbility {
 	@Override
 	public int targetedPos(Char user, int dst) {
 		return dst;
+	}
+
+	@Override
+	public float chargeUse(Hero hero) {
+		float chargeUse = super.chargeUse(hero);
+		if (Dungeon.hero.hasTalent(Talent.WARPED_AGGRESSION))
+			chargeUse *= 1.2f + 0.1f * Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION);
+		return chargeUse;
 	}
 
 	@Override
@@ -94,6 +104,8 @@ public class Feint extends ArmorAbility {
 			return;
 		}
 
+		float feintTime = 1 + hero.pointsInTalent(Talent.WARPED_AGGRESSION);
+
 		hero.busy();
 		Sample.INSTANCE.play(Assets.Sounds.MISS);
 		hero.sprite.jump(hero.pos, target, 0, 0.1f, new Callback() {
@@ -105,13 +117,13 @@ public class Feint extends ArmorAbility {
 				hero.pos = target;
 				Dungeon.level.occupyCell(hero);
 				Invisibility.dispel();
-				hero.spendAndNext(1f);
+				hero.spendAndNext(feintTime);
 			}
 		});
 
 		AfterImage image = new AfterImage();
 		image.pos = hero.pos;
-		GameScene.add(image, 1);
+		GameScene.add(image, feintTime);
 
 		int imageAttackPos;
 		Char enemyTarget = TargetHealthIndicator.instance.target();
@@ -145,7 +157,7 @@ public class Feint extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.FEIGNED_RETREAT, Talent.EXPOSE_WEAKNESS, Talent.COUNTER_ABILITY, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.FEIGNED_RETREAT, Talent.EXPOSE_WEAKNESS, Talent.COUNTER_ABILITY, Talent.WARPED_AGGRESSION, Talent.HEROIC_ENERGY};
 	}
 
 	public static class AfterImage extends Mob {
@@ -185,19 +197,28 @@ public class Feint extends ArmorAbility {
 		@Override
 		public int defenseSkill(Char enemy) {
 			if (enemy.alignment == Alignment.ENEMY) {
-				if (enemy instanceof Mob) {
+				if (enemy instanceof Mob && cooldown() <= 1) {
 					((Mob) enemy).clearEnemy();
+					Buff.affect(enemy, FeintConfusion.class, 1);
+					if (enemy.sprite != null) enemy.sprite.showLost();
 				}
-				Buff.affect(enemy, FeintConfusion.class, 1);
-				if (enemy.sprite != null) enemy.sprite.showLost();
 				if (Dungeon.hero.hasTalent(Talent.FEIGNED_RETREAT)) {
-					Buff.prolong(Dungeon.hero, Haste.class, 2f * Dungeon.hero.pointsInTalent(Talent.FEIGNED_RETREAT));
+					Buff.prolong(Dungeon.hero, Haste.class, 2f * Dungeon.hero.pointsInTalent(Talent.FEIGNED_RETREAT) + Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION));
 				}
 				if (Dungeon.hero.hasTalent(Talent.EXPOSE_WEAKNESS)) {
-					Buff.prolong(enemy, Vulnerable.class, 2f * Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS));
+					Buff.prolong(enemy, Vulnerable.class, 2f * Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS) + Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION));
 				}
 				if (Dungeon.hero.hasTalent(Talent.COUNTER_ABILITY)) {
-					Buff.prolong(Dungeon.hero, Talent.CounterAbilityTacker.class, 3f);
+					Buff.prolong(Dungeon.hero, Talent.CounterAbilityTacker.class, 3f + Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION));
+				}
+				if (Dungeon.hero.hasTalent(Talent.WARPED_AGGRESSION)){
+					WarpPile.WarpEffect effect;
+					do {
+						float[] category = WarpPile.getChanceCat(30 + 15 * Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION));
+						int categoryID = Random.chances(category);
+						effect = (WarpPile.WarpEffect) Random.chances(WarpPile.effectTypes[categoryID]);
+					} while (!effect.affectsNonHero());
+					effect.call(enemy);
 				}
 			}
 			return 0;
