@@ -292,7 +292,6 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			}
 			hero.belongings.abilityWeapon = null;
 
-
 			hero.sprite.attack(enemy.pos, () -> {
 				beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
@@ -651,7 +650,22 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 		//the mage's staff has no ability as it can only be gained by the mage
 		if (hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
-			info += "\n\n" + Messages.get(this, "ability_desc");
+			if (this instanceof RoyalBrand){
+				info += "\n\n" + Messages.get(this, "ability_desc",
+						Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.swordDanceDuration(hero)),
+						Messages.decimalFormat("#", RoyalBrand.DuelistInfo.powerModifier(hero)),
+						RoyalBrand.DuelistInfo.sneakDistance(hero),
+						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.spearBoost(hero)),
+						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.greataxeBoost(hero)),
+						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.maceBoost(hero)),
+						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.pickaxeBoost(hero)),
+						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.comboStrikeBoost(hero)),
+						Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.dazeDuration(hero)),
+						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.bleedDamage(hero))
+				);
+			} else {
+				info += "\n\n" + Messages.get(this, "ability_desc");
+			}
 		}
 
 		if (grass > 0){
