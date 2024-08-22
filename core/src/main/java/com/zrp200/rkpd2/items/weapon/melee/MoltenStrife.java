@@ -1,20 +1,27 @@
 package com.zrp200.rkpd2.items.weapon.melee;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.effects.CellEmitter;
+import com.zrp200.rkpd2.effects.Enchanting;
+import com.zrp200.rkpd2.effects.particles.SmokeParticle;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.bombs.ShrapnelBomb;
+import com.zrp200.rkpd2.items.weapon.enchantments.Blazing;
 import com.zrp200.rkpd2.messages.Messages;
-import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
-import com.zrp200.rkpd2.ui.BuffIndicator;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon {
     {
@@ -59,101 +66,51 @@ public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForger
     }
 
     @Override
-    public String targetingPrompt() {
-        return Messages.get(this, "prompt");
+    protected int baseChargeUse(Hero hero, Char target){
+        return 4;
     }
 
     @Override
-    protected DuelistAbility duelistAbility() {
-        return new Ignite();
-    }
-
-    public static class Ignite extends MeleeAbility {
-        @Override
-        public float dmgMulti(Char enemy) {
-            return 0f;
-        }
-
-        @Override
-        public void afterHit(Char enemy, boolean hit) {
-            if (enemy.isAlive()) {
-                Buff.affect(enemy, BombDebuff.class).increment(7f);
+    protected void duelistAbility(Hero hero, Integer target) {
+        beforeAbilityUsed(hero, null);
+        Enchanting.show(hero, new MoltenStrife(){
+            @Override
+            public ItemSprite.Glowing glowing() {
+                return Blazing.ORANGE;
             }
-        }
-    }
-
-    public static class BombDebuff extends Buff {
-
-        {
-            immunities.add(Bomb.class);
-        }
-
-        protected float left;
-
-        private static final String LEFT	= "left";
-
-        {
-            type = buffType.NEGATIVE;
-            announced = true;
-        }
-
-        @Override
-        public void storeInBundle( Bundle bundle ) {
-            super.storeInBundle( bundle );
-            bundle.put( LEFT, left );
-        }
-
-        @Override
-        public void restoreFromBundle( Bundle bundle ) {
-            super.restoreFromBundle( bundle );
-            left = bundle.getFloat( LEFT );
-        }
-
-        public void increment(float duration) {
-            this.left += duration;
-        }
-
-        @Override
-        public boolean act() {
-            if (target.isAlive()) {
-                new Bomb().explode(target.pos);
-
-                spend( TICK );
-                if ((left -= TICK) <= 0) {
-                    detach();
+        });
+        hero.busy();
+        hero.sprite.operate(hero.pos, () -> {
+            ArrayList<Char> affected = new ArrayList<>();
+            Sample.INSTANCE.play( Assets.Sounds.BLAST, 3f );
+            PathFinder.buildDistanceMap( hero.pos, BArray.not( Dungeon.level.solid, null ), hero.viewDistance );
+            for (int i = 0; i < PathFinder.distance.length; i++) {
+                if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                    if (Dungeon.level.heroFOV[i]) {
+                        CellEmitter.get(i).burst(SmokeParticle.FACTORY, 5);
+                    }
+                    Char ch = Actor.findChar(i);
+                    if (ch != null){
+                        if (ch instanceof Hero) {
+                            continue;
+                        }
+                        affected.add(ch);
+                    }
                 }
-            } else {
-                detach();
             }
 
-            return true;
-        }
+            for (Char ch : affected){
+                // 125% bomb damage that pierces armor.
+                int damage = Math.round(Random.NormalIntRange( Dungeon.scalingDepth()+5, 10 + Dungeon.scalingDepth() * 2 )*1.25f);
+                ch.damage(damage, this);
+            }
 
-        @Override
-        public void fx(boolean on) {
-            if (on) target.sprite.add(CharSprite.State.BURNING);
-            else target.sprite.remove(CharSprite.State.BURNING);
-        }
-
-        @Override
-        public int icon() {
-            return BuffIndicator.FIRE;
-        }
-
-        @Override
-        public void tintIcon(Image icon) {
-            icon.hardlight(0xf8b659);
-        }
-
-        @Override
-        public String iconTextDisplay() {
-            return dispTurns(left);
-        }
-
-        @Override
-        public String desc() {
-            return Messages.get(this, "desc", dispTurns(left));
-        }
+            hero.sprite.attack(hero.pos, () -> {
+                hero.sprite.idle();
+                hero.spendAndNext(Actor.TICK);
+                afterAbilityUsed(hero);
+            });
+        });
     }
 
 
