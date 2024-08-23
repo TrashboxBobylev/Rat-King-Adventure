@@ -10,15 +10,23 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Paralysis;
+import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.abilities.warrior.Shockwave;
 import com.zrp200.rkpd2.effects.CellEmitter;
+import com.zrp200.rkpd2.effects.ShieldHalo;
 import com.zrp200.rkpd2.effects.particles.ExoParticle;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.armor.glyphs.Viscosity;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.mechanics.ConeAOE;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
 import java.util.ArrayList;
@@ -124,6 +132,49 @@ public class ExoKnife extends MeleeWeapon{
 
     @Override
     public float warriorDelay() {
+        return 5;
+    }
+
+    @Override
+    public String targetingPrompt() {
+        return Messages.get(this, "prompt");
+    }
+
+    @Override
+    protected DuelistAbility duelistAbility() {
+        return new ExoEffect();
+    }
+
+    public static class ExoEffect extends MeleeAbility {
+
+        @Override public float accMulti() { return 1f; }
+
+        @Override
+        public void afterHit(Char enemy, boolean hit) {
+            PathFinder.buildDistanceMap( enemy.pos, BArray.not( Dungeon.level.solid, null ), 2 );
+            for (int i = 0; i < PathFinder.distance.length; i++) {
+                if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+                    Char ch = Actor.findChar(i);
+                    if (ch != null && ch.alignment != Char.Alignment.ALLY && ch.isAlive()){
+                        Buff.affect(ch, Paralysis.class, 10f);
+                        Buff.affect(ch, Shockwave.ShockForceStunHold.class, 10f);
+                        ShieldHalo shield = new ShieldHalo(ch.sprite);
+                        GameScene.effect(shield);
+                        shield.putOut();
+                        Viscosity.DeferedDamage deferred = Buff.affect( ch, Viscosity.DeferedDamage.class );
+                        int amount = weapon().damageRoll(hero) * 5;
+                        deferred.prolong(amount);
+
+                        ch.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", amount) );
+                    }
+                    CellEmitter.get(i).burst(ExoParticle.FACTORY, 15);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected int baseChargeUse(Hero hero, Char target){
         return 5;
     }
 }

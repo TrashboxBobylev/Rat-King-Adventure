@@ -128,6 +128,12 @@ public class HeroSprite extends CharSprite {
 						reset(this, cellToAttack, new ExoKnife.RunicMissile(), new Callback() {
 							@Override
 							public void call() {
+								if (animCallback != null) {
+									Callback executing = animCallback;
+									animCallback = null;
+									executing.call();
+									return;
+								}
 								ch.onAttackComplete();
 							}
 						});

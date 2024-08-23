@@ -290,7 +290,8 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 				return false;
 			}
-			hero.belongings.abilityWeapon = null;
+			if (!(wep instanceof ExoKnife))
+				hero.belongings.abilityWeapon = null;
 
 			hero.sprite.attack(enemy.pos, () -> {
 				beforeAbilityUsed(hero, enemy);
@@ -337,6 +338,8 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		public void afterAbilityUsed() {
 			abilityWeapon.afterAbilityUsed(hero);
 			activeAbility = null;
+			if ((abilityWeapon instanceof ExoKnife))
+				hero.belongings.abilityWeapon = null;
 		}
 
 		protected boolean canAttack(Hero hero, Char enemy) {
