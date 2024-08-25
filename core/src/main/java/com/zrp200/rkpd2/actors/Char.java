@@ -150,6 +150,7 @@ import com.zrp200.rkpd2.items.weapon.enchantments.Blazing;
 import com.zrp200.rkpd2.items.weapon.enchantments.Grim;
 import com.zrp200.rkpd2.items.weapon.enchantments.Kinetic;
 import com.zrp200.rkpd2.items.weapon.enchantments.Shocking;
+import com.zrp200.rkpd2.items.weapon.melee.BloomingPick;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
@@ -989,6 +990,9 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 			}
 			if (this.buff(WarpedEnemy.class) != null){
 				dmg *= 0.75f;
+			}
+			if (this.buff(BloomingPick.VineCovered.class) != null){
+				dmg *= 0.25f;
 			}
 
 			Class<?> srcClass = src.getClass();

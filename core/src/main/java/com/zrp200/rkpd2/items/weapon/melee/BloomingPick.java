@@ -27,9 +27,13 @@ import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.AllyBuff;
+import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.wands.WandOfRegrowth;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -38,6 +42,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
@@ -140,4 +145,83 @@ public class BloomingPick extends MeleeWeapon {
 		});
 		return super.warriorAttack(damage, enemy);
 	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected DuelistAbility duelistAbility() {
+		return new VineStalling();
+	}
+
+	public static class VineStalling extends MeleeAbility {
+
+		@Override
+		public float dmgMulti(Char enemy) {
+			return 0f;
+		}
+
+		@Override
+		protected void playSFX() {
+			Sample.INSTANCE.play(Sample.INSTANCE.play(Assets.Sounds.PLANT, 2f, 0.8f));
+		}
+
+		@Override
+		public void afterHit(Char enemy, boolean hit) {
+			if (enemy.isAlive()) {
+				Buff.affect(enemy, VineCovered.class);
+				float vineTime = (enemy.properties().contains(Char.Property.BOSS) || enemy.properties().contains(Char.Property.MINIBOSS)) ? 5f : 100_000_000f;
+				enemy.spendConstant( vineTime );
+				((Mob) enemy).clearEnemy();
+				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+					if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos] && Dungeon.level.distance(mob.pos, enemy.pos) <= 3) {
+						mob.aggro(enemy);
+					}
+				}
+				enemy.sprite.centerEmitter().burst( LeafParticle.LEVEL_SPECIFIC, 15 );
+				for (Buff buff : enemy.buffs()) {
+					if (buff.type == Buff.buffType.NEGATIVE && !(buff instanceof VineCovered)) {
+						buff.detach();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	protected int baseChargeUse(Hero hero, Char target) {
+		return 3;
+	}
+
+	public static class VineCovered extends AllyBuff {
+
+		{
+			type = buffType.NEGATIVE;
+			announced = true;
+
+			properties.add(Char.Property.IMMOVABLE);
+		}
+
+		@Override
+		public void fx(boolean on) {
+			if (on) target.sprite.add(CharSprite.State.VINECOVERED);
+			else    target.sprite.remove(CharSprite.State.VINECOVERED);
+		}
+
+		@Override
+		public int icon() {
+			return BuffIndicator.HERB_HEALING;
+		}
+
+		@Override
+		public void detach() {
+			super.detach();
+			target.alignment = Char.Alignment.ENEMY;
+			AllyBuff.affectAndLoot((Mob) target, hero, PlaceVineHolder.class);
+		}
+	}
+
+	public static class PlaceVineHolder extends AllyBuff {}
 }

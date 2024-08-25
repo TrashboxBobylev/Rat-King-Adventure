@@ -57,6 +57,7 @@ import com.zrp200.rkpd2.effects.particles.FrostfireParticle;
 import com.zrp200.rkpd2.effects.particles.GodfireParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.effects.particles.SnowParticle;
+import com.zrp200.rkpd2.effects.particles.VineParticle;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -89,7 +90,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, GODBURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, AURA, SWORDS, STONED, HEARTS, WARPED
+		BURNING, GODBURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, AURA, SWORDS, STONED, HEARTS, WARPED, VINECOVERED
 	}
 	private int stunStates = 0;
 
@@ -123,6 +124,7 @@ protected void copyAnimations(CharSprite other) {
 	protected Emitter spirit;
 	protected Emitter allured;
 	protected Emitter warped;
+	protected Emitter vines;
 	public Emitter swords;
 
 	protected IceBlock iceBlock;
@@ -496,6 +498,11 @@ protected void copyAnimations(CharSprite other) {
 				warped = emitter();
 				warped.pour(Speck.factory(Speck.WARPCLOUD), 0.35f);
 				break;
+			case VINECOVERED:
+				paused = true;
+				vines = emitter();
+				vines.start(VineParticle.FACTORY, 0.05f, 0 );
+				break;
 		}
 	}
 
@@ -617,6 +624,13 @@ protected void copyAnimations(CharSprite other) {
 					hearts = null;
 				}
 				break;
+			case VINECOVERED:
+				paused = false;
+				if (vines != null) {
+					vines.on = false;
+					vines = null;
+				}
+				break;
 		}
 	}
 
@@ -686,6 +700,9 @@ protected void copyAnimations(CharSprite other) {
 		}
 		if (hearts != null){
 			hearts.visible = visible;
+		}
+		if (vines != null){
+			vines.visible = visible;
 		}
 		if (aura != null){
 			if (aura.parent == null){
