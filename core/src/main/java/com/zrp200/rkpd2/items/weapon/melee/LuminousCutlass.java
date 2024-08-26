@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Lightning;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -120,6 +121,11 @@ public class LuminousCutlass extends MeleeWeapon implements Talent.SpellbladeFor
 	}
 
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.33f );
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
 
 	@Override
 	protected DuelistAbility duelistAbility() {
