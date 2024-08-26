@@ -394,4 +394,32 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
         }
         return super.warriorAttack(damage, enemy);
     }
+
+    @Override
+    public String targetingPrompt() {
+        return Messages.get(this, "prompt");
+    }
+
+    @Override
+    protected void duelistAbility(Hero hero, Integer target) {
+        //we apply here because of projecting
+        RunicBlade.RunicSlashTracker tracker = Buff.affect(hero, RunicBlade.RunicSlashTracker.class, 5f + delayFactor(hero));
+        boolean abilityUsed = duelistAbility().execute(hero, target, this);
+        if (!abilityUsed) tracker.detach();
+    }
+
+    @Override
+    protected DuelistAbility duelistAbility() {
+        return new MeleeAbility(1f);
+    }
+
+    @Override
+    protected void afterAbilityUsed(Hero hero) {
+        //reapply runic's recharge to half it
+        RunicCooldown cooldown = Dungeon.hero.buff(RunicCooldown.class);
+        if (cooldown != null){
+            cooldown.detach();
+        }
+        super.afterAbilityUsed(hero);
+    }
 }
