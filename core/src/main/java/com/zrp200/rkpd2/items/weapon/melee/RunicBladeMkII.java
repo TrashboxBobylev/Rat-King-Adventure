@@ -77,6 +77,13 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
     }
 
     @Override
+    public String defaultAction() {
+        if (charged)
+            return AC_ZAP;
+        return super.defaultAction();
+    }
+
+    @Override
     public ArrayList<String> actions(Hero hero ) {
         ArrayList<String> actions = super.actions( hero );
         if (charged) {
