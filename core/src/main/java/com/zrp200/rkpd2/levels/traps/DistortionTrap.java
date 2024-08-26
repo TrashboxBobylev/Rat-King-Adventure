@@ -42,6 +42,7 @@ import com.zrp200.rkpd2.actors.mobs.Senior;
 import com.zrp200.rkpd2.actors.mobs.Statue;
 import com.zrp200.rkpd2.actors.mobs.Wraith;
 import com.zrp200.rkpd2.actors.mobs.npcs.RatKing;
+import com.zrp200.rkpd2.actors.mobs.npcs.Sheep;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.scenes.GameScene;
 
@@ -111,7 +112,12 @@ public class DistortionTrap extends Trap{
 					do {
 						floor = Random.Int(25);
 					} while( Dungeon.bossLevel(floor));
-					mob = Reflection.newInstance(Bestiary.getMobRotation(floor).get(0));
+					ArrayList<Class<? extends Mob>> mobRotation = Bestiary.getMobRotation(floor);
+					if (!mobRotation.isEmpty())
+						mob = Reflection.newInstance(mobRotation.get(0));
+					else
+						//have small lil shep, if no mobs can be chosen :)
+						mob = new Sheep();
 					break;
 				case 2:
 					switch (2){
