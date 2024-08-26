@@ -28,11 +28,16 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.blobs.Blob;
+import com.zrp200.rkpd2.actors.blobs.Electricity;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Lightning;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
+import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
@@ -115,4 +120,28 @@ public class LuminousCutlass extends MeleeWeapon implements Talent.SpellbladeFor
 	}
 
 	private static ItemSprite.Glowing WHITE = new ItemSprite.Glowing( 0xFFFFFF, 0.33f );
+
+	@Override
+	protected DuelistAbility duelistAbility() {
+		return new ShortCircuit();
+	}
+
+	public static class ShortCircuit extends MeleeAbility {
+
+		@Override
+		public void afterHit(Char enemy, boolean hit) {
+			LuminousCutlass weapon = (LuminousCutlass) weapon();
+			weapon.affected.clear();
+			weapon.arcs.clear();
+
+			arc(Dungeon.hero, enemy, 3, weapon.affected, weapon.arcs);
+
+			for (Char ch : weapon.affected) {
+				if (ch.alignment != Dungeon.hero.alignment) {
+					GameScene.add( Blob.seed( ch.pos, 3, Electricity.class ) );
+					Buff.affect( ch, Paralysis.class, Paralysis.DURATION/3 );
+				}
+			}
+		}
+	}
 }
