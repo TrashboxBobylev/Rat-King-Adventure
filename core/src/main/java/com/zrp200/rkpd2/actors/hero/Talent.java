@@ -1746,7 +1746,6 @@ public enum Talent {
 		if (hero.armorAbility != null)  initArmorTalents(hero);
 
 		for (int i = 0; i < MAX_TALENT_TIERS; i++){
-			hero.talents.add(new LinkedHashMap<>());
 			LinkedHashMap<Talent, Integer> tier = hero.talents.get(i);
 			Bundle tierBundle = bundle.contains(TALENT_TIER+(i+1)) ? bundle.getBundle(TALENT_TIER+(i+1)) : null;
 
@@ -1761,9 +1760,7 @@ public enum Talent {
 							if (talent == BERSERKING_STAMINA && !tierBundle.contains(DEATHLESS_FURY.name())) {
 								talent = DEATHLESS_FURY;
 							}
-							if (tier.containsKey(talent)) {
-								tier.put(talent, Math.min(points, talent.maxPoints()));
-							}
+							tier.put(talent, Math.min(points, talent.maxPoints()));
 						} catch (Exception e) {
 							ShatteredPixelDungeon.reportException(e);
 						}
