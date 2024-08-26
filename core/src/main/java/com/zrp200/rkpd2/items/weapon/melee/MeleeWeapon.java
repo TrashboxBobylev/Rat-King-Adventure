@@ -79,6 +79,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	public boolean trollers = false;
 	public int grass = 0;
+	protected static boolean cutGrass = false;
 
     public static String AC_ABILITY = "ABILITY";
 
@@ -183,7 +184,9 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 													return;
 												}
 
+												cutGrass = true;
 												beforeAbilityUsed(hero, null);
+												cutGrass = false;
 												afterAbilityUsed(hero);
 												Invisibility.dispel();
 												hero.spendAndNext(hero.attackDelay());
@@ -431,6 +434,8 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	public final float abilityChargeUse(Hero hero, Char target){
 		float chargeUse = baseChargeUse(hero, target);
+		if (cutGrass)
+			chargeUse = 1;
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
 		}
