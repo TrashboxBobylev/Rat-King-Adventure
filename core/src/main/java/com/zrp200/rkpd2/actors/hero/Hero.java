@@ -1933,7 +1933,7 @@ public class Hero extends Char {
 	
 	@Override
 	public void damage( int dmg, Object src ) {
-		if (buff(TimekeepersHourglass.timeStasis.class) != null)
+		if (buff(TimekeepersHourglass.Stasis.class) != null)
 			return;
 
 		//regular damage interrupt, triggers on any damage except specific mild DOT effects
@@ -2434,7 +2434,7 @@ public class Hero extends Char {
 	@Override
 	public boolean add( Buff buff ) {
 
-		if (buff(TimekeepersHourglass.timeStasis.class) != null) {
+		if (buff(TimekeepersHourglass.Stasis.class) != null) {
 			return false;
 		}
 

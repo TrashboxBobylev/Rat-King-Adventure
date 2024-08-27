@@ -263,7 +263,9 @@ public class TimekeepersHourglass extends Artifact {
 		}
 	}
 
-	public class timeStasis extends ArtifactBuff {
+	public interface Stasis {}
+
+	public class timeStasis extends ArtifactBuff implements Stasis {
 		
 		{
 			type = buffType.POSITIVE;

@@ -1320,7 +1320,7 @@ public abstract class Level implements Bundlable {
 		int cy = c.pos / width();
 		
 		boolean sighted = c.buff( Blindness.class ) == null && c.buff( Shadows.class ) == null
-						&& c.buff( TimekeepersHourglass.timeStasis.class ) == null && c.isAlive();
+						&& c.buff( TimekeepersHourglass.Stasis.class ) == null && c.isAlive();
 		if (sighted || (c instanceof Mob && Dungeon.isChallenged(Challenges.UNLIMITED_VISION))) {
 			boolean[] blocking = null;
 

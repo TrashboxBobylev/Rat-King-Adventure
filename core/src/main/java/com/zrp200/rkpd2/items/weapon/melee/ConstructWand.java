@@ -24,19 +24,33 @@
 
 package com.zrp200.rkpd2.items.weapon.melee;
 
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.Adrenaline;
+import com.zrp200.rkpd2.actors.buffs.Barkskin;
+import com.zrp200.rkpd2.actors.buffs.Bless;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
+import com.zrp200.rkpd2.actors.buffs.Invisibility;
+import com.zrp200.rkpd2.actors.buffs.MagicImmune;
+import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Statue;
 import com.zrp200.rkpd2.effects.CellEmitter;
+import com.zrp200.rkpd2.effects.Enchanting;
 import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.sprites.StatueSprite;
+
+import java.util.ArrayList;
 
 public class ConstructWand extends MeleeWeapon {
 
@@ -101,6 +115,78 @@ public class ConstructWand extends MeleeWeapon {
             }
         }
         return 0;
+    }
+
+    @Override
+    protected int baseChargeUse(Hero hero, Char target){
+        return 5;
+    }
+
+    @Override
+    protected void duelistAbility(Hero hero, Integer target) {
+        Invisibility.dispel();
+        beforeAbilityUsed(hero, null);
+        Enchanting.show(hero, new ConstructWand(){
+            @Override
+            public ItemSprite.Glowing glowing() {
+                return new ItemSprite.Glowing( 0x0000FF );
+            }
+        });
+        ArrayList<GuardianKnight> badBoys = new ArrayList<>(9);
+        Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+        for (int i : PathFinder.NEIGHBOURS9){
+
+            if (!Dungeon.level.solid[Dungeon.hero.pos + i]
+                    && !Dungeon.level.pit[Dungeon.hero.pos + i]
+                    && Actor.findChar(Dungeon.hero.pos + i) == null) {
+
+                GuardianKnight guardianKnight = new GuardianKnight();
+                guardianKnight.weapon = this;
+                guardianKnight.pos = Dungeon.hero.pos + i;
+                GameScene.add(guardianKnight);
+                Dungeon.level.occupyCell(guardianKnight);
+
+                CellEmitter.get(guardianKnight.pos).burst(Speck.factory(Speck.EVOKE), 4);
+
+                badBoys.add(guardianKnight);
+            }
+        }
+        hero.busy();
+        hero.sprite.operate(hero.pos, () -> {
+            Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
+            Buff.affect(hero, ConstructStasis.class, 10f);
+            for (GuardianKnight knight: badBoys){
+                Buff.affect(knight, Adrenaline.class, 10f);
+                Buff.affect(knight, Bless.class, 10f);
+                Buff.affect(knight, MagicImmune.class, 10f);
+                Barkskin.conditionallyAppend(knight, 2 + hero.lvl/3, 2);
+            }
+            hero.next();
+            afterAbilityUsed(hero);
+        });
+    }
+
+    public static class ConstructStasis extends FlavourBuff implements TimekeepersHourglass.Stasis {
+        @Override
+        public boolean attachTo(Char target) {
+            if (super.attachTo(target)){
+                target.invisible++;
+                target.paralysed++;
+                Dungeon.observe();
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public void detach() {
+            if (target.invisible > 0) target.invisible--;
+            if (target.paralysed > 0) target.paralysed--;
+            super.detach();
+            target.sprite.idle();
+            Dungeon.observe();
+        }
     }
 
     public static class GuardianKnight extends Statue {

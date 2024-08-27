@@ -98,7 +98,7 @@ public class Burning extends Buff implements Hero.Doom {
 
 			Buff.detach( target, Chill.class);
 
-			if (target instanceof Hero && target.buff(TimekeepersHourglass.timeStasis.class) == null) {
+			if (target instanceof Hero && target.buff(TimekeepersHourglass.Stasis.class) == null) {
 				
 				Hero hero = (Hero)target;
 
