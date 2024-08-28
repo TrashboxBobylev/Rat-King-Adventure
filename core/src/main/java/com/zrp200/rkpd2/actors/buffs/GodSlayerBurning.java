@@ -44,7 +44,7 @@ import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
 
-public class GodSlayerBurning extends Burning {
+public class GodSlayerBurning extends Burning implements DamageOverTimeEffect {
 	
 	public static final float DURATION = 8f;
 	

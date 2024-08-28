@@ -49,7 +49,7 @@ import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
 
-public class Burning extends Buff implements Hero.Doom {
+public class Burning extends Buff implements Hero.Doom, DamageOverTimeEffect {
 	
 	public static final float DURATION = 8f;
 	

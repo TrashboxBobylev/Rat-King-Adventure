@@ -36,7 +36,7 @@ import com.zrp200.rkpd2.utils.GLog;
 
 import static com.watabou.utils.Random.NormalFloat;
 
-public class Bleeding extends Buff {
+public class Bleeding extends Buff implements DamageOverTimeEffect {
 
 	{
 		type = buffType.NEGATIVE;

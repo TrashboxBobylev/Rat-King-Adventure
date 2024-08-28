@@ -28,7 +28,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 
-public class Ooze extends Buff {
+public class Ooze extends Buff implements DamageOverTimeEffect {
 
 	public static final float DURATION = 20f;
 

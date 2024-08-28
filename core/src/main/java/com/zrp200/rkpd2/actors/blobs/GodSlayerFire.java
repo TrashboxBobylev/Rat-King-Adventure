@@ -21,12 +21,13 @@
 
 package com.zrp200.rkpd2.actors.blobs;
 
+import com.zrp200.rkpd2.actors.buffs.DamageOverTimeEffect;
 import com.zrp200.rkpd2.actors.buffs.GodSlayerBurning;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.particles.GodfireParticle;
 import com.zrp200.rkpd2.messages.Messages;
 
-public class GodSlayerFire extends Fire {
+public class GodSlayerFire extends Fire implements DamageOverTimeEffect {
 
 	{
 		fireClass = GodSlayerBurning.class;

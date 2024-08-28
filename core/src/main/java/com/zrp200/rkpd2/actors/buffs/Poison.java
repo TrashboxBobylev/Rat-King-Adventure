@@ -33,7 +33,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 
-public class Poison extends Buff implements Hero.Doom {
+public class Poison extends Buff implements Hero.Doom, DamageOverTimeEffect {
 	
 	protected float left;
 	

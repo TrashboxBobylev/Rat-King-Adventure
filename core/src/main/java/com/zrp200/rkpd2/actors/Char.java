@@ -57,6 +57,7 @@ import com.zrp200.rkpd2.actors.buffs.Chill;
 import com.zrp200.rkpd2.actors.buffs.Corrosion;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
+import com.zrp200.rkpd2.actors.buffs.DamageOverTimeEffect;
 import com.zrp200.rkpd2.actors.buffs.Daze;
 import com.zrp200.rkpd2.actors.buffs.Doom;
 import com.zrp200.rkpd2.actors.buffs.Dread;
@@ -151,6 +152,7 @@ import com.zrp200.rkpd2.items.weapon.enchantments.Grim;
 import com.zrp200.rkpd2.items.weapon.enchantments.Kinetic;
 import com.zrp200.rkpd2.items.weapon.enchantments.Shocking;
 import com.zrp200.rkpd2.items.weapon.melee.BloomingPick;
+import com.zrp200.rkpd2.items.weapon.melee.NuclearHatchet;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
@@ -993,6 +995,9 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 			}
 			if (this.buff(BloomingPick.VineCovered.class) != null){
 				dmg *= 0.25f;
+			}
+			if (this.buff(NuclearHatchet.Exposed.class) != null && src instanceof DamageOverTimeEffect){
+				dmg *= 2.5f;
 			}
 
 			Class<?> srcClass = src.getClass();

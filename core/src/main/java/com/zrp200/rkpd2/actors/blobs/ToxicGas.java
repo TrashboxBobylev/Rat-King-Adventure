@@ -25,13 +25,14 @@ import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.DamageOverTimeEffect;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.utils.GLog;
 
-public class ToxicGas extends Blob implements Hero.Doom {
+public class ToxicGas extends Blob implements Hero.Doom, DamageOverTimeEffect {
 
 	@Override
 	protected void evolve() {
