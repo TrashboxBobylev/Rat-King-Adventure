@@ -11,10 +11,14 @@ import com.zrp200.rkpd2.actors.buffs.GodSlayerBurning;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.buffs.Scam;
 import com.zrp200.rkpd2.actors.buffs.Warp;
+import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.RatKingBoss;
+import com.zrp200.rkpd2.effects.Enchanting;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.particles.ElmoParticle;
+import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.quest.Chaosstone;
 import com.zrp200.rkpd2.items.quest.Kromer;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -99,6 +103,27 @@ public class TerminusBlade extends MeleeWeapon implements Talent.SpellbladeForge
         hitCount += 9;
         instaKill(enemy);
         return super.warriorAttack(damage, enemy);
+    }
+
+    @Override
+    protected int baseChargeUse(Hero hero, Char target){
+        //uses all charges
+        return Math.min(10, 3 + (hero.lvl-1)/3)
+                * (hero.heroClass == HeroClass.DUELIST ? 2 : 1);
+    }
+
+    @Override
+    protected void duelistAbility(Hero hero, Integer target) {
+        beforeAbilityUsed(hero, null);
+        Enchanting.show(hero, this);
+        hitCount = 34;
+        Sample.INSTANCE.play(Assets.Sounds.CURSED);
+        hero.sprite.emitter().burst( ShadowParticle.CURSE, 30 );
+        hero.sprite.zap(hero.pos);
+        hero.spendAndNext(1f);
+        Warp.inflict(150, 0.5f);
+        updateQuickslot();
+        afterAbilityUsed(hero);
     }
 
     @Override
