@@ -36,7 +36,7 @@ public class InWorldWeaponSprite extends MobSprite {
 		
 		texture( Assets.Sprites.RAT );
 		
-		TextureFilm frames = new TextureFilm( texture, 16, 15 );
+		TextureFilm frames = new TextureFilm( texture, 16, 16 );
 		
 		idle = new Animation( 2, true );
 		idle.frames( frames, 15, 15, 15, 15 );
@@ -66,7 +66,7 @@ public class InWorldWeaponSprite extends MobSprite {
 		if (lol == null){
 			lol = new ItemSprite();
 			lol.view( new AluminumSword());
-			lol.scale = new PointF(1.5f, 1.5f);
+			lol.scale = new PointF(3.25f, 3.25f);
 			lol.originToCenter();
 			lol.point(point());
 			lol.angularSpeed = 960;
@@ -79,11 +79,12 @@ public class InWorldWeaponSprite extends MobSprite {
 		super.update();
 
 		if (lol != null){
-			lol.visible = visible;
 			PointF from = center();
-			from.x -= lol.width()/4;
-			from.y -= lol.height()/4;
+			from.x -= lol.width()/8;
+			from.y -= lol.height()/8;
 			lol.point(from);
+			lol.alpha(0.66f);
+			lol.visible = visible;
 		}
 	}
 
@@ -91,7 +92,7 @@ public class InWorldWeaponSprite extends MobSprite {
 	public void die() {
 		super.die();
 		if (lol != null){
-			lol.destroy();
+			lol.killAndErase();
 		}
 	}
 

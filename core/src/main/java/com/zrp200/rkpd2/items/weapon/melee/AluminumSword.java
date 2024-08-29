@@ -22,17 +22,38 @@
 package com.zrp200.rkpd2.items.weapon.melee;
 
 import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.BArray;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.AnkhInvulnerability;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
+import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.mobs.npcs.NPC;
+import com.zrp200.rkpd2.effects.MagicMissile;
+import com.zrp200.rkpd2.effects.Splash;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.items.wands.CursedWand;
+import com.zrp200.rkpd2.items.wands.Wand;
+import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.InWorldWeaponSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
+
+import java.util.ArrayList;
 
 public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon {
 
@@ -60,6 +81,82 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 	public int warriorAttack(int damage, Char enemy) {
 		Buff.affect(Dungeon.hero, AnkhInvulnerability.class, delayFactor(Dungeon.hero)*2);
 		return super.warriorAttack(damage, enemy);
+	}
+
+	@Override
+	protected int baseChargeUse(Hero hero, Char target) {
+		return 10;
+	}
+
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		return new Ballistica( user.pos, dst, Ballistica.FRIENDLY_MAGIC_BOLT ).collisionPos;
+	}
+
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
+
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		if (target == null || hero.pos == target) {
+			GLog.i( Messages.get(Wand.class, "self_target") );
+			return;
+		}
+
+		hero.busy();
+
+		beforeAbilityUsed(hero, null);
+		hero.sprite.zap(target);
+		Invisibility.dispel();
+
+		final Ballistica shot = new Ballistica( curUser.pos, target, Ballistica.FRIENDLY_PROJECTILE,
+				curUser.buff(ChampionEnemy.Projecting.class) != null && curUser.pointsInTalent(Talent.RK_PROJECT) == 3);
+
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
+
+		MagicMissile.boltFromChar( hero.sprite.parent,
+				MagicMissile.FROGGIT,
+				hero.sprite,
+				shot.collisionPos,
+				() -> {
+					updateQuickslot();
+					hero.spendAndNext(delayFactor(hero));
+					afterAbilityUsed(hero);
+
+					Char ch = Actor.findChar(shot.collisionPos);
+
+					FloatingSword sword = new FloatingSword();
+					sword.configure(15, AluminumSword.this);
+
+					if (ch != null){
+						int closest = -1;
+						boolean[] passable = Dungeon.level.passable;
+
+						for (int n : PathFinder.NEIGHBOURS9) {
+							int c = shot.collisionPos + n;
+							if (passable[c] && Actor.findChar( c ) == null
+									&& (closest == -1 || (Dungeon.level.trueDistance(c, curUser.pos) < (Dungeon.level.trueDistance(closest, curUser.pos))))) {
+								closest = c;
+							}
+						}
+
+						if (closest == -1){
+							GLog.n(Messages.get(CursedWand.class, "nothing"));
+							return;
+						} else {
+							sword.pos = closest;
+							GameScene.add(sword);
+						}
+					} else {
+						sword.pos = shot.collisionPos;
+						GameScene.add(sword);
+					}
+
+					ScrollOfTeleportation.appear( sword, sword.pos );
+					sword.sprite.centerEmitter().burst(MagicMissile.WhiteParticle.FACTORY, 15);
+				});
 	}
 
 	public static class Combo extends Buff {
@@ -109,5 +206,127 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 			return true;
 		}
 
+	}
+
+	public static class FloatingSword extends NPC {
+
+		{
+			alignment = Alignment.ALLY;
+
+			spriteClass = InWorldWeaponSprite.class;
+
+			properties.add(Property.IMMOVABLE);
+
+			flying = true;
+		}
+
+		private float left;
+		private AluminumSword weapon;
+
+		public void configure(int timeLeft, AluminumSword weapon){
+			left = timeLeft;
+			this.weapon = weapon;
+		}
+
+		@Override
+		protected boolean act() {
+			if (properties().contains(Property.IMMOVABLE)){
+				throwItems();
+			}
+
+			ArrayList<Char> affected = new ArrayList<>();
+
+			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 2 );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+					if (Dungeon.level.heroFOV[i]) {
+						Talent.SpellbladeForgeryWound.hit(i, 45, 0xCEDAE4);
+						if (i % 3 == 0){
+							weapon.hitSound(Random.Float(0.87f, 1.15f));
+						}
+					}
+					Char ch = Actor.findChar(i);
+					if (ch != null && ch.alignment != Alignment.ALLY){
+						affected.add(ch);
+					}
+				}
+			}
+
+			for (Char ch: affected){
+				int dmg = Math.round(weapon.damageRoll(this) / weapon.delayFactor(this));
+				if (weapon.enchantment != null){
+					dmg = weapon.enchantment.proc(weapon, this, ch, dmg);
+				}
+				ch.damage(dmg, this);
+				if (Dungeon.level.heroFOV[ch.pos]){
+					Sample.INSTANCE.play(Assets.Sounds.HIT);
+				}
+				if (Dungeon.hero != null){
+					Dungeon.hero.buff(MeleeWeapon.Charger.class).gainCharge(0.25f);
+				}
+			}
+
+			if (--left <= 0){
+				die(null);
+				if (Dungeon.level.heroFOV[pos]) {
+					Sample.INSTANCE.play(Assets.Sounds.PUFF);
+					Splash.at(DungeonTilemap.tileCenterToWorld(pos), -PointF.PI / 2, PointF.PI, 0xCEDAE4, 100, 0.003f);
+				}
+				spend(TICK);
+				return true;
+			}
+
+			spend(TICK);
+
+			return true;
+		}
+
+		//cannot damaged or influenced by buffs
+		@Override
+		public int defenseSkill( Char enemy ) {
+			return INFINITE_EVASION;
+		}
+
+		@Override
+		public void damage( int dmg, Object src ) {
+			//do nothing
+		}
+
+		@Override
+		public boolean add( Buff buff ) {
+			return false;
+		}
+
+		@Override
+		public boolean reset() {
+			return true;
+		}
+
+		@Override
+		public boolean interact(Char c) {
+			return true;
+		}
+
+		private static final String LEFT = "left";
+		private static final String WEAPON = "weapon";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(LEFT, left);
+			bundle.put(WEAPON, weapon);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			left = bundle.getFloat(LEFT);
+			weapon = (AluminumSword) bundle.get(WEAPON);
+		}
+
+		@Override
+		public String description() {
+			return Messages.get(this, "desc", weapon.title(), (int)left);
+		}
 	}
 }
