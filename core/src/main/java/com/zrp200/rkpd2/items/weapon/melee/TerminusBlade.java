@@ -13,6 +13,7 @@ import com.zrp200.rkpd2.actors.buffs.Scam;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.RatKingBoss;
+import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.particles.ElmoParticle;
 import com.zrp200.rkpd2.items.quest.Chaosstone;
 import com.zrp200.rkpd2.items.quest.Kromer;
@@ -75,14 +76,14 @@ public class TerminusBlade extends MeleeWeapon implements Talent.SpellbladeForge
     public void instaKill(Char enemy) {
         if (++hitCount >= 34){
             if (enemy instanceof RatKingBoss) {
-                Dungeon.hero.sprite.showStatus(CharSprite.NEGATIVE, String.valueOf(Dungeon.hero.HP - 1));
+                Dungeon.hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, String.valueOf(Dungeon.hero.HP - 1), FloatingText.PHYS_DMG);
                 Dungeon.hero.HP = 1;
                 GameScene.flash(0xAAAAAA);
                 Dungeon.hero.sprite.emitter().burst(ElmoParticle.FACTORY, 100);
                 Sample.INSTANCE.play(Assets.Sounds.DEGRADE, 0.75f, 0.88f);
                 enemy.damage(enemy.HP / 5, this);
             } else {
-                enemy.sprite.showStatus(CharSprite.NEGATIVE, "9999999999999999999999\n9999999999999999999999\n9999999999999999999999\n9999999999999999999999");
+                enemy.sprite.showStatusWithIcon(CharSprite.NEGATIVE, "9999999999999999999999\n9999999999999999999999\n9999999999999999999999\n9999999999999999999999", FloatingText.PHYS_DMG);
                 enemy.die(Dungeon.hero);
                 GameScene.flash(0xAAAAAA);
                 enemy.sprite.emitter().burst(ElmoParticle.FACTORY, 100);
