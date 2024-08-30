@@ -105,7 +105,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 
 	// this basically covers all of berserker's "buffed" talents.
 	private boolean berserker() {
-		return target instanceof Hero && ((Hero)target).subClass.is(HeroSubClass.BERSERKER);
+		return target instanceof Hero && ((Hero)target).subClass.isExact(HeroSubClass.BERSERKER);
 	}
 
 	@Override
