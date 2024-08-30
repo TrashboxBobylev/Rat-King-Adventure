@@ -44,7 +44,7 @@ import java.util.ArrayList;
 
 //these aren't considered potions internally as most potion effects shouldn't apply to them
 //mainly due to their high quantity
-public class LiquidMetal extends Item {
+public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 
 	{
 		image = ItemSpriteSheet.LIQUID_METAL;

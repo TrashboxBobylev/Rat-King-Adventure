@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
 
-public class DuelistGrass extends Item {
+public class DuelistGrass extends Item implements Recipe.AllQuantityIngredient {
 
     {
         image = ItemSpriteSheet.GRASS;

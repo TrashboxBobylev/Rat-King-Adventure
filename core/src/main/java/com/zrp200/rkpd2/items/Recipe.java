@@ -271,6 +271,9 @@ public abstract class Recipe {
 		}
 	}
 
+	// used when item needs to be fully put as recipe ingredient
+	public interface AllQuantityIngredient {}
+
 	
 	//*******
 	// Static members
