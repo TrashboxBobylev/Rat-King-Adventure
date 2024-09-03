@@ -154,7 +154,7 @@ public enum HeroClass {
 			case RAT_KING:
 				return HeroSubClass.RK_CHAMPION;
 			case DUELIST:
-				return HeroSubClass.THIRD_DUEL;
+				return HeroSubClass.HIGHNESS;
 			default:
 				return null;
 		}

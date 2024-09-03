@@ -42,7 +42,6 @@ import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.buffs.Momentum;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
-import com.zrp200.rkpd2.actors.buffs.Recharging;
 import com.zrp200.rkpd2.actors.buffs.Regeneration;
 import com.zrp200.rkpd2.actors.buffs.ScrollEmpower;
 import com.zrp200.rkpd2.actors.buffs.SoulMark;
@@ -804,6 +803,10 @@ public abstract class Wand extends Item {
 			return Messages.get(Wand.class, "prompt");
 		}
 	};
+
+	public interface RechargeSource {
+		float remainder();
+	};
 	
 	public class Charger extends Buff {
 		
@@ -893,7 +896,7 @@ private int energizeTime = 0;
 			if (Regeneration.regenOn())
 				partialCharge += (1f/turnsToCharge) * RingOfEnergy.wandChargeMultiplier(target);
 
-			for (Recharging bonus : target.buffs(Recharging.class)){
+			for (RechargeSource bonus : target.buffs(RechargeSource.class, false)){
 				if (bonus != null && bonus.remainder() > 0f) {
 					partialCharge += CHARGE_BUFF_BONUS * bonus.remainder();
 				}

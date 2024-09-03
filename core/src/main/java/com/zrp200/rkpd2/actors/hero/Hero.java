@@ -66,6 +66,7 @@ import com.zrp200.rkpd2.actors.buffs.Drowsy;
 import com.zrp200.rkpd2.actors.buffs.Foresight;
 import com.zrp200.rkpd2.actors.buffs.GodSlayerBurning;
 import com.zrp200.rkpd2.actors.buffs.HPDebuff;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.HoldFast;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
@@ -779,6 +780,10 @@ public class Hero extends Char {
 			accuracy *= 1f + boost;
 		}
 
+		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
+			accuracy *= 1.5f;
+		}
+
 		if (!RingOfForce.fightingUnarmed(this)) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
 		} else {
@@ -840,6 +845,10 @@ public class Hero extends Char {
 				}
 			}
 			evasion *= 1f + boost;
+		}
+
+		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
+			evasion *= 1.5f;
 		}
 
 		return Math.round(evasion);
@@ -1208,6 +1217,9 @@ public class Hero extends Char {
 		}
 		if (subClass.is(HeroSubClass.RK_CHAMPION) && buff(RKChampionBuff.class) == null){
 			Buff.affect(this, RKChampionBuff.class);
+		}
+		if (subClass.is(HeroSubClass.HIGHNESS) && buff(HighnessBuff.class) == null){
+			Buff.affect(this, HighnessBuff.class);
 		}
 
 		return actResult;
@@ -1900,6 +1912,10 @@ public class Hero extends Char {
 			}
 
 		}
+
+		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
+			damage *= 1.33f;
+		}
 		
 		return damage;
 	}
@@ -1999,6 +2015,10 @@ public class Hero extends Char {
 
 		if (buff(RobotBuff.ResistanceTracker.class) != null){
 			dmg /= 4;
+		}
+
+		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
+			dmg *= 0.67f;
 		}
 
 		if (Dungeon.isChallenged(Challenges.NO_HP) && dmg > 0){

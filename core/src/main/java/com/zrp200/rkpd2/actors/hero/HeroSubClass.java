@@ -90,7 +90,7 @@ public enum HeroSubClass {
 
     CHAMPION(HeroIcon.CHAMPION),
     MONK(HeroIcon.MONK),
-	THIRD_DUEL(HeroIcon.NONE),
+	HIGHNESS(HeroIcon.HIGHNESS),
 
 	KING(HeroIcon.KING),
 	RK_CHAMPION(HeroIcon.CHAMP);
@@ -182,7 +182,7 @@ public enum HeroSubClass {
 				return Badges.Badge.WON_WARLOCK;
 			case RK_CHAMPION:
 				return Badges.Badge.WON_RK_CHAMPION;
-			case THIRD_DUEL:
+			case HIGHNESS:
 				return Badges.Badge.WON_SECRET_DUELIST;
 		}
 		return null;

@@ -81,6 +81,7 @@ public class HeroIcon extends Image {
 	public static final int BRAWLER         = imageAt(0, 6);
 	public static final int SPIRITUALIST    = imageAt(1, 6);
 	public static final int DECEPTICON      = imageAt(2, 6);
+	public static final int HIGHNESS        = imageAt(3, 6);
 	public static final int CHAMP           = imageAt(5, 6);
 
 	public static final int LEGACYWRATH     = imageAt(6, 6);
@@ -89,6 +90,7 @@ public class HeroIcon extends Image {
 	public static final int BRAWLING        = imageAt(0, 7);
 	public static final int CLOAK_TELEPORT  = imageAt(1, 7);
 	public static final int BLOCKING        = imageAt(2, 7);
+	public static final int HIGHNESS_STOP   = imageAt(3, 7);
 
 
 	public HeroIcon(HeroSubClass subCls){

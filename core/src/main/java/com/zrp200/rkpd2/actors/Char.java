@@ -68,6 +68,7 @@ import com.zrp200.rkpd2.actors.buffs.FrostImbue;
 import com.zrp200.rkpd2.actors.buffs.Fury;
 import com.zrp200.rkpd2.actors.buffs.Haste;
 import com.zrp200.rkpd2.actors.buffs.Hex;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.buffs.LifeLink;
 import com.zrp200.rkpd2.actors.buffs.LostInventory;
@@ -906,6 +907,9 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 			}
 		}
 		if ( buff( ChampionEnemy.Swiftness.class ) != null) speed *= 2f;
+		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
+			speed *= 1.5f;
+		}
 
 		return speed;
 	}

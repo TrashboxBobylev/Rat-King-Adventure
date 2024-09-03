@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.buffs.RobotBuff;
@@ -255,6 +256,7 @@ abstract public class Weapon extends KindOfWeapon {
 		if(RobotBuff.isRobot()) reach++;
 		if(owner.buff(ChampionEnemy.Projecting.class) != null) reach += 2;
 		if(owner.buff(ChampionEnemy.Giant.class) != null) reach += 1;
+		if(owner.buff(HighnessBuff.class) != null && owner.buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED) reach += 2;
 		if(owner instanceof Hero) {
 			Hero hero = (Hero) owner;
 			MagesStaff staff = hero.belongings.getItem(MagesStaff.class);
