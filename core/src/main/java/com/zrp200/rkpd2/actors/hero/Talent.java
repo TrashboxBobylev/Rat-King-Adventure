@@ -235,6 +235,8 @@ public enum Talent {
 	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3), ELITE_DEXTERITY(158, 3), HELPER_TO_HERO(imageAt(6, 12), 3),
 	//Monk T3
 	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3), MONK_6TH_ABILITY(159), GRASS_MUNCHING(imageAt(7, 12), 3),
+	//Highness T3
+	PARTY_FEELING(imageAt(8, 12), 3),
 	//Challenge T4
 	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4), DUNGEONS_CHAMPIONSHIP(imageAt(13, 12), 4),
 	//Elemental Strike T4
@@ -1623,6 +1625,9 @@ public enum Talent {
 				break;
 			case MONK:
 				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY/*, MONK_6TH_ABILITY*/, ATTUNEXPLORATION, GRASS_MUNCHING);
+				break;
+			case HIGHNESS:
+				Collections.addAll(tierTalents, PARTY_FEELING);
 				break;
 			case KING: // this should be *lovely*
 				Collections.addAll(tierTalents, RK_BERSERKER, RK_BATTLEMAGE, RK_ASSASSIN, RK_SNIPER, RK_GLADIATOR, RK_WARLOCK, RK_FREERUNNER, RK_WARDEN); break;

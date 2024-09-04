@@ -719,6 +719,7 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
+		if (HighnessBuff.isPartying(attacker)) acuRoll *= 1.4f;
 		return acuRoll*accMulti;
 	}
 
@@ -736,6 +737,7 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
+		if (HighnessBuff.isPartying(attacker)) defRoll *= 1.4f;
 		return defRoll;
 	}
 
@@ -1282,6 +1284,7 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		if (buff(WarpedEnemy.class) != null){
 			timeScale *= 1.25f;
 		}
+		if (HighnessBuff.isPartying(this) && hero.pointsInTalent(Talent.PARTY_FEELING) > 2) timeScale *= 1.5f;
 
 		super.spend( time / timeScale );
 	}

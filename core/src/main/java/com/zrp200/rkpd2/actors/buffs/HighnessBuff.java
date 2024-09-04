@@ -7,7 +7,9 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.DuelistGrass;
@@ -20,6 +22,8 @@ import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
+
+import java.util.ArrayList;
 
 public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.RechargeSource {
 
@@ -94,11 +98,25 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
             }
             ActionIndicator.setAction(this);
             ArtifactRecharge.chargeArtifacts((Hero)target, 1.5f);
-            if (target.HP < target.HT && !((Hero)target).isStarving()) {
-                if (Regeneration.regenOn() && currentPower % 2 == 1) {
-                    target.HP += 1;
-                    if (target.HP == target.HT) {
-                        ((Hero) target).resting = false;
+
+            ArrayList<Char> targets = new ArrayList<>();
+            targets.add(target);
+
+            if (Dungeon.hero.pointsInTalent(Talent.PARTY_FEELING) > 1){
+                for (Char ch: Dungeon.level.mobs){
+                    if (ch.alignment == Char.Alignment.ALLY && Dungeon.level.heroFOV[ch.pos]){
+                        targets.add(ch);
+                    }
+                }
+            }
+
+            for (Char target: targets){
+                if (target.HP < target.HT && !((Hero)target).isStarving()) {
+                    if (Regeneration.regenOn() && currentPower % 2 == 1) {
+                        target.HP += 1;
+                        if (target.HP == target.HT) {
+                            ((Hero) target).resting = false;
+                        }
                     }
                 }
             }
@@ -164,6 +182,11 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
 
     public float remainder() {
         return Math.min(1f, this.cooldown())*1.5f;
+    }
+
+    public static boolean isPartying(Char ch){
+        return !(ch instanceof Hero) && Dungeon.hero != null && Dungeon.hero.buff(HighnessBuff.class) != null && Dungeon.hero.buff(HighnessBuff.class).state == State.ENERGIZED &&
+               Dungeon.hero.hasTalent(Talent.PARTY_FEELING) && Dungeon.level.heroFOV[ch.pos] && ch.alignment == Char.Alignment.ALLY;
     }
 
     @Override
