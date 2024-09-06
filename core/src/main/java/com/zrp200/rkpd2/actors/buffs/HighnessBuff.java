@@ -185,8 +185,12 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
     }
 
     public static boolean isPartying(Char ch){
-        return !(ch instanceof Hero) && Dungeon.hero != null && Dungeon.hero.buff(HighnessBuff.class) != null && Dungeon.hero.buff(HighnessBuff.class).state == State.ENERGIZED &&
+        return !(ch instanceof Hero) && isEnergized() &&
                Dungeon.hero.hasTalent(Talent.PARTY_FEELING) && Dungeon.level.heroFOV[ch.pos] && ch.alignment == Char.Alignment.ALLY;
+    }
+
+    public static boolean isEnergized(){
+        return Dungeon.hero != null && Dungeon.hero.buff(HighnessBuff.class) != null && Dungeon.hero.buff(HighnessBuff.class).state == State.ENERGIZED;
     }
 
     @Override

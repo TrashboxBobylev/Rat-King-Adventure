@@ -38,6 +38,7 @@ import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.buffs.MonkEnergy;
@@ -425,7 +426,13 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	}
 
 	public static void onAbilityKill( Hero hero, Char killed ){
-		if(killed.alignment == Char.Alignment.ENEMY) Talent.LethalHasteCooldown.applyLethalHaste(hero, true);
+		if(killed.alignment == Char.Alignment.ENEMY) {
+			Talent.LethalHasteCooldown.applyLethalHaste(hero, true);
+			if (HighnessBuff.isEnergized() && hero.pointsInTalent(Talent.SLASH_RUNNER) > 2){
+				HighnessBuff beingHigh = hero.buff(HighnessBuff.class);
+				beingHigh.currentPower = Math.min(beingHigh.grassValue(), beingHigh.currentPower + 2);
+			}
+		}
 	}
 
 	protected int baseChargeUse(Hero hero, Char target){

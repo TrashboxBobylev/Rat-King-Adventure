@@ -497,6 +497,10 @@ abstract public class Weapon extends KindOfWeapon {
 				//attacker.buff(RunicBlade.RunicSlashTracker.class).detach();
 			}
 
+			if (heroAttack && HighnessBuff.isEnergized() && ((Hero) attacker).pointsInTalent(Talent.SLASH_RUNNER) > 1){
+				multi += 1f;
+			}
+
 			if (attacker.buff(ElementalStrike.DirectedPowerTracker.class) != null){
 				multi += attacker.buff(ElementalStrike.DirectedPowerTracker.class).enchBoost;
 				attacker.buff(ElementalStrike.DirectedPowerTracker.class).detach();

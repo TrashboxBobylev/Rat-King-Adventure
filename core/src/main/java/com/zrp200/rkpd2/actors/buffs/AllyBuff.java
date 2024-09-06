@@ -22,14 +22,17 @@
 package com.zrp200.rkpd2.actors.buffs;
 
 import com.zrp200.rkpd2.Badges;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.DwarfKing;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 
@@ -76,6 +79,9 @@ public abstract class AllyBuff extends Buff{
 
 			if (hero.subClass == HeroSubClass.MONK){
 				Buff.affect(hero, MonkEnergy.class).gainEnergy(enemy);
+			}
+			if (HighnessBuff.isEnergized() && Dungeon.hero.hasTalent(Talent.SLASH_RUNNER)){
+				Buff.affect( Dungeon.hero, MeleeWeapon.Charger.class ).gainCharge(0.5f);
 			}
 		}
 	}

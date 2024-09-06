@@ -48,6 +48,7 @@ import com.zrp200.rkpd2.actors.buffs.Degrade;
 import com.zrp200.rkpd2.actors.buffs.Dread;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.buffs.FrostBurn;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MindVision;
 import com.zrp200.rkpd2.actors.buffs.MonkEnergy;
@@ -88,6 +89,7 @@ import com.zrp200.rkpd2.items.stones.StoneOfAggression;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.enchantments.Lucky;
+import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
 import com.zrp200.rkpd2.levels.Level;
@@ -870,6 +872,9 @@ public abstract class Mob extends Char {
 
 				if (Dungeon.hero.subClass == HeroSubClass.MONK){
 					Buff.affect(Dungeon.hero, MonkEnergy.class).gainEnergy(this);
+				}
+				if (HighnessBuff.isEnergized() && Dungeon.hero.hasTalent(Talent.SLASH_RUNNER)){
+					Buff.affect( Dungeon.hero, MeleeWeapon.Charger.class ).gainCharge(0.5f);
 				}
 				hero.earnExp(exp, getClass());
 			}
