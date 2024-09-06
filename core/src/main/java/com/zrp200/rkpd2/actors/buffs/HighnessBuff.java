@@ -143,7 +143,7 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
     public float recoveryAmount(int consumedGrass){
         float recTime = consumedGrass * grassValue() * 2;
         if (recTime >= RAMPING_START_CONST){
-            recTime = (float) (RAMPING_START_CONST + (Math.pow(2 * (recTime - RAMPING_START_CONST) + 1, 2) - 1)/24.0f);
+            recTime = (float) (RAMPING_START_CONST + (Math.pow(2 * (recTime - RAMPING_START_CONST) + 1, 2) - 1)/64.0f);
         }
         return recTime;
     }
