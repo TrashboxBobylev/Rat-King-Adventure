@@ -10,6 +10,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.DuelistGrass;
@@ -230,6 +231,14 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
             Sample.INSTANCE.play(Assets.Sounds.CHALLENGE, 1f, 4f);
             consumeGrass(1);
             state = State.ENERGIZED;
+            if (((Hero)target).hasTalent(Talent.WOUND_IGNORANCE)){
+                int healing = (int) Math.min(target.HT*0.075f, target.HP - target.HT);
+
+                if(healing > 0) {
+                    target.HP += healing;
+                    target.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healing), FloatingText.HEALING);
+                }
+            }
         } else if (state == State.ENERGIZED){
             startRecovering();
         }

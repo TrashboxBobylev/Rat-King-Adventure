@@ -152,6 +152,7 @@ import com.zrp200.rkpd2.items.potions.exotic.PotionOfDivineInspiration;
 import com.zrp200.rkpd2.items.quest.DarkGold;
 import com.zrp200.rkpd2.items.quest.Pickaxe;
 import com.zrp200.rkpd2.items.rings.RingOfAccuracy;
+import com.zrp200.rkpd2.items.rings.RingOfElements;
 import com.zrp200.rkpd2.items.rings.RingOfEvasion;
 import com.zrp200.rkpd2.items.rings.RingOfForce;
 import com.zrp200.rkpd2.items.rings.RingOfFuror;
@@ -2017,8 +2018,14 @@ public class Hero extends Char {
 			dmg /= 4;
 		}
 
-		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
-			dmg *= 0.67f;
+		if(buff(HighnessBuff.class) != null){
+			HighnessBuff buff = buff(HighnessBuff.class);
+			if (buff.state == HighnessBuff.State.ENERGIZED){
+				dmg *= 0.67f;
+			} else if (buff.state == HighnessBuff.State.RECOVERING && pointsInTalent(Talent.WOUND_IGNORANCE) > 2 &&
+				RingOfElements.RESISTS.contains(src.getClass())){
+				dmg *= 0.5f;
+			}
 		}
 
 		if (Dungeon.isChallenged(Challenges.NO_HP) && dmg > 0){
@@ -2038,6 +2045,14 @@ public class Hero extends Char {
 
 		if (buff(Challenge.DuelParticipant.class) != null){
 			buff(Challenge.DuelParticipant.class).addDamage(effectiveDamage);
+		}
+
+		if (HighnessBuff.isEnergized() && pointsInTalent(Talent.WOUND_IGNORANCE) > 1){
+			int shieldToGive = effectiveDamage / 13;
+			if (shieldToGive > 0) {
+				Buff.affect(this, Barrier.class).setShield(shieldToGive);
+				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
+			}
 		}
 
 		//flash red when hit for serious damage.
