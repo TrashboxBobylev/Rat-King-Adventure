@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -47,6 +48,7 @@ public class ElixirOfHoneyedHealing extends Elixir {
 		PotionOfHealing.heal(hero);
 		Buff.affect(hero, Hunger.class).satisfy(Hunger.HUNGRY/2f);
 		Talent.onFoodEaten(hero, Hunger.HUNGRY/2f, this);
+		HighnessBuff.agreenalineProc();
 	}
 	
 	@Override

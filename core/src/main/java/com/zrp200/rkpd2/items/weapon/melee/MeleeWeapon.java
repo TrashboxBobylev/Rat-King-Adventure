@@ -423,6 +423,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
 			hero.buff(Talent.CounterAbilityTacker.class).detach();
 		}
+		HighnessBuff.agreenalineProc();
 	}
 
 	public static void onAbilityKill( Hero hero, Char killed ){

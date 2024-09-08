@@ -25,6 +25,7 @@ import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FireImbue;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
@@ -43,6 +44,7 @@ public class ElixirOfDragonsBlood extends Elixir {
 		Buff.affect(hero, FireImbue.class).set(FireImbue.DURATION);
 		Sample.INSTANCE.play( Assets.Sounds.BURNING );
 		hero.sprite.emitter().burst(FlameParticle.FACTORY, 10);
+		HighnessBuff.agreenalineProc();
 	}
 	
 	@Override

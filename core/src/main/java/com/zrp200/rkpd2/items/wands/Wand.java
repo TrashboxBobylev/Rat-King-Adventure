@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
@@ -266,6 +267,8 @@ public abstract class Wand extends Item {
 		}
 		SoulMark.process(target,wandLevel,chargesUsed,delay);
 		if (Dungeon.hero.hasTalent(Talent.DEADLY_FOLLOWUP)) Buff.prolong(Dungeon.hero, Talent.DeadlyFollowupTracker.class, 5f).object = target.id();
+
+		HighnessBuff.agreenalineProc();
 	}
 
 	@Override

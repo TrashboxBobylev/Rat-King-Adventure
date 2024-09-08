@@ -47,6 +47,7 @@ import com.zrp200.rkpd2.actors.buffs.CounterBuff;
 import com.zrp200.rkpd2.actors.buffs.EnhancedRings;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.buffs.Haste;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.LostInventory;
@@ -236,7 +237,7 @@ public enum Talent {
 	//Monk T3
 	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3), MONK_6TH_ABILITY(159), GRASS_MUNCHING(imageAt(7, 12), 3),
 	//Highness T3
-	PARTY_FEELING(imageAt(8, 12), 3), SLASH_RUNNER(imageAt(9, 12), 3), PROLONGED_JOY(imageAt(10, 12), 3), WOUND_IGNORANCE(imageAt(11, 12), 3),
+	PARTY_FEELING(imageAt(8, 12), 3), SLASH_RUNNER(imageAt(9, 12), 3), PROLONGED_JOY(imageAt(10, 12), 3), WOUND_IGNORANCE(imageAt(11, 12), 3), AGREENALINE_RUSH(imageAt(12, 12), 3),
 	//Challenge T4
 	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4), DUNGEONS_CHAMPIONSHIP(imageAt(13, 12), 4),
 	//Elemental Strike T4
@@ -1010,6 +1011,7 @@ public enum Talent {
 				Buff.affect( hero, PhysicalEmpower.class).set(Math.round(hero.lvl / (4f - hero.pointsInTalent(FOCUSED_MEAL))), 1);
 			}
 		}
+		HighnessBuff.agreenalineProc();
 	}
 
 	public static class WarriorFoodImmunity extends FlavourBuff{
@@ -1114,6 +1116,7 @@ public enum Talent {
 		if (hero.hasTalent(LIQUID_AGILITY)){
 			Buff.prolong(hero, RestoredAgilityTracker.class, hero.cooldown() + Math.max(0, factor/*-1*/));
 		}
+		HighnessBuff.agreenalineProc();
 	}
 
 	public static void onScrollUsed( Hero hero, int pos, float factor ){
@@ -1135,6 +1138,7 @@ public enum Talent {
 			Buff.affect(hero, Invisibility.class, factor * (1 + 2*points));
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
+		HighnessBuff.agreenalineProc();
 	}
 
 	public static void onArtifactUsed( Hero hero ){
@@ -1146,6 +1150,7 @@ public enum Talent {
 		if (hero.hasTalent(HEROIC_STAMINA)){
 			Buff.prolong(hero, Stamina.class, 1.25f * hero.pointsInTalent(HEROIC_STAMINA));
 		}
+		HighnessBuff.agreenalineProc();
 	}
 
 	public static void onItemEquipped( Hero hero, Item item ) {
@@ -1346,6 +1351,8 @@ public enum Talent {
 				Sample.INSTANCE.play(Assets.Sounds.DEGRADE, 1f, 2.5f);
 				Buff.affect(enemy, AntiMagicBuff.class, 3f);
 		}
+
+		HighnessBuff.agreenalineProc();
 
 		return dmg;
 	}
@@ -1627,7 +1634,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY/*, MONK_6TH_ABILITY*/, ATTUNEXPLORATION, GRASS_MUNCHING);
 				break;
 			case HIGHNESS:
-				Collections.addAll(tierTalents, PARTY_FEELING, SLASH_RUNNER, PROLONGED_JOY, WOUND_IGNORANCE);
+				Collections.addAll(tierTalents, PARTY_FEELING, SLASH_RUNNER, PROLONGED_JOY, WOUND_IGNORANCE, AGREENALINE_RUSH);
 				break;
 			case KING: // this should be *lovely*
 				Collections.addAll(tierTalents, RK_BERSERKER, RK_BATTLEMAGE, RK_ASSASSIN, RK_SNIPER, RK_GLADIATOR, RK_WARLOCK, RK_FREERUNNER, RK_WARDEN); break;

@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.particles.BlastParticle;
@@ -283,6 +284,7 @@ public class Bomb extends Item {
 
 		public Fuse ignite(Bomb bomb){
 			this.bomb = bomb;
+			HighnessBuff.agreenalineProc();
 			return this;
 		}
 

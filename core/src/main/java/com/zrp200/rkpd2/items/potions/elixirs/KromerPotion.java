@@ -2,6 +2,7 @@ package com.zrp200.rkpd2.items.potions.elixirs;
 
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.potions.PotionOfStrength;
@@ -25,6 +26,7 @@ public class KromerPotion extends Elixir{
         Buff.affect(hero, Effect.class);
         hero.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "msg_1") );
         GLog.p( Messages.get(this, "msg_2") );
+        HighnessBuff.agreenalineProc();
     }
 
     private static final ItemSprite.Glowing CHAOTIC = new ItemSprite.Glowing( 0.2f  );

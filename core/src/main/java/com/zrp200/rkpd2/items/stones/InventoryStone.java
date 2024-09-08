@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.stones;
 
 import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
@@ -111,6 +112,7 @@ public abstract class InventoryStone extends Runestone {
 			if (item != null) {
 
 				((InventoryStone)curItem).onItemSelected( item );
+				HighnessBuff.agreenalineProc();
 				
 			}
 		}

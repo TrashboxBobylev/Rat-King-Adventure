@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.items.stones;
 
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -43,6 +44,7 @@ public abstract class Runestone extends Item {
 		} else {
 			if (pressesCell) Dungeon.level.pressCell( cell );
 			activate(cell);
+			HighnessBuff.agreenalineProc();
 			Invisibility.dispel();
 		}
 	}

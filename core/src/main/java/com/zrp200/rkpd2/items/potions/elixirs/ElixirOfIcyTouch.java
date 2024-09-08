@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.potions.elixirs;
 
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FrostImbue;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.particles.SnowParticle;
 import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
@@ -40,6 +41,7 @@ public class ElixirOfIcyTouch extends Elixir {
 	public void apply(Hero hero) {
 		Buff.affect(hero, FrostImbue.class, FrostImbue.DURATION);
 		hero.sprite.emitter().burst(SnowParticle.FACTORY, 5);
+		HighnessBuff.agreenalineProc();
 	}
 	
 	@Override

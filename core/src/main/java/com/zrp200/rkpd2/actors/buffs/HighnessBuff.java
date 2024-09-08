@@ -26,6 +26,8 @@ import com.zrp200.rkpd2.ui.HeroIcon;
 
 import java.util.ArrayList;
 
+import static com.zrp200.rkpd2.actors.hero.Talent.AGREENALINE_RUSH;
+
 public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.RechargeSource {
 
     {
@@ -163,6 +165,9 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
             currentPower += grassValue() * amount;
             consumedGrass += amount;
             maxRecovery = 10 + recoveryAmount(consumedGrass);
+            if (Dungeon.hero.hasTalent(AGREENALINE_RUSH)){
+                maxRecovery *= 1.33f;
+            }
             Dungeon.hero.sprite.centerEmitter().burst( LeafParticle.LEVEL_SPECIFIC, 15 * amount );
             Sample.INSTANCE.play(Assets.Sounds.PLANT);
             Item.updateQuickslot();
@@ -193,6 +198,13 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
 
     public static boolean isEnergized(){
         return Dungeon.hero != null && Dungeon.hero.buff(HighnessBuff.class) != null && Dungeon.hero.buff(HighnessBuff.class).state == State.ENERGIZED;
+    }
+
+    public static void agreenalineProc(){
+        if (Dungeon.hero.hasTalent(AGREENALINE_RUSH) && HighnessBuff.isEnergized()){
+            HighnessBuff lol = Dungeon.hero.buff(HighnessBuff.class);
+            lol.maxRecovery = Math.max(10, lol.maxRecovery - (2 * Dungeon.hero.pointsInTalent(AGREENALINE_RUSH)));
+        }
     }
 
     @Override
@@ -229,7 +241,7 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
             SpellSprite.show(target, SpellSprite.PURITY, 0f, 1f, 0.07f);
             GameScene.flash(0x702be538);
             Sample.INSTANCE.play(Assets.Sounds.CHALLENGE, 1f, 4f);
-            consumeGrass(1);
+            consumeGrass(((Hero)target).hasTalent(AGREENALINE_RUSH) ? availablePower() : 1);
             state = State.ENERGIZED;
             if (((Hero)target).hasTalent(Talent.WOUND_IGNORANCE)){
                 int healing = (int) Math.min(target.HT*0.075f, target.HP - target.HT);

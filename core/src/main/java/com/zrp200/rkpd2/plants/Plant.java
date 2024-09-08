@@ -35,6 +35,7 @@ import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Barkskin;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -76,6 +77,7 @@ public abstract class Plant implements Bundlable {
 		if (!(ch instanceof Hero) && Random.Int(6) < Dungeon.hero.pointsInTalent(Talent.INDIRECT_BENEFITS)){
 			activate(Dungeon.hero);
 		}
+		HighnessBuff.agreenalineProc();
 	}
 	
 	public abstract void activate( Char ch );

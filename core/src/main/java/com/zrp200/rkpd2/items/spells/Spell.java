@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.items.spells;
 
 
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
@@ -59,6 +60,7 @@ public abstract class Spell extends Item {
 			}
 			
 			onCast( hero );
+			HighnessBuff.agreenalineProc();
 			
 		}
 	}

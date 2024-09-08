@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.spells;
 
 import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
@@ -81,6 +82,7 @@ public abstract class InventorySpell extends Spell {
 				curItem = detach(curUser.belongings.backpack);
 				
 				((InventorySpell)curItem).onItemSelected( item );
+				HighnessBuff.agreenalineProc();
 				curUser.spend( 1f );
 				curUser.busy();
 				(curUser.sprite).operate( curUser.pos );

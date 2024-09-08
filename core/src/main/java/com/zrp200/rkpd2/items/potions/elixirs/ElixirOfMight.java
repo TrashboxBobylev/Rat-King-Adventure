@@ -26,6 +26,7 @@ import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
@@ -57,6 +58,8 @@ public class ElixirOfMight extends Elixir {
 		
 		hero.updateHT( true );
 		GLog.p( Messages.get(this, "msg", hero.STR()) );
+
+		HighnessBuff.agreenalineProc();
 
 		Badges.validateStrengthAttained();
 		Badges.validateDuelistUnlock();

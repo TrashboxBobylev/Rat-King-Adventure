@@ -28,6 +28,7 @@ import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;
@@ -51,6 +52,7 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		} else {
 			Buff.affect(hero, AquaHealing.class).set(Math.round(hero.HT * 1.5f));
 		}
+		HighnessBuff.agreenalineProc();
 	}
 	
 	@Override
