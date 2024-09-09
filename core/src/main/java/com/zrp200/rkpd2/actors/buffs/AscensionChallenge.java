@@ -240,7 +240,7 @@ public class AscensionChallenge extends Buff {
 		if (Dungeon.depth < Statistics.highestAscent){
 			Statistics.highestAscent = Dungeon.depth;
 			justAscended = true;
-			if (Dungeon.bossLevel()){
+			if (Dungeon.bossLevel() && Dungeon.depth != 0){
 				Dungeon.hero.buff(Hunger.class).satisfy(Hunger.STARVING);
 				Buff.affect(Dungeon.hero, Healing.class).setHeal(Dungeon.hero.HT, 0, 20);
 			} else {
