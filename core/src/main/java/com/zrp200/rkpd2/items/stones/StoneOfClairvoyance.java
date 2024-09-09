@@ -52,11 +52,11 @@ public class StoneOfClairvoyance extends Runestone {
 		int left, right;
 		int curr;
 		boolean noticed = false;
-		for (int y = Math.max(0, c.y - DIST); y <= Math.min(Dungeon.level.height()-1, c.y + DIST); y++) {
+		for (int y = Math.max(0, c.y - distance); y <= Math.min(Dungeon.level.height()-1, c.y + distance); y++) {
 			if (rounding[Math.abs(c.y - y)] < Math.abs(c.y - y)) {
 				left = c.x - rounding[Math.abs(c.y - y)];
 			} else {
-				left = DIST;
+				left = distance;
 				while (rounding[left] < rounding[Math.abs(c.y - y)]){
 					left--;
 				}
