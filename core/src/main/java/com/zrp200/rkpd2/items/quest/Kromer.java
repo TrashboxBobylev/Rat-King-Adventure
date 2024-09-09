@@ -122,7 +122,7 @@ public class Kromer extends Item {
             Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP + 2);
             curUser.busy();
             curUser.spendAndNext(1f);
-            if (curUser.HP >= curUser.HT*0.5f){
+            if (curUser.HP >= curUser.HT*0.5f && Random.Int(4) == 0){
                 Dungeon.hero.sprite.zap(t, () -> {
                     CursedWand.cursedZap(Kromer.this, Dungeon.hero, shot, this::shoot);
                 });
