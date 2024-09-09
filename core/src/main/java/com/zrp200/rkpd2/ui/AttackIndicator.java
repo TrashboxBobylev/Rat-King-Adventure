@@ -193,14 +193,12 @@ public class AttackIndicator extends Tag {
 	}
 
 	public static void target(Char target ) {
-		if (target == null) return;
+		if (!(target instanceof Mob)) return;
 		synchronized (instance) {
-			if (target != null) {
-				instance.lastTarget = (Mob) target;
-				instance.updateImage();
+			instance.lastTarget = (Mob) target;
+			instance.updateImage();
 
-				QuickSlotButton.target(target);
-			}
+			QuickSlotButton.target(target);
 		}
 	}
 	
