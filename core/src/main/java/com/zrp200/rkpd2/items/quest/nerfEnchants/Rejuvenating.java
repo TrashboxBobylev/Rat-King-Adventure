@@ -13,7 +13,7 @@ public class Rejuvenating extends Weapon.Enchantment {
         int level = Math.max(0, weapon.buffedLvl());
         if (Weapon.Enchantment.proc(attacker, level, 1, 10)) {
             new RegrowthBomb().explode(defender.pos);
-            int healAmt = Math.round(damage * 2f);
+            int healAmt = Math.round(damage * 1.33f);
             healAmt = Math.min( healAmt, attacker.HT - attacker.HP );
 
             if (healAmt > 0 && attacker.isAlive()) {

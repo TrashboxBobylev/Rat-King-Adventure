@@ -20,7 +20,7 @@ public class Forceful extends Weapon.Enchantment {
             //knock them back along that ballistica
             WandOfBlastWave.throwChar(defender,
                     trajectory,
-                    4,
+                    6,
                     !(weapon instanceof MissileWeapon || weapon instanceof SpiritBow),
                     true,
                     getClass());

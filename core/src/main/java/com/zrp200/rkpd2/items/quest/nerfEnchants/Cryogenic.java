@@ -16,8 +16,8 @@ public class Cryogenic extends Weapon.Enchantment {
             new FlavourBuff(){
                 {actPriority = VFX_PRIO;}
                 public boolean act() {
-                    Buff.affect(target, Frost.class, Frost.DURATION);
-                    Buff.affect(target, Chill.class, Frost.DURATION*4);
+                    Buff.affect(target, Frost.class, Frost.DURATION*1.5f);
+                    Buff.affect(target, Chill.class, Frost.DURATION*6);
                     return super.act();
                 }
             }.attachTo(defender);

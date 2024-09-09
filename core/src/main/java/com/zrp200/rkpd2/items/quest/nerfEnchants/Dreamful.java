@@ -38,7 +38,7 @@ public class Dreamful extends Weapon.Enchantment {
         if (enemyHealth <= 0) return damage; //no point in proccing if they're already dead.
 
         //scales from 0 - 40% based on how low hp the enemy is, plus 4% per level
-        float maxChance = 0.4f + .04f*level;
+        float maxChance = 0.4f + .05f*level;
         float chanceMulti = (float)Math.pow( ((defender.HT - enemyHealth) / (float)defender.HT), 2);
         float chance = maxChance * chanceMulti;
 

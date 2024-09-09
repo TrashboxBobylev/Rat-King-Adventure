@@ -70,11 +70,11 @@ public class Avalanche extends Weapon.Enchantment {
                                 Char ch = Actor.findChar( cell );
                                 if (ch != null) {
                                     float distance = Dungeon.level.trueDistance(attacker.pos, cell);
-                                    ch.damage(Random.NormalIntRange(Math.round((3 + level/2)*1f*((8f-distance)/8f)),
-                                            Math.round((9 + level*2)*1f*((8f-distance)/8f))), new RockfallTrap());
-                                    Buff.affect(ch, Cripple.class, 8f);
+                                    ch.damage(Random.NormalIntRange(Math.round((4.5f + level/1.33f)*1f*((8f-distance)/8f)),
+                                            Math.round((13.5f + level*3)*1f*((8f-distance)/8f))), new RockfallTrap());
+                                    Buff.affect(ch, Cripple.class, 12f);
                                     if (Random.Int(3) == 0)
-                                        Buff.affect(ch, Paralysis.class, 4f);
+                                        Buff.affect(ch, Paralysis.class, 6f);
                                 }
                             }
                         }

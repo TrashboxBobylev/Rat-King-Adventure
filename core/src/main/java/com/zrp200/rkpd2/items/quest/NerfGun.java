@@ -128,22 +128,22 @@ public class NerfGun extends Weapon {
     public int min(int lvl){
         switch (mode){
             case NORMAL: default:
-                return Math.round(0 + lvl*1f);
+                return Math.round(0 + lvl*1.5f);
             case RAPID:
-                return 0 + lvl / 3;
+                return 0 + lvl / 2;
             case DISC:
-                return Math.round(2 + lvl*1.5f);
+                return Math.round(3 + lvl*2.25f);
         }
     }
 
     public int max(int lvl){
         switch (mode){
             case NORMAL: default:
-                return 8 + lvl*2;
+                return 12 + lvl*3;
             case RAPID:
-                return Math.round(5 + lvl*0.5f);
+                return Math.round(7.5f + lvl*0.75f);
             case DISC:
-                return Math.round(11 + lvl*2.5f);
+                return Math.round(16.5f + lvl*3.75f);
         }
     }
 
@@ -280,7 +280,7 @@ public class NerfGun extends Weapon {
     int exp;
 
     public int maxExp(){
-        return 10 + (level())*15;
+        return 20 + (level())*30;
     }
 
     @Override
@@ -365,6 +365,11 @@ public class NerfGun extends Weapon {
         @Override
         public int damageRoll(Char owner) {
             return gun.damageRoll(owner);
+        }
+
+        @Override
+        public int buffedLvl() {
+            return gun.buffedLvl();
         }
 
         @Override

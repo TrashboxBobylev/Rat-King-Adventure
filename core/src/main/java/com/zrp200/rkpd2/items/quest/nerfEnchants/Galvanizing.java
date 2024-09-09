@@ -20,8 +20,8 @@ public class Galvanizing extends Weapon.Enchantment {
     public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
         int level = Math.max(0, weapon.buffedLvl());
         if (Weapon.Enchantment.proc(attacker, level, 1, 5)) {
-            defender.damage(Random.NormalIntRange(4 + Dungeon.scalingDepth() / 5, 8 + Dungeon.scalingDepth() / 5), this);
-            Buff.affect(defender, Paralysis.class, 2f);
+            defender.damage(Random.NormalIntRange(6 + Dungeon.scalingDepth() / 3, 12 + Dungeon.scalingDepth() / 3), this);
+            Buff.affect(defender, Paralysis.class, 3f);
 
             CharSprite s = defender.sprite;
             if (s != null && s.parent != null) {

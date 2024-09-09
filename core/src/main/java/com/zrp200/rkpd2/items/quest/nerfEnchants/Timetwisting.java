@@ -15,7 +15,7 @@ public class Timetwisting extends Weapon.Enchantment {
         if (Weapon.Enchantment.proc(attacker, level, 1, 6)) {
             SpellSprite.show(defender, SpellSprite.HASTE, 1, 1, 0);
             Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
-            defender.spend(Random.Int(2, 5));
+            defender.spend(Random.Int(3, 7));
         }
         return damage;
     }

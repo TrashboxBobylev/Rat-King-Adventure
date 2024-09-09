@@ -30,6 +30,7 @@ import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
+import com.zrp200.rkpd2.items.quest.NerfGun;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.weapon.Weapon;
@@ -270,7 +271,7 @@ public class ItemSlot extends Button {
 			add(itemIcon);
 
 		}
-		/*else*/ if (item instanceof Weapon || item instanceof Armor) {
+		/*else*/ if ((item instanceof Weapon && !(item instanceof NerfGun)) || item instanceof Armor) {
 
 			if (item.levelKnown){
 				int str = item instanceof Weapon ? ((Weapon)item).STRReq() : ((Armor)item).STRReq();

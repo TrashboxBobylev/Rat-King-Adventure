@@ -20,9 +20,9 @@ public class Shining extends Weapon.Enchantment {
                 Char ch = Actor.findChar(defender.pos + i);
                 if (ch != null) {
                     new Flare(8, 25).color(0xFFFFFF, true).show(ch.sprite, 1.2f);
-                    Buff.affect(ch, Blindness.class, ch == defender ? Blindness.DURATION : Blindness.DURATION/2);
-                    Buff.affect(ch, Cripple.class, ch == defender ? Blindness.DURATION/2 : Blindness.DURATION/3);
-                    ch.damage(level, new Flashbang());
+                    Buff.affect(ch, Blindness.class, ch == defender ? Blindness.DURATION*1.5f : Blindness.DURATION);
+                    Buff.affect(ch, Cripple.class, ch == defender ? Blindness.DURATION/1.33f : Blindness.DURATION/2);
+                    ch.damage(Math.round(level*1.5f), new Flashbang());
                 }
             }
         }

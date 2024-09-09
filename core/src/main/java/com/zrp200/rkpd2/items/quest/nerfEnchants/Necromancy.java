@@ -18,7 +18,7 @@ public class Necromancy extends Weapon.Enchantment {
     @Override
     public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
         int level = Math.max(0, weapon.buffedLvl());
-        if (Weapon.Enchantment.proc(attacker, level, 1, 12)
+        if (Weapon.Enchantment.proc(attacker, level, 1, 9)
                 && !defender.properties().contains(Char.Property.BOSS)
                 && !defender.properties().contains(Char.Property.MINIBOSS)) {
             int pos = defender.pos;

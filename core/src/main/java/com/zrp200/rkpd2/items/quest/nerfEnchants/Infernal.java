@@ -19,7 +19,7 @@ public class Infernal extends Weapon.Enchantment {
                     Buff.affect(defender, Burning.class).reignite(defender);
                 }
                 if (!defender.isImmune(getClass())) defender.damage(
-                        (int) (Random.Int(2, level + 4) * (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC) * 0.085f)), this);
+                        (int) (Random.Int(3, level + 6) * (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC) * 0.085f)), this);
 
                 defender.sprite.emitter().burst(FlameParticle.FACTORY, level + 1);
 
