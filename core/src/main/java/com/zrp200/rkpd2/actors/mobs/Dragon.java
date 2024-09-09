@@ -257,7 +257,8 @@ public class Dragon extends AbyssalMob {
             }
 
             enemy.damage(effectiveDamage, this);
-            enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+            if (enemy.buff(WarriorParry.BlockTrock.class) != null)
+                enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
 
             enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
             enemy.sprite.flash();
