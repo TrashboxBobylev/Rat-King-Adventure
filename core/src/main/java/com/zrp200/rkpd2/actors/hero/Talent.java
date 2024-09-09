@@ -1704,6 +1704,7 @@ public enum Talent {
 		bonusTalents.put(3, new Talent[]{
 				POINT_BLANK
 		});
+		bonusTalents.put(4, new Talent[]{});
 	};
 
 	private static final HashSet<String> removedTalents = new HashSet<>();
