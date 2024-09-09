@@ -38,10 +38,8 @@ import com.zrp200.rkpd2.actors.buffs.Adrenaline;
 import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
-import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.Bleeding;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.CounterBuff;
 import com.zrp200.rkpd2.actors.buffs.EnhancedRings;
@@ -63,7 +61,6 @@ import com.zrp200.rkpd2.actors.buffs.Stamina;
 import com.zrp200.rkpd2.actors.buffs.WandEmpower;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
-import com.zrp200.rkpd2.actors.hero.abilities.warrior.Endure;
 import com.zrp200.rkpd2.actors.mobs.DM100;
 import com.zrp200.rkpd2.actors.mobs.DarkestElf;
 import com.zrp200.rkpd2.actors.mobs.Dragon;
@@ -85,7 +82,6 @@ import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.Wound;
 import com.zrp200.rkpd2.effects.particles.ExoParticle;
-import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.items.BrokenSeal;
 import com.zrp200.rkpd2.items.EquipableItem;
 import com.zrp200.rkpd2.items.Item;
@@ -1316,19 +1312,7 @@ public enum Talent {
 			}
 		}
 
-		if (hero.buff(Endure.EndureTracker.class) != null
-				&& hero.hasTalent(Talent.DEMONSHADER)){
-			enemy.damage(Random.NormalIntRange(1 + (hero.pointsInTalent(Talent.DEMONSHADER)-1)*2, 8 + (hero.pointsInTalent(Talent.DEMONSHADER)-1)*5), new Burning());
-			enemy.sprite.emitter().burst(FlameParticle.FACTORY, Random.Int(2, 4 + hero.pointsInTalent(DEMONSHADER)));
-			Sample.INSTANCE.play(Assets.Sounds.BURNING);
-			if (hero.buff(Berserk.class) != null){
-				hero.buff(Berserk.class).damage(Math.round(dmg / hero.buff(Berserk.class).damageMult() * (hero.pointsInTalent(Talent.DEMONSHADER)*0.25f)));
-				SpellSprite.show(hero, SpellSprite.BERSERK);
-			}
-			if (hero.buff(Combo.class) != null){
-				hero.buff(Combo.class).addTime(hero.pointsInTalent(Talent.DEMONSHADER) * 2);
-			}
-		}
+
 
 		if (hero.hasTalent(BEAR_PAW) && hero.HP <= hero.HT / 4){
 			Buff.affect(enemy, Bleeding.class).set(dmg / 3f);

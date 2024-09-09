@@ -54,6 +54,7 @@ import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Chill;
+import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.Corrosion;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
@@ -118,6 +119,7 @@ import com.zrp200.rkpd2.actors.mobs.npcs.PrismaticImage;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
+import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.DuelistGrass;
 import com.zrp200.rkpd2.items.Heap;
@@ -510,7 +512,21 @@ public abstract class Char extends Actor {
 
 			//friendly endure
 			Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
-			if (endure != null) dmg = endure.damageFactor(dmg);
+			if (endure != null) {
+				dmg = endure.damageFactor(dmg);
+				if (this instanceof Hero && ((Hero) this).hasTalent(Talent.DEMONSHADER)){
+					enemy.damage(Random.NormalIntRange(1 + (hero.pointsInTalent(Talent.DEMONSHADER)-1)*2, 8 + (hero.pointsInTalent(Talent.DEMONSHADER)-1)*5), new Burning());
+					enemy.sprite.emitter().burst(FlameParticle.FACTORY, Random.Int(2, 4 + ((Hero) this).pointsInTalent(Talent.DEMONSHADER)));
+					Sample.INSTANCE.play(Assets.Sounds.BURNING);
+					if (hero.buff(Berserk.class) != null){
+						hero.buff(Berserk.class).damage(Math.round(dmg / hero.buff(Berserk.class).damageMult() * (hero.pointsInTalent(Talent.DEMONSHADER)*0.25f)));
+						SpellSprite.show(hero, SpellSprite.BERSERK);
+					}
+					if (hero.buff(Combo.class) != null){
+						hero.buff(Combo.class).addTime(hero.pointsInTalent(Talent.DEMONSHADER) * 2);
+					}
+				}
+			}
 
 			//enemy endure
 			endure = enemy.buff(Endure.EndureTracker.class);
