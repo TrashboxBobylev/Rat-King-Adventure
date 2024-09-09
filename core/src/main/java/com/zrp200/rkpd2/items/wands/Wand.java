@@ -538,10 +538,14 @@ public abstract class Wand extends Item {
 		}
 
 		//If hero owns wand but it isn't in belongings it must be in the staff
-		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE, Talent.RK_BATTLEMAGE)
-				&& charger != null && charger.target == Dungeon.hero
-				&& !Dungeon.hero.belongings.contains(this)){
-			Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
+		if (charger != null && charger.target == Dungeon.hero
+				&& !Dungeon.hero.belongings.contains(this)) {
+			if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE, Talent.RK_BATTLEMAGE)) {
+				Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
+			}
+		} else if (hero.hasTalent(Talent.ENERGIZING_UPGRADE) && curCharges <= getMinCharges() && hero.buff(Talent.EnergizingUpgradeCooldown.class) == null){
+			charger.energizeTime = 5;
+			charger.fx(true);
 		}
 		Invisibility.dispel();
 		updateQuickslot();
