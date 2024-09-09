@@ -27,12 +27,19 @@ import com.watabou.noosa.Visual;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDAction;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
+import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Combo;
+import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Momentum;
 import com.zrp200.rkpd2.actors.buffs.MonkEnergy;
 import com.zrp200.rkpd2.actors.buffs.Preparation;
+import com.zrp200.rkpd2.actors.buffs.RKChampionBuff;
+import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.buffs.SnipersMark;
+import com.zrp200.rkpd2.actors.buffs.WarriorParry;
+import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
+import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -191,7 +198,15 @@ public class ActionIndicator extends Tag {
 			Momentum.class,
 			MonkEnergy.class,
 			Berserk.class,
-			MeleeWeapon.Charger.class};
+			MeleeWeapon.Charger.class,
+			RobotBuff.class,
+			HighnessBuff.class,
+			BrawlerBuff.class,
+			RKChampionBuff.class,
+			WarriorParry.class,
+			CloakOfShadows.cloakRecharge.class,
+			KromerCloak.cloakRecharge.class
+	};
 	private static boolean findAction(boolean cycle) {
 		if(Dungeon.hero == null) return false;
 		if(action == null) cycle = false;
