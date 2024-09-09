@@ -38,6 +38,7 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.Corrosion;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
+import com.zrp200.rkpd2.actors.buffs.DLCAllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.Poison;
 import com.zrp200.rkpd2.actors.buffs.Shrink;
@@ -156,7 +157,7 @@ public class Wraith extends Mob {
 
 	@Override
 	public void die(Object cause) {
-		if (Dungeon.hero.pointsInTalent(Talent.POWER_IN_NUMBERS) > 2 && buff(AllyBuff.class) != null && buff(Shrink.class) == null){
+		if (Dungeon.hero.pointsInTalent(Talent.POWER_IN_NUMBERS) > 2 && buff(DLCAllyBuff.class) != null && buff(Shrink.class) == null){
 			int wraiths = Random.IntRange(1, 3);
 			for (int i = 0; i < wraiths; i++){
 				int pos;
@@ -178,7 +179,7 @@ public class Wraith extends Mob {
 					w.sprite.parent.add( new AlphaTweener( w.sprite, 1, 0.5f ) );
 
 					w.sprite.emitter().burst( ShadowParticle.CURSE, 5 );
-					Buff.affect(w, AllyBuff.class);
+					Buff.affect(w, DLCAllyBuff.class);
 					Buff.affect(w, Shrink.class);
 				}
 			}
