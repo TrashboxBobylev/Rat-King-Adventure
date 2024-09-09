@@ -318,7 +318,8 @@ protected void copyAnimations(CharSprite other) {
 
 	public final synchronized void zap( int cell, Callback callback ) {
 		doAfterAnim(callback,true);
-		zap( cell );
+		turnTo( ch.pos, cell );
+		play( zap );
 	}
 
 	public void turnTo( int from, int to ) {
