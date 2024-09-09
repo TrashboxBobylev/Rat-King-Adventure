@@ -146,7 +146,7 @@ public class PrismaticImage extends AbstractMirrorImage {
 	@Override
 	protected int heroEvasion() {
 		// armor boosts contribute to evasion
-		return hero.belongings.armor != null ?
+		return hero.belongings.armor() != null ?
 				(int)hero.belongings.armor().evasionFactor(this, super.heroEvasion())
 				: super.heroEvasion();
 	}
