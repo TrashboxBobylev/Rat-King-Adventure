@@ -44,6 +44,7 @@ import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
+import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.remains.RemainsItem;
 import com.zrp200.rkpd2.items.wands.WandOfLivingEarth;
@@ -89,8 +90,10 @@ public class SurfaceScene extends PixelScene {
 		super.create();
 
 		Music.INSTANCE.playTracks(
-				new String[]{Assets.Music.THEME_2, Assets.Music.THEME_1},
-				new float[]{1, 1},
+				Dungeon.hero.belongings.getItem(Amulet.class) != null ?
+					new String[]{Assets.Music.THEME_2, Assets.Music.THEME_1} :
+					new String[]{Assets.Music.ABYSS_5},
+				Dungeon.hero.belongings.getItem(Amulet.class) != null ? new float[]{1, 1} : new float[]{1},
 				false);
 		
 		uiCamera.visible = false;
@@ -153,7 +156,7 @@ public class SurfaceScene extends PixelScene {
 		a.y = SKY_HEIGHT - a.height();
 		align(a);
 
-		if (Dungeon.hero.armorAbility instanceof Ratmogrify) {
+		if (Dungeon.hero.armorAbility instanceof Ratmogrify && Dungeon.hero.belongings.getItem(Amulet.class) != null) {
 			rats = new Pet[30];
 			for (int i = 0; i < rats.length; i++){
 				Pet pet = new Pet();
@@ -229,7 +232,8 @@ public class SurfaceScene extends PixelScene {
 		}
 
 		window.add( a );
-		window.add( pet );
+		if (Dungeon.hero.belongings.getItem(Amulet.class) != null)
+			window.add( pet );
 		
 		window.add( new PointerArea( sky ) {
 			protected void onClick( PointerEvent event ) {
@@ -255,6 +259,11 @@ public class SurfaceScene extends PixelScene {
 			pet.brightness( 1.2f );
 		} else {
 			frame.hardlight( 0xDDEEFF );
+		}
+
+		if (Dungeon.hero.belongings.getItem(Amulet.class) == null){
+			a.brightness( 0.8f );
+			pet.brightness( 0.8f );
 		}
 
 		RedButton gameOver = new RedButton( Messages.get(this, "exit") ) {
@@ -302,14 +311,17 @@ public class SurfaceScene extends PixelScene {
 		
 		private static final int[] day		= {0xFF4488FF, 0xFFCCEEFF};
 		private static final int[] night	= {0xFF001155, 0xFF335980};
-		
+		private static final int[] ratded   = {0xDDC5C5C6, 0xFFD7D9D9};
 		private SmartTexture texture;
 		private FloatBuffer verticesBuffer;
 		
 		public Sky( boolean dayTime ) {
 			super( 0, 0, 1, 1 );
 
-			texture = TextureCache.createGradient( dayTime ? day : night );
+			int[] colors = dayTime ? day : night;
+			if (Dungeon.hero.belongings.getItem(Amulet.class) == null)
+				colors = ratded;
+			texture = TextureCache.createGradient(colors);
 			
 			float[] vertices = new float[16];
 			verticesBuffer = Quad.create();

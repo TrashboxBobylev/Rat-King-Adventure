@@ -31,14 +31,19 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Bones;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.GamesInProgress;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
+import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.RatKingBoss;
 import com.zrp200.rkpd2.actors.mobs.YogDzewa;
+import com.zrp200.rkpd2.actors.mobs.npcs.RatKing;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
@@ -48,6 +53,7 @@ import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.SurfaceScene;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.zrp200.rkpd2.utils.DungeonSeed;
@@ -235,6 +241,20 @@ public class RatBossLevel extends Level {
 		if (map[entrance()] == Terrain.EXIT && map[exit()] != Terrain.ENTRANCE
 				&& ch == Dungeon.hero && Dungeon.level.distance(ch.pos, entrance()) >= 2) {
 			seal();
+		}
+	}
+
+	@Override
+	public boolean activateTransition(Hero hero, LevelTransition transition) {
+		if (transition.type == LevelTransition.Type.SURFACE){
+			Statistics.ascended = true;
+			Badges.silentValidateHappyEnd();
+			Dungeon.win( RatKing.class );
+			Dungeon.deleteGame( GamesInProgress.curSlot, true );
+			Game.switchScene( SurfaceScene.class );
+			return true;
+		} else {
+			return super.activateTransition(hero, transition);
 		}
 	}
 
