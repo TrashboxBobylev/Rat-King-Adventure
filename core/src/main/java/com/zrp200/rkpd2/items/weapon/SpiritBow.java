@@ -287,6 +287,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	@Override
 	public int level() {
+		if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
 		return (int)internalLevel();
 	}
 	// this allows me to more dynamically adjust it by class.

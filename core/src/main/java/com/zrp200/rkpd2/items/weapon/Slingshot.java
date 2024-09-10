@@ -6,6 +6,7 @@ import com.watabou.utils.Callback;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
@@ -124,6 +125,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public int level() {
+        if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
         int i = (Dungeon.hero != null ) ? Dungeon.hero.STR() - 10 : 0;
         return i;
     }
