@@ -118,13 +118,13 @@ public class Phantom extends AbyssalMob {
 	}
 
 	private void zap( ){
-		spend( TICK );
-		ventCooldown = 5;
+		spend( TICK*2 );
+		ventCooldown = 10;
 
 		Ballistica trajectory = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
 
 		for (int i : trajectory.subPath(0, trajectory.dist)){
-			GameScene.add(Blob.seed(i, 6, Miasma.class));
+			GameScene.add(Blob.seed(i, 9, Miasma.class));
 		}
 
 	}
@@ -145,7 +145,7 @@ public class Phantom extends AbyssalMob {
 
 				int oldPos = pos;
 
-				if (ventCooldown <= 0 && distance(enemy) >= 1 && Random.Int(40/distance(enemy)) == 0 && buff(Talent.AntiMagicBuff.class) == null){
+				if (ventCooldown <= 0 && distance(enemy) >= 1 && Random.Int(50/distance(enemy)) == 0 && buff(Talent.AntiMagicBuff.class) == null){
 					if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
 						sprite.zap( enemy.pos );
 						return false;

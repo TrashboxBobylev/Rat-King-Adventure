@@ -120,7 +120,7 @@ public class PhantomSprite extends MobSprite {
 
 		if (cloud == null) {
 			cloud = emitter();
-			cloud.pour( Speck.factory( Speck.DUST ), 3f );
+			cloud.pour( Speck.factory( Speck.DUST ), 1.25f );
 		}
 	}
 
