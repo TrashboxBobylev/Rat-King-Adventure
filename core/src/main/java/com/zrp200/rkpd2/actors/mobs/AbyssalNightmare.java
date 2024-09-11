@@ -26,6 +26,7 @@ package com.zrp200.rkpd2.actors.mobs;
 
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Challenges;
@@ -109,10 +110,10 @@ public class AbyssalNightmare extends AbyssalMob {
 	{
 		spriteClass = AbyssalSprite.class;
 
-		HP = HT = 620;
+		HP = HT = 320;
 		defenseSkill = 0;
 
-		EXP = 20;
+		EXP = 50;
 
 		flying = true;
 		baseSpeed = 0.5f;
@@ -153,7 +154,7 @@ public class AbyssalNightmare extends AbyssalMob {
 		}
 		Dungeon.level.updateFieldOfView( this, fieldOfView );
 
-		HP = Math.min(HP+7, HT);
+		HP = Math.min(HP+Random.round(2.5f), HT);
 
 		boolean justAlerted = alerted;
 		alerted = false;
@@ -207,7 +208,7 @@ public class AbyssalNightmare extends AbyssalMob {
 
 	@Override
 	public int attackProc(Char enemy, int damage) {
-		if (Random.Int(5) == 0 && generation == 0){
+		if (Random.Int(4) == 0 && generation == 0){
 			ArrayList<Integer> candidates = new ArrayList<>();
 			boolean[] solid = Dungeon.level.solid;
 
@@ -221,7 +222,7 @@ public class AbyssalNightmare extends AbyssalMob {
 			if (candidates.size() > 0) {
 
 				AbyssalNightmare clone = split();
-				clone.HP = HP;
+				clone.HP = (int) (HP * 0.8f);
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
 
@@ -237,10 +238,17 @@ public class AbyssalNightmare extends AbyssalMob {
 	private AbyssalNightmare split() {
 		AbyssalNightmare clone = new AbyssalNightmare();
 		clone.EXP = EXP/2;
+		clone.generation = generation + 1;
 		if (buff(Corruption.class ) != null) {
 			Buff.affect( clone, Corruption.class);
 		}
 		return clone;
+	}
+
+	@Override
+	public void damage(int dmg, Object src) {
+		dmg *= GameMath.gate(0.33f, (1f - ((float)(HT-HP)/HT))*3, 3f );
+		super.damage(dmg, src);
 	}
 
 	@Override
@@ -253,6 +261,11 @@ public class AbyssalNightmare extends AbyssalMob {
 			RingOfWealth.showFlareForBonusDrop(sprite);
 		}
 		return null;
+	}
+
+	@Override
+	public float resistanceValue(Class effect) {
+		return super.resistanceValue(effect)/2f;
 	}
 
 	@Override
@@ -315,71 +328,71 @@ public class AbyssalNightmare extends AbyssalMob {
 	}
 
 	{
-		immunities.add( Blizzard.class );
-		immunities.add( ConfusionGas.class );
-		immunities.add( CorrosiveGas.class );
-		immunities.add( Electricity.class );
-		immunities.add( Fire.class );
-		immunities.add( Freezing.class );
-		immunities.add( Inferno.class );
-		immunities.add( ParalyticGas.class );
-		immunities.add( Regrowth.class );
-		immunities.add( SmokeScreen.class );
-		immunities.add( StenchGas.class );
-		immunities.add( StormCloud.class );
-		immunities.add( ToxicGas.class );
-		immunities.add( Web.class );
-		immunities.add( FrostFire.class);
+		resistances.add( Blizzard.class );
+		resistances.add( ConfusionGas.class );
+		resistances.add( CorrosiveGas.class );
+		resistances.add( Electricity.class );
+		resistances.add( Fire.class );
+		resistances.add( Freezing.class );
+		resistances.add( Inferno.class );
+		resistances.add( ParalyticGas.class );
+		resistances.add( Regrowth.class );
+		resistances.add( SmokeScreen.class );
+		resistances.add( StenchGas.class );
+		resistances.add( StormCloud.class );
+		resistances.add( ToxicGas.class );
+		resistances.add( Web.class );
+		resistances.add( FrostFire.class);
 
 
-		immunities.add( Burning.class );
-		immunities.add( Charm.class );
-		immunities.add( Chill.class );
-		immunities.add( Frost.class );
-		immunities.add( Ooze.class );
-		immunities.add( Paralysis.class );
-		immunities.add( Poison.class );
-		immunities.add( Corrosion.class );
-		immunities.add( Weakness.class );
-		immunities.add( FrostBurn.class);
-		immunities.add( Shrink.class);
-		immunities.add( TimedShrink.class);
-		immunities.add( MagicalSleep.class);
-		immunities.add( Vertigo.class);
-		immunities.add( Terror.class);
-		immunities.add( Vulnerable.class);
-		immunities.add( Slow.class);
-		immunities.add( Blindness.class);
-		immunities.add( Cripple.class);
-		immunities.add( Doom.class);
-		immunities.add( Drowsy.class);
-		immunities.add( Hex.class);
-		immunities.add( Sleep.class);
+		resistances.add( Burning.class );
+		resistances.add( Charm.class );
+		resistances.add( Chill.class );
+		resistances.add( Frost.class );
+		resistances.add( Ooze.class );
+		resistances.add( Paralysis.class );
+		resistances.add( Poison.class );
+		resistances.add( Corrosion.class );
+		resistances.add( Weakness.class );
+		resistances.add( FrostBurn.class);
+		resistances.add( Shrink.class);
+		resistances.add( TimedShrink.class);
+		resistances.add( MagicalSleep.class);
+		resistances.add( Vertigo.class);
+		resistances.add( Terror.class);
+		resistances.add( Vulnerable.class);
+		resistances.add( Slow.class);
+		resistances.add( Blindness.class);
+		resistances.add( Cripple.class);
+		resistances.add( Doom.class);
+		resistances.add( Drowsy.class);
+		resistances.add( Hex.class);
+		resistances.add( Sleep.class);
 
-		immunities.add( DisintegrationTrap.class );
-		immunities.add( GrimTrap.class );
+		resistances.add( DisintegrationTrap.class );
+		resistances.add( GrimTrap.class );
 
-		immunities.add( WandOfBlastWave.class );
-		immunities.add( WandOfDisintegration.class );
-		immunities.add( WandOfFireblast.class );
-		immunities.add( WandOfFrost.class );
-		immunities.add( WandOfLightning.class );
-		immunities.add( WandOfLivingEarth.class );
-		immunities.add( WandOfMagicMissile.class );
-		immunities.add( WandOfPrismaticLight.class );
-		immunities.add( WandOfTransfusion.class );
-		immunities.add( WandOfWarding.Ward.class );
+		resistances.add( WandOfBlastWave.class );
+		resistances.add( WandOfDisintegration.class );
+		resistances.add( WandOfFireblast.class );
+		resistances.add( WandOfFrost.class );
+		resistances.add( WandOfLightning.class );
+		resistances.add( WandOfLivingEarth.class );
+		resistances.add( WandOfMagicMissile.class );
+		resistances.add( WandOfPrismaticLight.class );
+		resistances.add( WandOfTransfusion.class );
+		resistances.add( WandOfWarding.Ward.class );
 
-		immunities.add( Shaman.EarthenBolt.class );
-		immunities.add( Warlock.DarkBolt.class );
-		immunities.add( Eye.DeathGaze.class );
-		immunities.add( FinalFroggit.Bolt.class);
-		immunities.add( SpectreRat.DarkBolt.class);
+		resistances.add( Shaman.EarthenBolt.class );
+		resistances.add( Warlock.DarkBolt.class );
+		resistances.add( Eye.DeathGaze.class );
+		resistances.add( FinalFroggit.Bolt.class);
+		resistances.add( SpectreRat.DarkBolt.class);
 
-		immunities.add(Grim.class);
-		immunities.add(Kinetic.class);
-		immunities.add(Blazing.class);
-		immunities.add(Shocking.class);
-		immunities.add(Vampiric.class);
+		resistances.add(Grim.class);
+		resistances.add(Kinetic.class);
+		resistances.add(Blazing.class);
+		resistances.add(Shocking.class);
+		resistances.add(Vampiric.class);
 	}
 }
