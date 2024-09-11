@@ -35,6 +35,7 @@ import com.zrp200.rkpd2.effects.BadgeBanner;
 import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.Amulet;
+import com.zrp200.rkpd2.items.quest.Chaosstone;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -76,7 +77,11 @@ public class AmuletScene extends PixelScene {
 		btnExit = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(this, "exit") ) {
 			@Override
 			protected void onClick() {
-				Dungeon.win( Amulet.class );
+				Class clazz = Amulet.class;
+				if (Dungeon.hero.belongings.getSimilar(new Chaosstone()) != null) {
+					clazz = Chaosstone.class;
+				}
+				Dungeon.win(clazz);
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
 				btnExit.enable(false);
 				btnStay.enable(false);
