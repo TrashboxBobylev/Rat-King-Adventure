@@ -3,6 +3,8 @@ package com.zrp200.rkpd2.sprites;
 import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.buffs.RobotBuff;
+import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 
 public class RatKingHeroSprite extends HeroSprite {
     // placeholder
@@ -18,14 +20,14 @@ public class RatKingHeroSprite extends HeroSprite {
     public void updateArmor() {
         // there's only two armors. really one atm.
         // TODO decide if I want a "crownless" rat king towards the beginning of the game.
-        TextureFilm film = new TextureFilm( tiers(), 0, FRAME_WIDTH, FRAME_HEIGHT );
+        TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.isSubclassed(HeroSubClass.DECEPTICON) ? Dungeon.hero.tier() : 0, FRAME_WIDTH, FRAME_HEIGHT );
         idle = new Animation( 2, true );
         idle.frames( film, 0, 0, 0, 1 );
 
         run = new Animation( runFramerate, true );
         run.frames( film, 6, 7, 8, 9, 10 );
 
-        attack = new Animation( 15, false );
+        attack = new Animation( RobotBuff.isVehicle() ? 50 : 15, false );
         attack.frames( film, 2, 3, 4, 5, 0 );
 
         die = new Animation( 10, false );
