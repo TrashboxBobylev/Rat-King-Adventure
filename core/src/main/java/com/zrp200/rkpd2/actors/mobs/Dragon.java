@@ -24,12 +24,10 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -39,9 +37,6 @@ import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
 import com.zrp200.rkpd2.actors.buffs.FrostBurn;
 import com.zrp200.rkpd2.actors.buffs.Light;
-import com.zrp200.rkpd2.actors.buffs.Shrink;
-import com.zrp200.rkpd2.actors.buffs.TimedShrink;
-import com.zrp200.rkpd2.actors.buffs.Vulnerable;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
@@ -51,22 +46,20 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.PotionOfExperience;
 import com.zrp200.rkpd2.items.rings.RingOfWealth;
 import com.zrp200.rkpd2.mechanics.Ballistica;
-import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.DragonSprite;
-import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
 
 public class Dragon extends AbyssalMob {
     {
-        HP = HT = 320;
-        defenseSkill = 45;
+        HP = HT = 400;
+        defenseSkill = 30;
         spriteClass = DragonSprite.class;
 
-        EXP = 20;
-        baseSpeed = 2f;
+        EXP = 50;
+        baseSpeed = 1.5f;
 
         flying = true;
         properties.add(Property.BOSS);
@@ -76,21 +69,26 @@ public class Dragon extends AbyssalMob {
     }
 
     @Override
+    public float attackDelay() {
+        return super.attackDelay()*2f;
+    }
+
+    @Override
     public int damageRoll() {
-        return Random.NormalIntRange( 46 + abyssLevel()*12, 90 + abyssLevel()*25 );
+        return Random.NormalIntRange( 60 + abyssLevel()*15, 115 + abyssLevel()*30 );
     }
 
     @Override
     public int attackSkill( Char target ) {
-        return 70 + abyssLevel()*5;
+        return 40 + abyssLevel()*5;
     }
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(20 + abyssLevel()*10, 35 + abyssLevel()*10);
+        return Random.NormalIntRange(25 + abyssLevel()*12, 40 + abyssLevel()*12);
     }
 
-    private int rangedCooldown = Random.NormalIntRange( 1, 3 );
+    private int rangedCooldown = Random.NormalIntRange( 6, 9 );
 
     @Override
     protected boolean act() {
@@ -153,33 +151,8 @@ public class Dragon extends AbyssalMob {
     @Override
     public int attackProc( Char enemy, int damage ) {
         damage = super.attackProc( enemy, damage );
-        meleeProc( enemy, damage );
-
-        return damage;
-    }
-
-    private void zap() {
-        spend( 2f );
-
-        if (hit( this, enemy, true )) {
-
-            rangedProc( enemy );
-
-        } else {
-            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
-        }
-
-        rangedCooldown = Random.NormalIntRange( 3, 5 );
-    }
-
-    public void onZapComplete() {
-        zap();
-        next();
-    }
-
-    protected void meleeProc( Char enemy, int damage ) {
         if (Random.Int( 2 ) == 0 && !enemy.isWet()) {
-            Buff.affect( enemy, FrostBurn.class ).reignite( enemy, 10f );
+            Buff.affect(enemy, FrostBurn.class ).reignite(enemy, 10f );
             Splash.at( enemy.sprite.center(), sprite.blood(), 5);
         }
         for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
@@ -210,76 +183,40 @@ public class Dragon extends AbyssalMob {
                         swipeAttack(5, 7);
                         break;
                 }
-                return;
+                break;
             }
         }
+
+        return damage;
+    }
+
+    private void zap() {
+        spend( 1f );
+
+        if (hit( this, enemy, true )) {
+
+            rangedProc( enemy );
+
+        } else {
+            enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
+        }
+
+        rangedCooldown = Random.NormalIntRange( 9, 16 );
+    }
+
+    public void onZapComplete() {
+        zap();
+        next();
     }
 
     protected void swipeAttack(int adjacentDir1, int adjacentDir2){
         Char ch = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir1]);
         if (ch != null && ch.alignment != alignment) {
-            bite(ch);
+            attack(ch);
         }
         Char ch2 = Actor.findChar(pos + PathFinder.NEIGHBOURS9[adjacentDir2]);
         if (ch2 != null && ch2.alignment != alignment){
-            bite(ch2);
-        }
-    }
-
-    private void bite(Char enemy){
-        boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
-
-        if (enemy.isInvulnerable(getClass())) {
-
-            if (visibleFight) {
-                enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
-
-                Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1f, Random.Float(0.96f, 1.05f));
-            }
-        } else if (hit( this, enemy, false )) {
-
-            int dr = enemy.drRoll();
-            if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dr *= 0.5f;
-            int dmg = damageRoll();
-            if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
-
-            int effectiveDamage = enemy.defenseProc(this, dmg);
-            effectiveDamage = Math.max(effectiveDamage - dr, 0);
-
-            if (enemy.buff(Vulnerable.class) != null) {
-                effectiveDamage *= 1.33f;
-            }
-
-            if (visibleFight) {
-                if (effectiveDamage > 0 || !enemy.blockSound(Random.Float(0.96f, 1.05f))) {
-                    hitSound(Random.Float(0.87f, 1.15f));
-                }
-            }
-
-            enemy.damage(effectiveDamage, this);
-            if (enemy.buff(WarriorParry.BlockTrock.class) != null)
-                enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
-
-            enemy.sprite.bloodBurstA(sprite.center(), effectiveDamage);
-            enemy.sprite.flash();
-
-            if (!enemy.isAlive() && visibleFight) {
-                if (enemy == Dungeon.hero) {
-
-                    Dungeon.fail(getClass());
-                    GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name())));
-
-                }
-            }
-        } else {
-
-            if (visibleFight) {
-                String defense = enemy.defenseVerb();
-                enemy.sprite.showStatus( CharSprite.NEUTRAL, defense );
-
-                Sample.INSTANCE.play(Assets.Sounds.MISS);
-
-            }
+            attack(ch2);
         }
     }
 
@@ -290,7 +227,7 @@ public class Dragon extends AbyssalMob {
             enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
         } else {
             if (!enemy.isWet()) {
-                Buff.affect(enemy, FrostBurn.class).reignite(enemy, 8f);
+                Buff.affect(enemy, FrostBurn.class).reignite(enemy, 12f);
             }
 
             Splash.at(enemy.sprite.center(), sprite.blood(), 5);
@@ -304,7 +241,6 @@ public class Dragon extends AbyssalMob {
                     candidates.add(n);
                 }
             }
-            ChampionEnemy.AntiMagic.effect(enemy, this);
 
             if (candidates.size() > 0) {
 
@@ -361,8 +297,8 @@ public class Dragon extends AbyssalMob {
         {
             spriteClass = SmallDragonSprite.class;
 
-            HP = HT = 85;
-            defenseSkill = 60;
+            HP = HT = 0;
+            defenseSkill = 70;
             viewDistance = Light.DISTANCE;
 
             EXP = 5;
@@ -374,17 +310,22 @@ public class Dragon extends AbyssalMob {
 
         @Override
         public int attackSkill( Char target ) {
-            return 55 + abyssLevel()*3;
+            return 65 + abyssLevel()*3;
         }
 
         @Override
         public int damageRoll() {
-            return Random.NormalIntRange( 25 + abyssLevel()*9, 48 + abyssLevel()*16 );
+            return Random.NormalIntRange( 16 + abyssLevel()*5, 30 + abyssLevel()*10 );
+        }
+
+        @Override
+        public float attackDelay() {
+            return super.attackDelay()*0.5f;
         }
 
         @Override
         public int drRoll() {
-            return Random.NormalIntRange(19 + abyssLevel()*4, 28 + abyssLevel()*10);
+            return Random.NormalIntRange(12 + abyssLevel()*2, 20 + abyssLevel()*6);
         }
 
     }

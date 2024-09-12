@@ -50,7 +50,7 @@ public class DragonSprite extends MobSprite {
 		run = new Animation( 20, true );
 		run.frames( frames, 0, 2, 3 );
 		
-		attack = new Animation( 17, false );
+		attack = new Animation( 12, false );
 		attack.frames( frames, 4, 5, 6, 7, 0);
 		
 		zap = attack.clone();
