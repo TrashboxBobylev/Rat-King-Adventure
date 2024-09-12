@@ -6,12 +6,15 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Amok;
+import com.zrp200.rkpd2.actors.buffs.Barrier;
+import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Sleep;
 import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.CellEmitter;
+import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.particles.RainbowParticle;
 import com.zrp200.rkpd2.items.potions.PotionOfExperience;
@@ -24,11 +27,11 @@ import java.util.HashSet;
 public class LostSpirit extends AbyssalMob implements Callback {
 
     {
-        HP = HT = 145;
+        HP = HT = 70;
         defenseSkill = 72;
         spriteClass = LostSpiritSprite.class;
 
-        EXP = 20;
+        EXP = 50;
 
         flying = true;
         properties.add(Property.BOSS);
@@ -71,7 +74,7 @@ public class LostSpirit extends AbyssalMob implements Callback {
 
         if ((Dungeon.level.adjacent( pos, enemy.pos ) || new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) && enemy == Dungeon.hero) {
 
-            if (HP > HT/10) {
+            if (HP > HT/5) {
                 //do nothing
             }
             else {
@@ -101,6 +104,8 @@ public class LostSpirit extends AbyssalMob implements Callback {
 
             if (enemy.alignment == Alignment.ENEMY){
                 ChampionEnemy.rollForChampionInstantly((Mob) enemy);
+                Buff.affect(this, Barrier.class).setShield((int) (0.75f * enemy.HT));
+                enemy.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString((int) (0.75f * enemy.HT)), FloatingText.SHIELDING );
                 enemy.sprite.emitter().burst( RainbowParticle.BURST, 10);
                 enemy = null;
             }
