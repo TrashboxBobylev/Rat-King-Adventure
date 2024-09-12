@@ -21,26 +21,13 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.input.PointerEvent;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.PointerArea;
-import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.windows.WndTitledMessage;
 
 public class WndChanges extends WndTitledMessage {
 
 	public WndChanges( Image icon, String title, String message ) {
 		super( icon, title, message);
-		
-		PointerArea blocker = new PointerArea( 0, 0, PixelScene.uiCamera.width, PixelScene.uiCamera.height ) {
-			@Override
-			protected void onClick( PointerEvent event ) {
-				onBackPressed();
-			}
-		};
-		blocker.camera = PixelScene.uiCamera;
-		add(blocker);
-
 	}
 	
 }
