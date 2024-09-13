@@ -21,18 +21,15 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.Game;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.effects.Splash;
 
-public class SpawnerSprite extends MobSprite {
+public class AbyssalSpawnerSprite extends SpawnerSprite {
 
-	public SpawnerSprite() {
+	public AbyssalSpawnerSprite() {
 		super();
 
-		texture( Assets.Sprites.SPAWNER );
+		texture( Assets.Sprites.ABYSS_SPAWNER );
 
 		perspectiveRaise = 8 / 16f;
 		shadowOffset = 1.25f;
@@ -51,36 +48,5 @@ public class SpawnerSprite extends MobSprite {
 		die = idle.clone();
 
 		play( idle );
-	}
-
-	protected float baseY = Float.NaN;
-
-	@Override
-	public void place(int cell) {
-		super.place(cell);
-		baseY = y;
-	}
-
-	@Override
-	public void update() {
-		super.update();
-		if (!paused){
-			if (Float.isNaN(baseY)) baseY = y;
-			y = baseY + (float)(Math.sin(Game.timeTotal)/3f);
-			shadowOffset = 1.25f - 0.6f*(float)(Math.sin(Game.timeTotal)/3f);
-		}
-	}
-
-	@Override
-	public void die() {
-		Splash.around( this, blood(), 100 );
-		killAndErase();
-	}
-
-	@Override
-	public void bloodBurstA(PointF from, int damage) {
-		if (alive) {
-			super.bloodBurstA(from, damage);
-		}
 	}
 }

@@ -1,8 +1,10 @@
 package com.zrp200.rkpd2.actors.mobs;
 
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -11,10 +13,17 @@ import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.Sleep;
 import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.buffs.Vertigo;
+import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Pushing;
-import com.zrp200.rkpd2.effects.Splash;
+import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.sprites.SpawnerSprite;
+import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
+import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
 
@@ -23,10 +32,13 @@ public class AbyssalSpawner extends AbyssalMob {
     {
         spriteClass = AbyssalSpawnerSprite.class;
 
-        HP = HT = 420;
+        HP = HT = 150;
         defenseSkill = 0;
 
         EXP = 30;
+
+        loot = Clump.class;
+        lootChance = 1f;
 
         state = PASSIVE;
 
@@ -35,19 +47,6 @@ public class AbyssalSpawner extends AbyssalMob {
         properties.add(Property.DEMONIC);
         properties.add(Property.INORGANIC);
         properties.add(Property.UNDEAD);
-    }
-
-    public static class AbyssalSpawnerSprite extends SpawnerSprite {
-        public AbyssalSpawnerSprite() {
-            super();
-            hardlight(0x8f8f8f);
-        }
-
-        @Override
-        public void die() {
-            Splash.at( center(), Random.Int(0x000000, 0xFFFFFF), 100 );
-            killAndErase();
-        }
     }
 
     @Override
@@ -68,6 +67,7 @@ public class AbyssalSpawner extends AbyssalMob {
     protected boolean act() {
 
         spawnCooldown--;
+        HP = Math.max(HT, HP + 2 + abyssLevel());
         if (spawnCooldown <= 0){
             ArrayList<Integer> candidates = new ArrayList<>();
             for (int n : PathFinder.NEIGHBOURS8) {
@@ -89,7 +89,7 @@ public class AbyssalSpawner extends AbyssalMob {
                     Actor.addDelayed(new Pushing(spawn, pos, spawn.pos), -1);
                 }
 
-                spawnCooldown = Math.max(4, 50 - Dungeon.scalingDepth());
+                spawnCooldown = Math.max(3, 25 - Dungeon.depth / 2);
             }
         }
         return super.act();
@@ -97,7 +97,10 @@ public class AbyssalSpawner extends AbyssalMob {
 
     @Override
     public void damage(int dmg, Object src) {
-        spawnCooldown -= dmg;
+        spawnCooldown -= dmg / 2f;
+        if (dmg >= HT / 4){
+            dmg = HT/4 - 1 + (int)(Math.sqrt(8*(dmg - (HT/4f - 1)) + 1) - 1)/2;
+        }
         super.damage(dmg, src);
     }
 
@@ -138,5 +141,55 @@ public class AbyssalSpawner extends AbyssalMob {
         immunities.add( Sleep.class );
         immunities.add( Terror.class );
         immunities.add( Vertigo.class );
+    }
+
+    public static class Clump extends Item {
+        {
+            image = ItemSpriteSheet.UPGRADE_CLUMP;
+        }
+
+        @Override
+        public boolean isUpgradable() {
+            return false;
+        }
+
+        @Override
+        public boolean isIdentified() {
+            return true;
+        }
+
+        @Override
+        public boolean doPickUp(Hero hero, int pos) {
+
+            if (!Dungeon.LimitedDrops.ABYSSAL_SPAWNER.dropped()){
+                Dungeon.LimitedDrops.ABYSSAL_SPAWNER.drop();
+                GLog.p( Messages.capitalize(Messages.get(this, "piece1")) );
+            } else {
+                Dungeon.LimitedDrops.ABYSSAL_SPAWNER.count = 0;
+                GLog.p( Messages.capitalize(Messages.get(this, "piece2")) );
+                Item item = new ScrollOfUpgrade();
+
+                if (item.doPickUp(hero, hero.pos)) {
+                    hero.spend(-Item.TIME_TO_PICK_UP);
+                    GLog.i( Messages.capitalize(Messages.get(hero, "you_now_have", item.name())) );
+                    return true;
+                } else {
+                    GLog.w(Messages.get(this, "cant_grab"));
+                    Dungeon.level.drop(item, hero.pos).sprite.drop();
+                }
+            }
+
+            GameScene.pickUp( this, pos );
+            Sample.INSTANCE.play( Assets.Sounds.ITEM );
+            Talent.onItemCollected( hero, this );
+            hero.spendAndNext( TIME_TO_PICK_UP );
+
+            return true;
+        }
+
+        @Override
+        public ItemSprite.Glowing glowing() {
+            return new ItemSprite.Glowing();
+        }
     }
 }

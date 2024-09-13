@@ -95,6 +95,7 @@ import com.zrp200.rkpd2.actors.hero.abilities.duelist.ElementalStrike;
 import com.zrp200.rkpd2.actors.hero.abilities.huntress.NaturesPower;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.actors.hero.abilities.warrior.Endure;
+import com.zrp200.rkpd2.actors.mobs.AbyssalSpawner;
 import com.zrp200.rkpd2.actors.mobs.Ech;
 import com.zrp200.rkpd2.actors.mobs.Elemental;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
@@ -1399,7 +1400,8 @@ public class Hero extends Char {
 							|| item instanceof TimekeepersHourglass.sandBag
 							|| item instanceof DriedRose.Petal
 							|| item instanceof Key
-							|| item instanceof Guidebook) {
+							|| item instanceof Guidebook
+							|| item instanceof AbyssalSpawner.Clump) {
 						//Do Nothing
 					} else if (item instanceof DarkGold) {
 						DarkGold existing = belongings.getItem(DarkGold.class);

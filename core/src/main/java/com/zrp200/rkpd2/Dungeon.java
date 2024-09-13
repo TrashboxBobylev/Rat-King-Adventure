@@ -127,6 +127,7 @@ public class Dungeon {
 		GOLEM_EQUIP,
 		PHANTOM_EQUIP,
         SPECTRE_RAT,
+		ABYSSAL_SPAWNER,
 
 		//containers
 		VELVET_POUCH,
