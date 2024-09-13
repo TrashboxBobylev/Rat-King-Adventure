@@ -46,10 +46,11 @@ public class SpectreRatSprite extends MobSprite {
 		run = new Animation( 10, true );
 		run.frames( frames, 59, 60, 61, 62, 61, 60, 59 );
 
-		attack = new Animation( 20, false );
+		attack = new Animation( 50, false );
 		attack.frames( frames, 50, 51, 52, 53, 48 );
 
 		zap = attack.clone();
+		zap.delay *= 2.25f;
 
 		die = new Animation( 10, false );
 		die.frames( frames, 59, 60, 61, 62 );

@@ -91,6 +91,16 @@ public class SpectreRat extends AbyssalMob implements Callback {
 	}
 
 	@Override
+	public int damageRoll() {
+		return Random.NormalIntRange( 4 + abyssLevel()*2, 14 + abyssLevel()*3 );
+	}
+
+	@Override
+	public float attackDelay() {
+		return super.attackDelay()*0.5f;
+	}
+
+	@Override
 	public boolean canAttack(Char enemy) {
 		if (buff(ChampionEnemy.Paladin.class) != null){
 			return false;
@@ -105,12 +115,20 @@ public class SpectreRat extends AbyssalMob implements Callback {
 		if (buff(Talent.AntiMagicBuff.class) != null){
 			return super.doAttack(enemy);
 		}
-		if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
-			sprite.zap( enemy.pos );
-			return false;
+		if (Dungeon.level.adjacent( pos, enemy.pos )
+				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
+
+			return super.doAttack( enemy );
+
 		} else {
-			zap();
-			return true;
+
+			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+				sprite.zap( enemy.pos );
+				return false;
+			} else {
+				zap();
+				return true;
+			}
 		}
 	}
 
