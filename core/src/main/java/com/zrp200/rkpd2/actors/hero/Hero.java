@@ -232,11 +232,11 @@ public class Hero extends Char {
 	public HeroSubClass subClass = HeroSubClass.NONE;
 	public HeroSubClass subClass2 = HeroSubClass.NONE;
 
-	public boolean isSubclassed(HeroSubClass sub){
-		return isSubclassed(this, sub);
+	public boolean isSubclassedLoosely(HeroSubClass sub){
+		return isSubclassedLoosely(this, sub);
 	}
 
-	public static boolean isSubclassed(Hero hero, HeroSubClass sub){
+	public static boolean isSubclassedLoosely(Hero hero, HeroSubClass sub){
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) & hero.subClass != HeroSubClass.NONE){
 			return true;
 		} else {
@@ -248,11 +248,11 @@ public class Hero extends Char {
 		}
 	}
 
-	public boolean isSubclassedExact(HeroSubClass sub){
-		return isSubclassedExact(this, sub);
+	public boolean isSubclassed(HeroSubClass sub){
+		return isSubclassed(this, sub);
 	}
 
-	public static boolean isSubclassedExact(Hero hero, HeroSubClass sub){
+	public static boolean isSubclassed(Hero hero, HeroSubClass sub){
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) & hero.subClass != HeroSubClass.NONE){
 			return true;
 		} else {
@@ -292,11 +292,11 @@ public class Hero extends Char {
 		}
 	}
 
-	public boolean isClassed(HeroClass sub){
-		return isClassed(this, sub);
+	public boolean isClassedLoosely(HeroClass sub){
+		return isClassedLoosely(this, sub);
 	}
 
-	public static boolean isClassed(Hero hero, HeroClass sub){
+	public static boolean isClassedLoosely(Hero hero, HeroClass sub){
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
 			return true;
 		} else {
@@ -308,11 +308,11 @@ public class Hero extends Char {
 		}
 	}
 
-	public boolean isClassedExact(HeroClass sub){
-		return isClassedExact(this, sub);
+	public boolean isClassed(HeroClass sub){
+		return isClassed(this, sub);
 	}
 
-	public boolean isClassedExact(Hero hero, HeroClass sub){
+	public boolean isClassed(Hero hero, HeroClass sub){
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
 			return true;
 		} else {
@@ -705,8 +705,7 @@ public class Hero extends Char {
 	
 	public int tier() {
 		Armor armor = belongings.armor();
-		if ((subClass != null && subClass == HeroSubClass.DECEPTICON) ||
-				(subClass2 != null && subClass2 == HeroSubClass.DECEPTICON)){
+		if (isSubclassed(HeroSubClass.DECEPTICON)){
 			if (RobotBuff.isVehicle())
 				return 8 - (heroClass == HeroClass.RAT_KING ? 6 : 0);
 			return 7 - (heroClass == HeroClass.RAT_KING ? 6 : 0);

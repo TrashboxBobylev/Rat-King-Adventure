@@ -51,7 +51,7 @@ abstract public class KindOfWeapon extends EquipableItem {
 
 	@Override
 	public void execute(Hero hero, String action) {
-		if (hero.subClass == HeroSubClass.CHAMPION && action.equals(AC_EQUIP)){
+		if (hero.subClass.is(HeroSubClass.CHAMPION) && action.equals(AC_EQUIP)){
 			usesTargeting = false;
 			// standard equip = replace one of the two
 			// missile with 1 = replace one of the two, equip to slot three.

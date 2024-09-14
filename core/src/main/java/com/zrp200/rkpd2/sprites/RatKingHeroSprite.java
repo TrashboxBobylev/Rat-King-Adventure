@@ -20,7 +20,7 @@ public class RatKingHeroSprite extends HeroSprite {
     public void updateArmor() {
         // there's only two armors. really one atm.
         // TODO decide if I want a "crownless" rat king towards the beginning of the game.
-        TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.isSubclassed(HeroSubClass.DECEPTICON) ? Dungeon.hero.tier() : 0, FRAME_WIDTH, FRAME_HEIGHT );
+        TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.isSubclassedLoosely(HeroSubClass.DECEPTICON) ? Dungeon.hero.tier() : 0, FRAME_WIDTH, FRAME_HEIGHT );
         idle = new Animation( 2, true );
         idle.frames( film, 0, 0, 0, 1 );
 

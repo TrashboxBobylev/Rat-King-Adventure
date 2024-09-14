@@ -133,7 +133,7 @@ public abstract class Plant implements Bundlable {
 
 
 	public static boolean isSubclassed(HeroSubClass subClass){
-		return Dungeon.hero.isSubclassed(subClass);
+		return Dungeon.hero.isSubclassedLoosely(subClass);
 	}
 
 	public String desc() {
@@ -246,7 +246,7 @@ public abstract class Plant implements Bundlable {
 		public String desc() {
 			String desc = Messages.get(plantClass, "desc");
 			HeroSubClass subClass = Dungeon.hero.subClass;
-			if (isSubclassed(HeroSubClass.WARDEN) || isSubclassed(HeroSubClass.KING)){
+			if (isSubclassed(HeroSubClass.WARDEN)){
 				desc += "\n\n" + Reflection.newInstance(plantClass).wardenDesc(subClass);
 			}
 			return desc;

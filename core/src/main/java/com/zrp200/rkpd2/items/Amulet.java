@@ -59,7 +59,7 @@ public class Amulet extends Item {
 		ArrayList<String> actions = super.actions( hero );
 		if (hero.buff(AscensionChallenge.class) != null){
 			actions.clear();
-			if (hero.isClassed(HeroClass.RAT_KING))
+			if (hero.isClassedLoosely(HeroClass.RAT_KING))
 				actions.add(AC_THROW);
 		} else {
 			actions.add(AC_END);

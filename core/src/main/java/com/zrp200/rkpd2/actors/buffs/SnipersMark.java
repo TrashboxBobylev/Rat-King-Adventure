@@ -224,9 +224,9 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		HeroSubClass sub = Dungeon.hero.subClass;
 		String[] args = new String[5];
 		args[0] = sub.title();
-		args[1] = sub == HeroSubClass.SNIPER ? "she" : "he";
+		args[1] = sub.isExact(HeroSubClass.SNIPER) ? "she" : "he";
 		args[2] = Messages.capitalize(args[1]);
-		args[3] = sub == HeroSubClass.SNIPER ? "her" : "his";
+		args[3] = sub.isExact(HeroSubClass.SNIPER) ? "her" : "his";
 		args[4] = dispTurns();
 		return Messages.get(this, "desc", (Object[])args);
 	}

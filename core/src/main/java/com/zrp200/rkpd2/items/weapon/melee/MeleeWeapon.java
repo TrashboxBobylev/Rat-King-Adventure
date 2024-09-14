@@ -745,7 +745,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			}
 
 			// todo might have to check if I need to remove this check.
-			if (ActionIndicator.action != this && hero.subClass == HeroSubClass.CHAMPION) {
+			if (ActionIndicator.action != this && hero.subClass.is(HeroSubClass.CHAMPION)) {
 				ActionIndicator.setAction(this);
 			}
 
@@ -856,7 +856,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 		@Override
 		public boolean usable() {
-			return target == hero && hero.subClass == HeroSubClass.CHAMPION
+			return target == hero && hero.subClass.is(HeroSubClass.CHAMPION)
 					// disable if elite dexterity +1 is being used.
 					&& hero.belongings.thirdWep() == null || hero.pointsInTalent(Talent.ELITE_DEXTERITY) > 1;
 		}

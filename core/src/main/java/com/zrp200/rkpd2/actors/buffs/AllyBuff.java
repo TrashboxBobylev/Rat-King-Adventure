@@ -77,7 +77,7 @@ public abstract class AllyBuff extends Buff{
 			}
 			hero.earnExp(exp, enemy.getClass());
 
-			if (hero.subClass == HeroSubClass.MONK){
+			if (hero.subClass.is(HeroSubClass.MONK)){
 				Buff.affect(hero, MonkEnergy.class).gainEnergy(enemy);
 			}
 			if (HighnessBuff.isEnergized() && Dungeon.hero.hasTalent(Talent.SLASH_RUNNER)){

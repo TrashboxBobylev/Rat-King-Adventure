@@ -877,7 +877,7 @@ public class Badges {
 
 		Badge badge = Dungeon.hero.subClass.secretBadge();
 
-		if (!global.contains( badge ) && Dungeon.hero.isSubclassed(Dungeon.hero.heroClass.secretSub())) {
+		if (!global.contains( badge ) && Dungeon.hero.isSubclassedLoosely(Dungeon.hero.heroClass.secretSub())) {
 			global.add( badge );
 			saveNeeded = true;
 		}
