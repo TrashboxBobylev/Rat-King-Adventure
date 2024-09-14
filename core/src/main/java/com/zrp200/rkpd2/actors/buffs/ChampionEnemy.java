@@ -199,7 +199,7 @@ public abstract class ChampionEnemy extends Buff {
 		public void onAttackProc(Char enemy) {
 			if (target instanceof Hero){
 				boolean doubleFire = ((Hero) target).pointsInTalent(Talent.RK_FIRE) == 3;
-				if (Random.Int(7) < ((Hero) target).pointsInTalent(Talent.RK_FIRE)){
+				if (Random.Int(6) < ((Hero) target).pointsInTalent(Talent.RK_FIRE)){
 					Buff.affect(enemy, GodSlayerBurning.class).reignite(enemy, doubleFire ? 11 : 7);
 				}
 				else Buff.affect(enemy, Burning.class).reignite(enemy, doubleFire ? 11 : 7);
