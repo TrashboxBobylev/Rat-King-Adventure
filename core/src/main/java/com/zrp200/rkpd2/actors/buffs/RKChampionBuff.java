@@ -68,7 +68,7 @@ public class RKChampionBuff extends Buff implements ActionIndicator.Action {
     public static class ChampionCooldown extends Talent.Cooldown {
         @Override
         public float duration() {
-            return 65;
+            return 50;
         }
         public int icon() { return BuffIndicator.LASTSTAND; }
         public void tintIcon(Image icon) { icon.hardlight(1f, 1f, 0f); }
