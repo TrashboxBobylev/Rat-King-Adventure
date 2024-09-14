@@ -6,7 +6,6 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.sprites.HeroSprite;
@@ -23,9 +22,9 @@ public class RobotBuff extends Buff implements ActionIndicator.Action {
     @Override
     public Image primaryVisual() {
         if (target != null && target.buff(RobotTransform.class) != null)
-            return HeroSprite.avatar(HeroClass.ROGUE, 7);
+            return HeroSprite.avatar(Dungeon.hero.heroClass, 7);
         else
-            return HeroSprite.avatar(HeroClass.ROGUE, 8);
+            return HeroSprite.avatar(Dungeon.hero.heroClass, 8);
     }
 
     @Override

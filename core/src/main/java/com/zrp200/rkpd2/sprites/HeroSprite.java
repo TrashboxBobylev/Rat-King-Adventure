@@ -230,7 +230,7 @@ public class HeroSprite extends CharSprite {
 		if(cl == HeroClass.RAT_KING) {
 			frameHeight = 17;
 			frameWidth = 16;
-			armorTier = 0;
+			armorTier = Math.max(0, armorTier-6);
 		};
 		RectF patch = tiers(cl.spritesheet(), frameHeight).get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );
