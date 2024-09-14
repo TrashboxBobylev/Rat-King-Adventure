@@ -10,6 +10,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -28,7 +29,8 @@ public class RKChampionBuff extends Buff implements ActionIndicator.Action {
         private ItemSprite.Glowing glowing;
 
         public RainbowRat() {
-            super(Assets.Sprites.RAT_KING_HERO, 0, 0, 16, 17);
+            super();
+            copy(HeroSprite.avatar(Dungeon.hero.heroClass, 6));
         }
 
         @Override

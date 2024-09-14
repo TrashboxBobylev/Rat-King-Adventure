@@ -22,9 +22,9 @@
 package com.zrp200.rkpd2.windows;
 
 import com.watabou.noosa.Image;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.RKChampionBuff;
-import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.HeroSprite;
@@ -53,7 +53,7 @@ public class WndRkChampion extends Window {
 
 		pos = title.bottom() + 3*MARGIN;
 
-		Image rat0 = HeroSprite.avatar(HeroClass.RAT_KING, 0);
+		Image rat0 = HeroSprite.avatar(Dungeon.hero.heroClass, 6);
 
 		RedButton moveBtn0 = new RedButton(Messages.get(WndRkChampion.class, "lose_title"), 6){
 			@Override
@@ -74,7 +74,7 @@ public class WndRkChampion extends Window {
 		pos = moveBtn0.bottom() + MARGIN;
 
 		for (Class<? extends ChampionEnemy> champTitle : ChampionEnemy.heroTitles) {
-			Image rat = HeroSprite.avatar(HeroClass.RAT_KING, 0);
+			Image rat = HeroSprite.avatar(Dungeon.hero.heroClass, 6);
 
 			RedButton moveBtn = new RedButton(ChampionEnemy.getRKDesc(champTitle), 6){
 				@Override
