@@ -258,7 +258,7 @@ public static final float LC_FACTOR =.2f, LC_FACTOR_RK =0.75f/3f;
 			if (!isEquipped(target)) amount *= target.byTalent(
 					Talent.LIGHT_CLOAK, LC_FACTOR,
 					Talent.RK_FREERUNNER, LC_FACTOR_RK);
-			if(target.heroClass.is(HeroClass.ROGUE)) amount *= ROGUE_BOOST;
+			if(target.heroClass.isExact(HeroClass.ROGUE)) amount *= ROGUE_BOOST;
 			partialCharge += 0.25f*amount;
 			if (partialCharge >= 1){
 				partialCharge--;

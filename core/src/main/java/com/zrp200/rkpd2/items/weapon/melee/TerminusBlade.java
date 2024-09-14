@@ -109,7 +109,7 @@ public class TerminusBlade extends MeleeWeapon implements Talent.SpellbladeForge
     protected int baseChargeUse(Hero hero, Char target){
         //uses all charges
         return Math.min(10, 3 + (hero.lvl-1)/3)
-                * (hero.heroClass == HeroClass.DUELIST ? 2 : 1);
+                * (hero.heroClass.isExact(HeroClass.DUELIST) ? 2 : 1);
     }
 
     @Override

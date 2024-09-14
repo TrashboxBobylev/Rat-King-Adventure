@@ -278,7 +278,7 @@ abstract public class MissileWeapon extends Weapon {
 			parent = null;
 			//metamorphed seer shot logic
 			if (curUser.hasTalent(Talent.SEER_SHOT)
-					&& curUser.heroClass != HeroClass.HUNTRESS
+					&& !curUser.heroClass.isExact(HeroClass.HUNTRESS)
 					&& curUser.buff(Talent.SeerShotCooldown.class) == null){
 				if (Actor.findChar(cell) == null) {
 					// manually made consistent with rkpd2 logic

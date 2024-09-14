@@ -134,14 +134,14 @@ public class RingOfForce extends Ring {
 	@Override
 	public void activate(Char ch) {
 		super.activate(ch);
-		if (ch instanceof Hero && ((Hero) ch).heroClass == HeroClass.DUELIST){
+		if (ch instanceof Hero && ((Hero) ch).heroClass.is(HeroClass.DUELIST)){
 			Buff.affect(ch, MeleeWeapon.Charger.class);
 		}
 	}
 
 	@Override
 	public String defaultAction() {
-		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST){
+		if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.DUELIST)){
 			return AC_ABILITY;
 		} else {
 			return super.defaultAction();
@@ -151,7 +151,7 @@ public class RingOfForce extends Ring {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if (isEquipped(hero) && hero.heroClass == HeroClass.DUELIST){
+		if (isEquipped(hero) && hero.heroClass.is(HeroClass.DUELIST)){
 			actions.add(AC_ABILITY);
 		}
 		return actions;
@@ -192,7 +192,7 @@ public class RingOfForce extends Ring {
 	public String info() {
 		String info = super.info();
 
-		if (Dungeon.hero.heroClass == HeroClass.DUELIST
+		if (Dungeon.hero.heroClass.is(HeroClass.DUELIST)
 				&& (anonymous || isIdentified() || isEquipped(Dungeon.hero))){
 			info += "\n\n" + Messages.get(this, "ability_desc");
 		}

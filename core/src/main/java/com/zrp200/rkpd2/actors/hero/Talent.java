@@ -652,7 +652,7 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(0.35f, 0f, 0.7f); }
 		@Override
 		public float duration() {
-			return hero.heroClass == HeroClass.DUELIST ? 100 : 50;
+			return hero.heroClass.is(HeroClass.DUELIST) ? 100 : 50;
 		}
 	};
 	public static class SwiftEquipCooldown extends FlavourBuff{
@@ -701,7 +701,7 @@ public enum Talent {
 	public static class PreciseAssaultTracker extends FlavourBuff{
 		{ type = buffType.POSITIVE; }
 
-		int left = hero.heroClass == HeroClass.DUELIST ? 2 : 1;
+		int left = hero.heroClass.is(HeroClass.DUELIST) ? 2 : 1;
 
 		public int icon() { return BuffIndicator.INVERT_MARK; }
 		public void tintIcon(Image icon) { icon.hardlight(1f, 1f, 0.0f); }
@@ -999,7 +999,7 @@ public enum Talent {
 			Buff.affect( hero, PhysicalEmpower.class).set(3, 1 + 2*hero.pointsInTalent(STRENGTHENING_MEAL));
 		}
 		if (hero.hasTalent(FOCUSED_MEAL)){
-			if (hero.heroClass == HeroClass.DUELIST){
+			if (hero.heroClass.is(HeroClass.DUELIST)){
 				//1/1.5 charge for the duelist
 				Buff.affect( hero, MeleeWeapon.Charger.class ).gainCharge(/*0.5f*/1f*(hero.pointsInTalent(FOCUSED_MEAL)+1));
 			} else {

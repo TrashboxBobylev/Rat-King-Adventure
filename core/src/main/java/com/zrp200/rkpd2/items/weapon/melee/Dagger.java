@@ -94,7 +94,7 @@ public class Dagger extends MeleeWeapon {
 	}
 	@Override
 	public String targetingPrompt() {
-		return Dungeon.hero.heroClass == HeroClass.DUELIST ? Messages.get(this, "prompt") :
+		return Dungeon.hero.heroClass.is(HeroClass.DUELIST) ? Messages.get(this, "prompt") :
 				null;
 	}
 

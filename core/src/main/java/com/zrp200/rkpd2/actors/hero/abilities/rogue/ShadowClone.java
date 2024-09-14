@@ -450,7 +450,7 @@ public class ShadowClone extends ArmorAbility {
 
 		@Override
 		public String description() {
-			if (Dungeon.hero.heroClass == HeroClass.RAT_KING){
+			if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
 				return Messages.get(this, "desc_rat");
 			}
 			return super.description();

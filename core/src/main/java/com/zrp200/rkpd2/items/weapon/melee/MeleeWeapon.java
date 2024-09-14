@@ -133,13 +133,13 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 					if (hero.buff(Talent.SwiftEquipCooldown.class) == null
 						|| hero.buff(Talent.SwiftEquipCooldown.class).hasSecondUse()){
 						execute(hero, AC_EQUIP);
-					} else if (hero.heroClass == HeroClass.DUELIST) {
+					} else if (hero.heroClass.is(HeroClass.DUELIST)) {
 						GLog.w(Messages.get(this, "ability_need_equip"));
 					}
-				} else if (hero.heroClass == HeroClass.DUELIST) {
+				} else if (hero.heroClass.is(HeroClass.DUELIST)) {
 					GLog.w(Messages.get(this, "ability_need_equip"));
 				}
-			} else if (hero.heroClass != HeroClass.DUELIST){
+			} else if (!hero.heroClass.is(HeroClass.DUELIST)){
 				//do nothing
 			} else if (STRReq() > hero.STR()){
 				GLog.w(Messages.get(this, "ability_low_str"));
@@ -381,7 +381,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		if (charge == 0)
 			grass -= DuelistGrass.getAbilityGrassCost();
 
-		if (hero.heroClass == HeroClass.DUELIST
+		if (hero.heroClass.is(HeroClass.DUELIST)
 				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
 				&& (hero.HP / (float)hero.HT) < 0.20f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
 			Buff.affect(hero, Barrier.class).setShield(5);
@@ -490,7 +490,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 				&& ((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT)
 				//does not trigger on ability attacks
 				&& ((Hero) owner).belongings.abilityWeapon != this) {
-			if (((Hero) owner).heroClass != HeroClass.DUELIST) {
+			if (!((Hero) owner).heroClass.isExact(HeroClass.DUELIST)) {
 				//persistent +10%/20%/30% ACC for other heroes
 				ACC *= 1f + 0.1f * ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT);
 			} else if (this instanceof Flail && owner.buff(Flail.SpinAbilityTracker.class) != null){
@@ -665,7 +665,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 
 		//the mage's staff has no ability as it can only be gained by the mage
-		if (hero.heroClass == HeroClass.DUELIST && !(this instanceof MagesStaff)){
+		if (hero.heroClass.is(HeroClass.DUELIST) && !(this instanceof MagesStaff)){
 			if (this instanceof RoyalBrand){
 				info += "\n\n" + Messages.get(this, "ability_desc",
 						Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.swordDanceDuration(hero)),
@@ -756,7 +756,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		private float getBaseRecharge(int slot) {
 			Hero hero = SafeCast.cast(target, Hero.class);
 			if (hero.hasTalent(Talent.ADVENTUROUS_SNOOZING) && hero.resting){
-				float boostMod = hero.heroClass == HeroClass.DUELIST ? 2f : 1f;
+				float boostMod = hero.heroClass.isExact(HeroClass.DUELIST) ? 2f : 1f;
 				return 40f * (1f - ((hero.pointsInTalent(Talent.ADVENTUROUS_SNOOZING))*boostMod / (float) chargeCap(slot)));
 			}
 			return 40f;
@@ -775,7 +775,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 		public int chargeCap(){
 			return Math.min(10, 3 + (hero.lvl-1)/3)
-					* (hero.heroClass == HeroClass.DUELIST ? 2 : 1);
+					* (hero.heroClass.isExact(HeroClass.DUELIST) ? 2 : 1);
 		}
 
 		public static int nSlots() {

@@ -321,7 +321,7 @@ public class SpiritHawk extends ArmorAbility {
 
 		@Override
 		public String name() {
-			if (Dungeon.hero.heroClass == HeroClass.RAT_KING){
+			if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
 				String nameRat = Messages.get(this, "name_rat");
 				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
 					nameRat = ShatteredPixelDungeon.turnIntoRrrr(nameRat);
@@ -334,7 +334,7 @@ public class SpiritHawk extends ArmorAbility {
 		@Override
 		public String description() {
 			String message = Messages.get(this, "desc", (int)timeRemaining);
-			if (Dungeon.hero.heroClass == HeroClass.RAT_KING){
+			if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
 				message = Messages.get(this, "desc_rat", (int)timeRemaining);
 			}
 			if (dodgesUsed < 2*Dungeon.hero.pointsInTalent(Talent.SWIFT_SPIRIT, Talent.BLOODFLARE_SKIN)){
@@ -367,7 +367,7 @@ public class SpiritHawk extends ArmorAbility {
 			super();
 
 			texture( Assets.Sprites.SPIRIT_HAWK );
-			if (Dungeon.hero.heroClass == HeroClass.RAT_KING){
+			if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
 				texture(Assets.Sprites.ROYAL_OWL);
 			}
 

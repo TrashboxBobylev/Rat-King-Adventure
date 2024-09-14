@@ -279,7 +279,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		@Override
 		public void spend(float time) {
-			if (!allied || Dungeon.hero.heroClass != HeroClass.RAT_KING) timeLeft -= time;
+			if (!allied || !Dungeon.hero.heroClass.is(HeroClass.RAT_KING)) timeLeft -= time;
 			super.spend(time);
 		}
 

@@ -62,7 +62,7 @@ public class SoulMark extends FlavourBuff {
 
 	public static void process(Char defender, int level, int chargesUsed, boolean afterDamage) {
 		// increased level to imitate mage's innate wand boost when applicable.
-		if(hero.isSubclassedLoosely(HeroSubClass.WARLOCK) && hero.heroClass != HeroClass.MAGE) level += 2;
+		if(hero.isSubclassedLoosely(HeroSubClass.WARLOCK) && !hero.heroClass.isExact(HeroClass.MAGE)) level += 2;
 
 		//standard 1 - 0.92^x chance, plus 7%. Starts at 15%
 		process(defender, level, 1f - (float)(Math.pow(0.92f, (level * chargesUsed) + 1) - 0.07f), afterDamage, true);

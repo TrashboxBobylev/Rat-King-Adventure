@@ -196,7 +196,7 @@ public class BrokenSeal extends Item {
 	public String desc() {
 		HeroClass heroClass = hero.heroClass;
 		return Messages.get(this, "desc",
-				heroClass == HeroClass.WARRIOR ? " from the glorious king of rats" : "",
+				heroClass.is(HeroClass.WARRIOR) ? " from the glorious king of rats" : "",
 				heroClass.title());
 	}
 

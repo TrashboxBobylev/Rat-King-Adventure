@@ -84,7 +84,7 @@ public abstract class ChampionEnemy extends Buff {
 
 	@Override
 	public String desc() {
-		if (target instanceof Hero && ((Hero) target).heroClass == HeroClass.RAT_KING)
+		if (target instanceof Hero && ((Hero) target).heroClass.is(HeroClass.RAT_KING))
 			return Messages.get(this, "desc_rk");
 		return Messages.get(this, "desc");
 	}

@@ -57,7 +57,7 @@ public class RingOfEnergy extends Ring {
 		float bonus = Math.min(3f, (float)Math.pow(1.15, getBuffedBonus(target, Energy.class)));
 
 		Hero hero = SafeCast.cast(target, Hero.class);
-		if (hero != null && hero.heroClass != HeroClass.ROGUE && hero.hasTalent(Talent.LIGHT_CLOAK)){
+		if (hero != null && !hero.heroClass.isExact(HeroClass.ROGUE) && hero.hasTalent(Talent.LIGHT_CLOAK)){
 			bonus *= 1f + /*(0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f)*/ 0.1f*hero.pointsInTalent(Talent.LIGHT_CLOAK);
 		}
 

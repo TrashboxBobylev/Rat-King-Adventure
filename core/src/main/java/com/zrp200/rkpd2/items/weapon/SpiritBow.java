@@ -130,7 +130,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		if(hero == null || hero.heroClass != HeroClass.HUNTRESS) actions.remove(AC_EQUIP);
+		if(hero == null || !hero.heroClass.isExact(HeroClass.HUNTRESS)) actions.remove(AC_EQUIP);
 		actions.add(AC_SHOOT);
 		return actions;
 	}

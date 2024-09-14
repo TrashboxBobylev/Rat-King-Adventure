@@ -80,7 +80,7 @@ public class Rapier extends MeleeWeapon implements Talent.SpellbladeForgeryWeapo
 			return;
 		}
 
-		int maxDistance = hero.heroClass == HeroClass.DUELIST ? 3 : 2;
+		int maxDistance = hero.heroClass.isExact(HeroClass.DUELIST) ? 3 : 2;
 		int actualDistance = Dungeon.level.distance(hero.pos, target);
 
 		if (actualDistance == 1) {

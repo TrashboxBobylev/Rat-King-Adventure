@@ -72,7 +72,7 @@ public class EnhancedRings extends FlavourBuff {
 	public String desc() {
 		return Messages.get(this, "desc",
 				Messages.titleCase(hero.heroClass.title()),
-				hero.heroClass == HeroClass.HUNTRESS ? "her" : "his",
+				hero.heroClass.is(HeroClass.HUNTRESS) ? "her" : "his",
 				(int)visualcooldown());
 	}
 }

@@ -90,7 +90,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		};
 
 		public float KOThreshold(){
-			if (Dungeon.hero.heroClass == HeroClass.ROGUE){
+			if (Dungeon.hero.heroClass.is(HeroClass.ROGUE)){
 				return KOThresholds[ordinal()][3];
 			}
 			return KOThresholds[ordinal()][Dungeon.hero.pointsInTalent(Talent.ENHANCED_LETHALITY, Talent.RK_ASSASSIN)];
@@ -105,7 +105,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		};
 
 		public int blinkDistance(){
-			if (Dungeon.hero.heroClass == HeroClass.ROGUE){
+			if (Dungeon.hero.heroClass.is(HeroClass.ROGUE)){
 				return blinkRanges[1][1][ordinal()];
 			}
 			return blinkRanges[Dungeon.hero.pointsInTalent(Talent.ASSASSINS_REACH,Talent.RK_ASSASSIN)][Dungeon.hero.hasTalent(Talent.ASSASSINS_REACH)?1:0][ordinal()];
