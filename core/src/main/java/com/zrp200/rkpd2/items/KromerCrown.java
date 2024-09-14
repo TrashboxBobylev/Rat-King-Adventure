@@ -28,10 +28,12 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.quest.Kromer;
@@ -87,13 +89,17 @@ public class KromerCrown extends TengusMask {
 					ArrayList<HeroSubClass> heroSubClasses = new ArrayList<>(Arrays.asList(HeroSubClass.values()));
 					//remove unusable classes
 					heroSubClasses.remove(NONE);
-					heroSubClasses.remove(HeroSubClass.BATTLEMAGE);
-					heroSubClasses.remove(HeroSubClass.SNIPER);
-					heroSubClasses.remove(HeroSubClass.ASSASSIN);
+					if (!curUser.isClassedLoosely(HeroClass.MAGE))
+						heroSubClasses.remove(HeroSubClass.BATTLEMAGE);
+					if (!curUser.isClassedLoosely(HeroClass.HUNTRESS))
+						heroSubClasses.remove(HeroSubClass.SNIPER);
+					if (!curUser.isClassedLoosely(HeroClass.ROGUE))
+						heroSubClasses.remove(HeroSubClass.ASSASSIN);
 					heroSubClasses.remove(hero.subClass);
 					//remove rat king class
 					heroSubClasses.remove(HeroSubClass.KING);
-					heroSubClasses.remove(HeroSubClass.RK_CHAMPION);
+					if (!Badges.isUnlocked(Badges.Badge.DEFEATED_RK) || Random.Int(2) == 0)
+						heroSubClasses.remove(HeroSubClass.RK_CHAMPION);
 					while (subClasses.size() < 3) {
 						HeroSubClass chosenSub;
 						do {
