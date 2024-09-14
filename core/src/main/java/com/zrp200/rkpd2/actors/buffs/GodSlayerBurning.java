@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.GodSlayerFire;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.Thief;
 import com.zrp200.rkpd2.effects.particles.ElmoParticle;
 import com.zrp200.rkpd2.items.Heap;
@@ -71,6 +72,7 @@ public class GodSlayerBurning extends Burning implements DamageOverTimeEffect {
 		if (target.isAlive() && !target.isImmune(getClass())) {
 			
 			int damage = Random.NormalIntRange( 2, 4 + Dungeon.scalingDepth() /4 );
+			damage *= (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC, Talent.RK_FIRE)*0.125f);
 
 			Buff.detach( target, Chill.class);
 
