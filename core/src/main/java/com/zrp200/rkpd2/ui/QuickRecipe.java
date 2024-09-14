@@ -92,6 +92,7 @@ import com.zrp200.rkpd2.items.weapon.melee.Dagger2;
 import com.zrp200.rkpd2.items.weapon.melee.KromerStaff;
 import com.zrp200.rkpd2.items.weapon.melee.TerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Plant;
 import com.zrp200.rkpd2.scenes.AlchemyScene;
@@ -382,7 +383,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new KromerStaff.Recipe()));
 				result.add(new QuickRecipe(new KromerCloak.Recipe()));
 				result.add(new QuickRecipe(new Slingshot.Recipe()));
-				if (Dungeon.depth > 26){
+				if (Dungeon.branch == AbyssLevel.BRANCH){
 					result.add(new QuickRecipe(new TerminusBlade.Recipe()));
 				}
 				result.add(new QuickRecipe(new Dagger2.Recipe()));
@@ -434,7 +435,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new KromerScroll.Recipe()));
 				result.add(null);
 				result.add(null);
-				if (Dungeon.depth > 26) {
+				if (Dungeon.branch == AbyssLevel.BRANCH) {
 					result.add(new QuickRecipe(new SoulOfYendor.Recipe()));
 				}
 				if (Dungeon.hero.belongings.getSimilar(new KingsCrown()) != null){
@@ -443,7 +444,7 @@ public class QuickRecipe extends Component {
 				if (Dungeon.hero.belongings.getSimilar(new TengusMask()) != null){
 					result.add(new QuickRecipe(new KromerMask.Recipe()));
 				}
-				if (Dungeon.depth > 26){
+				if (Dungeon.branch == AbyssLevel.BRANCH){
 					result.add(new QuickRecipe(new RedCrystal.StrengthRecipe()));
 				}
 				return result;
