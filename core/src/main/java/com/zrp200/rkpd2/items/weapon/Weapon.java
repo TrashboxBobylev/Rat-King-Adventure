@@ -253,7 +253,6 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 		}
 		if(hasEnchant(Projecting.class, owner)) reach +=Math.round(RingOfArcana.enchantPowerMultiplier(owner));
-		if(RobotBuff.isRobot()) reach++;
 		if(owner.buff(ChampionEnemy.Projecting.class) != null) reach += 2;
 		if(owner.buff(ChampionEnemy.Giant.class) != null) reach += 1;
 		if(owner.buff(HighnessBuff.class) != null && owner.buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED) reach += 2;
@@ -265,6 +264,7 @@ abstract public class Weapon extends KindOfWeapon {
 			}
 			if (((Hero) owner).pointsInTalent(Talent.BEAR_PAW) > 1 && owner.HP <= owner.HT / 4)
 				reach++;
+			if(RobotBuff.isRobot()) reach++;
 		}
 		return reach;
 	}
