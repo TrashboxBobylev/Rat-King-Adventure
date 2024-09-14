@@ -226,7 +226,8 @@ public abstract class Level implements Bundlable {
 
 			if (Dungeon.posNeeded()) {
 				Dungeon.LimitedDrops.STRENGTH_POTIONS.count++;
-				addItemToSpawn( new PotionOfStrength() );
+				if (Dungeon.branch != AbyssLevel.BRANCH)
+					addItemToSpawn( new PotionOfStrength() );
 			}
 			if (Dungeon.souNeeded()) {
 				Dungeon.LimitedDrops.UPGRADE_SCROLLS.count++;

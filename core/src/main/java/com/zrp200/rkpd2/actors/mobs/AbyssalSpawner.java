@@ -17,6 +17,7 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.quest.RedCrystal;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -116,6 +117,14 @@ public class AbyssalSpawner extends AbyssalMob {
 
     @Override
     public void aggro(Char ch) {
+    }
+
+    @Override
+    public Item createLoot() {
+        //drop two things manually
+        Dungeon.level.drop(new RedCrystal(), pos).sprite.drop();
+        Dungeon.level.drop(new Clump(), pos).sprite.drop();
+        return null;
     }
 
     public static final String SPAWN_COOLDOWN = "spawn_cooldown";

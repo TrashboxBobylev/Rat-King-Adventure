@@ -64,6 +64,7 @@ import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfMight;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfToxicEssence;
 import com.zrp200.rkpd2.items.potions.elixirs.KromerPotion;
 import com.zrp200.rkpd2.items.potions.exotic.ExoticPotion;
+import com.zrp200.rkpd2.items.quest.RedCrystal;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.items.scrolls.exotic.ExoticScroll;
 import com.zrp200.rkpd2.items.spells.Alchemize;
@@ -441,6 +442,9 @@ public class QuickRecipe extends Component {
 				}
 				if (Dungeon.hero.belongings.getSimilar(new TengusMask()) != null){
 					result.add(new QuickRecipe(new KromerMask.Recipe()));
+				}
+				if (Dungeon.depth > 26){
+					result.add(new QuickRecipe(new RedCrystal.StrengthRecipe()));
 				}
 				return result;
 		}

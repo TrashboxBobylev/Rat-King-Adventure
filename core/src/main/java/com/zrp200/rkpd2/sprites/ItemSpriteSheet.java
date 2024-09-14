@@ -789,6 +789,7 @@ public class ItemSpriteSheet {
 	public static final int NERF_AMMO_3      = KROMER_CAT+12;
 	public static final int FLEX_TAPE        = KROMER_CAT+13;
 	public static final int GRASS            = KROMER_CAT+14;
+	public static final int RED_CRYSTAL      = KROMER_CAT+15;
 	static {
 		assignItemRect(CHAOSSTONE, 10, 15);
 		assignItemRect(KROMER, 16, 16);
@@ -804,6 +805,7 @@ public class ItemSpriteSheet {
 		assignItemRect(NERF_AMMO_3, 11, 11);
 		assignItemRect(FLEX_TAPE, 14, 14);
 		assignItemRect(GRASS,     16, 16);
+		assignItemRect(RED_CRYSTAL,     10, 15);
 	}
 
 
