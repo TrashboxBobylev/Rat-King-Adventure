@@ -334,6 +334,12 @@ abstract public class MissileWeapon extends Weapon {
 				Buff.affect(attacker, ScoutArmor.ScoutCooldown.class, ScoutArmor.ScoutCooldown.DURATION*1.33f);
 		}
 		if (tracker != null) tracker.attachTo(Dungeon.hero); // reapply it
+		if (Dungeon.hero.hasTalent(Talent.RK_PROJECT)){
+			int distance = Dungeon.level.distance(attacker.pos, defender.pos) - 1;
+			int points = Dungeon.hero.pointsInTalent(Talent.RK_PROJECT);
+			float multiplier = 1f + Math.min(0.25f*points, 0.02f*(points+1)*distance);
+			damage = Math.round(damage * multiplier);
+		}
 
 		MeleeWeapon.MeleeAbility abilityOverride = SafeCast.cast(MeleeWeapon.activeAbility, MeleeWeapon.MeleeAbility.class);
 		if (abilityOverride != null) {

@@ -969,7 +969,7 @@ public class Hero extends Char {
 			}
 		}
 		if (buff(ChampionEnemy.Projecting.class) != null && wep instanceof MeleeWeapon){
-			dmg *= 1f + (pointsInTalent(Talent.RK_PROJECT))/11f;
+			dmg *= 1f + (pointsInTalent(Talent.RK_PROJECT))/9f;
 		}
 
 		return dmg;
