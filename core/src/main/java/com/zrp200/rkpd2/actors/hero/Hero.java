@@ -917,6 +917,10 @@ public class Hero extends Char {
 			dr += buff(HoldFast.class).armorBonus();
 		}
 
+		if (hasTalent(Talent.RK_GIANT)){
+			dr = Math.round(dr * (1f + (1f / 3f) * pointsInTalent(Talent.RK_GIANT) * ((float) (HT - HP) / HT)));
+		}
+
 		return dr;
 	}
 	
