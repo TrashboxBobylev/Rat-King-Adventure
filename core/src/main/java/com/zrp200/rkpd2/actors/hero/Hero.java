@@ -108,6 +108,7 @@ import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.CheckedCell;
 import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.effects.ShieldHalo;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.Splash;
@@ -785,6 +786,10 @@ public class Hero extends Char {
 			accuracy *= 1.5f;
 		}
 
+		if (hasTalent(Talent.RK_BLESSED)){
+			accuracy *= 1f + 0.0075f*pointsInTalent(Talent.RK_BLESSED)*shielding();
+		}
+
 		if (!RingOfForce.fightingUnarmed(this)) {
 			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
 		} else {
@@ -850,6 +855,10 @@ public class Hero extends Char {
 
 		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
 			evasion *= 1.5f;
+		}
+
+		if (hasTalent(Talent.RK_BLESSED)){
+			evasion *= 1f + 0.005f*pointsInTalent(Talent.RK_BLESSED)*shielding();
 		}
 
 		return Math.round(evasion);
@@ -1846,11 +1855,15 @@ public class Hero extends Char {
 		damage = Talent.onAttackProc( this, enemy, damage );
 
 		if (buff(ChampionEnemy.Blessed.class) != null && hasTalent(Talent.RK_BLESSED) && wep instanceof MeleeWeapon){
-			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Dungeon.level.solid, null), pointsInTalent(Talent.RK_BLESSED) == 3 ? 3 : 1);
+			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Dungeon.level.solid, null), pointsInTalent(Talent.RK_BLESSED));
+			ShieldHalo shield;
+			GameScene.effect(shield = new ShieldHalo(enemy.sprite));
+			shield.hardlight(0xFFFF00);
+			shield.putOut();
 			for (Char ch : Actor.chars()) {
 				if (ch != enemy && ch.alignment == Char.Alignment.ENEMY
 						&& PathFinder.distance[ch.pos] < Integer.MAX_VALUE) {
-					int aoeHit = Math.round(damage * Math.max(0.33f, pointsInTalent(Talent.RK_BLESSED)/7f));
+					int aoeHit = Math.round(damage * (1.20f + 0.05f*pointsInTalent(Talent.RK_BLESSED)));
 					aoeHit -= ch.drRoll();
 					if (ch.buff(Vulnerable.class) != null) aoeHit *= 1.33f;
 					ch.damage(aoeHit, this);
