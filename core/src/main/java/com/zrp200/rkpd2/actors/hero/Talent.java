@@ -53,6 +53,7 @@ import com.zrp200.rkpd2.actors.buffs.MonkEnergy;
 import com.zrp200.rkpd2.actors.buffs.PhysicalEmpower;
 import com.zrp200.rkpd2.actors.buffs.Preparation;
 import com.zrp200.rkpd2.actors.buffs.Recharging;
+import com.zrp200.rkpd2.actors.buffs.Regeneration;
 import com.zrp200.rkpd2.actors.buffs.RevealedArea;
 import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.buffs.Roots;
@@ -1361,6 +1362,64 @@ public enum Talent {
 		}
 	};
 	public static class AntiMagicBuff extends FlavourBuff{};
+	public static class ThaumicForcefieldTracker extends Buff {
+		private float incHeal = 1, incShield = 1;
+
+		@Override
+		public boolean act() {
+			Hero target = (Hero) this.target;
+			if (target.hasTalent(RK_ANTIMAGIC)) {
+				int buffs = 0;
+				int points = Math.min(target.pointsInTalent(RK_ANTIMAGIC), 2);
+				for (Buff buff: target.buffs()){
+					if (buff instanceof Recharging || buff instanceof ArtifactRecharge)
+						buffs++;
+				}
+				if (target.pointsInTalent(RK_ANTIMAGIC) < 3) buffs = Math.min(1, buffs);
+				if (Regeneration.regenOn()) {
+					incHeal += (points - 1) * buffs;
+					if (incHeal >= 1 && target.HP < target.HT) {
+						int heal = (int) Math.min(target.HT - target.HP, incHeal);
+						target.HP += heal;
+						target.sprite.emitter().burst(Speck.factory(Speck.HEALING), heal);
+						incHeal -= heal;
+					}
+				}
+				Barrier barrier = Buff.affect(target, Barrier.class);
+				if (barrier.shielding() < 8 * points * buffs) {
+					incShield += (points+1) * 0.5f * buffs;
+				}
+				if (incShield >= 1) {
+					int shield = (int) incShield;
+					barrier.incShield(shield);
+					incShield -= shield;
+				} else if (buffs > 0){
+					barrier.incShield(0); //resets barrier decay
+				}
+			} else {
+				detach();
+			}
+			spend( TICK );
+			return true;
+		}
+
+		private static final String
+				BARRIER_INC = "barrier_inc",
+				HEAL_INC = "incHeal";
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put( BARRIER_INC, incShield );
+			bundle.put( HEAL_INC, incHeal );
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			incShield = bundle.getFloat( BARRIER_INC );
+			incHeal = bundle.getFloat( HEAL_INC );
+		}
+	}
 
 	public interface SpellbladeForgeryWeapon {};
 

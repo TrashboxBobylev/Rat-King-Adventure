@@ -42,10 +42,12 @@ import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.ThreadRipper;
 import com.zrp200.rkpd2.actors.mobs.npcs.MirrorImage;
 import com.zrp200.rkpd2.effects.Pushing;
+import com.zrp200.rkpd2.effects.ShieldHalo;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.bombs.ArcaneBomb;
 import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.wands.Wand;
+import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -426,9 +428,9 @@ public abstract class ChampionEnemy extends Buff {
 			return super.attachTo(target);
 		}
 
-		public static void effect(Char enemy, Char hero){
+		public static void effect(Char hero, Char enemy){
 			if (hero instanceof Hero && hero.buff(AntiMagic.class) != null && ((Hero) hero).pointsInTalent(Talent.RK_ANTIMAGIC) > 0){
-				int dmg = 1 + ((Hero) hero).pointsInTalent(Talent.RK_ANTIMAGIC) * 2;
+				int dmg = ((Hero) hero).pointsInTalent(Talent.RK_ANTIMAGIC) * 2;
 
 				int heal = Math.min(dmg, hero.HT-hero.HP);
 				hero.HP += heal;
@@ -436,11 +438,17 @@ public abstract class ChampionEnemy extends Buff {
 				if (e != null && heal > 0) e.burst(Speck.factory(Speck.HEALING), Math.max(1,Math.round(heal*2f/5)));
 
 				if (dmg > 0)
-					enemy.damage(dmg + Dungeon.hero.pointsInTalent(Talent.RK_ANTIMAGIC), null);
+					enemy.damage(dmg + Dungeon.hero.pointsInTalent(Talent.RK_ANTIMAGIC)*2, new WandOfMagicMissile());
+
+				ShieldHalo shield;
+
+				GameScene.effect(shield = new ShieldHalo(hero.sprite));
+				shield.hardlight(0x00CC00);
+				shield.putOut();
 
 				if (((Hero) hero).pointsInTalent(Talent.RK_ANTIMAGIC) == 3){
 					for (Wand.Charger c : hero.buffs(Wand.Charger.class)){
-						c.gainCharge(0.25f);
+						c.gainCharge(0.33f);
 					}
 				}
 			}
