@@ -1385,16 +1385,18 @@ public enum Talent {
 						incHeal -= heal;
 					}
 				}
-				Barrier barrier = Buff.affect(target, Barrier.class);
-				if (barrier.shielding() < 8 * points * buffs) {
-					incShield += (points+1) * 0.5f * buffs;
-				}
-				if (incShield >= 1) {
-					int shield = (int) incShield;
-					barrier.incShield(shield);
-					incShield -= shield;
-				} else if (buffs > 0){
-					barrier.incShield(0); //resets barrier decay
+				if (buffs > 0) {
+					Barrier barrier = Buff.affect(target, Barrier.class);
+					if (barrier.shielding() < 8 * points * buffs) {
+						incShield += (points + 1) * 0.5f * buffs;
+					}
+					if (incShield >= 1) {
+						int shield = (int) incShield;
+						barrier.incShield(shield);
+						incShield -= shield;
+					} else {
+						barrier.incShield(0); //resets barrier decay
+					}
 				}
 			} else {
 				detach();
