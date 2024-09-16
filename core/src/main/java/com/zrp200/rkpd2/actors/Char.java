@@ -844,6 +844,10 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 
 		dr += Random.NormalIntRange( 0 , Barkskin.currentLevel(this) );
 
+		if (hero.hasTalent(Talent.RK_SPLINT) && alignment == Alignment.ALLY && this != hero){
+			dr += Math.round(hero.drRoll() / 3f *(hero.pointsInTalent(Talent.RK_SPLINT)));
+		}
+
 		return dr;
 	}
 	
