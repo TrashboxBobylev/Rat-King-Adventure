@@ -86,8 +86,8 @@ public class Warp extends Buff {
     @Override
     public void restoreFromBundle(Bundle bundle) {
         super.restoreFromBundle(bundle);
-        setStacks(bundle.getFloat(STACKS));
-        setDecay(bundle.getFloat(DAMAGE));
+        stacks = bundle.getFloat(STACKS);
+        decay = bundle.getFloat(DAMAGE);
         totalDuration = bundle.getFloat(DURATION);
         timer = bundle.getFloat(TIMER);
     }
