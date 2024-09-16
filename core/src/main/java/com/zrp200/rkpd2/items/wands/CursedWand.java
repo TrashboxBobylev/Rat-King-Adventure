@@ -43,6 +43,7 @@ import com.zrp200.rkpd2.actors.buffs.BlobImmunity;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.Frost;
+import com.zrp200.rkpd2.actors.buffs.Hex;
 import com.zrp200.rkpd2.actors.buffs.Recharging;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.GoldenMimic;
@@ -69,8 +70,11 @@ import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
 import com.zrp200.rkpd2.items.artifacts.UnstableSpellbook;
 import com.zrp200.rkpd2.items.bombs.Bomb;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfMirrorImage;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfMetamorphosis;
+import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfSirensSong;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.traps.CursingTrap;
@@ -162,11 +166,13 @@ public class CursedWand {
 							Burning.DURATION + eldritchLevel > 1 ? 5 : 0);
 					float duration = Frost.DURATION;
 					if (eldritchLevel > 0) duration /= 2;
-					Buff.affect(user, Frost.class, duration);
+					if (eldritchLevel < 3)
+						Buff.affect(user, Frost.class, duration);
 				} else {
 					float duration = Burning.DURATION;
 					if (eldritchLevel > 0) duration /= 2;
-					Buff.affect(user, Burning.class).reignite(user, duration);
+					if (eldritchLevel < 3)
+						Buff.affect(user, Burning.class).reignite(user, duration);
 					if (target != null) Buff.affect(target, Frost.class,
 							Frost.DURATION + eldritchLevel > 1 ? 5 : 0);
 				}
@@ -181,7 +187,7 @@ public class CursedWand {
 
 			//random teleportation
 			case 2:
-				if(Random.Int(2 + eldritchLevel > 0 ? 2 : 0) == 0) {
+				if(eldritchLevel < 3 && Random.Int(2 + eldritchLevel > 0 ? 2 : 0) == 0) {
 					if (user != null && !user.properties().contains(Char.Property.IMMOVABLE)) {
 						ScrollOfTeleportation.teleportChar(user);
 					} else {
@@ -246,7 +252,7 @@ public class CursedWand {
 					int damage = Dungeon.scalingDepth() * 2;
 					Char toHeal, toDamage;
 
-					if (Random.Int(2 + eldritchLevel) == 0){
+					if (eldritchLevel >= 3 || Random.Int(2 + eldritchLevel) == 0){
 						toHeal = user;
 						toDamage = target;
 					} else {
@@ -290,7 +296,7 @@ public class CursedWand {
 			//shock and recharge
 			case 3:
 				if (user == null) return cursedEffect(origin, null, targetPos);
-				new ShockingTrap().set( user.pos ).activate();
+				if (eldritchLevel < 3) new ShockingTrap().set( user.pos ).activate();
 				Buff.prolong(user, Recharging.class, Recharging.DURATION + eldritchLevel > 1 ? 10 : 0);
 				ScrollOfRecharging.charge(user);
 				SpellSprite.show(user, SpellSprite.CHARGE);
@@ -327,6 +333,13 @@ public class CursedWand {
 
 			//curses!
 			case 1:
+				if (eldritchLevel >= 3){
+					ch = Actor.findChar( targetPos );
+					if (ch != null){
+						Buff.affect(ch, Hex.class, Hex.DURATION);
+					}
+					return true;
+				}
 				if (user instanceof Hero && eldritchLevel < 1) {
 					CursingTrap.curse( (Hero) user );
 				} else {
@@ -337,7 +350,7 @@ public class CursedWand {
 			//inter-level teleportation
 			case 2:
 				if (user == null) return cursedEffect(origin, null, targetPos);
-				if (Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
+				if (eldritchLevel < 3 && Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
 
 					//each depth has 1 more weight than the previous depth.
 					float[] depths = new float[Dungeon.depth -1];
@@ -359,7 +372,11 @@ public class CursedWand {
 
 			//summon monsters
 			case 3:
-				new SummoningTrap().set( targetPos ).activate();
+				if (eldritchLevel >= 3 && user == Dungeon.hero){
+					ScrollOfMirrorImage.spawnImages(Dungeon.hero, 2);
+				} else {
+					new SummoningTrap().set(targetPos).activate();
+				}
 				return true;
 		}
 	}
@@ -377,11 +394,13 @@ public class CursedWand {
 					if (eldritchLevel > 0) amount /= 3;
 					GameScene.add( Blob.seed(i, amount, Regrowth.class));
 				}
-				do {
-					int amount = 10;
-					if (eldritchLevel > 0) amount /= 3;
-					GameScene.add(Blob.seed(Dungeon.level.randomDestination(null), amount, Fire.class));
-				} while (Random.Int(5) != 0);
+				if (eldritchLevel <= 3) {
+					do {
+						int amount = 10;
+						if (eldritchLevel > 0) amount /= 3;
+						GameScene.add(Blob.seed(Dungeon.level.randomDestination(null), amount, Fire.class));
+					} while (Random.Int(5) != 0);
+				}
 				new Flare(8, 32).color(0xFFFF66, true).show(user.sprite, 2f);
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				GLog.p(Messages.get(CursedWand.class, "grass"));
@@ -411,17 +430,22 @@ public class CursedWand {
 				Mimic mimic = Mimic.spawnAt(spawnCell, GoldenMimic.class, false);
 				mimic.stopHiding();
 				mimic.alignment = Char.Alignment.ENEMY;
-				Item reward;
-				do {
-					reward = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
-							Generator.Category.RING, Generator.Category.WAND));
-					if (!Dungeon.isChallenged(Challenges.REDUCED_POWER)) break;
-				} while (reward.level() < 1 );
 				//play vfx/sfx manually as mimic isn't in the scene yet
 				Sample.INSTANCE.play(Assets.Sounds.MIMIC, 1, 0.85f);
 				CellEmitter.get(mimic.pos).burst(Speck.factory(Speck.STAR), 10);
 				mimic.items.clear();
-				mimic.items.add(reward);
+
+				if (eldritchLevel >= 3){
+					Buff.affect(mimic, ScrollOfSirensSong.Enthralled.class);
+				} else {
+					Item reward;
+					do {
+						reward = Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEAPON, Generator.Category.ARMOR,
+								Generator.Category.RING, Generator.Category.WAND));
+						if (!Dungeon.isChallenged(Challenges.REDUCED_POWER)) break;
+					} while (reward.level() < 1);
+					mimic.items.add(reward);
+				}
 				GameScene.add(mimic);
 				return true;
 
@@ -470,6 +494,11 @@ public class CursedWand {
 
 			//random transmogrification
 			case 3:
+				if (eldritchLevel >= 3){
+					GameScene.show(new ScrollOfMetamorphosis.WndMetamorphChoose());
+					return true;
+				}
+
 				//skips this effect if there is no item to transmogrify
 				if (origin == null || origin.unique || user != Dungeon.hero || !Dungeon.hero.belongings.contains(origin) || origin.isEquipped(Dungeon.hero) || eldritchLevel > 1){
 					return cursedEffect(origin, user, targetPos);
