@@ -105,11 +105,13 @@ public class SpiritBuff extends CounterBuff implements ActionIndicator.Action {
             w.sprite.parent.add( new AlphaTweener( w.sprite, 1, 0.5f ) );
 
             w.sprite.emitter().burst( ShadowParticle.CURSE, 5 );
-            Buff.affect(w, DLCAllyBuff.class);
+            Buff.affect(w, WraithMark.class);
             countDown(MAXCHARGE);
             if (count() < MAXCHARGE)
                 ActionIndicator.clearAction(this);
             BuffIndicator.refreshHero();
         }
     }
+
+    public static class WraithMark extends DLCAllyBuff {};
 }

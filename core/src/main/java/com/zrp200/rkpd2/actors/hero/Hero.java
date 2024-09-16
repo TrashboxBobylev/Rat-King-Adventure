@@ -406,6 +406,9 @@ public class Hero extends Char {
 		if (buff(ElixirOfMight.HTBoost.class) != null){
 			HT += buff(ElixirOfMight.HTBoost.class).boost();
 		}
+		if (hasTalent(Talent.RK_PALADIN)){
+			HT += RKChampionBuff.rkPaladinUniqueAllies() * (3*pointsInTalent(Talent.RK_PALADIN)-1);
+		}
 		
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);

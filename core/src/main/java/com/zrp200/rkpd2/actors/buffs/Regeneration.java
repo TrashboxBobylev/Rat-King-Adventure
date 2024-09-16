@@ -88,6 +88,9 @@ public class Regeneration extends Buff {
 			float boost = 0.5f * ((Hero) target).pointsInTalent(Talent.WILLPOWER_OF_INJURED);
 			delay /= 1f + boost * Math.max(1f, ((float) (target.HT - target.HP) / target.HT)*1.1f);
 		}
+		if (Dungeon.hero.hasTalent(Talent.RK_PALADIN)){
+			delay /= 1f + 0.075f*RKChampionBuff.rkPaladinUniqueAllies()*Dungeon.hero.pointsInTalent(Talent.RK_PALADIN);
+		}
 		return delay;
 	}
 

@@ -6,10 +6,26 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
+import com.zrp200.rkpd2.actors.hero.abilities.huntress.SpiritHawk;
+import com.zrp200.rkpd2.actors.hero.abilities.rogue.ShadowClone;
+import com.zrp200.rkpd2.actors.mobs.Bee;
+import com.zrp200.rkpd2.actors.mobs.SpectreRat;
+import com.zrp200.rkpd2.actors.mobs.npcs.MirrorImage;
+import com.zrp200.rkpd2.actors.mobs.npcs.PrismaticImage;
+import com.zrp200.rkpd2.actors.mobs.npcs.Sheep;
 import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.items.artifacts.DriedRose;
+import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfSirensSong;
+import com.zrp200.rkpd2.items.spells.SummonElemental;
+import com.zrp200.rkpd2.items.wands.WandOfLivingEarth;
+import com.zrp200.rkpd2.items.wands.WandOfRegrowth;
+import com.zrp200.rkpd2.items.wands.WandOfWarding;
+import com.zrp200.rkpd2.items.weapon.melee.BloomingPick;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -98,6 +114,9 @@ public class RKChampionBuff extends Buff implements ActionIndicator.Action {
             if (hero.hasTalent(Talent.RK_ANTIMAGIC)){
                 Buff.affect(hero, Talent.ThaumicForcefieldTracker.class);
             }
+            if (hero.hasTalent(Talent.RK_PALADIN)){
+                hero.updateHT(false);
+            }
         }
 
         spend(TICK);
@@ -144,5 +163,46 @@ public class RKChampionBuff extends Buff implements ActionIndicator.Action {
     @Override
     public boolean usable() {
         return target.buff(ChampionCooldown.class) == null;
+    }
+
+    private static final Class<? extends Char>[] rkPaladinAllyClasses = new Class[]{
+        MirrorImage.class, PrismaticImage.class, DriedRose.GhostHero.class,
+        WandOfWarding.Ward.class, WandOfLivingEarth.EarthGuardian.class, Bee.class,
+        SpiritHawk.HawkAlly.class, ShadowClone.ShadowAlly.class, Ratmogrify.SummonedRat.class,
+        Ratmogrify.SummonedAlbino.class, Ratmogrify.TransmogRat.class,
+        WandOfRegrowth.Lotus.class, Sheep.class, SpectreRat.class,
+    };
+
+    private static final Class<? extends Buff>[] rkPaladinAllyBuffs   = new Class[]{
+        ScrollOfSirensSong.Enthralled.class, Corruption.class, SummonElemental.InvisAlly.class,
+        BloomingPick.VineCovered.class, SpiritBuff.WraithMark.class
+    };
+
+    public static int rkPaladinUniqueAllies(){
+        int allies = 0;
+        for (Class<? extends Char> pattern: rkPaladinAllyClasses){
+            Char potentialAlly = Actor.findByClass(pattern);
+            if (potentialAlly != null && Dungeon.level.heroFOV[potentialAlly.pos]){
+                if (potentialAlly.alignment == Char.Alignment.ALLY)
+                    allies++;
+            }
+        }
+        for (Class<? extends Buff> pattern: rkPaladinAllyBuffs){
+            allyBuffCheck:
+            {
+                for (Char potentialAlly : Actor.chars()) {
+                    if (Dungeon.level.heroFOV[potentialAlly.pos]) {
+                        for (Buff potentialAllyBuff : potentialAlly.buffs()) {
+                            if (potentialAllyBuff.getClass().isInstance(pattern)) {
+                                allies++;
+                                break allyBuffCheck;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return allies;
     }
 }
