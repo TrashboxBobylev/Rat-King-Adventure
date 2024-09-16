@@ -73,7 +73,7 @@ public class WarpPile {
     public static float getMaxWarp() {
         if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.NO_WARP))
             return 1;
-        return MAX_WARP;
+        return MAX_WARP + Dungeon.hero.pointsInTalent(Talent.RK_CURSED)*15;
     }
 
     public interface WarpEffect extends Callback {

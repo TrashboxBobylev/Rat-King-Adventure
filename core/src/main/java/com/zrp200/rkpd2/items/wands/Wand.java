@@ -47,6 +47,7 @@ import com.zrp200.rkpd2.actors.buffs.Regeneration;
 import com.zrp200.rkpd2.actors.buffs.ScrollEmpower;
 import com.zrp200.rkpd2.actors.buffs.SoulMark;
 import com.zrp200.rkpd2.actors.buffs.SpiritBuff;
+import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
@@ -421,6 +422,10 @@ public abstract class Wand extends Item {
 			Momentum momentum = charger.target.buff(Momentum.class);
 			if(momentum != null && momentum.freerunning() && Dungeon.hero.canHaveTalent(Talent.PROJECTILE_MOMENTUM)) {
 				lvl += 1+Dungeon.hero.pointsInTalent(Talent.PROJECTILE_MOMENTUM);
+			}
+
+			if (Dungeon.hero.hasTalent(Talent.RK_CURSED) && Dungeon.hero.buff(Warp.class) != null){
+				lvl += Dungeon.hero.buff(Warp.class).getStacks() / (30 - Dungeon.hero.pointsInTalent(Talent.RK_CURSED)*5);
 			}
 
 			if (charger.target.buff(WildMagic.WildMagicTracker.class) != null){
