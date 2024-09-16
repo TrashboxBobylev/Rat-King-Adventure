@@ -87,7 +87,7 @@ public class SpectreRat extends AbyssalMob implements Callback {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*5, 10 + abyssLevel()*10);
+		return super.drRoll() + Random.NormalIntRange(0 + abyssLevel()*5, 10 + abyssLevel()*10);
 	}
 
 	@Override

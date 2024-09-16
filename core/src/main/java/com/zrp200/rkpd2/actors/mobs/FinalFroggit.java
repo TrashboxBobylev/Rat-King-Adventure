@@ -84,7 +84,7 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*10, 8 + abyssLevel()*15);
+		return super.drRoll() + Random.NormalIntRange(0 + abyssLevel()*10, 8 + abyssLevel()*15);
 	}
 
 	@Override

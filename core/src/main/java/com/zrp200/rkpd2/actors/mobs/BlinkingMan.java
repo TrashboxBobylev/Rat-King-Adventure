@@ -178,8 +178,8 @@ public class BlinkingMan extends AbyssalMob {
 	@Override
 	public int drRoll() {
 		if (Dungeon.branch != AbyssLevel.BRANCH)
-			return Random.NormalIntRange(0, 4);
-		return Random.NormalIntRange(0 + abyssLevel()*4, 9 + abyssLevel()*6);
+			return super.drRoll() + Random.NormalIntRange(0, 4);
+		return super.drRoll() + Random.NormalIntRange(0 + abyssLevel()*4, 9 + abyssLevel()*6);
 	}
 
 	@Override

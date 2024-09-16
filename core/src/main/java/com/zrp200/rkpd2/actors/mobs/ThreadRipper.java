@@ -101,7 +101,7 @@ public class ThreadRipper extends Mob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(armorRange[0], armorRange[1]);
+		return super.drRoll() + Random.NormalIntRange(armorRange[0], armorRange[1]);
 	}
 
 	private static final String LAST_ENEMY_POS = "last_enemy_pos";

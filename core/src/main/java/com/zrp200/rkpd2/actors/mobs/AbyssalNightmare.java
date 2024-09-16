@@ -191,7 +191,7 @@ public class AbyssalNightmare extends AbyssalMob {
 
 	@Override
 	public int drRoll() {
-		return 0;
+		return super.drRoll();
 	}
 
 	@Override

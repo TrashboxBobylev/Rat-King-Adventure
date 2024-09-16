@@ -365,7 +365,7 @@ public class RatKingBoss extends Mob {
         if (HP < HT*0.5f && phase == GLADIATOR){
             dr = Random.NormalIntRange(15, 40);
         }
-        return dr;
+        return super.drRoll() + dr;
     }
 
     @Override

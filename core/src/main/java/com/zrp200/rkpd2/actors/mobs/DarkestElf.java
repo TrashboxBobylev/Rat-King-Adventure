@@ -100,7 +100,7 @@ public class DarkestElf extends AbyssalMob {
 
 	@Override
 	public int drRoll() {
-		return Random.NormalIntRange(0 + abyssLevel()*4, 5 + abyssLevel()*7);
+		return super.drRoll() + Random.NormalIntRange(0 + abyssLevel()*4, 5 + abyssLevel()*7);
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class Ech extends DirectableAlly {
 
     @Override
     public int drRoll() {
-        return Random.round(Random.NormalIntRange(armorRange[0], armorRange[1])*
+        return super.drRoll() + Random.round(Random.NormalIntRange(armorRange[0], armorRange[1])*
                         (Dungeon.hero.heroClass.isExact(HeroClass.WARRIOR) ? 2 : 1));
     }
 

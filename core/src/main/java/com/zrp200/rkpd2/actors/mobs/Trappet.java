@@ -61,7 +61,7 @@ public class Trappet extends AbyssalMob implements Callback {
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(0 + abyssLevel()*3, 7 + abyssLevel()*11);
+        return super.drRoll() + Random.NormalIntRange(0 + abyssLevel()*3, 7 + abyssLevel()*11);
     }
 
     @Override

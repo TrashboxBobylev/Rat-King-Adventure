@@ -85,7 +85,7 @@ public class Dragon extends AbyssalMob {
 
     @Override
     public int drRoll() {
-        return Random.NormalIntRange(25 + abyssLevel()*12, 40 + abyssLevel()*12);
+        return super.drRoll() + Random.NormalIntRange(25 + abyssLevel()*12, 40 + abyssLevel()*12);
     }
 
     private int rangedCooldown = Random.NormalIntRange( 6, 9 );
@@ -325,7 +325,7 @@ public class Dragon extends AbyssalMob {
 
         @Override
         public int drRoll() {
-            return Random.NormalIntRange(12 + abyssLevel()*2, 20 + abyssLevel()*6);
+            return super.drRoll() + Random.NormalIntRange(12 + abyssLevel()*2, 20 + abyssLevel()*6);
         }
 
     }
