@@ -539,7 +539,7 @@ public abstract class Wand extends Item {
 		}
 
 		if (Dungeon.hero.hasTalent(Talent.ECTOTOUGHNESS)){
-			hero.buff(SpiritBuff.class).countUp(Dungeon.hero.pointsInTalent(Talent.ECTOTOUGHNESS)+1);
+			hero.buff(SpiritBuff.class).countUp(Dungeon.hero.pointsInTalent(Talent.ECTOTOUGHNESS)*2+1);
 		}
 
 		if (Dungeon.hero.pointsInTalent(Talent.DUAL_WIELDING) > 0){
