@@ -78,7 +78,7 @@ public class WildMagic extends ArmorAbility {
 		);
 
 		for (Wand w : wands.toArray(new Wand[0])){
-			if (w.curCharges < w.getMinCharges() + 1 && w.partialCharge < chargeUsePerShot){
+			if (w.curCharges() < 1 && w.partialCharge < chargeUsePerShot){
 				wands.remove(w);
 			}
 		}
@@ -92,7 +92,7 @@ public class WildMagic extends ArmorAbility {
 			ArrayList<Wand> thirds = new ArrayList<>(wands);
 
 			for (Wand w : wands){
-				float totalCharge = w.curCharges + w.partialCharge;
+				float totalCharge = w.curCharges() + w.partialCharge;
 				if (totalCharge < 2*chargeUsePerShot - 2*hero.pointsInTalent(Talent.HEROIC_WIZARDRY)){
 					seconds.remove(w);
 				}

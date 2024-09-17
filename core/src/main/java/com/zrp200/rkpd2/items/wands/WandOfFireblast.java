@@ -240,7 +240,7 @@ public class WandOfFireblast extends DamageWand {
 			return 1;
 		}
 		//consumes 30% of current charges, rounded up, with a min of 1 and a max of 3.
-		return (int) GameMath.gate(1, (int)Math.ceil((curCharges-getMinCharges())*0.3f), 3);
+		return (int) GameMath.gate(1, (int)Math.ceil((curCharges())*0.3f), 3);
 	}
 
 	@Override

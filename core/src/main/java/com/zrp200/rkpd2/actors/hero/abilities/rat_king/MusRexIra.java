@@ -164,7 +164,7 @@ public class MusRexIra extends ArmorAbility {
             float chargeUsePerShot = (float)Math.pow(0.563f, hero.pointsInTalent(Talent.CONSERVED_MAGIC));
 
             for (Wand w : wands.toArray(new Wand[0])){
-                if (w.curCharges < 1 && w.partialCharge < chargeUsePerShot){
+                if (w.curCharges() < 1 && w.partialCharge < chargeUsePerShot){
                     wands.remove(w);
                 }
             }
@@ -176,7 +176,7 @@ public class MusRexIra extends ArmorAbility {
                 ArrayList<Wand> dupes = new ArrayList<>(wands);
 
                 for (Wand w : dupes.toArray(new Wand[0])){
-                    float totalCharge = w.curCharges + w.partialCharge;
+                    float totalCharge = w.curCharges() + w.partialCharge;
                     if (totalCharge < 2*chargeUsePerShot){
                         dupes.remove(w);
                     }

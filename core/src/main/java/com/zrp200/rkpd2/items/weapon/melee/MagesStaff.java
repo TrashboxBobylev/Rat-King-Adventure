@@ -200,7 +200,7 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	public int curCharges() {
-		return wand.curCharges - wand.getMinCharges();
+		return wand.curCharges();
 	}
 
 	public void procWand(Char defender, int damage) {
@@ -356,7 +356,7 @@ public class MagesStaff extends MeleeWeapon {
 	
 	public void updateWand(boolean levelled){
 		if (wand != null) {
-			int curCharges = curCharges();
+			int curCharges = wand.curCharges;
 			wand.level(level());
 			//gives the wand one additional max charge
 			wand.maxCharges = Math.min(wand.maxCharges + 1, 10);

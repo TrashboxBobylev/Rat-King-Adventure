@@ -116,7 +116,7 @@ public abstract class Wand extends Item {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (curCharges > getMinCharges() || !curChargeKnown) {
+		if (curCharges() > 0 || !curChargeKnown) {
 			actions.add( AC_ZAP );
 		}
 
@@ -167,7 +167,7 @@ public abstract class Wand extends Item {
 		}
 
 		//if we're using wild magic, then assume we have charges
-		if ( owner.buff(WildMagic.WildMagicTracker.class) != null || curCharges >= chargesPerCast()){
+		if ( owner.buff(WildMagic.WildMagicTracker.class) != null || curCharges() >= chargesPerCast()){
 			return true;
 		} else {
 			GLog.w(Messages.get(this, "fizzles"));
@@ -188,6 +188,10 @@ public abstract class Wand extends Item {
 		} else {
 			return false;
 		}
+	}
+
+	public int curCharges(){
+		return curCharges - getMinCharges();
 	}
 
 	public void gainCharge( float amt ){
@@ -415,7 +419,7 @@ public abstract class Wand extends Item {
 				lvl += ScrollEmpower.boost();
 			}
 
-			if (curCharges == 1 && charger.target instanceof Hero && ((Hero)charger.target).hasTalent(Talent.DESPERATE_POWER, Talent.RK_BATTLEMAGE)){
+			if (curCharges() == 1 && charger.target instanceof Hero && ((Hero)charger.target).hasTalent(Talent.DESPERATE_POWER, Talent.RK_BATTLEMAGE)){
 				lvl += ((Hero)charger.target).byTalent(Talent.DESPERATE_POWER, 2f, Talent.RK_BATTLEMAGE, 1f);
 			}
 
@@ -548,7 +552,7 @@ public abstract class Wand extends Item {
 			if (Dungeon.hero.hasTalent(Talent.EMPOWERED_STRIKE, Talent.RK_BATTLEMAGE)) {
 				Buff.prolong(Dungeon.hero, Talent.EmpoweredStrikeTracker.class, 10f);
 			}
-		} else if (hero.hasTalent(Talent.ENERGIZING_UPGRADE) && curCharges <= getMinCharges() && hero.buff(Talent.EnergizingUpgradeCooldown.class) == null){
+		} else if (hero.hasTalent(Talent.ENERGIZING_UPGRADE) && curCharges() <= 0 && hero.buff(Talent.EnergizingUpgradeCooldown.class) == null){
 			charger.energizeTime = 5;
 			charger.fx(true);
 		}
@@ -710,12 +714,12 @@ public abstract class Wand extends Item {
 							return;
 						}
 
-						if (curWand.curCharges == 0){
+						if (curWand.curCharges() == 0){
 							GLog.w( Messages.get(Wand.class, "fizzles") );
 							return;
 						}
 
-						float shield = curUser.HT * (curWand.curCharges-curWand.getMinCharges()) *
+						float shield = curUser.HT * (curWand.curCharges()) *
 								curUser.byTalent(Talent.SHIELD_BATTERY, 0.0625f, Talent.RESTORATION, 0.05f);
 						shield *= Math.pow(1.5f, curUser.pointsInTalent(Talent.SHIELD_BATTERY, Talent.RESTORATION)-1);
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
@@ -746,7 +750,7 @@ public abstract class Wand extends Item {
 
 					//backup barrier logic, specifically managed so that they stack.
 					//This triggers before the wand zap, mostly so the barrier helps vs skeletons
-					if (curWand.curCharges == curWand.chargesPerCast()
+					if (curWand.curCharges() == curWand.chargesPerCast()
 							&& curWand.charger != null && curWand.charger.target == curUser){
 						final int[] shieldToGive = {0};
 						curUser.byTalent( (talent, points) -> {
@@ -886,7 +890,7 @@ private int energizeTime = 0;
 		}
 
 		private void recharge(){
-			int missingCharges = maxCharges - curCharges;
+			int missingCharges = maxCharges - curCharges - getMinCharges();
 			missingCharges = Math.max(0, missingCharges);
 			if(target instanceof Hero) {
 				Hero hero = (Hero)target;
