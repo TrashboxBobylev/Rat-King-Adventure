@@ -71,7 +71,12 @@ public class SpiritBuff extends CounterBuff implements ActionIndicator.Action {
 
     @Override
     public float iconFadePercent() {
-        return 1f - (Math.min(count(), Math.max(0, count()-MAXCHARGE))/ (MAXCHARGE));
+        return 1f - ( count() / (MAXCHARGE*2));
+    }
+
+    @Override
+    public String iconTextDisplay() {
+        return Integer.toString((int) count());
     }
 
     @Override
