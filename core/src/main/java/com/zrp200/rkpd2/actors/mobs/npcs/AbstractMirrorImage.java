@@ -22,7 +22,6 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
 
     import com.watabou.utils.Bundle;
     import com.watabou.utils.Random;
-    import com.zrp200.rkpd2.Dungeon;
     import com.zrp200.rkpd2.actors.Actor;
     import com.zrp200.rkpd2.actors.Char;
     import com.zrp200.rkpd2.actors.blobs.CorrosiveGas;
@@ -141,9 +140,10 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
                     if (Random.Int(3) < hero.pointsInTalent(Talent.SORCERY))
                         if (buff(Talent.EmpoweredStrikeTracker.class) != null) {
                             buff(Talent.EmpoweredStrikeTracker.class).detach();
-                            damage = Math.round(damage * (1f + Math.max(
-                                    Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE) / 3f,
-                                    Dungeon.hero.pointsInTalent(Talent.RK_BATTLEMAGE) / 4f)));
+                            damage = Math.round(damage * (1f + hero.byTalent(
+                                    Talent.EMPOWERED_STRIKE, 1/4f,
+                                    Talent.RK_BATTLEMAGE, 1/6f)
+                            ));
                         }
                 }
                 staff.procWand(enemy, damage);
