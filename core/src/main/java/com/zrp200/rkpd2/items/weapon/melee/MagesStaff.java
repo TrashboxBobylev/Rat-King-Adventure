@@ -43,6 +43,7 @@ import com.zrp200.rkpd2.items.ArcaneResin;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.bags.MagicalHolster;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfCorrosion;
 import com.zrp200.rkpd2.items.wands.WandOfCorruption;
@@ -182,21 +183,9 @@ public class MagesStaff extends MeleeWeapon {
 		if (points > 0){
 			ArtifactRecharge.chargeArtifacts(hero, points/2f);
 		}
-/* todo implement
-		Talent.EmpoweredStrikeTracker empoweredStrike = attacker.buff(Talent.EmpoweredStrikeTracker.class);
-		if (empoweredStrike != null){
-			damage = Math.round( damage * (1f + Dungeon.hero.pointsInTalent(Talent.EMPOWERED_STRIKE)/6f));
-		}
-*/
 
 		if (curCharges() < wand.maxCharges) gainCharge(0.5f);
-
-//		if (empoweredStrike != null){
-//			empoweredStrike.detach();
-//			if (!(defender instanceof Mob) || !((Mob) defender).surprisedBy(attacker)){
-//				Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
-//			}
-//		}
+		ScrollOfRecharging.charge(Dungeon.hero);
 	}
 
 	public int curCharges() {

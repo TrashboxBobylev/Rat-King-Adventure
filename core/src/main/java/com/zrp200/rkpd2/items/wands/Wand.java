@@ -152,7 +152,7 @@ public abstract class Wand extends Item {
 		if (attacker.buff(Talent.EmpoweredStrikeTracker.class) != null) {
 			// todo fix so that empowered strike is correctly handled.
 			multi *= 1f + ((Hero)attacker).byTalent(
-					Talent.EMPOWERED_STRIKE, 1/3f, // 67 133 200
+					Talent.EMPOWERED_STRIKE, 2/3f, // 67 133 200
 					Talent.RK_BATTLEMAGE, 1/2f // 50 100 150
 			);
 		}
