@@ -38,7 +38,7 @@ public class ScrollEmpower extends Buff {
 
 	public static int boost() {
 		// 2 for restoration, 2/4 for inscribed power. +1 inscribed power is the same as +2 shattered's.
-		return 2 + 2*(1+hero.pointsInTalent(INSCRIBED_POWER)/2);
+		return 2 + hero.pointsInTalent(INSCRIBED_POWER)*2;
 	}
 
 
