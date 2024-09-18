@@ -40,6 +40,7 @@ import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.mobs.AbyssalMob;
 import com.zrp200.rkpd2.actors.mobs.Albino;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.Rat;
@@ -238,6 +239,10 @@ public class Ratmogrify extends ArmorAbility {
 				state = HUNTING;
 			} else {
 				state = WANDERING;
+			}
+
+			if (original instanceof AbyssalMob){
+				timeLeft = 3f;
 			}
 
 			if(!isAlive()) {
