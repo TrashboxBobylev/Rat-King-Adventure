@@ -26,9 +26,8 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Daze;
 import com.zrp200.rkpd2.actors.buffs.Vertigo;
-import com.zrp200.rkpd2.actors.buffs.Vulnerable;
-import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
@@ -86,16 +85,16 @@ public class Mace extends MeleeWeapon {
 		@Override
 		public void afterHit(Char enemy, boolean hit) {
 			if (enemy.isAlive()) {
-				Buff.affect(enemy, Vulnerable.class, 5f);
-				Buff.affect(enemy, Weakness.class, 5f);
+				Buff.affect(enemy, Daze.class, 5f);
 			}
 		}
-		protected int baseChargeUse(Hero hero, Char target){
-			if (target == null || (target instanceof Mob && ((Mob) target).surprisedBy(hero))) {
-				return 1;
-			} else {
-				return 2;
-			}
+	}
+
+	protected int baseChargeUse(Hero hero, Char target){
+		if (target == null || (target instanceof Mob && ((Mob) target).surprisedBy(hero))) {
+			return 1;
+		} else {
+			return 2;
 		}
 	}
 
