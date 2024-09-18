@@ -48,19 +48,6 @@ public enum HeroSubClass {
 			// mage boost now also applies to staff...
 			return item instanceof MagesStaff ? 2 : 0;
 		}
-
-		@Override public String desc() {
-			//Include the staff effect description in the battlemage's desc if possible
-			String desc = super.desc();
-			if (Game.scene() instanceof GameScene){
-				MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
-				if (staff != null && staff.wandClass() != null){
-					desc += "\n\n" + Messages.get(staff.wandClass(), "bmage_desc", Messages.titleCase(title()));
-					desc = desc.replaceAll("_", "");
-				}
-			}
-			return desc;
-		}
 	},
 	WARLOCK(HeroIcon.WARLOCK),
 
@@ -154,7 +141,7 @@ public enum HeroSubClass {
 			if (Game.scene() instanceof GameScene){
 				MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
 				if (staff != null && staff.wandClass() != null){
-					desc += "\n\n" + Messages.get(staff.wandClass(), "bmage_desc");
+					desc += "\n\n" + Messages.get(staff.wandClass(), "bmage_desc", Messages.titleCase(title()));
 					desc = desc.replaceAll("_", "");
 				}
 			}
