@@ -178,6 +178,12 @@ public class Badges {
 		BOSS_SLAIN_3_WARDEN,
 		BOSS_SLAIN_3_CHAMPION,
 		BOSS_SLAIN_3_MONK,
+		BOSS_SLAIN_3_BRAWLER,
+		BOSS_SLAIN_3_SPIRITUALIST,
+		BOSS_SLAIN_3_DECEPTICON,
+		BOSS_SLAIN_3_HIGHNESS,
+		BOSS_SLAIN_3_OMNIBATTLER,
+		BOSS_SLAIN_3_RAT_KING,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 106, true ),
 		BOSS_CHALLENGE_3            ( 107 ),
 		BOSS_CHALLENGE_4            ( 108 ),
@@ -764,14 +770,20 @@ public class Badges {
 	static {
 		thirdBossSubclassBadges.put(HeroSubClass.BERSERKER, Badge.BOSS_SLAIN_3_BERSERKER);
 		thirdBossSubclassBadges.put(HeroSubClass.GLADIATOR, Badge.BOSS_SLAIN_3_GLADIATOR);
+		thirdBossSubclassBadges.put(HeroSubClass.BRAWLER, Badge.BOSS_SLAIN_3_BRAWLER);
 		thirdBossSubclassBadges.put(HeroSubClass.BATTLEMAGE, Badge.BOSS_SLAIN_3_BATTLEMAGE);
 		thirdBossSubclassBadges.put(HeroSubClass.WARLOCK, Badge.BOSS_SLAIN_3_WARLOCK);
+		thirdBossSubclassBadges.put(HeroSubClass.SPIRITUALIST, Badge.BOSS_SLAIN_3_SPIRITUALIST);
 		thirdBossSubclassBadges.put(HeroSubClass.ASSASSIN, Badge.BOSS_SLAIN_3_ASSASSIN);
 		thirdBossSubclassBadges.put(HeroSubClass.FREERUNNER, Badge.BOSS_SLAIN_3_FREERUNNER);
+		thirdBossSubclassBadges.put(HeroSubClass.DECEPTICON, Badge.BOSS_SLAIN_3_DECEPTICON);
 		thirdBossSubclassBadges.put(HeroSubClass.SNIPER, Badge.BOSS_SLAIN_3_SNIPER);
 		thirdBossSubclassBadges.put(HeroSubClass.WARDEN, Badge.BOSS_SLAIN_3_WARDEN);
 		thirdBossSubclassBadges.put(HeroSubClass.CHAMPION, Badge.BOSS_SLAIN_3_CHAMPION);
 		thirdBossSubclassBadges.put(HeroSubClass.MONK, Badge.BOSS_SLAIN_3_MONK);
+		thirdBossSubclassBadges.put(HeroSubClass.HIGHNESS, Badge.BOSS_SLAIN_3_HIGHNESS);
+		thirdBossSubclassBadges.put(HeroSubClass.KING, Badge.BOSS_SLAIN_3_RAT_KING);
+		thirdBossSubclassBadges.put(HeroSubClass.RK_CHAMPION, Badge.BOSS_SLAIN_3_OMNIBATTLER);
 	}
 
 	public static void validateBossSlain() {
