@@ -583,7 +583,7 @@ public enum Talent {
 		@Override public float duration() {
 			return hero.hasTalent(SEER_SHOT)
 					? 15 * hero.pointsInTalent(SEER_SHOT)
-					: 20;
+					: 25;
 		}
 		public int icon() { return target.buff(RevealedArea.class) != null ? BuffIndicator.NONE : BuffIndicator.TIME; }
 		public void tintIcon(Image icon) { icon.hardlight(0.7f, 0.4f, 0.7f); }
