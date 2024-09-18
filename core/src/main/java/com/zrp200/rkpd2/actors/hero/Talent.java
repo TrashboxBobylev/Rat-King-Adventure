@@ -1228,7 +1228,7 @@ public enum Talent {
 				// fixme this doesn't use .properties file.
 				GLog.w("The %s is %s",
 						item.name(),
-						item.visiblyCursed() ? "cursed!" : "free of malevolent magic.");
+						item.cursed ? "cursed!" : "free of malevolent magic.");
 			}
 			if (hero.sprite.emitter() != null) hero.sprite.emitter().burst(
 					Speck.factory(Speck.QUESTION),1);
