@@ -42,13 +42,19 @@ public class DreamDart extends TippedDart {
 			return 0;
 		}
 		//need to delay this so damage from the dart doesn't break the sleep
-		new FlavourBuff(){
-			{actPriority = VFX_PRIO;}
-			public boolean act() {
-				Buff.affect( defender, MagicalSleep.class );
-				return super.act();
-			}
-		}.attachTo(defender);
+		//when processing charged shot, only put enemies to sleep
+		if (!processingChargedShot || attacker.alignment != defender.alignment) {
+			new FlavourBuff() {
+				{
+					actPriority = VFX_PRIO;
+				}
+
+				public boolean act() {
+					Buff.affect(defender, MagicalSleep.class);
+					return super.act();
+				}
+			}.attachTo(defender);
+		}
 
 		return super.proc(attacker, defender, damage);
 	}
