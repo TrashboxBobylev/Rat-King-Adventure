@@ -156,6 +156,7 @@ import com.zrp200.rkpd2.items.weapon.enchantments.Kinetic;
 import com.zrp200.rkpd2.items.weapon.enchantments.Shocking;
 import com.zrp200.rkpd2.items.weapon.melee.BloomingPick;
 import com.zrp200.rkpd2.items.weapon.melee.NuclearHatchet;
+import com.zrp200.rkpd2.items.weapon.melee.Rapier;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
@@ -493,7 +494,8 @@ public abstract class Char extends Actor {
 			BrawlerBuff brawler = buff(BrawlerBuff.class);
 			if (brawler != null){
 				dmg = brawler.damageFactor(dmg);
-				brawler.useCharge();
+				if (!(this instanceof Hero && ((Hero) this).belongings.weapon() instanceof Rapier) || Random.Int(2) == 0)
+					brawler.useCharge();
 				ActionIndicator.refresh();
 			}
 

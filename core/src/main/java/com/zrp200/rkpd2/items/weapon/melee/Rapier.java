@@ -64,6 +64,16 @@ public class Rapier extends MeleeWeapon implements Talent.SpellbladeForgeryWeapo
 	}
 
 	@Override
+	public float warriorMod() {
+		return super.warriorMod()*3f;
+	}
+
+	@Override
+	public float warriorDelay() {
+		return 0f;
+	}
+
+	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}
