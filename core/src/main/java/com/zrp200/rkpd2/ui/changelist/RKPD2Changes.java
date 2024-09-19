@@ -26,6 +26,9 @@ import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges.Badge;
 import com.zrp200.rkpd2.actors.buffs.Warp;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
+import com.zrp200.rkpd2.actors.hero.HeroSubClass;
+import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.Wrath;
 import com.zrp200.rkpd2.effects.BadgeBanner;
 import com.zrp200.rkpd2.items.armor.RatKingArmor;
@@ -39,7 +42,9 @@ import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.enchantments.Explosive;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.ChangesScene;
+import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
 import com.zrp200.rkpd2.sprites.BlacksmithSprite;
+import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.sprites.KingSprite;
@@ -81,6 +86,166 @@ interface ChangeLog {
 
 public enum RKPD2Changes {
     v1(() -> new ChangeInfo[][]{
+        {
+            new ChangeInfo("RKA-2.0.0", true, TITLE_COLOR,
+                new ChangeButton(Icons.get(TRASHBOXBOBYLEV), "Developer Commentary",
+                        "I asked when RKPD2 update is going to came... and it came hard...\n\n" +
+                                "This update has been almost 2 months in making, with all new refactored code, feature regression hunting, and all of new content for Duelist, that needed to be made. I also addressed some of more long-lasting issues, like Abyss being too unfair and unfriendly to certain builds, Omnibattler weaknesses and Nerf Gun abundance.\n\n" +
+                                "There's still more ideas that could have been done, like additional metamorph-only talents, Book of Wonders, Rat King boss's theme... But they have wait for another day, or this will never come out. I am just glad, that I have something that can be considered done right here."),
+                new ChangeButton(new ItemSprite(ARMOR_RAT_KING), "RKPD 2.0 ports",
+                    "Successfully ported RKPD 2.0.6, with some bugfixes onto the board:\n" +
+                            list("Fixed Battlemage's wand descriptions being duplicated (with one of them having incorrect formatting) in Battlemage's subclass description.",
+                            "Fixed curse checking from identification talents being effectively useless.",
+                            "Fixed Dream Darts making their user sleep when used with Charged Shot.",
+                            "Fixed Rejuvenating Steps having missing string as its name.",
+                            "Fixed Backup Barrier/Noble Cause not giving any shielding, despite showing the visual.",
+                            "Fixed Mace's duelist ability being inaccurate to its Shattered equivalent.",
+                            "Fixed Law of Consumption giving +4 level wands instead of +2 when reading scrolls.",
+                            "Fixed stack overflow crash for shock elemental's zapping.",
+                            "Fixed Rat King listing metamorph effects of his own talents.",
+                            "Fixed Hold Fast giving unchanged amounts of armor and giving no armor for Rat King's equivalent.")
+                )
+            ),
+            NewContent(
+                    new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist in general",
+                            list("Added abilities for all RKA weapons, including Royal Brand and Terminus Blade.",
+                                    "Duelist can cut grass with her ability charges. This grass can be replanted or used to duplicate seeds.")),
+                    new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 2), "Duelist New Talents",
+                            list("Added _Adventurous Snoozing_ T1 talent, that makes weapon charge faster when sleeping.",
+                                "Added _Sixth Sense_ as consumable talent replacement, that highlights unaware enemies and allows to trickshot much easily.",
+                                "Added _Spellblade Forgery_ T2 talent, that augments all swords with slicing attack that damages enemies adjacent to main target.",
+                                "Added _Grassy Offense_ T3 talent, that allows to temporarily empower melee weapons with grass, making them more powerful and not use ability charges.",
+                                "Added _Heroic Adaptability_ T4 talent, that changes accuracy and evasion of characters depending on amount of space they have around them.")
+                    ),
+                    new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "New Subclass Talents",
+                            list("Added _Helper to Hero_ talent to Champion, that allows Prismatic Images to use secondary weapon as their own and benefit from hero's regeneration.",
+                                "Added _Attunexploration_ talent to Monk, that makes Monk be aware of level feelings and change their abilities, powers or stats with them.",
+                                "Added _Grass Munching_ talent to Monk, that allows to replicate Meditate move with using a bunch of grass.")
+                    ),
+                    new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "New Armor Ability Talents",
+                            list("Added _Dungeon's Championship_ talent to Challenge, that empowers duel opponent with champion titles for exchange of extra loot.",
+                                "Added _Empowered Swipe_ talent to Elemental Strike, that greatly buffs ability's range and damage in exchange for weapon ability charges.",
+                                "Added _Warped Aggression_ talent to Feint, that transform the ability into debuff inflicter with increasing afterimage duration and ability cost, but making enemies suffer from warp-induced debuffs.")
+                    ),
+                    new ChangeButton(HIGHNESS,
+                            "The third/secret subclass for Duelist is Highness, focused on using grass to do short-powered boosts of great power.\n\n" +
+                                    "The grass boost buff, called _energize_, provides boosts to movement, accuracy, evasion, physical damage, recharging and regeneration, but needs to use grass from your inventory every few turns to keep going.\n\n" +
+                                    "After all grass has been consumed or energize is cancelled manually, the _recovering_ begins, the duration of which quickly scales with how much grass was consumed. While recovering, Highness cannot energize herself."
+                    )
+            ),
+            Changes(
+                   new ChangeButton(POINTY_BLACK, "RKA replacement talents",
+                           list("All talents, that replaced original Shattered talents, now exist separately in codebase instead of replacing them.",
+                                   "Shattered talents can now also be obtained via metamorph.",
+                                   "_Willpower of Injured_ now actually works and is \"nerfed\" from +60%/+120% to +50%/+100%.",
+                                   "Super-Shot related talents trigger with with any thrown weapon on non-Huntress heroes, but with stronger cooldown.")),
+                    new ChangeButton(new AbyssalSpawnerSprite(), "Abyss",
+                            "_Highlights:_" +
+                            list("Has been ported to new branch standard, replacing the older format with going beyond depth 26.",
+                                    "Added \"placeholder\" music, consisting of 5 ominous edits of existing tracks.",
+                                    "Runs, that got into Abyss, now have white tint over the depth icon in rankings and save select.",
+                                    "Certain score categories are now more rewarding in Abyss.",
+                                    "Restored special chaosstones ranking type, if you preemptively leave Abyss.",
+                                    "Abyss' difficulty increases now happen after depth number divided by 5 instead of happening on depth number divided by 5.",
+                                    "Exit tile is now highlighted."),
+                            "_Progression:_" +
+                            list("Reduced enemy health grow in Abyss from +25%/+150%/+275%/+400%... to +50%/+100%/+150%/+200%...",
+                                    "Scrolls of Upgrade and Potions of Strength no longer _spawn naturally_ in Abyss.",
+                                    "Instead, special items are dropped by abyssal spawners, _Runic and Reddish Clusters_ and that can be converted into progression items.",
+                                    "2 Runic Clusters turn into Scroll of Upgrade, while 3 Reddish Clusters can be brewed into Potion of Strength.",
+                                    "This effectively decreases amount of strength to 1.67 and amount of upgrades to 2.5 on each set of 5 floors.") +
+                            "\n_Abyssal Spawners:_" +
+                            list("Updated sprites.",
+                                    "Reduced HP from 420 to 150, but restored soft damage cap, now equal to 25% of spawner's HP.",
+                                    "Now heals 0.67% of its max HP every turn.",
+                                    "Increased spawn cooldown from _23 at depth 1 to 4 at depth 19_ to _25 at depth 1 to 3 at abyss depth 44_."),
+                            "_Abyssal Dragons:_" +
+                            list("Increased HP from 300 to 400 and EXP from 20 to 50.",
+                                    "Decreased evasion from 45 to 30.",
+                                    "Increased attack delay to 2 turns and decreased movement speed from 2 to 1.5 tiles per turn.",
+                                    "Increased physical damage from 46-90(+12/+25) to 60-115(+15/+30).",
+                                    "Increased armor roll from 20-35(+10/+10) to 25-40(+12/+12).",
+                                    "Increased ranged attack cooldown from 3-5 to 9-16 turns, but it now inflicts 12 turns of frostburn instead of 8 and uses 1 turn instead of 2.") +
+                            "\n_Dragon Spawns:_" +
+                            list("Reduced HP from 85 to 70.",
+                                    "Increased evasion from 60 to 70 and accuracy from 55 to 65.",
+                                    "Decreased physical damage from 25-48(+9/+16) to 16-30(+5/+10).",
+                                    "Decreased attack delay to 0.5 turns.",
+                                    "Decreased armor roll from 19-28(+4/+10) to 12-20(+2/+6)."),
+                            "_Abyssal Nightmares:_" +
+                            list("Reduced HP from 620 to 320 and passive healing from 7 to 2-3 and increased EXP from 20 to 50.",
+                                    "Now reduces magical damage/effects by 75% instead of being completely immune to any magic.",
+                                    "Now has scaling damage reduction, with 67% at 100% HP to -200% at 0% HP.",
+                                    "Clones spawn with 25% chance instead of 20%, but no longer split further and have 80% HP of their host.") +
+                            "\n_Lost Spirits:_" +
+                            list("Reduced health from 145 to 70 and increased EXP from 20 to 50.",
+                                    "Increased threshold of summon teleport from 10% HP to 20% HP.",
+                                    "Now gets shielding equal to 75% max HP of target from successful championing.") +
+                            "\n_Miscellaneous:_" +
+                            list("Possessed Rodents now do rapid but weak attacks instead of zaps in melee range.",
+                                    "Phantoms are more visible, but their miasma attack has lower chance to occur, spreads 1.5x more miasma and has its use time and cooldown doubled.")),
+                    misc(
+                            list("Implemented and refined Shadowflare sprites for Rat King.",
+                                    "Omnibattler and Shadowflare action buttons now show the sprites of current class instead of sprites of intended class.",
+                                    "Extended second class/subclass feature to more edge cases.",
+                                    "Added new surface scene for beating the game by defeating Rat King.",
+                                    "Made Swiftness champions use proper speed increase instead of relying on Adrenaline.",
+                                    "Changed Darkest Elf's description to mention Dark Slimes instead of Gaster Blasters.",
+                                    "Paladin champions no longer protect bosses.",
+                                    "\"DM-300 with every subclass\" badge now requires every subclass to be earned.",
+                                    "Brawler's ability no longer needs to be refreshed by doing any action to be used again.",
+                                    "Changed desktop launcher crash to mention proper developer.")
+                    ),
+                    bugFixes("Fixed the following bugs:" +
+                            list("Arcanity Ensues providing almost no bonus damage",
+                                    "Power in Numbers +3 having no effect",
+                                    "Demonshader not working on final endure hit",
+                                    "Abyssal Dragon crashing the game when parried with COL-LOS-EUM effect",
+                                    "Kromer Slingshot and Spirit Bow not being fully affected by Omnidegraded")
+                    )
+            ),
+            Buffs(
+                    new ChangeButton(HeroSubClass.RK_CHAMPION,
+                            list("Reduced champion switch cooldown from 65 to 50 turns.",
+                                    "Added new _additional effects_ for every talent, when their respective champion titles are disabled.",
+                                    "Increased chance for _Darkest Ashes_'s Red Burning effect from 14%/29%/43% to 17%/33%/50%.",
+                                    "Buffed _Spectre Reach_'s melee boost from 9%/18%/27% to 11%/22%/33%.",
+                                    "Made _Thaumic Forcefield_'s effect actually work and added visual for it, but changed its damage and healing from 4(3)/7(5)/10(7) to 4(2)/8(4)/12(6) and increased wand charge on +3 from 0.25 to 0.33 charge.",
+                                    "Increased _Big Time_'s paralysis chance from 7%/13%/20% to 8%/15%/23%.",
+                                    "Increased _Hand of the God_ effect's damage from 16%/33%/33% to 25%/30%/35% and AoE from 3x3/3x3/5x5 to 3x3/5x5/7x7.",
+                                    "_Controlled Madness_'s melee cursed wand effects are converted into positive or neutral effects when at +3.",
+                                    "Increased chance for _Shielding Behind the Army_'s effect from 5%/9%/14% to 5%/10%/15%.")),
+                    new ChangeButton(TALENT.get(), "Other Talents",
+                            list("_Auxiliary Charge_ buffed to grant 3/5/7 spirit points instead of 2/3/4.",
+                                    "_Heroic Wizardry_ now works with every case of wand charge consumption.",
+                                    "Added metamorph effects for _Efficient Shadows_ and _Big Rush_.",
+                                    "_Eldritch Blessing_ transform its cursed zaps into neutral or positive on +4.")),
+                    new ChangeButton(new ItemSprite(KROMER_CROWN), "Other Buffs",
+                            list(2,"_Kromer Crown_ now allows Omnibattler to obtained and some other subclasses, if hero can use them (so Mage can spec into Warlock Battlemage, for example).",
+                                    "Increased _Ring of Force_'s armed damage bonus from 1.66x to 1.75x.",
+                                    "_COL-LOS-EUM_'s parry mechanic has been improved to be more viable:\n" +
+                                            "   _-_ now counters all hits during the turn, not just first one\n" +
+                                            "   _-_ now actually counters physical attacks\n" +
+                                            "   _-_ halved the recharge rate and max charges\n" +
+                                            "   _-_ gives three turn of increased accuracy on successful blocking",
+                                    "Negative energy action on _Kromer_ now has 25% chance to stop instead of going forever, if player has more than half of health.",
+                                    "_Nerf Gun_'s shots can now provide _Shared Upgrades_ upgrade boosting.",
+                                    "_Red Burning_ debuff is now affected by _Pyromaniac_."))
+            ),
+            Nerfs(
+                    new ChangeButton(new NerfGun(),
+                            list("Has been \"deflated\": the base damage and scaling are 1.5x larger, but upgrade requirements are increased by 2x. Imbues have been adjusted for new levelling.",
+                                    "No longer is found in crystal vault rooms.")),
+                    new ChangeButton(new ItemSprite(RING_GARNET), "Rings",
+                            list("Removed ability to augment or enchant _Ring of Force_, as that has been succeed by Brawler's Stance duelist ability.",
+                                    "Certain ring caps have been reverified, resulting in some rings reaching their cap earlier or later.")),
+                    new ChangeButton(new Ratmogrify(),
+                            list("Decreased the duration of ratmogrification effect on mobs from Abyss from 6 to 3 turns."))
+            )
+
+
+        },
+
         {
             new ChangeInfo("Coming Soon", true, TITLE_COLOR,
                     new ChangeButton(Icons.get(Icons.SHPX), "Future Shattered Updates",
