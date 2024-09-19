@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.weapon.melee;
 
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -31,6 +32,8 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.items.DuelistGrass;
+import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.AttackIndicator;
@@ -51,6 +54,26 @@ public class Sickle extends MeleeWeapon {
 	public int max(int lvl) {
 		return  Math.round(6.67f*(tier+1)) +    //20 base, up from 15
 				lvl*(tier+1);                   //scaling unchanged
+	}
+
+	@Override
+	public int warriorAttack(int damage, Char enemy) {
+		Item grass = new DuelistGrass().quantity(Random.Int(2, 3 + level()/3));
+
+		if (grass.doPickUp(Dungeon.hero, Dungeon.hero.pos)) {
+			Dungeon.hero.spend(-Item.TIME_TO_PICK_UP); //casting the spell already takes a turn
+			GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", grass.name())) );
+
+		} else {
+			GLog.w(Messages.get(this, "cant_grab"));
+			Dungeon.level.drop(grass, Dungeon.hero.pos).sprite.drop();
+		}
+		return super.warriorAttack(damage, enemy);
+	}
+
+	@Override
+	public float warriorMod() {
+		return 0.33f;
 	}
 
 	@Override
