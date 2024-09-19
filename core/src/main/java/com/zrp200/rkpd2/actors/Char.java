@@ -494,7 +494,7 @@ public abstract class Char extends Actor {
 			if (brawler != null){
 				dmg = brawler.damageFactor(dmg);
 				brawler.useCharge();
-				ActionIndicator.clearAction(brawler);
+				ActionIndicator.refresh();
 			}
 
 			if (buff( Fury.class ) != null) {
