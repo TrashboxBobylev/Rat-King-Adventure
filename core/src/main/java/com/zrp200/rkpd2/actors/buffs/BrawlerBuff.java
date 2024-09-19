@@ -11,6 +11,7 @@ import com.zrp200.rkpd2.items.BrokenSeal;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.rings.RingOfFuror;
 import com.zrp200.rkpd2.items.rings.RingOfWealth;
+import com.zrp200.rkpd2.items.weapon.melee.WarScythe;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.CellSelector;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -135,7 +136,7 @@ public class BrawlerBuff extends CounterBuff implements ActionIndicator.Action {
                 dmgBonus += 0.4f*hero.pointsInTalent(Talent.IN_MY_MEMORIES)*shield.shielding();
         }
 
-        hero.attack(enemy, dmgMulti, dmgBonus, Char.INFINITE_ACCURACY);
+        hero.attack(enemy, dmgMulti, dmgBonus, hero.belongings.weapon() instanceof WarScythe ? 1f : Char.INFINITE_ACCURACY);
 
         Invisibility.dispel();
         BrawlerWeapon weapon = (BrawlerWeapon) (hero.belongings.weapon());

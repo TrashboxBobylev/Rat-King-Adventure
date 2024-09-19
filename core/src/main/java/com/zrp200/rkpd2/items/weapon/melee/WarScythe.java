@@ -45,6 +45,16 @@ public class WarScythe extends MeleeWeapon {
 	}
 
 	@Override
+	public float warriorMod() {
+		return super.warriorMod()*1.75f;
+	}
+
+	@Override
+	public float warriorDelay() {
+		return super.warriorDelay()*1.33f;
+	}
+
+	@Override
 	protected int baseChargeUse(Hero hero, Char target){
 		return 2;
 	}
