@@ -106,6 +106,12 @@ public enum RKPD2Changes {
                             "Fixed Hold Fast giving unchanged amounts of armor and giving no armor for Rat King's equivalent.")
                 )
             ),
+            new ChangeInfo("v2.0.1", false, TITLE_COLOR,
+                    bugFixes("Caused by v2.0.0:" + list(
+                            "Metamorphosis cursed wand effect crashing on quitting the window.",
+                            "Abyssal Spawner being effectively invincible."
+                    ))
+            ),
             NewContent(
                     new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist in general",
                             list("Added abilities for all RKA weapons, including Royal Brand and Terminus Blade.",
