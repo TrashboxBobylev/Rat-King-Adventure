@@ -68,7 +68,7 @@ public class AbyssalSpawner extends AbyssalMob {
     protected boolean act() {
 
         spawnCooldown--;
-        HP = Math.max(HT, HP + 2 + abyssLevel());
+        HP = Math.min(HT, HP + 2 + abyssLevel());
         if (spawnCooldown <= 0){
             ArrayList<Integer> candidates = new ArrayList<>();
             for (int n : PathFinder.NEIGHBOURS8) {
