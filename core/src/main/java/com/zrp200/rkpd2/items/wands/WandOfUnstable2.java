@@ -99,7 +99,7 @@ public class WandOfUnstable2 extends Wand {
         particle.setSize( 1f, 3f);
     }
 
-    public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
+    public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipeBundled {
 
         {
             inputs =  new Class[]{WandOfUnstable.class, Kromer.class};

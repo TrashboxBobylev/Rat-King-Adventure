@@ -33,7 +33,7 @@ public class Dagger2 extends Dagger {
 		DLY = Integer.MAX_VALUE;
 	}
 
-	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
+	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipeBundled {
 
 		{
 			inputs =  new Class[]{Kromer.class, Dagger.class};
