@@ -360,7 +360,7 @@ public class CursedWand {
 					Level.beforeTransition();
 					InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 					InterlevelScene.returnDepth = depth;
-					InterlevelScene.returnBranch = 0;
+					InterlevelScene.returnBranch = Dungeon.branch;
 					InterlevelScene.returnPos = -1;
 					Game.switchScene(InterlevelScene.class);
 
