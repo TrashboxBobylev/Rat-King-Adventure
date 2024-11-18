@@ -59,6 +59,7 @@ import com.zrp200.rkpd2.actors.mobs.Warlock;
 import com.zrp200.rkpd2.actors.mobs.npcs.Shopkeeper;
 import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
+import com.zrp200.rkpd2.levels.RatBossLevel;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
@@ -244,16 +245,18 @@ public class AscensionChallenge extends Buff {
 				Dungeon.hero.buff(Hunger.class).satisfy(Hunger.STARVING);
 				Buff.affect(Dungeon.hero, Healing.class).setHeal(Dungeon.hero.HT, 0, 20);
 			} else {
-				stacks += 2f;
+				if (!(Dungeon.level instanceof RatBossLevel)) {
+					stacks += 2f;
 
-				//clears any existing mobs from the level and adds one initial one
-				//this helps balance difficulty between levels with lots of mobs left, and ones with few
-				for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-					if (!mob.reset()) {
-						Dungeon.level.mobs.remove( mob );
+					//clears any existing mobs from the level and adds one initial one
+					//this helps balance difficulty between levels with lots of mobs left, and ones with few
+					for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+						if (!mob.reset()) {
+							Dungeon.level.mobs.remove(mob);
+						}
 					}
+					Dungeon.level.spawnMob(12);
 				}
-				Dungeon.level.spawnMob(12);
 
 			}
 		}
