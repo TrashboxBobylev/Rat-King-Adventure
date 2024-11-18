@@ -1913,14 +1913,14 @@ public class Hero extends Char {
 				int dmg = Random.Int(0, damage*2);
 				Char toHeal, toDamage;
 
-				if (Random.Int(2) == 0){
-					toHeal = this;
-					toDamage = enemy;
-				} else {
-					toHeal = enemy;
-					toDamage = this;
-				}
-				toHeal.HP = Math.min(toHeal.HT, toHeal.HP + dmg);
+                if (Random.Int(3) == 0) {
+                    toHeal = enemy;
+                    toDamage = this;
+                } else {
+                    toHeal = this;
+                    toDamage = enemy;
+                }
+                toHeal.HP = Math.min(toHeal.HT, toHeal.HP + dmg);
 				toHeal.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 
 				if (toDamage == Dungeon.hero) {
