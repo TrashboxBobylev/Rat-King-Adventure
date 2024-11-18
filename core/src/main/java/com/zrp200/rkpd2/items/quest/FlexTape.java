@@ -88,7 +88,7 @@ public class FlexTape extends Item {
                 ch.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 1 );
                 ch.sprite.showStatus( CharSprite.POSITIVE, Integer.toString( healAmt ) );
             }
-            Warp.inflict(30, 8);
+            Warp.inflict(30, 3);
         } else {
             super.onThrow(cell);
         }
@@ -110,7 +110,7 @@ public class FlexTape extends Item {
 
                 if (ch != null){
                     Buff.affect(ch, Roots.class, 77);
-                    Warp.inflict(25, 6);
+                    Warp.inflict(25, 2.5f);
                     Sample.INSTANCE.play(Assets.Sounds.ATK_CROSSBOW);
                     ch.sprite.burst(0x000000, 25);
 

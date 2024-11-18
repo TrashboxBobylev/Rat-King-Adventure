@@ -262,7 +262,7 @@ public class Slingshot extends Weapon {
 
         @Override
         public int proc(Char attacker, Char defender, int damage) {
-            Warp.inflict(17, 6);
+            Warp.inflict(17, 1.5f);
 
             if (slingshot != null) return slingshot.proc(attacker, defender, damage);
             else return damage;

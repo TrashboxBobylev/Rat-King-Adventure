@@ -22,7 +22,7 @@ public class ScammingSpell extends Spell{
 
     @Override
     protected void onCast(Hero hero) {
-        Warp.inflict(50, 2.5f);
+        Warp.inflict(50, 1.5f);
         Buff.prolong(hero, Scam.class, 35f);
         hero.sprite.operate(hero.pos);
         Sample.INSTANCE.play(Assets.Sounds.CURSED, 1f, 0.3f);

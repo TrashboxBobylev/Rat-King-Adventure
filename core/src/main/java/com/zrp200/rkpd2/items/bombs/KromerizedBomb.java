@@ -108,7 +108,7 @@ public class KromerizedBomb extends Bomb {
 				Char ch = Actor.findChar(i);
 				if (ch != null){
 					if (ch instanceof Hero) {
-						Warp.inflict(30f, 3f);
+						Warp.inflict(30f, 1f);
 						if (doNotDamageHero)
 							continue;
 					}

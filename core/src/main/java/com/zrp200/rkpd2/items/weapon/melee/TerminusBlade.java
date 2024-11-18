@@ -66,7 +66,7 @@ public class TerminusBlade extends MeleeWeapon implements Talent.SpellbladeForge
 
     @Override
     public int proc(Char attacker, Char defender, int damage) {
-        Warp.inflict(4, 2f);
+        Warp.inflict(4, 1f);
         defender.sprite.emitter().burst(ElmoParticle.FACTORY, 30);
         Camera.main.shake(2f, 0.175f);
         Buff.affect(defender, GodSlayerBurning.class).reignite(defender, 4f);
@@ -121,7 +121,7 @@ public class TerminusBlade extends MeleeWeapon implements Talent.SpellbladeForge
         hero.sprite.emitter().burst( ShadowParticle.CURSE, 30 );
         hero.sprite.zap(hero.pos);
         hero.spendAndNext(1f);
-        Warp.inflict(150, 0.5f);
+        Warp.inflict(150, 0.2f);
         updateQuickslot();
         afterAbilityUsed(hero);
     }

@@ -522,7 +522,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	@Override
 	public int proc(Char attacker, Char defender, int damage) {
 		if (trollers)
-			Warp.inflict(10f, 4f);
+			Warp.inflict(10f, 1f);
 
 		int dmg = super.proc(attacker, defender, damage);
 		if (attacker.alignment == Char.Alignment.ALLY && hero.hasTalent(Talent.SPELLBLADE_FORGERY) && this instanceof Talent.SpellbladeForgeryWeapon){

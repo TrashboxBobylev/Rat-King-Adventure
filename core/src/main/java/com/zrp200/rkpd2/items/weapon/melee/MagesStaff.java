@@ -164,7 +164,7 @@ public class MagesStaff extends MeleeWeapon {
 			if (cursed || hasCurseEnchant()) wand.cursed = true;
 			else                             wand.cursed = false;
 			if (this instanceof KromerStaff)
-				Warp.inflict(5, 1.5f);
+				Warp.inflict(2.5f, 1.5f);
 			wand.execute(hero, AC_ZAP);
 		}
 	}

@@ -98,7 +98,7 @@ public class KromerCloak extends CloakOfShadows {
 
             if (turnsToCost <= 0){
                 charge--;
-                Warp.inflict(5, stealthDuration());
+                Warp.inflict(2, stealthDuration());
                 if (charge < 0) {
                     charge = 0;
                     detach();

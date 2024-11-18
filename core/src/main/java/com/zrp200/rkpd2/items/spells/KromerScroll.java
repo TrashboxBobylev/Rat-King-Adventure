@@ -35,7 +35,7 @@ public class KromerScroll extends Spell{
 
     @Override
     protected void onCast(Hero hero) {
-        Warp.inflict(150, 15f);
+        Warp.inflict(150, 10f);
         for (int i = 0; i < Dungeon.level.length(); i++){
             if (Dungeon.level.passable[i] && !Dungeon.level.heroFOV[i]){
                 boolean doors = false;

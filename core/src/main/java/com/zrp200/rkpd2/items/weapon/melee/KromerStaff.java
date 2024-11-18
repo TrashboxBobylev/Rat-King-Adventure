@@ -54,7 +54,7 @@ public class KromerStaff extends MagesStaff {
     }
 
     public void kromerProc() {
-        Warp.inflict(3, 3);
+        Warp.inflict(3, 1);
     }
 
     public void procWand(Char defender, int damage) {
