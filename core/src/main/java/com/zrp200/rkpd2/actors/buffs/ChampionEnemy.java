@@ -144,9 +144,9 @@ public abstract class ChampionEnemy extends Buff {
 	public static void rollWarp(Mob m){
 		int warpAmount = 0;
 		if (Dungeon.hero.buff(Warp.class) != null){
-			warpAmount = Math.round(10 + Math.min(35, Dungeon.hero.buff(Warp.class).getStacks() / 4));
+			warpAmount = Math.round(5 + Math.min(35, Dungeon.hero.buff(Warp.class).getStacks() / 4));
 			if (m.properties().contains(Char.Property.BOSS)){
-				warpAmount = Math.round(15 + Math.min(45, Dungeon.hero.buff(Warp.class).getStacks() / 5));
+				warpAmount = Math.round(10 + Math.min(45, Dungeon.hero.buff(Warp.class).getStacks() / 5));
 			}
 		}
 		boolean shouldBeWarped = Random.Int(100) < warpAmount;
