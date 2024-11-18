@@ -81,8 +81,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 public class YogDzewa extends Mob {
 
 	{
@@ -266,12 +264,12 @@ public class YogDzewa extends Mob {
 						} else {
 							dmg = Random.NormalIntRange(20, 30);
 						}
-						if (enemy.buff(WarriorParry.BlockTrock.class) != null){
-							enemy.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
-							SpellSprite.show(enemy, SpellSprite.BLOCK, 2f, 2f, 2f);
-							Buff.affect(enemy, Barrier.class).incShield(Math.round(dmg*1.25f));
-							hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
-							enemy.buff(WarriorParry.BlockTrock.class).triggered = true;
+						if (ch.buff(WarriorParry.BlockTrock.class) != null){
+							ch.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
+							SpellSprite.show(ch, SpellSprite.BLOCK, 2f, 2f, 2f);
+							Buff.affect(ch, Barrier.class).incShield(Math.round(dmg*1.25f));
+							ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(Math.round(dmg*1.25f)), FloatingText.SHIELDING );
+							ch.buff(WarriorParry.BlockTrock.class).triggered = true;
 						} else {
 							ch.damage(dmg, new Eye.DeathGaze());
 
