@@ -31,16 +31,19 @@ import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.utils.BArray;
 import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.GamesInProgress;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
+import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.LostBackpack;
+import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -521,6 +524,28 @@ public class InterlevelScene extends PixelScene {
 			} while (level.traps.get(Dungeon.hero.pos) != null
 					|| (level.plants.get(Dungeon.hero.pos) != null && tries < 500)
 					|| level.trueDistance(invPos, Dungeon.hero.pos) <= 30 - (tries/10));
+
+			//if we cannot achieve this in 500 tries, that means we are on infinite wealth floor
+			//replace one of the monsters
+			if (Dungeon.hero.pos == -1) {
+				int cell;
+				int count = 0;
+				do {
+
+					if (++count > 30) {
+						cell = -1;
+						break;
+					}
+
+					cell = Random.Int(Dungeon.level.length());
+
+				} while (!Dungeon.level.passable[cell]);
+				if (Actor.findChar(cell) != null) {
+					Char ch = Actor.findChar(cell);
+					ch.damage(Math.round(ch.HT / 2f + ch.HP / 2f), new ScrollOfPsionicBlast());
+				}
+				Dungeon.hero.pos = cell;
+			}
 
 			//directly trample grass
 			if (level.map[Dungeon.hero.pos] == Terrain.HIGH_GRASS || level.map[Dungeon.hero.pos] == Terrain.FURROWED_GRASS){
