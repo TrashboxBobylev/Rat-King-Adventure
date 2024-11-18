@@ -78,8 +78,11 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			((Scroll) curItem).readAnimation();
 			Sample.INSTANCE.play(Assets.Sounds.READ);
 		}
-		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
-		Transmuting.show(curUser, oldTalent, newTalent);
+		//this variable is stupid
+		if (curUser != null) {
+			curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
+			Transmuting.show(curUser, oldTalent, newTalent);
+		}
 
 		if (Dungeon.hero.hasTalent(newTalent)) {
 			Talent.onTalentUpgraded(Dungeon.hero, newTalent);
