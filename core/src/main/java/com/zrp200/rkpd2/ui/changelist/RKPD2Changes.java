@@ -106,6 +106,44 @@ public enum RKPD2Changes {
                             "Fixed Hold Fast giving unchanged amounts of armor and giving no armor for Rat King's equivalent.")
                 )
             ),
+            new ChangeInfo("v2.0.2", false, TITLE_COLOR,
+                    new ChangeButton(new Warp(), list(
+                            "Slightly decreased the chance for warped enemies to spawn",
+                            "Increased elixir of not dying's decay speed from 3 to 1",
+                            "Increased flex tape patching's decay speed from 8 to 3, and sealing's decay speed from 6 to 2.5",
+                            "Increased kromer [Best Deal]'s decay speed from 5 to 1.5, [Negative Energy]'s decay speed from 0.75 to 0.3 and mysterious force's decay speed from 1 to 0.33",
+                            "Increased kromer bow's decay speed from 8 to 2.5",
+                            "Decreased kromer cloak's warp amount from 5 to 2",
+                            "Increased kromerized bomb's decay speed from 3 to 1",
+                            "Increased potion of infinite manpower's initial drink's decay speed from 3 to 1",
+                            "Increased scroll of infinite wealth's decay speed from 15 to 10",
+                            "Increased kromer staff attacking's decay speed from 3 to 1 and decreased zapping's warp amount from 5 to 2.5",
+                            "Increased pipisfusion effect's decay speed from 4 to 1",
+                            "Changed nerf gun mode switch's warp amount from 20 to 10 and decay speed from 1.5 to 5, and shooting's warp amount from 10 to 5 and decay speed from 3 to 5",
+                            "Increased scamming spell usage's decay speed from 2.5 to 1.5",
+                            "Increased kromer slingshot's decay speed from 6 to 1.5",
+                            "Increased terminus blade attacking's decay speed from 2 to 1 and decreased Duelist ability's warp amount from 0.5 to 0.2",
+                            "Increased wand of kromer's decay speed from 3 to 0.75"
+                    )),
+                    new ChangeButton(TALENT.get(), "Other buffs",
+                            list("Increased the charge boost for Wand of His Ratiness and Wand of Kromer from _50%_ to _100%_.",
+                                    "_Wand of Kromer_ and \"troll\" dagger now inherit levels of their crafting components.",
+                                    "Potion of Infinite Manpower's effect now heals you with _66% chance_ and damages you with _33% chance_, instead of 50%/50%.",
+                                    "Interlevel teleportation now properly works in Abyss.")),
+                    bugFixes("Caused by v2.0.0:" + list(
+                            "Drratedon rats crashing, when being affected with Berserk effect.",
+                            "Ring of Force crashing on reloading the savefile.",
+                            "Rare metamorphosis crashes.",
+                            "Inability to resurrect, if level is filled by Infinity Wealth's spawns.",
+                            "Forbidden runes challenge not working.",
+                            "COL-LOS-EUM's parry not being properly triggered with Yog-Dzewa's beams.",
+                            "Ascension challenge crashing, while attempting to progress and spawn a new mob on initiating rat king boss fight.",
+                            "Kromer weapons crashing from triggering identify talents' curse check without hero's sprite visible."
+                    ) + "\nExisted prior:" + list(
+                            "Drratedon rats not recieving champion titles.",
+                            "Rat Acolyte not being affected by Paladin title's inability to move."
+                    ))
+            ),
             new ChangeInfo("v2.0.1", false, TITLE_COLOR,
                     bugFixes("Caused by v2.0.0:" + list(
                             "Metamorphosis cursed wand effect crashing on quitting the window.",
