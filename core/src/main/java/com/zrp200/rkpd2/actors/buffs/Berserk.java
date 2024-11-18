@@ -252,7 +252,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 	}
 
 	float maxPower() {
-		float endlessBoost = ((Hero)target).byTalent(
+		float endlessBoost = Dungeon.hero.byTalent(
 				Talent.ENDLESS_RAGE, 1/4f, // 125/150/175
 				Talent.RK_BERSERKER, 1/6f
 		);

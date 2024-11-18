@@ -291,7 +291,7 @@ public class Ratmogrify extends ArmorAbility {
 		public void makeAlly() {
 			allied = true;
 			alignment = Alignment.ALLY;
-			if (drratedonEffect(this) > 4 && ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
+			if (drratedonEffect(this) > 4 && !ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
 			timeLeft = Float.POSITIVE_INFINITY;
 		}
 
@@ -399,7 +399,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		@Override
 		protected boolean act() {
-			if (drratedonEffect(this) > 4 && ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
+			if (drratedonEffect(this) > 4 && !ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
 			return super.act();
 		}
 
@@ -424,7 +424,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		@Override
 		protected boolean act() {
-			if (drratedonEffect(this) > 4 && ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
+			if (drratedonEffect(this) > 4 && !ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
 			return super.act();
 		}
 
