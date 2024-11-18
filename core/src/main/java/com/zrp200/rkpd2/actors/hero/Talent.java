@@ -1230,7 +1230,7 @@ public enum Talent {
 						item.name(),
 						item.cursed ? "cursed!" : "free of malevolent magic.");
 			}
-			if (hero.sprite.emitter() != null) hero.sprite.emitter().burst(
+			if (hero.sprite != null) hero.sprite.emitter().burst(
 					Speck.factory(Speck.QUESTION),1);
 		}
 	}
