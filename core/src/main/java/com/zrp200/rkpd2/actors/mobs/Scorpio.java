@@ -91,6 +91,9 @@ public class Scorpio extends Mob {
 	
 	@Override
 	protected boolean getCloser( int target ) {
+		if (buff(ChampionEnemy.Paladin.class) != null){
+			return false;
+		}
 		if (state == HUNTING) {
 			return enemySeen && getFurther( target );
 		} else {
