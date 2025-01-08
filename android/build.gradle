@@ -2,14 +2,16 @@ apply plugin: 'com.android.application'
 
 android {
     namespace 'com.zrp200.rkpd2.android'
+
     signingConfigs {
         release {
-            storeFile file('C:\\Users\\Zrp200\\Zrp200.jks')
-            storePassword 'palkia'
-            keyAlias 'Zrp200'
-            keyPassword 'palkia'
+            storeFile file('1.keystore')
+            storePassword '1'
+            keyAlias '1'
+            keyPassword '1'
         }
-    }
+    } 
+
     compileSdk appAndroidCompileSDK
     compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
 

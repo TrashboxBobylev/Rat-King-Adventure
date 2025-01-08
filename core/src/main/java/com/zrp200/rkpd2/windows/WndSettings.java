@@ -156,7 +156,7 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		/*langs = new LangsTab();
+		langs = new LangsTab();
 		langs.setSize(width, 0);
 		height = Math.max(height, langs.height());
 		add( langs );
@@ -184,7 +184,7 @@ public class WndSettings extends WndTabbed {
 			}
 
 		};
-		add( langsTab );*/
+		add( langsTab );
 
 		resize(width, (int)Math.ceil(height));
 
