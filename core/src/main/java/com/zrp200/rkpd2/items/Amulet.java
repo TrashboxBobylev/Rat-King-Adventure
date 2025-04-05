@@ -85,7 +85,7 @@ public class Amulet extends Item {
 			Dungeon.level.pressCell( cell );
 			Sample.INSTANCE.play(Assets.Sounds.SHATTER);
 			GameScene.flash(0xFFFFFF, true);
-			InterlevelScene.curTransition = new LevelTransition(Dungeon.level, -1, LevelTransition.Type.REGULAR_ENTRANCE, 0, Dungeon.branch, LevelTransition.Type.REGULAR_EXIT);
+			InterlevelScene.curTransition = new LevelTransition(Dungeon.level, -1, LevelTransition.Type.REGULAR_ENTRANCE, 0, 0, LevelTransition.Type.REGULAR_EXIT);
 			Statistics.deepestFloor = -1;
 			InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 			Game.switchScene(InterlevelScene.class);

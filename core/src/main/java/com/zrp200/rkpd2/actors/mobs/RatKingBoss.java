@@ -150,6 +150,9 @@ public class RatKingBoss extends Mob {
         if (rkMode()){
             HP = HT = 3200 + Challenges.activeChallenges()*360;
         }
+
+        EXP = 100;
+
         spriteClass = RatKingBossSprite.class;
 
         HUNTING = new Hunting();
