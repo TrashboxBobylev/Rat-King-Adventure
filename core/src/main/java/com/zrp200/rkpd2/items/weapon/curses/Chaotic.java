@@ -46,11 +46,6 @@ public class Chaotic extends Weapon.Enchantment{
         return new ItemSprite.Glowing();
     }
 
-    @Override
-    public boolean curse() {
-        return true;
-    }
-
     private static final String CURSES = "CURSES";
 
     @Override

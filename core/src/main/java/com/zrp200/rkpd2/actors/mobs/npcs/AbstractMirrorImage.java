@@ -129,13 +129,13 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
         }
         if (hero.belongings.weapon() instanceof MagesStaff){
             if (hero.pointsInTalent(Talent.SPECTRE_ALLIES) == 2) {
-                ((MagesStaff) hero.belongings.weapon()).procWand(enemy, damage);
+                ((MagesStaff) hero.belongings.weapon()).wand().onHit(((MagesStaff) hero.belongings.weapon()), this, enemy, damage);
             }
             if (hero.pointsInTalent(Talent.SPECTRE_ALLIES) == 3) {
                 MagesStaff staff = (MagesStaff) hero.belongings.weapon();
                 if ((hero.hasTalent(Talent.SORCERY))) {
                     if (Random.Int(5) < hero.pointsInTalent(Talent.SORCERY)) {
-                        staff.procBM();
+                        staff.procBM(enemy, damage, true, true, true);
                     }
                     if (Random.Int(3) < hero.pointsInTalent(Talent.SORCERY))
                         if (buff(Talent.EmpoweredStrikeTracker.class) != null) {
@@ -146,7 +146,7 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
                             ));
                         }
                 }
-                staff.procWand(enemy, damage);
+                staff.wand().onHit(staff, this, enemy, damage);
             }
         }
         return damage;
