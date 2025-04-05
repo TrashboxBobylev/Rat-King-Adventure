@@ -2038,7 +2038,7 @@ public class Hero extends Char {
 				dmg *= 0.67f;
 			} else if (buff.state == HighnessBuff.State.RECOVERING && pointsInTalent(Talent.WOUND_IGNORANCE) > 2 &&
 				RingOfElements.RESISTS.contains(src.getClass())){
-				dmg *= 0.5f;
+				dmg *= 0.80f;
 			}
 		}
 
@@ -2062,7 +2062,7 @@ public class Hero extends Char {
 		}
 
 		if (HighnessBuff.isEnergized() && pointsInTalent(Talent.WOUND_IGNORANCE) > 1){
-			int shieldToGive = effectiveDamage / 13;
+			int shieldToGive = effectiveDamage / 8;
 			if (shieldToGive > 0) {
 				Buff.affect(this, Barrier.class).setShield(shieldToGive);
 				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);

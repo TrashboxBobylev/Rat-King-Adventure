@@ -247,7 +247,7 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
             consumeGrass(((Hero)target).hasTalent(AGREENALINE_RUSH) ? availablePower() : 1);
             state = State.ENERGIZED;
             if (((Hero)target).hasTalent(Talent.WOUND_IGNORANCE)){
-                int healing = (int) Math.min(target.HT*0.075f, target.HP - target.HT);
+                int healing = (int) Math.min(target.HT*0.125f, target.HP - target.HT);
 
                 if(healing > 0) {
                     target.HP += healing;
