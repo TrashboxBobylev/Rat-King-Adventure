@@ -140,7 +140,7 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
     }
 
     public int grassValue(){
-        return 4 + Dungeon.hero.pointsInTalent(Talent.PROLONGED_JOY)*2;
+        return 4 + Dungeon.hero.pointsInTalent(Talent.PROLONGED_JOY);
     }
 
     private static final float RAMPING_START_CONST = 16;
