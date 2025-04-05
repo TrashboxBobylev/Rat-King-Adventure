@@ -234,7 +234,7 @@ public enum Talent {
 	//Monk T3
 	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3), MONASTIC_MIGHT(159), GRASS_MUNCHING(imageAt(7, 12), 3),
 	//Highness T3
-	PARTY_FEELING(imageAt(8, 12), 3), SLASH_RUNNER(imageAt(9, 12), 3), PROLONGED_JOY(imageAt(10, 12), 3), WOUND_IGNORANCE(imageAt(11, 12), 3), AGREENALINE_RUSH(imageAt(12, 12), 3),
+	PARTY_FEELING(imageAt(8, 12), 3), SLASH_RUNNER(imageAt(9, 12), 3), PROLONGED_JOY(imageAt(10, 12), 3), WOUND_IGNORANCE(imageAt(11, 12), 3), DRUG_MODERATION(imageAt(12, 12), 3),
 	//Challenge T4
 	CLOSE_THE_GAP(145, 4), INVIGORATING_VICTORY(146, 4), ELIMINATION_MATCH(147, 4), DUNGEONS_CHAMPIONSHIP(imageAt(13, 12), 4),
 	//Elemental Strike T4
@@ -1691,7 +1691,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, UNENCUMBERED_SPIRIT, MONASTIC_VIGOR, COMBINED_ENERGY/*, MONK_6TH_ABILITY*/, ATTUNEXPLORATION, GRASS_MUNCHING);
 				break;
 			case HIGHNESS:
-				Collections.addAll(tierTalents, PARTY_FEELING, SLASH_RUNNER, PROLONGED_JOY, WOUND_IGNORANCE, AGREENALINE_RUSH);
+				Collections.addAll(tierTalents, PARTY_FEELING, SLASH_RUNNER, PROLONGED_JOY, WOUND_IGNORANCE, DRUG_MODERATION);
 				break;
 			case KING: // this should be *lovely*
 				Collections.addAll(tierTalents, RK_BERSERKER, RK_BATTLEMAGE, RK_ASSASSIN, RK_SNIPER, RK_GLADIATOR, RK_WARLOCK, RK_FREERUNNER, RK_WARDEN); break;
@@ -1772,6 +1772,8 @@ public enum Talent {
 	private static final HashMap<String, String> renamedTalents = new HashMap();
 	//TODO: make this list not proc (?) if we want to have both RKA and RKPD2 second t2 talents accessible
 	static {
+		//RKA v2.1.0
+		renamedTalents.put("AGREENALINE_RUSH",          "DRUG_MODERATION");
 		//RKA v2.0.0
 		renamedTalents.put("RESTORED_WILLPOWER",        "WILLPOWER_OF_INJURED");
 		renamedTalents.put("ENERGIZING_UPGRADE",        "ENERGIZING_UPGRADE");
