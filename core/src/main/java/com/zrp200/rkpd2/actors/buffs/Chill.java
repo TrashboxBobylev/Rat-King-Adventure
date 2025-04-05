@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.actors.buffs;
 
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.mobs.RatKingBoss;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -44,7 +45,11 @@ public class Chill extends FlavourBuff {
 
 	//reduces speed by 10% for every turn remaining, capping at 50%
 	public float speedFactor(){
-		return Math.max(0.5f, 1 - cooldown()*0.1f);
+		float mod = 0.1f;
+		if (target instanceof RatKingBoss){
+			mod = 0.05f;
+		}
+		return Math.max(0.5f, 1 - cooldown()*mod);
 	}
 
 	@Override

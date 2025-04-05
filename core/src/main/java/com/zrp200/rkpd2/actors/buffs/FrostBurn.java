@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.FrostFire;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.mobs.RatKingBoss;
 import com.zrp200.rkpd2.actors.mobs.Thief;
 import com.zrp200.rkpd2.effects.particles.ElmoParticle;
 import com.zrp200.rkpd2.items.Heap;
@@ -162,7 +163,11 @@ public class FrostBurn extends Buff implements Hero.Doom, DamageOverTimeEffect {
 
     //reduces speed by 10% for every turn remaining, capping at 50%
     public float speedFactor(){
-        return Math.max(0.5f, 1 - left*0.1f);
+		float mod = 0.1f;
+		if (target instanceof RatKingBoss){
+			mod = 0.05f;
+		}
+		return Math.max(0.5f, 1 - left*mod);
     }
 	
 	public void reignite( Char ch ) {
