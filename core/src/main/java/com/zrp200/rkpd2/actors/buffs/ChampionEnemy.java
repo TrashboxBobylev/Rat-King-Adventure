@@ -124,7 +124,7 @@ public abstract class ChampionEnemy extends Buff {
 		for (ChampionEnemy buff : m.buffs(ChampionEnemy.class)){
 			isChamp = true;
 		}
-		return !isChamp;
+		return isChamp;
 	}
 
 	public static void rollForChampion(Mob m){
