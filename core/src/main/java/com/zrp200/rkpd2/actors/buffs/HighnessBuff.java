@@ -141,14 +141,15 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
         return 4 + Dungeon.hero.pointsInTalent(Talent.PROLONGED_JOY)*2;
     }
 
-    private static final float RAMPING_START_CONST = 18;
+    private static final float RAMPING_START_CONST = 16;
 
     public float recoveryAmount(int consumedGrass){
         float recTime = consumedGrass * grassValue() * 2;
         if (recTime >= RAMPING_START_CONST){
             recTime = (float) (RAMPING_START_CONST + (Math.pow(2 * (recTime - RAMPING_START_CONST) + 1, 2) - 1)/
-                    (64.0f - Dungeon.hero.pointsInTalent(Talent.PROLONGED_JOY)*6));
+                    (96.0f - Dungeon.hero.pointsInTalent(Talent.PROLONGED_JOY)*8));
         }
+        recTime = Math.min(recTime, 225);
         return recTime;
     }
 
