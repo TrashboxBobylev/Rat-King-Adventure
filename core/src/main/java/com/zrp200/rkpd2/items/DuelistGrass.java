@@ -257,7 +257,7 @@ public class DuelistGrass extends Item implements Recipe.AllQuantityIngredient {
                 }
             }
 
-            return seedPresent && grassQuantity <= 5;
+            return seedPresent && grassQuantity >= 5;
         }
 
         @Override

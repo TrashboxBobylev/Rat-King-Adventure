@@ -331,7 +331,8 @@ public abstract class Recipe {
 		new TelekineticGrab.Recipe(),
 		new SummonElemental.Recipe(),
 		new StewedMeat.twoMeat(),
-		new Pipisfusion.Recipe()
+		new Pipisfusion.Recipe(),
+		new DuelistGrass.SeedDuplicationRecipe()
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{
