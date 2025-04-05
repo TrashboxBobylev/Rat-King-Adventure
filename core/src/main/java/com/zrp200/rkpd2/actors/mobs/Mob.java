@@ -655,7 +655,7 @@ public abstract class Mob extends Char {
 	}
 
 	protected boolean getFurther( int target ) {
-		if (rooted || target == pos|| buff(StuckBuff.class) != null) {
+		if (rooted || target == pos || buff(StuckBuff.class) != null || buff(ChampionEnemy.Paladin.class) != null) {
 			return false;
 		}
 
