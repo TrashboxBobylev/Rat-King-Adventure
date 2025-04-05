@@ -964,7 +964,7 @@ public abstract class Mob extends Char {
 		}
 	}
 
-	public final boolean isRewardSuppressed() { return hero.lvl > maxLvl + 2; }
+	public final boolean isRewardSuppressed() { return hero.lvl > maxLvl + 4; }
 
 	public float lootChance(){
 		float lootChance = this.lootChance;
