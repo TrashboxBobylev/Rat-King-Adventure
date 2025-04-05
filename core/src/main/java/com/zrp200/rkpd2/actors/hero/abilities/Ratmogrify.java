@@ -205,7 +205,7 @@ public class Ratmogrify extends ArmorAbility {
 	}
 
 	@Override
-	public boolean isTracked() {
+	public boolean isTracked(Hero hero) {
 		// yes I know this is incredibly general, but I know this will come up at some point.
 		return Actor.containsClass(Rat.class) || Actor.containsClass(TransmogRat.class);
 	}

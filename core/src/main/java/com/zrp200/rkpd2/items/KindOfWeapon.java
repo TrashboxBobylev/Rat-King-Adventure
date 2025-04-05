@@ -59,20 +59,17 @@ abstract public class KindOfWeapon extends EquipableItem {
 			int points = hero.pointsInTalent(Talent.ELITE_DEXTERITY);
 			slotOfUnequipped = -1;
 
+			final int THROWN_SLOT = 2;
+
 			// missile weapon with one slot open should just auto-add.
 			if (this instanceof MissileWeapon) {
 				if(points > 1 || hero.belongings.secondWep == null) {
 					KindOfWeapon third = hero.belongings.thirdWep;
 					if (third == null || third instanceof MissileWeapon) {
-						int slot = Dungeon.quickslot.getSlot( KindOfWeapon.this );
-						doEquip(hero, 2);
+						doEquip(hero, THROWN_SLOT);
 						return;
 					}
 				}
-			} else if (points == 1 && hero.belongings.thirdWep != null && hero.belongings.weapon == null) {
-				// second slot disabled
-				super.execute(hero, action);
-				return;
 			}
 
 			// equipping thrown and melee at the same time only works at +2
@@ -80,10 +77,16 @@ abstract public class KindOfWeapon extends EquipableItem {
 			String[] names = new String[points < (KindOfWeapon.this instanceof MissileWeapon ? 2 : 3) ? 2 : 3];
 			final String[] name_key = {"primary", "secondary", "tertiary"};
 			KindOfWeapon[] weapons = hero.belongings.weapons();
-			//noinspection ConstantValue
-			if(names.length == 2 && weapons[2] != null && (points < 3 || KindOfWeapon.this instanceof MissileWeapon)) {
-				// pretend it's in a different slot
-				weapons[weapons[0] == null ? 0 : 1] = weapons[2];
+			if(points == 1 && weapons[THROWN_SLOT] != null) {
+				// prefer second slot over first slot
+				for (int i = THROWN_SLOT - 1; i >= 0; i--) {
+					// one of these should always be empty, but avoid making this assumption
+					if (weapons[i] == null) {
+						// pretend thrown weapon is in this slot
+						weapons[i] = weapons[THROWN_SLOT];
+						break;
+					}
+				}
 			}
 			for (int i = 0; i < names.length; i++) {
 				KindOfWeapon weapon = weapons[i];
@@ -102,15 +105,18 @@ abstract public class KindOfWeapon extends EquipableItem {
 					super.onSelect(index);
 					if (index < 0 || index >= names.length) return;
 					KindOfWeapon replaced = weapons[index];
+					// src is slot to clear, dst is slot to equip to
 					int dst = index, src = index;
 					// index is the "pretend" slot
 					if (points < 3 && replaced instanceof MissileWeapon ^ KindOfWeapon.this instanceof MissileWeapon) {
 						if (replaced instanceof MissileWeapon) {
 							// equipping melee to thrown slot
-							src = 2;
+							// clear the thrown slot but put the weapon in the selected slot
+							src = THROWN_SLOT;
 						} else if (points < 2) {
 							// equipping thrown to melee slot
-							dst = 2;
+							// clear the melee slot and put the thrown weapon into the third slot
+							dst = THROWN_SLOT;
 						}
 					}
 					if (dst != src) {

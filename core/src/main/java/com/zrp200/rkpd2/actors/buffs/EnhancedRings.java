@@ -37,6 +37,11 @@ public class EnhancedRings extends FlavourBuff {
 		type = Buff.buffType.POSITIVE;
 	}
 
+	public static int boost() {
+		return hero.buff(EnhancedRings.class) == null ? 0 :
+				hero.hasTalent(Talent.ENHANCED_RINGS) ? 2 : 1;
+	}
+
 	@Override
 	public boolean attachTo(Char target) {
 		if (super.attachTo(target)){
@@ -73,6 +78,7 @@ public class EnhancedRings extends FlavourBuff {
 		return Messages.get(this, "desc",
 				Messages.titleCase(hero.heroClass.title()),
 				hero.heroClass.is(HeroClass.HUNTRESS) ? "her" : "his",
+				boost(),
 				(int)visualcooldown());
 	}
 }

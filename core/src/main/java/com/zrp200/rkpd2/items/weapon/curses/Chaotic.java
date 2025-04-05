@@ -16,6 +16,11 @@ public class Chaotic extends Weapon.Enchantment{
     HashMap<Class<? extends Weapon.Enchantment>, Weapon.Enchantment> curses = new HashMap();
 
     @Override
+    public boolean curse() {
+        return true;
+    }
+
+    @Override
     public int proc(Weapon weapon, Char attacker, Char defender, int damage) {
         Weapon.Enchantment curse = Weapon.Enchantment.randomCurse(
                 // explosive is redundant with cursed wand effect

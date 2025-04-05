@@ -145,7 +145,7 @@ public class ShadowClone extends ArmorAbility {
 		}
 		return null;
 	}
-	@Override public boolean isActive() { return getShadowAlly() != null; }
+	@Override public boolean isActive(Hero hero) { return getShadowAlly() != null; }
 
 	public static class ShadowAlly extends DirectableAlly {
 

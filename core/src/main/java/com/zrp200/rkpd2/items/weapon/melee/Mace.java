@@ -85,7 +85,7 @@ public class Mace extends MeleeWeapon {
 		@Override
 		public void afterHit(Char enemy, boolean hit) {
 			if (enemy.isAlive()) {
-				Buff.affect(enemy, Daze.class, 5f);
+				Buff.affect(enemy, Daze.class, Daze.DURATION);
 			}
 		}
 	}

@@ -86,13 +86,10 @@ public class Dewdrop extends Item {
 		}
 		if (effect > 0 || shield > 0) {
 			hero.HP += effect;
-			if (shield > 0) Buff.affect(hero, Barrier.class).incShield(shield);
 			if (effect > 0){
 				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(effect), FloatingText.HEALING);
 			}
-			if (shield > 0) {
-				hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING );
-			}
+			if (shield > 0) Buff.affect(hero, Barrier.class).incShield(shield, true);
 
 		} else if (!force) {
 			GLog.i( Messages.get(Dewdrop.class, "already_full") );

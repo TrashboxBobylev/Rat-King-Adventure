@@ -62,6 +62,11 @@ public class NaturesPower extends ArmorAbility {
 	}
 
 	@Override
+	public boolean isTracked(Hero hero) {
+		return hero.buff(naturesPowerTracker.class) != null;
+	}
+
+	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.GROWING_POWER, Talent.NATURES_WRATH, Talent.WILD_MOMENTUM, Talent.PRIMAL_AWAKENING, Talent.HEROIC_ENERGY};
 	}

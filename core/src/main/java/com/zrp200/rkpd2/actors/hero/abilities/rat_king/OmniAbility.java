@@ -172,7 +172,7 @@ public class OmniAbility extends ArmorAbility {
     public static Set<ArmorAbility> trackedAbilities() {
         HashSet<ArmorAbility> r = new HashSet();
         if(isApplicable()) for(ArmorAbility ability : abilities) {
-            if(ability.isTracked()
+            if((ability.isActive(hero) || ability.isTracked(hero))
                     && !ability.equals(( (OmniAbility) hero.armorAbility ).armorAbility)) {
                 r.add(ability);
             }
@@ -186,7 +186,7 @@ public class OmniAbility extends ArmorAbility {
         Set<ArmorAbility> abilities = trackedAbilities();
         for(Iterator<ArmorAbility> i = abilities.iterator(); i.hasNext();) {
             ArmorAbility aa = i.next();
-            if( !aa.isActive() ) i.remove();
+            if( !aa.isActive(hero) ) i.remove();
         }
         return abilities;
     }

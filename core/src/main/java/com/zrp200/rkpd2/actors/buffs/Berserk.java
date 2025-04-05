@@ -183,7 +183,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 	public float enchantFactor(float chance, boolean glyph){
 		return chance + Math.min(1f,power)*((Hero)target).byTalent(
 				Talent.ENRAGED_CATALYST, 1/5f,
-				Talent.RK_BERSERKER, glyph ? .15f : 0f
+				Talent.RK_BERSERKER, !glyph ? .15f : 0f
 		);
 	}
 	public float enchantFactor(float chance) { return enchantFactor(chance, false); }
@@ -236,19 +236,18 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 		WarriorShield shield = target.buff(WarriorShield.class);
 		int shieldAmount = Math.round(shield.maxShield() * shieldMultiplier);
 		shield.supercharge(shieldAmount);
-		target.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(shieldAmount), FloatingText.SHIELDING );
 
 		BuffIndicator.refreshHero();
 	}
 
 	private float rageFactor(int damage) {
 		Hero hero = Dungeon.hero;
-		float factor = 1 + hero.pointsInTalent(Talent.BERSERKING_STAMINA)
+		int points = hero.shiftedPoints(Talent.BERSERKING_STAMINA);
+		float factor = 1 + Math.max(points, (points - 1) * 2)
 				// scales with hp like tenacity does
-				* (float)Math.pow(hero.HP/(float)hero.HT, 2)
-				// 4x / 7x / 10x. Even at +0 this should be absurd.
-				* 3;
-		return factor * damage / hero.HT / 3f * recovered();
+				* (1 - (float)Math.pow((hero.HP - damage)/(float)hero.HT, 2))/2f;
+				// +17% / +33% / +67% / +100%
+ 		return factor * damage / hero.HT / 3f * recovered();
 	}
 
 	float maxPower() {
@@ -273,6 +272,7 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 	}
 
 	public final float recovered() {
+		if (state == State.BERSERK) return 1;
 		if (levelRecovery > 0) {
 			if(berserker()) levelRecovery = Math.min(levelRecovery, getLevelRecoverStart());
 			return 1f - levelRecovery/getLevelRecoverStart();

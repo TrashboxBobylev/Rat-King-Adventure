@@ -1146,7 +1146,7 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 
 			//special case for sniper when using ranged attacks
 			if (src == Dungeon.hero
-					&& Dungeon.hero.subClass.is(HeroSubClass.SNIPER)
+					&& hero.subClass.is(HeroSubClass.SNIPER)
 					&& !Dungeon.level.adjacent(Dungeon.hero.pos, pos)
 					&& Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
 				icon = FloatingText.PHYS_DMG_NO_BLOCK;

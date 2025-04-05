@@ -95,7 +95,6 @@ public class Brute extends Mob {
 	
 	protected void triggerEnrage(){
 		Buff.affect(this, BruteRage.class).setShield(HT/2 + 4);
-		sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(HT/2 + 4), FloatingText.SHIELDING );
 		if (Dungeon.level.heroFOV[pos]) {
 			SpellSprite.show( this, SpellSprite.BERSERK);
 		}

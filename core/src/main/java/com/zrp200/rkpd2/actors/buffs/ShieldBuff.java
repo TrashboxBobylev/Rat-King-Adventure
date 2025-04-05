@@ -23,6 +23,9 @@ package com.zrp200.rkpd2.actors.buffs;
 
 import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.ui.BuffIndicator;
 
 public abstract class ShieldBuff extends Buff {
 	
@@ -48,8 +51,16 @@ public abstract class ShieldBuff extends Buff {
 		return shielding;
 	}
 
+	public void vfx(int shield) {
+		if(shield <= 0 || target == null || target.sprite == null) return;
+		target.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
+	}
+
 	public void setShield( int shield, boolean force ) {
-		if (this.shielding <= shield || force) this.shielding = shield;
+		if (this.shielding <= shield || force) {
+			if (icon() != BuffIndicator.NONE) vfx(shield);
+			this.shielding = shield;
+		}
 		if (target != null) target.needsShieldUpdate = true;
 	}
 	final public void setShield( int shield ) {
@@ -64,7 +75,12 @@ public abstract class ShieldBuff extends Buff {
 		shielding += amt;
 		if (target != null) target.needsShieldUpdate = true;
 	}
-	
+
+	public final void incShield (int amt, boolean vfx) {
+		if (vfx) vfx(amt);
+		incShield(amt);
+	}
+
 	public void decShield(){
 		decShield(1);
 	}

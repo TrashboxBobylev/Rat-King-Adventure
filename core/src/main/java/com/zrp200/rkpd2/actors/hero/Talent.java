@@ -232,7 +232,7 @@ public enum Talent {
 	//Champion T3
 	SECONDARY_CHARGE(139, 3), TWIN_UPGRADES(140, 3), COMBINED_LETHALITY(141, 3), ELITE_DEXTERITY(158, 3), HELPER_TO_HERO(imageAt(6, 12), 3),
 	//Monk T3
-	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3), MONK_6TH_ABILITY(159), GRASS_MUNCHING(imageAt(7, 12), 3),
+	UNENCUMBERED_SPIRIT(142, 3), MONASTIC_VIGOR(143, 3), COMBINED_ENERGY(144, 3), MONASTIC_MIGHT(159), GRASS_MUNCHING(imageAt(7, 12), 3),
 	//Highness T3
 	PARTY_FEELING(imageAt(8, 12), 3), SLASH_RUNNER(imageAt(9, 12), 3), PROLONGED_JOY(imageAt(10, 12), 3), WOUND_IGNORANCE(imageAt(11, 12), 3), AGREENALINE_RUSH(imageAt(12, 12), 3),
 	//Challenge T4
@@ -801,6 +801,14 @@ public enum Talent {
 		return false;
 	}
 
+	// returns the corresponding class for a talent
+	public HeroClass getHeroClass() {
+		for (HeroClass cls : HeroClass.values()) {
+			if (isClassTalent(cls)) return cls;
+		}
+		return null;
+	}
+
 	// fixme there's gotta be a way to truncate the sheer amount of extra text that's about to show up.
 	// todo also should decide if I want the comment to show up before or after the meta desc. currently it is set after
 	public String desc(boolean metamorphed){
@@ -816,8 +824,11 @@ public enum Talent {
 		return comment == Messages.NO_TEXT_FOUND ? desc : desc + "\n\n" + comment;
 	}
 
+	private static boolean upgrading = false;
+
 	public static void onTalentUpgraded( Hero hero, Talent talent ){
 		int points = hero.pointsInTalent(talent);
+		upgrading = true;
 		switch(talent) {
 			case IRON_WILL:
 			case NOBLE_CAUSE:
@@ -898,6 +909,7 @@ public enum Talent {
 					break;
 				}
 		}
+		upgrading = false;
 	}
 
 	public static class CachedRationsDropped extends CounterBuff{{revivePersists = true;}};
@@ -1064,13 +1076,11 @@ public enum Talent {
 				if (shield != null) {
 					// 50/75% of total shield
 					int shieldToGive = Math.round(factor * shield.maxShield() * hero.byTalent(/*stacks*/true, /*shifted*/true, LIQUID_WILLPOWER, 0.5f, RESTORATION, 0.25f));
-					hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 					shield.supercharge(shieldToGive);
 				}
 			} else {
 				// 5/7.5% of max HP
 				int shieldToGive = Math.round( factor * hero.HT * hero.byTalent(/*stacks*/true, /*shifted*/true, LIQUID_WILLPOWER, 0.04f, RESTORATION, 0.025f));
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 				Buff.affect(hero, Barrier.class).setShield(shieldToGive);
 			}
 		}
@@ -1225,10 +1235,12 @@ public enum Talent {
 		if(id || curseID && !item.cursedKnown) {
 			if (id) item.identify();
 			else {
-				// fixme this doesn't use .properties file.
-				GLog.w("The %s is %s",
-						item.name(),
-						item.cursed ? "cursed!" : "free of malevolent magic.");
+				item.cursedKnown = true;
+				// suppress message if reran during talent upgrading, because it's bound to be confusing
+				if (!upgrading) {
+					// delegate to proper message instead of creating my own
+					GLog.w(Messages.get(item, item.cursed ? item instanceof Wand ? "curse_discover" : item instanceof Ring ? "cursed_known" : "cursed" : "not_cursed"));
+				}
 			}
 			if (hero.sprite != null) hero.sprite.emitter().burst(
 					Speck.factory(Speck.QUESTION),1);
@@ -1787,7 +1799,7 @@ public enum Talent {
 					if (renamedTalents.containsKey(key)) key = renamedTalents.get(key);
 					if (renamedTalents.containsKey(value)) value = renamedTalents.get(value);
 				}
-                if (!removedTalents.contains(key) && !removedTalents.contains(value)) {
+				if (!removedTalents.contains(key) && !removedTalents.contains(value)) {
                     try {
                         hero.metamorphedTalents.put(Talent.valueOf(key), Talent.valueOf(value));
                     } catch (Exception e) {

@@ -428,7 +428,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 									int shieldAmt = Math.round(shield.maxShield() * hero.pointsInTalent(Talent.LETHAL_DEFENSE,Talent.RK_GLADIATOR)
 											/(hero.hasTalent(Talent.LETHAL_DEFENSE)?2f:3f));
 									shield.supercharge(shieldAmt);
-									hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 								}
 							}
 						}
@@ -486,7 +485,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				int shieldAmt =Math.round(shield.maxShield() *
 						(hero.pointsInTalent(Talent.LETHAL_DEFENSE) / 2f + hero.pointsInTalent(Talent.RK_GLADIATOR)/3f));
 				shield.supercharge(shieldAmt);
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldAmt), FloatingText.SHIELDING);
 			}
 		}
 

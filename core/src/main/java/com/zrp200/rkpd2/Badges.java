@@ -119,6 +119,7 @@ public class Badges {
 		BOSS_SLAIN_1_ROGUE,
 		BOSS_SLAIN_1_HUNTRESS,
 		BOSS_SLAIN_1_DUELIST,
+		BOSS_SLAIN_1_RAT_KING,
 		BOSS_SLAIN_1_ALL_CLASSES    ( 55, true ),
 		GAMES_PLAYED_2              ( 56, true ),
 		HIGH_SCORE_2                ( 57 ),
@@ -166,6 +167,7 @@ public class Badges {
 		VICTORY_ROGUE,
 		VICTORY_HUNTRESS,
 		VICTORY_DUELIST,
+		VICTORY_RAT_KING,
 		VICTORY_ALL_CLASSES         ( 104, true ),
 		DEATH_FROM_ALL              ( 105, true ),
 		BOSS_SLAIN_3_GLADIATOR,
@@ -183,7 +185,7 @@ public class Badges {
 		BOSS_SLAIN_3_DECEPTICON,
 		BOSS_SLAIN_3_HIGHNESS,
 		BOSS_SLAIN_3_OMNIBATTLER,
-		BOSS_SLAIN_3_RAT_KING,
+		BOSS_SLAIN_3_KING,
 		BOSS_SLAIN_3_ALL_SUBCLASSES ( 106, true ),
 		BOSS_CHALLENGE_3            ( 107 ),
 		BOSS_CHALLENGE_4            ( 108 ),
@@ -755,6 +757,7 @@ public class Badges {
 		firstBossClassBadges.put(HeroClass.ROGUE, Badge.BOSS_SLAIN_1_ROGUE);
 		firstBossClassBadges.put(HeroClass.HUNTRESS, Badge.BOSS_SLAIN_1_HUNTRESS);
 		firstBossClassBadges.put(HeroClass.DUELIST, Badge.BOSS_SLAIN_1_DUELIST);
+		firstBossClassBadges.put(HeroClass.RAT_KING, Badge.BOSS_SLAIN_1_RAT_KING);
 	}
 
 	private static LinkedHashMap<HeroClass, Badge> victoryClassBadges = new LinkedHashMap<>();
@@ -764,6 +767,8 @@ public class Badges {
 		victoryClassBadges.put(HeroClass.ROGUE, Badge.VICTORY_ROGUE);
 		victoryClassBadges.put(HeroClass.HUNTRESS, Badge.VICTORY_HUNTRESS);
 		victoryClassBadges.put(HeroClass.DUELIST, Badge.VICTORY_DUELIST);
+
+		victoryClassBadges.put(HeroClass.RAT_KING, Badge.VICTORY_RAT_KING);
 	}
 
 	private static LinkedHashMap<HeroSubClass, Badge> thirdBossSubclassBadges = new LinkedHashMap<>();
@@ -782,8 +787,9 @@ public class Badges {
 		thirdBossSubclassBadges.put(HeroSubClass.CHAMPION, Badge.BOSS_SLAIN_3_CHAMPION);
 		thirdBossSubclassBadges.put(HeroSubClass.MONK, Badge.BOSS_SLAIN_3_MONK);
 		thirdBossSubclassBadges.put(HeroSubClass.HIGHNESS, Badge.BOSS_SLAIN_3_HIGHNESS);
-		thirdBossSubclassBadges.put(HeroSubClass.KING, Badge.BOSS_SLAIN_3_RAT_KING);
 		thirdBossSubclassBadges.put(HeroSubClass.RK_CHAMPION, Badge.BOSS_SLAIN_3_OMNIBATTLER);
+
+		thirdBossSubclassBadges.put(HeroSubClass.KING, Badge.BOSS_SLAIN_3_KING);
 	}
 
 	public static void validateBossSlain() {

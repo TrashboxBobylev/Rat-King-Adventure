@@ -37,7 +37,12 @@ public class DreamDart extends TippedDart {
 	@Override
 	public int proc(Char attacker, final Char defender, int damage) {
 
-		if (attacker.alignment == defender.alignment && attacker != defender){
+		if (processingChargedShot && attacker == defender) {
+			//do nothing to the hero when processing charged shot
+			return super.proc(attacker, defender, damage);
+		}
+
+		if (attacker.alignment == defender.alignment){
 			PotionOfCleansing.cleanse(defender, PotionOfCleansing.Cleanse.DURATION*2f);
 			return 0;
 		}

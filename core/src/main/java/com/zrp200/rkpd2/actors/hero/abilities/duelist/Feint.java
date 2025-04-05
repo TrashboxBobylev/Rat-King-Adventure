@@ -160,6 +160,11 @@ public class Feint extends ArmorAbility {
 		return new Talent[]{Talent.FEIGNED_RETREAT, Talent.EXPOSE_WEAKNESS, Talent.COUNTER_ABILITY, Talent.WARPED_AGGRESSION, Talent.HEROIC_ENERGY};
 	}
 
+	@Override
+	public boolean isTracked(Hero hero) {
+		return Actor.containsClass(AfterImage.class);
+	}
+
 	public static class AfterImage extends Mob {
 
 		{

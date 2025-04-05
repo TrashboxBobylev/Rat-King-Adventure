@@ -164,8 +164,13 @@ public class DeathMark extends ArmorAbility {
 		return new Talent[]{Talent.FEAR_THE_REAPER, Talent.DEATHLY_DURABILITY, Talent.DOUBLE_MARK, Talent.CATACLYSMIC_ENERGY, Talent.HEROIC_ENERGY};
 	}
 
-	@Override public boolean isTracked() {
+	@Override public boolean isTracked(Hero hero) {
 		return Actor.containsClass(DeathMarkTracker.class);
+	}
+
+	@Override
+	public boolean isActive(Hero hero) {
+		return hero.buff(DoubleMarkTracker.class) != null;
 	}
 
 	public static class DeathMarkTracker extends FlavourBuff {
@@ -222,7 +227,6 @@ public class DeathMark extends ArmorAbility {
 				target.die(this);
 				int shld = Math.round(initialHP * (0.125f* hero.shiftedPoints(Talent.DEATHLY_DURABILITY)));
 				if (shld > 0 && target.alignment != Char.Alignment.ALLY){
-					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shld), FloatingText.SHIELDING);
 					Buff.affect(hero, Barrier.class).setShield(shld);
 				}
 			}

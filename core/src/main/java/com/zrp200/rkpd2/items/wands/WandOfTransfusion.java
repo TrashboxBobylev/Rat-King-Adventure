@@ -89,8 +89,6 @@ public class WandOfTransfusion extends Wand {
 				if (shielding > 0){
 					healing -= shielding;
 					Buff.affect(ch, Barrier.class).setShield(shielding);
-				} else {
-					shielding = 0;
 				}
 				
 				ch.HP += healing;
@@ -98,9 +96,6 @@ public class WandOfTransfusion extends Wand {
 				ch.sprite.emitter().burst(Speck.factory(Speck.HEALING), 2 + buffedLvl() / 2);
 				if (healing > 0) {
 					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(healing), FloatingText.HEALING);
-				}
-				if (shielding > 0){
-					ch.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shielding), FloatingText.SHIELDING);
 				}
 				
 				if (!freeCharge) {
@@ -115,7 +110,6 @@ public class WandOfTransfusion extends Wand {
 
 				//grant a self-shield, and...
 				Buff.affect(curUser, Barrier.class).setShield((5 + buffedLvl()));
-				curUser.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5+buffedLvl()), FloatingText.SHIELDING);
 
 				//charms living enemies
 				if (!ch.properties().contains(Char.Property.UNDEAD)) {
@@ -158,7 +152,6 @@ public class WandOfTransfusion extends Wand {
 			freeCharge = true;
 			int shieldToGive = Math.round((2*(5 + buffedLvl()))*procChanceMultiplier(attacker));
 			Buff.affect(attacker, Barrier.class).setShield(shieldToGive);
-			attacker.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 			GLog.p( Messages.get(this, "charged") );
 			attacker.sprite.emitter().burst(BloodParticle.BURST, 20);
 		}

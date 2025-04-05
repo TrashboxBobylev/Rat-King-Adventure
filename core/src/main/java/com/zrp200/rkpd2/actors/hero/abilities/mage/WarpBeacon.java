@@ -279,8 +279,8 @@ public class WarpBeacon extends ArmorAbility {
 		}
 	}
 
-	@Override public boolean isActive() {
-		return Actor.containsClass(WarpBeaconTracker.class);
+	@Override public boolean isActive(Hero hero) {
+		return hero.buff(WarpBeaconTracker.class) != null;
 	}
 
 	@Override

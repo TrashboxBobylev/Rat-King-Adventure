@@ -26,6 +26,7 @@ import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
+import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.Transmuting;
@@ -201,13 +202,6 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 	public static class WndMetamorphReplace extends Window {
 
-		//talents that can only be used by one hero class
-		private static final HashMap<Talent, HeroClass> restrictedTalents = new HashMap<>();
-		static {
-			// rework made metamorph effect unreasonable.
-			restrictedTalents.put(IRON_WILL, WARRIOR);
-		}
-
 		public static WndMetamorphReplace INSTANCE;
 
 		public Talent replacing;
@@ -258,8 +252,8 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 						if (curTalentsAtTier.contains(talent)){
 							clsTalentsAtTier.remove(talent);
 						}
-						if (restrictedTalents.containsKey(talent)
-								&& restrictedTalents.get(talent) != curUser.heroClass){
+						if (talent == STRONGMAN && curUser.subClass == HeroSubClass.MONK) {
+							// avoid redundancy
 							clsTalentsAtTier.remove(talent);
 						}
 

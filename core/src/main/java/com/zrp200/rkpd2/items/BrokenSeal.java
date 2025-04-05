@@ -222,7 +222,10 @@ public class BrokenSeal extends Item {
 		private static final float RECHARGE_RATE = 30;
 
 		public float getRechargeRate() {
-			float baseSpeed = (RECHARGE_RATE * (1 - ((Hero) target).shiftedPoints(Talent.IRON_WILL) / (float) maxShield()));
+			float baseSpeed = (RECHARGE_RATE * (1 - Math.min(
+                    ((Hero)target).shiftedPoints(Talent.IRON_WILL),
+                    // prevents dividing by 0 and guarantees it takes at least 30 turns to fully recharge in case of metamorph
+                    maxShield() - 1) /(float)maxShield()));
 			if (((Hero)target).hasTalent(Talent.WILLPOWER_OF_INJURED)){
 				float boost = 0.5f * ((Hero) target).pointsInTalent(Talent.WILLPOWER_OF_INJURED);
 				baseSpeed /= 1f + boost * Math.max(1f, ((float) (target.HT - target.HP) / target.HT)*1.1f);
@@ -254,6 +257,7 @@ public class BrokenSeal extends Item {
 			if (maxShield > shielding()){
 				setShield(maxShield);
 			}
+			vfx(maxShield);
 		}
 
 		public synchronized void setArmor(Armor arm){

@@ -47,7 +47,7 @@ public class WndTradeItem extends WndInfoItem {
 
 	private WndBag owner;
 
-	private static float MULT=1.5f;
+	public static final float MULT=1.5f;
 
 	private boolean selling = false;
 

@@ -529,8 +529,8 @@ public class WndBlacksmith extends Window {
 						}
 					}
 				};
-				btnConfirm.setRect(0, height+2, width/2-1, 16);
-				add(btnConfirm);
+				btnConfirm.setX(0);
+				btnConfirm.setSize(width/2-1, 16);
 
 				RedButton btnCancel = new RedButton(Messages.get(WndSadGhost.class, "cancel")){
 					@Override
@@ -538,10 +538,10 @@ public class WndBlacksmith extends Window {
 						RewardWindow.this.hide();
 					}
 				};
-				btnCancel.setRect(btnConfirm.right()+2, height+2, btnConfirm.width(), 16);
-				add(btnCancel);
+				btnCancel.setX(btnConfirm.right()+2);
+				btnCancel.setSize(btnConfirm.width(), 16);
 
-				resize(width, (int)btnCancel.bottom());
+				addToBottom(btnCancel, btnConfirm);
 			}
 		}
 

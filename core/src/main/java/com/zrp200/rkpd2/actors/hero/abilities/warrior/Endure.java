@@ -68,8 +68,8 @@ public class Endure extends ArmorAbility {
 	}
 
 	@Override
-	public boolean isTracked() {
-		return Actor.containsClass(EndureTracker.class);
+	public boolean isTracked(Hero hero) {
+		return hero.buff(EndureTracker.class) != null;
 	}
 
 	public static class EndureTracker extends FlavourBuff {

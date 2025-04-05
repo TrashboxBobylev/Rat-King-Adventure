@@ -135,11 +135,6 @@ public class WildMagic extends ArmorAbility {
 
 	}
 
-	@Override
-	public boolean isActive() {
-		return Actor.containsClass(WildMagicTracker.class);
-	}
-
 	public static class WildMagicTracker extends FlavourBuff{
 		@Override
 		protected void onRemove() {

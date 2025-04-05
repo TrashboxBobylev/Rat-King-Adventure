@@ -128,10 +128,9 @@ public abstract class ArmorAbility implements Bundlable {
 	/** causes OmniAbility to trick the game into thinking you have talents for this ArmorAbility.
 	 * Careful with using things like hero#byTalent though, as this may cause unexpected behavior (both talents being active.)
 	 **/
-	public boolean isTracked() { return isActive(); }
-	/** lets omniability select this manually even when not its stored armor ability.
-	 * Must also be tracked (hence the default on isTracked). **/
-	public boolean isActive() { return false; }
+	public boolean isTracked(Hero hero) { return false; }
+	/** lets omniability select this manually even when not its stored armor ability. **/
+	public boolean isActive(Hero hero) { return false; }
 
 	// all objects of a given armor ability are equal. they're all interchangeable.
 	@Override public boolean equals(Object other) {

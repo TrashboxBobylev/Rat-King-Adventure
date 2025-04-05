@@ -409,7 +409,7 @@ public class Hero extends Char {
 		if (hasTalent(Talent.RK_PALADIN)){
 			HT += RKChampionBuff.rkPaladinUniqueAllies() * (3*pointsInTalent(Talent.RK_PALADIN)-1);
 		}
-		
+
 		if (boostHP){
 			HP += Math.max(HT - curHT, 0);
 		}
@@ -429,19 +429,15 @@ public class Hero extends Char {
 			strBonus += buff.boost();
 		}
 
-		// TODO buff for warrior
-		if (hasTalent(Talent.STRONGMAN,Talent.RK_BERSERKER)){ // note that you need to have points in this.
+		if (canHaveTalent(Talent.STRONGMAN) || canHaveTalent(Talent.MONASTIC_MIGHT) || hasTalent(Talent.RK_BERSERKER)){ // note that you need to have points in this.
 			float boost = Math.max(
-					0.06f + 0.10f*pointsInTalent(Talent.STRONGMAN), // +16%/+26%/+36%
+					0.06f + 0.10f*pointsInTalent(Talent.STRONGMAN, Talent.MONASTIC_MIGHT), // +16%/+26%/+36%
 					0.03f + 0.05f*pointsInTalent(Talent.RK_BERSERKER)
 			);
-			//let's see
-			//15 strength
-			//at +1 it will be 17 strength
-			//at +2 it will be 18 strength
-			//at +3 it will be 20 strength
-			//so +2/+3/+5
-			//seems legit
+			if (canHaveTalent(Talent.STRONGMAN) || canHaveTalent(Talent.MONASTIC_MIGHT)) {
+				boost = Math.max(boost, 0.08f);
+			}
+
 			strBonus += (int)Math.floor(STR * boost);
 		}
 
@@ -1602,7 +1598,7 @@ public class Hero extends Char {
 							if (gold.doPickUp( Dungeon.hero )) {
 								DarkGold existing = Dungeon.hero.belongings.getItem(DarkGold.class);
 								if (existing != null && existing.quantity()%5 == 0){
-									if (existing.quantity() >= 40) {
+									if (existing.quantity() >= Blacksmith.Quest.MAX_GOLD) {
 										GLog.p(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
 									} else {
 										GLog.i(Messages.get(DarkGold.class, "you_now_have", existing.quantity()));
@@ -1733,7 +1729,6 @@ public class Hero extends Char {
 					&& buff(Talent.AggressiveBarrierCooldown.class) == null
 					&& (HP / (float)HT) < 0.20f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
 				Buff.affect(this, Barrier.class).setShield(5);
-				sprite.showStatusWithIcon(CharSprite.POSITIVE, "5", FloatingText.SHIELDING);
 				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
 
 			}
@@ -1794,41 +1789,39 @@ public class Hero extends Char {
 
 		float mult = Talent.SpiritBladesTracker.getProcModifier();
 
-		if (RobotBuff.isVehicle() && Dungeon.hero.belongings.thrownWeapon == null){
-			damage = Random.NormalIntRange(Math.max(0, STR()-12), Math.max(0, STR()-7));
-			int points = Dungeon.hero.pointsInTalent(Talent.ENERGON_FUSION);
-			if (points > 0){
-				for (Buff b : Dungeon.hero.buffs()){
-					if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(Dungeon.hero, points/6f);
-					if (b instanceof Wand.Charger) ((Wand.Charger) b).charge(Dungeon.hero, points/6f);
-				}
-			}
-			if (Dungeon.hero.hasTalent(Talent.ERADICATING_CHARGE)){
-				Buff.affect(this, Barrier.class).incShield(Dungeon.hero.pointsInTalent(Talent.ERADICATING_CHARGE));
-				if (Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.ERADICATING_CHARGE)){
-					Buff.affect(enemy, Slow.class, 3f);
-				}
-			}
-		}
-
-		// subclass logic here
-        if (subClass.is(HeroSubClass.BATTLEMAGE)) {
-            MagesStaff staff = belongings.getItem(MagesStaff.class);
-            if (staff != null && (staff == wep || hasTalent(Talent.SORCERY))&& (mult == 1 || Random.Float() < mult)){
-					if(staff == wep || Random.Int(5) < pointsInTalent(Talent.SORCERY)) {
-                    staff.procBM();
+        if (RobotBuff.isVehicle() && Dungeon.hero.belongings.thrownWeapon == null){
+            damage = Random.NormalIntRange(Math.max(0, STR()-12), Math.max(0, STR()-7));
+            int points = Dungeon.hero.pointsInTalent(Talent.ENERGON_FUSION);
+            if (points > 0){
+                for (Buff b : Dungeon.hero.buffs()){
+                    if (b instanceof Artifact.ArtifactBuff) ((Artifact.ArtifactBuff) b).charge(Dungeon.hero, points/6f);
+                    if (b instanceof Wand.Charger) ((Wand.Charger) b).charge(Dungeon.hero, points/6f);
                 }
-                if (staff == wep || Random.Int(3) < pointsInTalent(Talent.SORCERY))
-                    if (buff(Talent.EmpoweredStrikeTracker.class) != null) {
-                        buff(Talent.EmpoweredStrikeTracker.class).detach();
-                        damage = Math.round(damage * (1f + byTalent(
-                                Talent.EMPOWERED_STRIKE, 1/4f,
-                                Talent.RK_BATTLEMAGE, 1/6f)
-									));
-                    }
-                staff.procWand(enemy, damage);
+            }
+            if (Dungeon.hero.hasTalent(Talent.ERADICATING_CHARGE)){
+                Buff.affect(this, Barrier.class).incShield(Dungeon.hero.pointsInTalent(Talent.ERADICATING_CHARGE));
+                if (Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.ERADICATING_CHARGE)){
+                    Buff.affect(enemy, Slow.class, 3f);
+                }
             }
         }
+
+        if (subClass.is(HeroSubClass.BATTLEMAGE)) {
+			boolean isStaff = wep instanceof MagesStaff;
+			MagesStaff staff = isStaff ? (MagesStaff) wep :
+					hasTalent(Talent.SORCERY) ? belongings.getItem(MagesStaff.class) :
+							null;
+			if (staff != null && Random.Float() < mult) {
+				int points = pointsInTalent(Talent.SORCERY);
+				damage = staff.procBM(
+						enemy,
+						damage,
+						isStaff || Random.Int(5) < points,
+						isStaff || Random.Int(3) < points,
+						true
+				);
+			}
+		}
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 		if (hasTalent(Talent.HEROIC_ENDURANCE)){
 			Armor armor = belongings.armor();
@@ -1938,7 +1931,7 @@ public class Hero extends Char {
 		if(buff(HighnessBuff.class) != null && buff(HighnessBuff.class).state == HighnessBuff.State.ENERGIZED){
 			damage *= 1.33f;
 		}
-		
+
 		return damage;
 	}
 	

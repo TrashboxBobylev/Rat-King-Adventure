@@ -230,7 +230,7 @@ public class Wrath extends ArmorAbility {
     }
 
     @Override
-    public boolean isTracked() {
+    public boolean isTracked(Hero hero) {
         return Actor.containsClass(RatStatue.class);
     }
 

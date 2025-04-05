@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.duelist;
 
+import static com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility.markAbilityUsed;
+
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -49,6 +51,7 @@ import com.zrp200.rkpd2.actors.buffs.Roots;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
+import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.FloatingText;
@@ -153,7 +156,7 @@ public class ElementalStrike extends ArmorAbility {
 			return;
 		}
 
-		armor.useCharge(hero, this);
+		armor.useCharge(hero, this, false);
 
 		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
 
@@ -226,6 +229,7 @@ public class ElementalStrike extends ArmorAbility {
 
 				Invisibility.dispel();
 				hero.spendAndNext(hero.attackDelay());
+				markAbilityUsed(ElementalStrike.this);
 			}
 		});
 
@@ -266,9 +270,7 @@ public class ElementalStrike extends ArmorAbility {
 		//*** Blocking ***
 		} else if (ench instanceof Blocking){
 			if (targetsHit > 0){
-				int shield = Math.round(Math.round(6f*targetsHit*powerMulti));
 				Buff.affect(hero, Barrier.class).setShield(Math.round(6f*targetsHit*powerMulti));
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shield), FloatingText.SHIELDING);
 			}
 
 		//*** Vampiric ***

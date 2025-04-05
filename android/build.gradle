@@ -4,7 +4,7 @@ android {
     namespace 'com.zrp200.rkpd2.android'
     signingConfigs {
         release {
-            storeFile file('C:\\Users\\Zrp200\\Zrp200.jks')
+            storeFile file('C:\\Users\\zrp20\\Zrp200.jks')
             storePassword 'palkia'
             keyAlias 'Zrp200'
             keyPassword 'palkia'

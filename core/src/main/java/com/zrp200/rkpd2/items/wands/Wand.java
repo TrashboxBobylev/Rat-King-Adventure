@@ -240,8 +240,10 @@ public abstract class Wand extends Item {
 		if(sorcery > 0) {
 			MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
 			if(staff != null) {
-				if (Random.Int(isStaff ? 20 : 10) < sorcery) staff.procBM();
-				if (Random.Int(isStaff ? 12 :  6) < sorcery) staff.procWand(target, damage);
+				staff.procBM(target, damage,
+						Random.Int(isStaff ? 20 : 10) < sorcery,
+						Random.Int(isStaff ? 12 :  6) < sorcery,
+						false);
 				if (staff instanceof KromerStaff) ((KromerStaff) staff).kromerProc();
 			}
 		}
@@ -508,10 +510,12 @@ public abstract class Wand extends Item {
 
 		//inside staff
 		if (charger != null && charger.target == Dungeon.hero && !Dungeon.hero.belongings.contains(this)){
-			if (Dungeon.hero.hasTalent(Talent.EXCESS_CHARGE) && curCharges >= maxCharges){
-				int shieldToGive = Math.round(buffedLvl()*0.67f*Dungeon.hero.pointsInTalent(Talent.EXCESS_CHARGE));
+			if (Dungeon.hero.hasTalent(Talent.EXCESS_CHARGE, Talent.RK_BATTLEMAGE) && curCharges >= maxCharges){
+				int shieldToGive = Math.round(buffedLvl()*Dungeon.hero.byTalent(
+						Talent.EXCESS_CHARGE, 1f,
+						Talent.RK_BATTLEMAGE, 0.67f
+				));
 				Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive);
-				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive), FloatingText.SHIELDING);
 			}
 		}
 
@@ -707,7 +711,7 @@ public abstract class Wand extends Item {
 				int cell = shot.collisionPos;
 				
 				if (target == curUser.pos || cell == curUser.pos) {
-					if (target == curUser.pos){
+					if (target == curUser.pos && curUser.hasTalent(Talent.SHIELD_BATTERY, Talent.RESTORATION)){
 
 						if (curUser.buff(MagicImmune.class) != null){
 							GLog.w( Messages.get(Wand.class, "no_magic") );
@@ -723,7 +727,6 @@ public abstract class Wand extends Item {
 								curUser.byTalent(Talent.SHIELD_BATTERY, 0.0625f, Talent.RESTORATION, 0.05f);
 						shield *= Math.pow(1.5f, curUser.pointsInTalent(Talent.SHIELD_BATTERY, Talent.RESTORATION)-1);
 						Buff.affect(curUser, Barrier.class).setShield(Math.round(shield));
-						curUser.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(Math.round(shield)), FloatingText.SHIELDING);
 						curWand.curCharges = curWand.getMinCharges();
 						curUser.sprite.operate(curUser.pos);
 						Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
@@ -785,8 +788,8 @@ public abstract class Wand extends Item {
 						}, Talent.BACKUP_BARRIER, Talent.NOBLE_CAUSE);
 						if (shieldToGive[0] > 0) {
 							Buff.affect(Dungeon.hero, Barrier.class).setShield(shieldToGive[0]);
-							Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(shieldToGive[0]), FloatingText.SHIELDING);
 						}
+
 					}
 
 					if (curWand.cursed){
@@ -826,7 +829,7 @@ public abstract class Wand extends Item {
 	public interface RechargeSource {
 		float remainder();
 	};
-	
+
 	public class Charger extends Buff {
 		
 		private static final float BASE_CHARGE_DELAY = 10f;

@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
+import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.actors.mobs.npcs.NPC;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
@@ -179,13 +180,14 @@ public class SpectralBlades extends ArmorAbility {
 			}
 		}
 
-		armor.useCharge(hero, this);
+		armor.useCharge(hero, this, false);
 
 		final HashSet<Callback> callbacks = new HashSet<>();
 
 		Callback onComplete = ()->{
 			Invisibility.dispel();
 			hero.spendAndNext( hero.attackDelay() );
+			OmniAbility.markAbilityUsed(this);
 		};
 		for (Char ch : targets) {
 			shoot(hero, ch,

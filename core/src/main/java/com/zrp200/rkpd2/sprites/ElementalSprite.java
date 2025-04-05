@@ -206,7 +206,7 @@ public abstract class ElementalSprite extends MobSprite {
 		//different bolt, so overrides zap
 		@Override
 		public void zap( int cell ) {
-			super.zap( cell, null );
+			super.zap( cell );
 			
 			((Elemental)ch).onZapComplete();
 			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));

@@ -29,9 +29,11 @@ import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.Wrath;
 import com.zrp200.rkpd2.effects.BadgeBanner;
 import com.zrp200.rkpd2.items.armor.RatKingArmor;
+import com.zrp200.rkpd2.items.TengusMask;
 import com.zrp200.rkpd2.items.armor.WarriorArmor;
 import com.zrp200.rkpd2.items.bags.VelvetPouch;
 import com.zrp200.rkpd2.items.quest.FlexTape;
@@ -52,6 +54,7 @@ import com.zrp200.rkpd2.sprites.RatKingBossSprite;
 import com.zrp200.rkpd2.sprites.ShopkeeperSprite;
 import com.zrp200.rkpd2.sprites.TormentedSpiritSprite;
 import com.zrp200.rkpd2.sprites.WraithSprite;
+import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.Icons;
 
 import java.util.ArrayList;
@@ -293,9 +296,8 @@ public enum RKPD2Changes {
         {
             new ChangeInfo("Coming Soon", true, TITLE_COLOR,
                     new ChangeButton(Icons.get(Icons.SHPX), "Future Shattered Updates",
-                            "I plan on implementing future Shattered updates, to prevent this mod from becoming outdated."),
-                    new ChangeButton(DUELIST, "The monk is currently missing an extra t4 talent, and Rat King does not have her implemented at all."),
-                    bugFixes("Critical bug fixes are planned. For what, you ask? *chuckle*")
+                            "Expect an update in the coming months with a Shattered v3 port"),
+                    new ChangeButton(Icons.get(Icons.CHANGES), "Balance", "I'm not happy with the current state of balance in RKPD2. The next update is planned to, at minimum, touch almost every t1 and t2 talent currently in RKPD2 as well as most of the classes, subclasses, and associated perks.")
             )
         },
         {
@@ -308,7 +310,8 @@ public enum RKPD2Changes {
                                     "Lunge now works at a distance of 2, letting it be used for spacing."
                             ),
                             "Most T1-3 talents buffed heavily. T4 talents are unchanged.",
-                            "Added an additional talent to Champion that allows equipping of thrown weapons, which can be used to extend most abilities' effective range, or a third weapon. _Monk ability is WIP._"
+                            "Added an additional talent to Champion that allows equipping of thrown weapons, which can be used to extend most abilities' effective range, or a third weapon.",
+                            "Monk gets a built-in strongman as an additional talent."
                     ) + "\n\n_Rat King currently does not have access to Duelist's mechanics_"),
                     new ChangeButton(BERSERKER,
                             // TODO fix this
@@ -347,28 +350,72 @@ public enum RKPD2Changes {
                             "Rat King sometimes healing beyond his max hp when eating."
                     ))
             ),
-            new ChangeInfo("v2.0.4-v2.0.6",false,TITLE_COLOR,
-                misc("_2.0.6_" + list("Added an Elemental Strike effect for Chaotic curse. It's rather...chaotic, if you ask me.")),
-                bugFixes(
-                    "_2.0.6_:" + list(
-                            "Barkskin talent giving more barkskin than intended",
-                            "Omniability getting stuck on duelist abilities",
-                            "Rat King always gaining combo when attacking")
-                    + "_2.0.5_:" + list(
-                        "Crash when interacting with the pickaxe under certain scenarios",
-                        "Glaive's spike not doing damage",
-                        "Backup barrier always visually activating",
-                        "Crash handler not activating :("
+            new ChangeInfo("v2.0.8", false, TITLE_COLOR,
+                    misc(
+                            list("Iron Will can now be metamorphed.")
+                                    + "\n_Omniability:_" + list(
+                                    "Fixed bugs preventing rolled feint, challenge, elemental strike, nature's power, and wild magic from benefitting from talents",
+                                    "Heroic Leap, Challenge, and Death mark can now be optionally used one extra time directly after use if the corresponding talents are chosen"
+                            )
                     ),
-                    "_2.0.4_:" + list(
-                        "detaching the seal degrading armor",
-                        "elite dexterity not working as intended/described",
-                        "elite dexterity switch prompt not always showing the correct weapons",
-                        "backup barrier not giving correct amount of shielding",
-                        "Blacksmith quest not correctly indicating quest completion"
+                    bugFixes(""
+                            + "_Caused by v2.0.0_:"
+                            + list(
+                                "Blacksmith quest not indicating when it is done",
+                                "crashes whenever a shocking elemental attempts to use its ranged attack",
+                                "!!!NO TEXT FOUND!!! when thief's intuition reveals a ring is cursed"
+                            ) + "\n_Existed Prior:_" + list(
+                                    "Chaotic incorrectly being laballed as an enchantment."
+                            )
+                    )),
+            new ChangeInfo("v2.0.7", false, TITLE_COLOR,
+                    new ChangeButton(MONASTIC_MIGHT, "Monastic Might",
+                            "Finally added a 6th monk talent: Strongman. *coughing* I mean \"_Monastic Might_\"." +
+                                    "\n\n100% unrelated change:"
+                                    + list("_Strongman_ now gives +8% strength at +0")
+                    ),
+                    new ChangeButton(new ItemSprite(new TengusMask()), "Critical Subclass Bugfixes",
+                            "_Berserker_:"
+                                    + list(
+                                        "Berserk losing all power once hit",
+                                        "Berserking stamina applying in reverse",
+                                        "Enraged catalyst and inevitability disabling ring of arcana",
+                                        "Inevitability's enraged catalyst only applying to glyphs")
+                                    + "\nBerserking stamina now gives +33%/+67%/+100%."
+                                    + "\n\n_Battlemage_"
+                                    + list(
+                                        "Empowering strike not being implemented at all",
+                                        "Excess Charge being shattered excess charge, and Rat King's version doing nothing at all",
+                                        "Staff giving an inappropriate amount of recharge on hit and via sorcery"
+                                    )
+                                    + "\n\n_Other:_"
+                                    + list(
+                                            "Hold Fast not working at all",
+                                            "Fixed a bug causing secondary weapons to be lost when equipped with +2 elite dexterity active",
+                                            "necromancer's minions has been buffed to be 13/27/54/80%, instead of erroneously capping at 15% at +3",
+                                            "+3 speedy stealth not giving momentum")
+                    ),
+                    bugFixes(list(
+                            "Battlemage description being duplicated",
+                            "Blacksmith's smith window buttons being broken",
+                            "Shielding vfx not being shown in some cases",
+                            "Infinite gold buyback exploits"
+                    ) + "\n_Rat King:_" + list(
+                            "Rat King's associated badges not being tracked",
+                            "Rat King being able to trample grass on command",
+                            "Rat King talents always showing their metamorph effect",
+                            "Incorrect FX for Rat King's ranged attacks once subclassed"
+                    ) +"\n_Duelist_: " + list(
+                            "Heavy Blow not inflicting daze, always using one charge",
+                            "Charged Shot Dream Darts putting the hero to sleep"
+                    ) + "\n_Other talent issues_:" + list(
+                            "Several talents incorrectly having Shattered's descriptions",
+                            "Shield Battery being usable even if it does nothing",
+                            "Scroll Empower giving two levels less than expected, rat king's inscribed power being stronger than intended",
+                            "Survivalist's intuition not actually revealing curses"
                     )
-            )),
-            new ChangeInfo("v2.0.1-3", false, TITLE_COLOR,
+                )),
+            new ChangeInfo("v2.0.1-6", false, TITLE_COLOR,
                     new ChangeButton(INSCRIBED_POWER, "Inscribed Power, Desperate Power, and their equivalents",
                             "It turns out that these talents didn't actually work! Well, now they do, with some changes:" +
                                     "\n\n_Desperate Power_:"
@@ -383,7 +430,25 @@ public enum RKPD2Changes {
                                     + list("Buffed to be 6/9 turns of stealth, instead of having no buff at all.", "Removed outdated description, and added a comment")
                     ),
                     new ChangeButton(ELITE_DEXTERITY, "Talent Icons", "Changed the talent icons for Elite Dexterity, Assassin's Lethal Momentum, and Lethal Rush to better match similar talents"),
-                    bugFixes("Caused by v2.0.0:" + list(
+                    misc("_2.0.6_" + list("Added an Elemental Strike effect for Chaotic curse. It's rather...chaotic, if you ask me.")),
+                    bugFixes(
+                            "_2.0.6_:" + list(
+                                    "Barkskin talent giving more barkskin than intended",
+                                    "Omniability getting stuck on duelist abilities",
+                                    "Rat King always gaining combo when attacking")
+                                    + "_2.0.5_:" + list(
+                                    "Crash when interacting with the pickaxe under certain scenarios",
+                                    "Glaive's spike not doing damage",
+                                    "Backup barrier always visually activating",
+                                    "Crash handler not activating :("
+                            ),
+                            "_2.0.4_:" + list(
+                                    "detaching the seal degrading armor",
+                                    "elite dexterity not working as intended/described",
+                                    "elite dexterity switch prompt not always showing the correct weapons",
+                                    "backup barrier not giving correct amount of shielding",
+                                    "Blacksmith quest not correctly indicating quest completion") +
+                            "Caused by v2.0.0:" + list(
                             "Lethal Rush always proccing",
                             "Outdated description for Iron Stomach",
                             "Bad highlighting for Law of Consumption",

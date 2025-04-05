@@ -256,7 +256,7 @@ public class Toolbar extends Component {
 					if ((Dungeon.level.heaps.get(Dungeon.hero.pos) != null || Dungeon.hero.canSelfTrample())
 						&& Dungeon.hero.handle(Dungeon.hero.pos)){
 						//trigger hold fast and patient strike here, even if the hero didn't specifically wait
-						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST)){
+						if (Dungeon.hero.hasTalent(Talent.HOLD_FAST, Talent.RK_BERSERKER)){
 							Buff.affect(Dungeon.hero, HoldFast.class).pos = Dungeon.hero.pos;
 						}
 						if (Dungeon.hero.hasTalent(Talent.PATIENT_STRIKE)){
