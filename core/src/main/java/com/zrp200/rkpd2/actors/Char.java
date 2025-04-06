@@ -578,7 +578,8 @@ public abstract class Char extends Actor {
 				if (hero.pointsInTalent(Talent.PRIDE_OF_STEEL) > 2) {
 					Buff.affect(enemy, StoneOfAggression.Aggression.class, 4f);
 				}
-				effectiveDamage = ((BrawlerBuff.BrawlerWeapon)((Hero) this).belongings.weapon()).warriorAttack(effectiveDamage, enemy);
+				if (((Hero) this).belongings.weapon() != null)
+					effectiveDamage = ((BrawlerBuff.BrawlerWeapon)((Hero) this).belongings.weapon()).warriorAttack(effectiveDamage, enemy);
 			}
 			if (RobotBuff.isRobot()) {
 				if (this instanceof Hero) {
