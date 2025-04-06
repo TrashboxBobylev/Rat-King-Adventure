@@ -48,6 +48,7 @@ import com.zrp200.rkpd2.items.bombs.ArcaneBomb;
 import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
+import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -492,19 +493,21 @@ public abstract class ChampionEnemy extends Buff {
 
 		@Override
 		public void detach() {
-			ArrayList<Class<?extends Mob>> mobsToSpawn;
+			if (Dungeon.level.map[target.pos] != Terrain.CHASM) {
+				ArrayList<Class<? extends Mob>> mobsToSpawn;
 
-			mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
+				mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
 
-			Mob clone = Reflection.newInstance(mobsToSpawn.remove(0));
-			ChampionEnemy.rollForChampion(clone);
-			clone.HP = clone.HT = Math.round(clone.HT);
-			clone.pos = target.pos;
-			clone.state = clone.HUNTING;
-			clone.alignment = target.alignment;
+				Mob clone = Reflection.newInstance(mobsToSpawn.remove(0));
+				ChampionEnemy.rollForChampion(clone);
+				clone.HP = clone.HT = Math.round(clone.HT);
+				clone.pos = target.pos;
+				clone.state = clone.HUNTING;
+				clone.alignment = target.alignment;
 
-			Dungeon.level.occupyCell(clone);
-			GameScene.add( clone );
+				Dungeon.level.occupyCell(clone);
+				GameScene.add(clone);
+			}
 			super.detach();
 		}
 	}
