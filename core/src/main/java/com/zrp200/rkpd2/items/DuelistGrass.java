@@ -46,6 +46,8 @@ public class DuelistGrass extends Item implements Recipe.AllQuantityIngredient {
 
         // I just said I don't want any more grass content!
         bones = false;
+
+        defaultAction = AC_THROW;
     }
 
     public static String AC_IMBUE = "IMBUE";
