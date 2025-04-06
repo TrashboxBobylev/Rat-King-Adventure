@@ -24,6 +24,9 @@ package com.zrp200.rkpd2.items.scrolls;
 import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.buffs.Awareness;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.MindVision;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
@@ -83,6 +86,14 @@ public class ScrollOfMagicMapping extends Scroll {
 		identify();
 
 		readAnimation();
+	}
+
+	@Override
+	public void empoweredRead() {
+		doRead();
+		Buff.affect( curUser, MindVision.class, MindVision.DURATION );
+		Buff.affect( curUser, Awareness.class, Awareness.DURATION );
+		Dungeon.observe();
 	}
 	
 	@Override

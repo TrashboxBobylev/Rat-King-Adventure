@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
+import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.TormentedSpirit;
@@ -73,6 +74,18 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 		} else {
 			super.doRead();
 		}
+	}
+
+	@Override
+	public void empoweredRead() {
+		for (Item item : curUser.belongings){
+			if (item.cursed){
+				item.cursedKnown = true;
+			}
+		}
+		Sample.INSTANCE.play( Assets.Sounds.READ );
+		Invisibility.dispel();
+		doRead();
 	}
 
 	@Override

@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.Flare;
@@ -72,6 +73,20 @@ public class ScrollOfTerror extends Scroll {
 		identify();
 
 		readAnimation();
+	}
+
+	@Override
+	public void empoweredRead() {
+		doRead();
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
+				Terror t = mob.buff(Terror.class);
+				if (t != null){
+					Buff.prolong(mob, Terror.class, 15f);
+					Buff.affect(mob, Paralysis.class, 5f);
+				}
+			}
+		}
 	}
 	
 	@Override

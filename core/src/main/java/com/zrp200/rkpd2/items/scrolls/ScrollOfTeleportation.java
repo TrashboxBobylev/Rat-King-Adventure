@@ -42,7 +42,9 @@ import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.secret.SecretRoom;
 import com.zrp200.rkpd2.levels.rooms.special.SpecialRoom;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.CellSelector;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
 
@@ -65,6 +67,32 @@ public class ScrollOfTeleportation extends Scroll {
 	}
 		identify();
 
+	}
+
+	@Override
+	public void empoweredRead() {
+
+		if (Dungeon.bossLevel()){
+			GLog.w( Messages.get(this, "no_tele") );
+			return;
+		}
+
+		GameScene.selectCell(new CellSelector.Listener() {
+			@Override
+			public void onSelect(Integer target) {
+				if (target != null) {
+					//time isn't spent
+					((HeroSprite)curUser.sprite).read();
+					teleportToLocation(curUser, target);
+					GLog.i( Messages.get(ScrollOfTeleportation.class, "tele") );
+				}
+			}
+
+			@Override
+			public String prompt() {
+				return Messages.get(ScrollOfTeleportation.class, "prompt");
+			}
+		});
 	}
 	
 	public static boolean teleportToLocation(Char ch, int pos){

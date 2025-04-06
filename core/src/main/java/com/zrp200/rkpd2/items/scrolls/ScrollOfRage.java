@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Amok;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.messages.Messages;
@@ -55,6 +56,23 @@ public class ScrollOfRage extends Scroll {
 		
 		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
 		Sample.INSTANCE.play( Assets.Sounds.CHALLENGE );
+
+		readAnimation();
+	}
+
+	@Override
+	public void empoweredRead() {
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
+				Buff.prolong(mob, Amok.class, 5f);
+			}
+		}
+
+		setKnown();
+
+		curUser.sprite.centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
+		Invisibility.dispel();
 
 		readAnimation();
 	}

@@ -182,6 +182,11 @@ public abstract class Scroll extends Item {
 	
 	public abstract void doRead();
 
+	//currently only used in scrolls owned by the book of wonder
+	public void empoweredRead(){
+
+	}
+
 	public void readAnimation() {
 		Invisibility.dispel();
 		curUser.spend( TIME_TO_READ );

@@ -26,6 +26,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.bombs.Bomb;
@@ -332,7 +333,8 @@ public abstract class Recipe {
 		new SummonElemental.Recipe(),
 		new StewedMeat.twoMeat(),
 		new Pipisfusion.Recipe(),
-		new DuelistGrass.SeedDuplicationRecipe()
+		new DuelistGrass.SeedDuplicationRecipe(),
+		new BookOfWonder.Recipe()
 	};
 	
 	private static Recipe[] threeIngredientRecipes = new Recipe[]{

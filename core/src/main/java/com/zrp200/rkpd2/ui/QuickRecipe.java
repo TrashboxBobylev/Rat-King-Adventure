@@ -39,6 +39,7 @@ import com.zrp200.rkpd2.items.KromerMask;
 import com.zrp200.rkpd2.items.LiquidMetal;
 import com.zrp200.rkpd2.items.Recipe;
 import com.zrp200.rkpd2.items.TengusMask;
+import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.bombs.Bomb;
@@ -388,6 +389,7 @@ public class QuickRecipe extends Component {
 				}
 				result.add(new QuickRecipe(new Dagger2.Recipe()));
 				result.add(new QuickRecipe(new WandOfUnstable2.Recipe()));
+				result.add(new QuickRecipe(new BookOfWonder.Recipe()));
 				return result;
 			case 7:
 				result.add(new QuickRecipe(new AlchemicalCatalyst.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new Plant.Seed.PlaceHolder())), new AlchemicalCatalyst()));

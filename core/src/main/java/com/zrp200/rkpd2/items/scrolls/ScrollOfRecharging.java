@@ -55,6 +55,12 @@ public class ScrollOfRecharging extends Scroll {
 
 		readAnimation();
 	}
+
+	@Override
+	public void empoweredRead() {
+		doRead();
+		Buff.append(curUser, Recharging.class, Recharging.DURATION/3f);
+	}
 	
 	public static void charge( Char user, float intensity ) {
 		if (user.sprite != null) {

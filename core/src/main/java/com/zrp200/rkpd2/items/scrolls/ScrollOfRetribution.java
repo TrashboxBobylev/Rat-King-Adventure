@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.messages.Messages;
@@ -79,6 +80,28 @@ public class ScrollOfRetribution extends Scroll {
 		
 		readAnimation();
 		
+	}
+
+	@Override
+	public void empoweredRead() {
+		GameScene.flash( 0xFFFFFF );
+
+		Sample.INSTANCE.play( Assets.Sounds.BLAST );
+		Invisibility.dispel();
+
+		//scales from 3x to 5x power, maxing at ~20% HP
+		float hpPercent = (curUser.HT - curUser.HP)/(float)(curUser.HT);
+		float power = Math.min( 5f, 3f + 2.5f*hpPercent);
+
+		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+			if (Dungeon.level.heroFOV[mob.pos]) {
+				mob.damage(Math.round(mob.HP * power/5f), this);
+			}
+		}
+
+		setKnown();
+
+		readAnimation();
 	}
 	
 	@Override

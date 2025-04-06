@@ -21,12 +21,17 @@
 
 package com.zrp200.rkpd2.items.scrolls;
 
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.effects.Identification;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
+
+import java.util.ArrayList;
 
 public class ScrollOfIdentify extends InventoryScroll {
 
@@ -50,6 +55,24 @@ public class ScrollOfIdentify extends InventoryScroll {
 		GLog.i( Messages.get(this, "it_is", item.title()) );
 		
 		Badges.validateItemLevelAquired( item );
+	}
+
+	@Override
+	public void empoweredRead() {
+		ArrayList<Item> unIDed = new ArrayList<>();
+
+		for( Item i : curUser.belongings){
+			if (!i.isIdentified()){
+				unIDed.add(i);
+			}
+		}
+
+		if (unIDed.size() > 1) {
+			onItemSelected(Random.element(unIDed));
+			Sample.INSTANCE.play(Assets.Sounds.TELEPORT );
+		}
+
+		doRead();
 	}
 	
 	@Override

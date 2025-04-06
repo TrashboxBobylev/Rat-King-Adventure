@@ -75,7 +75,7 @@ public class UnstableSpellbook extends Artifact {
 	public static final String AC_READ = "READ";
 	public static final String AC_ADD = "ADD";
 
-	private final ArrayList<Class> scrolls = new ArrayList<>();
+	protected final ArrayList<Class> scrolls = new ArrayList<>();
 
 	public UnstableSpellbook() {
 		super();
@@ -110,7 +110,7 @@ public class UnstableSpellbook extends Artifact {
 
 		super.execute( hero, action );
 
-		if (hero.buff(MagicImmune.class) != null) return;
+		if (hero.buff(MagicImmune.class) != null || this instanceof BookOfWonder) return;
 
 		if (action.equals( AC_READ )) {
 
@@ -286,6 +286,10 @@ public class UnstableSpellbook extends Artifact {
 		}
 	}
 
+	protected float chargeMod(){
+		return 1.0f;
+	}
+
 	public class bookRecharge extends ArtifactBuff{
 		@Override
 		public boolean act() {
@@ -296,6 +300,7 @@ public class UnstableSpellbook extends Artifact {
 				//120 turns to charge at full, 80 turns to charge at 0/8
 				float chargeGain = 1 / (120f - (chargeCap - charge)*5f);
 				chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
+				chargeGain /= chargeMod();
 				partialCharge += chargeGain;
 
 				if (partialCharge >= 1) {
