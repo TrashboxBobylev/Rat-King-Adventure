@@ -76,8 +76,8 @@ public class PhantomSpear extends MissileWeapon {
 
 	@Override
 	public int throwPos(Hero user, int dst) {
-		if (Dungeon.level.passable[new Ballistica( user.pos, dst, Ballistica.STOP_TARGET, user.pointsInTalent(Talent.SIXTH_SENSE) >= 2 ).collisionPos])
-			return new Ballistica( user.pos, dst, Ballistica.STOP_TARGET, user.pointsInTalent(Talent.SIXTH_SENSE) >= 2 ).collisionPos;
+		if (Dungeon.level.passable[new Ballistica( user.pos, dst, Ballistica.STOP_TARGET, false ).collisionPos])
+			return new Ballistica( user.pos, dst, Ballistica.STOP_TARGET, false ).collisionPos;
 		return user.pos;
 	}
 

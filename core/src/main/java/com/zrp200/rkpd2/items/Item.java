@@ -39,6 +39,7 @@ import com.zrp200.rkpd2.actors.buffs.Degrade;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
@@ -604,7 +605,15 @@ public class Item implements Bundlable {
 	}
 
 	public int throwPos( Hero user, int dst){
-		return new Ballistica( user.pos, dst, Ballistica.FRIENDLY_PROJECTILE, user.pointsInTalent(Talent.SIXTH_SENSE) >= 2 ).collisionPos;
+		if (user.pointsInTalent(Talent.SIXTH_SENSE) == 2 && user.buff(Talent.SixthSenseCooldown.class) == null && dst != user.pos){
+			Mob mob = (Mob) Actor.findChar(dst);
+			if ( mob != null && mob.surprisedBy(Dungeon.hero) &&
+					mob.alignment != Dungeon.hero.alignment && (Dungeon.level.heroFOV[mob.pos] || Dungeon.level.distance(Dungeon.hero.pos, mob.pos) < 4)){
+				Talent.Cooldown.affectHero(Talent.SixthSenseCooldown.class);
+				return dst;
+			}
+		}
+		return new Ballistica( user.pos, dst, Ballistica.FRIENDLY_PROJECTILE, false ).collisionPos;
 	}
 
 	public void throwSound(){

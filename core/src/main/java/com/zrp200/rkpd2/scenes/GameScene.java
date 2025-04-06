@@ -1454,7 +1454,7 @@ public static boolean tagDisappeared = false;
 		}
 		if (Dungeon.hero.hasTalent(Talent.SIXTH_SENSE) && cellSelector.listener != defaultCellListener){
 			for (Mob mob : Dungeon.level.mobs){
-				if (mob.surprisedBy(Dungeon.hero) && mob.alignment != Dungeon.hero.alignment && Dungeon.level.heroFOV[mob.pos]){
+				if (mob.surprisedBy(Dungeon.hero) && mob.alignment != Dungeon.hero.alignment && (Dungeon.level.heroFOV[mob.pos] || Dungeon.level.distance(Dungeon.hero.pos, mob.pos) < 4)){
 					scene.add(new TargetedCell.SixthSense(mob.pos, 0xCC33FF));
 				}
 			}

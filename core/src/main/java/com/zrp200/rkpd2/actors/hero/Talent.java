@@ -735,6 +735,12 @@ public enum Talent {
 	}
 	public static class CounterAbilityTacker extends FlavourBuff{};
 
+	public static class SixthSenseCooldown extends Cooldown {
+		public float duration() { return 15; }
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0xCC33FF); }
+	};
+
 	int icon;
 	int maxPoints;
 
