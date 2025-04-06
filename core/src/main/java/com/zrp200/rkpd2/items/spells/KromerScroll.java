@@ -9,6 +9,7 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.quest.Kromer;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
+import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -49,7 +50,7 @@ public class KromerScroll extends Spell{
             }
         }
         for (Item item : Dungeon.hero.belongings){
-            if (item.isUpgradable()){
+            if (item.isUpgradable() && !(item instanceof SpiritBow)){
                 if (item instanceof MissileWeapon){
                     item.level(item.level()+1);
                 } else if (item instanceof Weapon && ((Weapon) item).enchantment != null) {
