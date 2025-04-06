@@ -371,7 +371,7 @@ abstract public class MissileWeapon extends Weapon {
 	@Override
 	public void cast(Hero user, int dst) {
 		super.cast(user, dst);
-		if (Dungeon.hero.buff(Crossbow.DartSpent.class) != null && this instanceof Dart){
+		if (Dungeon.hero.buff(Crossbow.DartSpent.class) != null && this instanceof Dart && Actor.findChar(dst) != null){
 			MissileWeapon thing = Reflection.newInstance(getClass());
 			thing.collect();
 		}
