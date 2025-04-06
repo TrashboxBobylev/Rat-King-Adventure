@@ -26,12 +26,18 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.PixelParticle;
+import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.GamesInProgress;
 import com.zrp200.rkpd2.Statistics;
+import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.Torch;
+import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.HallsPainter;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
@@ -55,8 +61,11 @@ import com.zrp200.rkpd2.levels.traps.SummoningTrap;
 import com.zrp200.rkpd2.levels.traps.WarpingTrap;
 import com.zrp200.rkpd2.levels.traps.WeakeningTrap;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.SurfaceScene;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.zrp200.rkpd2.windows.WndMessage;
 
 import java.util.ArrayList;
 
@@ -194,6 +203,30 @@ public class HallsLevel extends RegularLevel {
 			if (level.map[i] == Terrain.WATER) {
 				group.add( new Stream( i ) );
 			}
+		}
+	}
+
+	@Override
+	public boolean activateTransition(Hero hero, LevelTransition transition) {
+		if (transition.type == LevelTransition.Type.SURFACE){
+			if (hero.belongings.getItem( Amulet.class ) == null) {
+				Game.runOnRenderThread(new Callback() {
+					@Override
+					public void call() {
+						GameScene.show( new WndMessage( Messages.get(hero, "leave") ) );
+					}
+				});
+				return false;
+			} else {
+				Statistics.ascended = true;
+				Badges.silentValidateHappyEnd();
+				Dungeon.win( Amulet.class );
+				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+				Game.switchScene( SurfaceScene.class );
+				return true;
+			}
+		} else {
+			return super.activateTransition(hero, transition);
 		}
 	}
 	
