@@ -565,9 +565,6 @@ public class CursedWand {
 			GameScene.flash(0xFFFFFF);
 			Sample.INSTANCE.play(Assets.Sounds.BOSS);
 			origin.detach(Dungeon.hero.belongings.backpack);
-		} else {
-			GLog.i(Messages.get(CursedWand.class, "nothing"));
-			return false;
 		}
 		return true;
 	}
