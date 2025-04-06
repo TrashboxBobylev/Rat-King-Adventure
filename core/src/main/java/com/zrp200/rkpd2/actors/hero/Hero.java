@@ -1850,7 +1850,7 @@ public class Hero extends Char {
 
 		damage = Talent.onAttackProc( this, enemy, damage );
 
-		if (buff(ChampionEnemy.Blessed.class) != null && hasTalent(Talent.RK_BLESSED) && wep instanceof MeleeWeapon){
+		if (buff(ChampionEnemy.Blessed.class) != null && hasTalent(Talent.RK_BLESSED) && (wep instanceof MeleeWeapon || forceBuff != null)){
 			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Dungeon.level.solid, null), pointsInTalent(Talent.RK_BLESSED));
 			ShieldHalo shield;
 			GameScene.effect(shield = new ShieldHalo(enemy.sprite));
