@@ -245,7 +245,7 @@ public class WarpBeacon extends ArmorAbility {
 
 		public int pos;
 		public int depth;
-		int branch;
+		public int branch;
 
 		Emitter e;
 

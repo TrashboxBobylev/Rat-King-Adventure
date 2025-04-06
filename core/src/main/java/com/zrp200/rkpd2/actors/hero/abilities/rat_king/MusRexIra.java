@@ -326,6 +326,7 @@ public class MusRexIra extends ArmorAbility {
                                 if (buff != null) buff.detach();
 
                                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
+                                InterlevelScene.returnBranch = tracker.branch;
                                 InterlevelScene.returnDepth = tracker.depth;
                                 InterlevelScene.returnPos = tracker.pos;
                                 Game.switchScene( InterlevelScene.class );
@@ -358,6 +359,7 @@ public class MusRexIra extends ArmorAbility {
                 WarpBeacon.WarpBeaconTracker tracker = new WarpBeacon.WarpBeaconTracker();
                 tracker.pos = target;
                 tracker.depth = Dungeon.depth;
+                tracker.branch = Dungeon.branch;
                 tracker.attachTo(hero);
 
                 hero.sprite.operate(target);
