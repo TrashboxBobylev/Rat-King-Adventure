@@ -296,7 +296,7 @@ public class ItemSpriteSheet {
 		assignItemRect(WAR_SCYTHE,  14, 15);
 	}
 
-	private static final int WEP_TIER6     =                                xy(1, 13);
+	private static final int WEP_TIER6     =                                xy(1, 34);
 
 	public static final int ROYAL_SWORD     = WEP_TIER6+0;
 	public static final int NUCLEAR_HATCHET = WEP_TIER6+1;
@@ -308,11 +308,14 @@ public class ItemSpriteSheet {
 	public static final int BLOOMING_PICK   = WEP_TIER6+7;
 	public static final int ELEMENTAL_DIRK  = WEP_TIER6+8;
 	public static final int EXO_KNIFE       = WEP_TIER6+9;
-	public static final int STEEL_AXE       = WEP_TIER6+10;
-	public static final int HOMING_BOOMERANG= WEP_TIER6+11;
-	public static final int PHANTOM_SPEAR   = WEP_TIER6+12;
-	public static final int RED_KUNAI       = WEP_TIER6+13;
 	public static final int TERMINUS        = WEP_TIER6+14;
+
+	private static final int WEP_TIER6_THROW=                                xy(1, 35);
+
+	public static final int STEEL_AXE       = WEP_TIER6_THROW+10;
+	public static final int HOMING_BOOMERANG= WEP_TIER6_THROW+11;
+	public static final int PHANTOM_SPEAR   = WEP_TIER6_THROW+12;
+	public static final int RED_KUNAI       = WEP_TIER6_THROW+13;
 
 	static {
 		assignItemRect(ROYAL_SWORD, 14, 14);
@@ -325,11 +328,12 @@ public class ItemSpriteSheet {
 		assignItemRect(BLOOMING_PICK, 14, 14);
 		assignItemRect(ELEMENTAL_DIRK, 14, 15);
 		assignItemRect(EXO_KNIFE, 11, 12);
+		assignItemRect(TERMINUS, 15, 16);
+
 		assignItemRect(STEEL_AXE, 16, 14);
 		assignItemRect(HOMING_BOOMERANG, 14, 14);
 		assignItemRect(PHANTOM_SPEAR, 16, 16);
 		assignItemRect(RED_KUNAI, 15, 15);
-		assignItemRect(TERMINUS, 15, 16);
 	}
 
 	                                                                                    //8 free slot
