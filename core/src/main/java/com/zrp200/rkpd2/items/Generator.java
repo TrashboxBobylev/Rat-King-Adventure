@@ -129,6 +129,7 @@ import com.zrp200.rkpd2.items.weapon.melee.ConstructWand;
 import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
 import com.zrp200.rkpd2.items.weapon.melee.Dagger;
 import com.zrp200.rkpd2.items.weapon.melee.Dirk;
+import com.zrp200.rkpd2.items.weapon.melee.DreadSlicer;
 import com.zrp200.rkpd2.items.weapon.melee.ElementalDirk;
 import com.zrp200.rkpd2.items.weapon.melee.ExoKnife;
 import com.zrp200.rkpd2.items.weapon.melee.Flail;
@@ -444,10 +445,11 @@ public class Generator {
 					LuminousCutlass.class,
 					MoltenStrife.class,
 					ElementalDirk.class,
+					DreadSlicer.class,
 					ExoKnife.class,
 					RoyalBrand.class
 			};
-			WEP_T6.probs = new float[]{ 9, 8, 7, 7, 7, 6, 6, 6, 5, 3 };
+			WEP_T6.probs = new float[]{ 9, 8, 7, 7, 7, 6, 6, 6, 6, 5, 3 };
 
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
