@@ -313,10 +313,10 @@ public class ItemSpriteSheet {
 
 	private static final int WEP_TIER6_THROW=                                xy(1, 35);
 
-	public static final int STEEL_AXE       = WEP_TIER6_THROW+10;
-	public static final int HOMING_BOOMERANG= WEP_TIER6_THROW+11;
-	public static final int PHANTOM_SPEAR   = WEP_TIER6_THROW+12;
-	public static final int RED_KUNAI       = WEP_TIER6_THROW+13;
+	public static final int STEEL_AXE       = WEP_TIER6_THROW+0;
+	public static final int HOMING_BOOMERANG= WEP_TIER6_THROW+1;
+	public static final int PHANTOM_SPEAR   = WEP_TIER6_THROW+2;
+	public static final int RED_KUNAI       = WEP_TIER6_THROW+3;
 
 	static {
 		assignItemRect(ROYAL_SWORD, 14, 14);
