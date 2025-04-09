@@ -161,7 +161,7 @@ public class Flail extends MeleeWeapon {
 		@Override
 		public void tintIcon(Image icon) {
 			switch (spins){
-				case 1: default:
+				case 1:
 					icon.hardlight(0, 1, 0);
 					break;
 				case 2:
@@ -169,6 +169,9 @@ public class Flail extends MeleeWeapon {
 					break;
 				case 3:
 					icon.hardlight(1, 0, 0);
+					break;
+				default:
+					icon.hardlight(1, 0.8f, 0.8f);
 					break;
 			}
 		}

@@ -310,6 +310,7 @@ public class ItemSpriteSheet {
 	public static final int EXO_KNIFE       = WEP_TIER6+9;
 	public static final int TERMINUS        = WEP_TIER6+10;
 	public static final int DREAD_SWORD     = WEP_TIER6+11;
+	public static final int SHARKS_TOOTH    = WEP_TIER6+12;
 
 	private static final int WEP_TIER6_THROW=                                xy(1, 35);
 

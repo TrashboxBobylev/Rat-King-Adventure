@@ -74,6 +74,14 @@ public class WellFed extends Buff {
 			left = 999999;
 		}
 	}
+
+	public void add(int amount){
+		if (Dungeon.isChallenged(Challenges.NO_FOOD)){
+			//150 turns if on diet is enabled
+			amount /= 3;
+		}
+		left += amount;
+	}
 	
 	@Override
 	public int icon() {
