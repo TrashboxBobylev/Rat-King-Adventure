@@ -94,6 +94,7 @@ import com.zrp200.rkpd2.items.weapon.melee.KromerStaff;
 import com.zrp200.rkpd2.items.weapon.melee.TerminusBlade;
 import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Plant;
@@ -393,6 +394,7 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe(new BookOfWonder.Recipe()));
 				if (TrueTerminusBlade.isWorthy()){
 					result.add(new QuickRecipe(new TrueTerminusBlade.Recipe()));
+					result.add(new QuickRecipe(new StarPieces.Recipe()));
 				}
 				return result;
 			case 7:

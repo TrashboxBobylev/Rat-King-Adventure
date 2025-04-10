@@ -78,6 +78,7 @@ import com.zrp200.rkpd2.items.weapon.melee.KromerStaff;
 import com.zrp200.rkpd2.items.weapon.melee.TerminusBlade;
 import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 
 import java.util.ArrayList;
 
@@ -313,6 +314,7 @@ public abstract class Recipe {
 		new ArcaneResin.Recipe(),
 		new Alchemize.Recipe(),
 		new TrueTerminusBlade.Recipe(),
+		new StarPieces.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	

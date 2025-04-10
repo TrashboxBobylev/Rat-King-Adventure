@@ -26,6 +26,7 @@ import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.RobotTransform;
 import com.zrp200.rkpd2.actors.hero.abilities.huntress.SpectralBlades;
@@ -46,6 +47,7 @@ import com.zrp200.rkpd2.items.weapon.missiles.Javelin;
 import com.zrp200.rkpd2.items.weapon.missiles.Kunai;
 import com.zrp200.rkpd2.items.weapon.missiles.PhantomSpear;
 import com.zrp200.rkpd2.items.weapon.missiles.Shuriken;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingKnife;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingSpear;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingSpike;
@@ -203,6 +205,8 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 			speed *= 1.5f;
 		} else if (item instanceof SpectralBlades.BirbBlade){
 			speed *= 0.66f;
+		} else if (item instanceof StarPieces){
+			speed *= Random.Float(0.5f, 1.75f);
 		}
 		
 		PosTweener tweener = new PosTweener( this, to, d.length() / speed );
