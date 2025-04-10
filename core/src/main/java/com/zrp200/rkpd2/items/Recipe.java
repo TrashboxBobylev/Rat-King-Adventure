@@ -115,7 +115,7 @@ public abstract class Recipe {
 		}
 		
 		@Override
-		public final boolean testIngredients(ArrayList<Item> ingredients) {
+		public boolean testIngredients(ArrayList<Item> ingredients) {
 			
 			int[] needed = inQuantity.clone();
 			
@@ -167,7 +167,7 @@ public abstract class Recipe {
 		}
 		
 		//ingredients are ignored, as output doesn't vary
-		public final Item sampleOutput(ArrayList<Item> ingredients){
+		public Item sampleOutput(ArrayList<Item> ingredients){
 			try {
 				Item result = Reflection.newInstance(output);
 				result.quantity(outQuantity);
@@ -270,6 +270,26 @@ public abstract class Recipe {
 				ShatteredPixelDungeon.reportException( e );
 				return null;
 			}
+		}
+	}
+
+	// a variant of simple recipe with condition to be successful
+	public abstract class SimpleRecipeLocked extends SimpleRecipe {
+
+		public abstract boolean isAvailable();
+
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			if (!isAvailable())
+				return false;
+			return super.testIngredients(ingredients);
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			if (!isAvailable())
+				return null;
+			return super.sampleOutput(ingredients);
 		}
 	}
 
