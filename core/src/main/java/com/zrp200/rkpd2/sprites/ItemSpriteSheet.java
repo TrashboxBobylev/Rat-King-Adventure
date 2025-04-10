@@ -313,6 +313,7 @@ public class ItemSpriteSheet {
 	public static final int SHARKS_TOOTH    = WEP_TIER6+12;
 	public static final int REAPER          = WEP_TIER6+13;
 	public static final int STARHAMMER      = WEP_TIER6+14;
+	public static final int TRUE_TERMINUS   = WEP_TIER6+15;
 
 	private static final int WEP_TIER6_THROW=                                xy(1, 35);
 
@@ -320,6 +321,7 @@ public class ItemSpriteSheet {
 	public static final int HOMING_BOOMERANG= WEP_TIER6_THROW+1;
 	public static final int PHANTOM_SPEAR   = WEP_TIER6_THROW+2;
 	public static final int RED_KUNAI       = WEP_TIER6_THROW+3;
+	public static final int STAR_PIECES     = WEP_TIER6_THROW+4;
 
 	static {
 		assignItemRect(ROYAL_SWORD, 14, 14);
@@ -337,11 +339,13 @@ public class ItemSpriteSheet {
 		assignItemRect(SHARKS_TOOTH, 15, 16);
 		assignItemRect(REAPER, 15, 16);
 		assignItemRect(STARHAMMER, 16, 16);
+		assignItemRect(TRUE_TERMINUS, 16, 16);
 
 		assignItemRect(STEEL_AXE, 16, 14);
 		assignItemRect(HOMING_BOOMERANG, 14, 14);
 		assignItemRect(PHANTOM_SPEAR, 16, 16);
 		assignItemRect(RED_KUNAI, 15, 15);
+		assignItemRect(STAR_PIECES, 15, 15);
 	}
 
 	                                                                                    //8 free slot
