@@ -70,7 +70,7 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
         tier = (int) Math.ceil(t);
 
         return Math.max( 0, Math.round(
-                tier +  //base
+                t +  //base
                         lvl     //level scaling
         ));
     }
@@ -85,8 +85,8 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
         tier = (int) Math.ceil(t);
 
         return Math.max( 0, Math.round(
-                6*(tier+1) +    //base
-                        lvl*(tier+1)    //level scaling
+                6*(t+1) +    //base
+                        lvl*(t+1)    //level scaling
         ));
     }
 
