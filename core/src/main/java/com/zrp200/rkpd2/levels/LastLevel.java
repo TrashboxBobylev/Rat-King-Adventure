@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.levels;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Tilemap;
 import com.watabou.noosa.audio.Music;
@@ -28,12 +29,15 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.items.Amulet;
+import com.zrp200.rkpd2.items.journal.TerminusPage;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.messages.Messages;
@@ -167,6 +171,22 @@ public class LastLevel extends Level {
 	@Override
 	protected void createItems() {
 		drop( new Amulet(), AMULET_POS );
+
+		if (!Dungeon.hero.isClassed(HeroClass.RAT_KING)) {
+			for (ObjectMap.Entry<String, Integer> chal : Challenges.defaultChals) {
+				if (!Dungeon.isChallenged(chal.value)) {
+					continue;
+				}
+				int itemPos;
+				do {
+					itemPos = Random.Int(width * height);
+				} while (heaps.get(itemPos) != null || distance(AMULET_POS, itemPos) > 2);
+
+				TerminusPage page = new TerminusPage();
+				page.page(chal.key);
+				drop(page, itemPos);
+			}
+		}
 	}
 
 	@Override

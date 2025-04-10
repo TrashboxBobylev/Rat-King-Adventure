@@ -43,7 +43,8 @@ public enum Document {
 	PRISON_WARDEN(ItemSpriteSheet.PRISON_PAGE, true),
 	CAVES_EXPLORER(ItemSpriteSheet.CAVES_PAGE, true),
 	CITY_WARLOCK(ItemSpriteSheet.CITY_PAGE, true),
-	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true);
+	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true),
+	TERMINUS(ItemSpriteSheet.TERMINAL_PAG, true);
 	
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
@@ -305,6 +306,15 @@ public enum Document {
 		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("attrition",                 debug ? READ : NOT_FOUND);
 
+		TERMINUS.pagesStates.put("no_food",                     debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("no_armor",                    debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("no_healing",                  debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("no_herbalism",                debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("swarm_intelligence",          debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("darkness",                    debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("no_scrolls",                  debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("champion_enemies",            debug ? READ : NOT_FOUND);
+		TERMINUS.pagesStates.put("stronger_bosses",             debug ? READ : NOT_FOUND);
 	}
 	
 	private static final String DOCUMENTS = "documents";

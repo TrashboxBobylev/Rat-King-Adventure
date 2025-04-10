@@ -853,6 +853,7 @@ public class ItemSpriteSheet {
 	public static final int CAVES_PAGE  = DOCUMENTS+4;
 	public static final int CITY_PAGE   = DOCUMENTS+5;
 	public static final int HALLS_PAGE  = DOCUMENTS+6;
+	public static final int TERMINAL_PAG= DOCUMENTS+7;
 	static{
 		assignItemRect(GUIDE_PAGE,  10, 11);
 		assignItemRect(ALCH_PAGE,   10, 11);
@@ -861,6 +862,7 @@ public class ItemSpriteSheet {
 		assignItemRect(CAVES_PAGE,  10, 11);
 		assignItemRect(CITY_PAGE,   10, 11);
 		assignItemRect(HALLS_PAGE,  10, 11);
+		assignItemRect(TERMINAL_PAG,10, 11);
 	}
 
 	//for smaller 8x8 icons that often accompany an item sprite
