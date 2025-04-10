@@ -35,6 +35,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.blobs.Gravery;
 import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Amok;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
@@ -916,7 +917,7 @@ public abstract class Mob extends Char {
 		}
 
 		if (alignment == Alignment.ENEMY){
-			if (!(cause instanceof CurseInfusion)){
+			if (!(cause instanceof CurseInfusion || cause instanceof Gravery)){
 				rollToDropLoot();
 			} else {
 				EXP = 0;
@@ -946,13 +947,13 @@ public abstract class Mob extends Char {
 		}
 
 		if (!(this instanceof Wraith)
-				&& soulMarked
+				&& ((soulMarked
 				&& Random.Float() < 0.4f*Math.max(
                         // necromancer's minions is +1/+2/+4/+6 shattered (13/27/40)
                         !Dungeon.hero.canHaveTalent(Talent.NECROMANCERS_MINIONS) ? 0 :
                                 Math.max(1, 2*Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)),
                         Dungeon.hero.pointsInTalent(Talent.RK_WARLOCK)
-        )/3f){
+        )/3f) || cause instanceof Gravery)){
 			Wraith w = Wraith.spawnAt(pos, Wraith.class);
 			if (w != null) {
 				Buff.affect(w, Corruption.class);

@@ -311,6 +311,7 @@ public class ItemSpriteSheet {
 	public static final int TERMINUS        = WEP_TIER6+10;
 	public static final int DREAD_SWORD     = WEP_TIER6+11;
 	public static final int SHARKS_TOOTH    = WEP_TIER6+12;
+	public static final int REAPER          = WEP_TIER6+13;
 
 	private static final int WEP_TIER6_THROW=                                xy(1, 35);
 
@@ -331,6 +332,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ELEMENTAL_DIRK, 14, 15);
 		assignItemRect(EXO_KNIFE, 11, 12);
 		assignItemRect(TERMINUS, 15, 16);
+		assignItemRect(REAPER, 15, 16);
 
 		assignItemRect(STEEL_AXE, 16, 14);
 		assignItemRect(HOMING_BOOMERANG, 14, 14);

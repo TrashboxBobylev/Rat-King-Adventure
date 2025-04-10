@@ -161,6 +161,7 @@ import com.zrp200.rkpd2.items.weapon.melee.Shortsword;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.melee.Spear;
 import com.zrp200.rkpd2.items.weapon.melee.Sword;
+import com.zrp200.rkpd2.items.weapon.melee.TheReaper;
 import com.zrp200.rkpd2.items.weapon.melee.WarHammer;
 import com.zrp200.rkpd2.items.weapon.melee.WarScythe;
 import com.zrp200.rkpd2.items.weapon.melee.Whip;
@@ -449,9 +450,10 @@ public class Generator {
 					DreadSlicer.class,
 					SharksTooth.class,
 					ExoKnife.class,
+					TheReaper.class,
 					RoyalBrand.class
 			};
-			WEP_T6.probs = new float[]{ 9, 8, 7, 7, 7, 6, 6, 6, 6, 6, 5, 3 };
+			WEP_T6.probs = new float[]{ 9, 8, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 3 };
 
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
