@@ -28,6 +28,8 @@ import java.util.ArrayList;
 public class TheReaper extends MeleeWeapon {
     {
         image = ItemSpriteSheet.REAPER;
+        hitSound = Assets.Sounds.HIT_SLASH;
+        hitSoundPitch = 0.9f;
         tier = 6;
 
         ACC = 0.7f; //30% penalty to accuracy

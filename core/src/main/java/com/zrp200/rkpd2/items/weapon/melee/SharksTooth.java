@@ -24,6 +24,8 @@ import com.zrp200.rkpd2.ui.BuffIndicator;
 public class SharksTooth extends MeleeWeapon {
     {
         image = ItemSpriteSheet.SHARKS_TOOTH;
+        hitSound = Assets.Sounds.HIT_ARROW;
+        hitSoundPitch = 0.75f;
         tier = 6;
 
         RCH = 8;

@@ -1,6 +1,7 @@
 package com.zrp200.rkpd2.items.weapon.melee;
 
 import com.watabou.utils.Random;
+import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -8,13 +9,17 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Dread;
 import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
-public class DreadSlicer extends MeleeWeapon {
+public class DreadSlicer extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon {
     {
-        tier = 6;
         image = ItemSpriteSheet.DREAD_SWORD;
+        hitSound = Assets.Sounds.HIT_SLASH;
+        hitSoundPitch = 1.2f;
+
+        tier = 6;
     }
 
     @Override
