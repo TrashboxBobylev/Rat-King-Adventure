@@ -68,7 +68,7 @@ public class RingOfForce extends Ring {
 
 	// *** Weapon-like properties ***
 
-	private static float tier(int str){
+	public static float tier(int str){
 		float tier = Math.max(1, (str - 8)/2f);
 		//each str point after 18 is half as effective
 		if (tier > 5){

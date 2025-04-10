@@ -76,6 +76,7 @@ import com.zrp200.rkpd2.items.weapon.Slingshot;
 import com.zrp200.rkpd2.items.weapon.melee.Dagger2;
 import com.zrp200.rkpd2.items.weapon.melee.KromerStaff;
 import com.zrp200.rkpd2.items.weapon.melee.TerminusBlade;
+import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 
 import java.util.ArrayList;
@@ -274,7 +275,7 @@ public abstract class Recipe {
 	}
 
 	// a variant of simple recipe with condition to be successful
-	public abstract class SimpleRecipeLocked extends SimpleRecipe {
+	public static abstract class SimpleRecipeLocked extends SimpleRecipe {
 
 		public abstract boolean isAvailable();
 
@@ -311,6 +312,7 @@ public abstract class Recipe {
 		new ExoticScroll.ScrollToExotic(),
 		new ArcaneResin.Recipe(),
 		new Alchemize.Recipe(),
+		new TrueTerminusBlade.Recipe(),
 		new StewedMeat.oneMeat()
 	};
 	

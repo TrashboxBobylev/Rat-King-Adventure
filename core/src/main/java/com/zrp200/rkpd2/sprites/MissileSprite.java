@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
 import com.zrp200.rkpd2.items.weapon.melee.ExoKnife;
 import com.zrp200.rkpd2.items.weapon.melee.RunicBladeMkII;
+import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.Bolas;
 import com.zrp200.rkpd2.items.weapon.missiles.FishingSpear;
 import com.zrp200.rkpd2.items.weapon.missiles.HeavyBoomerang;
@@ -110,6 +111,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(RunicBladeMkII.RunicMissile.class, 0);
 		ANGULAR_SPEEDS.put(ExoKnife.RunicMissile.class, 0);
 		ANGULAR_SPEEDS.put(RobotTransform.RunicMissile.class, 0);
+		ANGULAR_SPEEDS.put(TrueTerminusBlade.TerminusMissile.class, 0);
 
 		ANGULAR_SPEEDS.put(SpiritBow.SpiritArrow.class,       0);
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
@@ -196,6 +198,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 				|| item instanceof ScorpioSprite.ScorpioShot
 				|| item instanceof TenguSprite.TenguShuriken
 				|| item instanceof ExoKnife.RunicMissile
+				|| item instanceof TrueTerminusBlade.TerminusMissile
 				|| item instanceof Slingshot.Stone){
 			speed *= 1.5f;
 		} else if (item instanceof SpectralBlades.BirbBlade){
