@@ -332,6 +332,8 @@ public class ItemSpriteSheet {
 		assignItemRect(ELEMENTAL_DIRK, 14, 15);
 		assignItemRect(EXO_KNIFE, 11, 12);
 		assignItemRect(TERMINUS, 15, 16);
+		assignItemRect(DREAD_SWORD, 13, 16);
+		assignItemRect(SHARKS_TOOTH, 15, 16);
 		assignItemRect(REAPER, 15, 16);
 
 		assignItemRect(STEEL_AXE, 16, 14);
