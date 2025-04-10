@@ -1226,6 +1226,14 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		onDamage(modifyDamage(dmg,src),src);
 	}
 
+	public void trueDamage(int dmg){
+		HP = Math.max(HP - dmg, 0);
+		sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg), FloatingText.PHYS_DMG_NO_BLOCK);
+		if (!isAlive()){
+			onDamage(0, new Corruption());
+		}
+	}
+
 	public void destroy() {
 		HP = 0;
 		Actor.remove( this );
