@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.messages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
@@ -132,6 +133,9 @@ public class Messages {
 			}
 		} else
 			key = k;
+
+		if (Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER))
+			key += "_no_rk";
 
 		String value = getFromBundle(key.toLowerCase(Locale.ENGLISH));
 		if (value != null){
