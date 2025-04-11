@@ -99,6 +99,14 @@ public class StarPieces extends MissileWeapon {
 
         decrementDurability();
 
+        if (durability <= durabilityPerUse()){
+            if (quantity() > 1){
+                quantity(quantity()-1);
+            } else {
+                detachAll(Dungeon.hero.belongings.backpack);
+            }
+        }
+
         final ArrayList<Char> targets = new ArrayList<>();
 
         int amount = 0;

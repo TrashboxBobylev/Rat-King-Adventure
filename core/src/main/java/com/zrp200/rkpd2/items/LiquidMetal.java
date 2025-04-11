@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.bags.MagicalHolster;
 import com.zrp200.rkpd2.items.potions.Potion;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
@@ -143,7 +144,8 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 
 	public void useToRepair(MissileWeapon item) {
 		int maxToUse = 5*(item.tier+1);
-		maxToUse *= Math.pow(2, item.level());
+		if (!(item instanceof StarPieces))
+			maxToUse *= Math.pow(2, item.level());
 
 		float durabilityPerMetal = 100 / (float)maxToUse;
 
