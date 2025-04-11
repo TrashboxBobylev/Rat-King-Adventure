@@ -766,6 +766,7 @@ public class RatKingBoss extends Mob {
                     dest = magicCastPos[i];
                     final int attackNum = i;
                     int finalDest = dest;
+                    if (finalDest != -1) {
                         sprite.zap(dest, () -> MagicMissile.boltFromChar(sprite.parent, attack.boltType, sprite, finalDest,
                                 () -> {
                                     ChampionEnemy.AntiMagic.effect(enemy, RatKingBoss.this);
@@ -902,12 +903,13 @@ public class RatKingBoss extends Mob {
                                             }
                                             break;
                                     }
-                                    if (attackNum == 1){
+                                    if (attackNum == 1) {
                                         spend(TICK);
                                         next();
                                     }
                                 }));
                         Sample.INSTANCE.play(Assets.Sounds.ZAP);
+                    }
                 }
                 magicPrepare = false;
                 return false;
