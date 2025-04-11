@@ -28,6 +28,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -83,7 +84,7 @@ public class KromerMask extends Item {
 
 					ArrayList<HeroClass> heroClasses = new ArrayList<>(Arrays.asList(HeroClass.values()));
 					//remove unusable classes
-					if (Random.Int(5) > 0) heroClasses.remove(HeroClass.RAT_KING);
+					if (Random.Int(5) > 0 && !Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER)) heroClasses.remove(HeroClass.RAT_KING);
 					heroClasses.remove(hero.heroClass);
 					while (classes.size() < 2) {
 						HeroClass chosenSub;

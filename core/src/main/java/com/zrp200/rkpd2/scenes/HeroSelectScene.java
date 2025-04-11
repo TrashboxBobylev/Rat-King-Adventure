@@ -174,6 +174,8 @@ public class HeroSelectScene extends PixelScene {
 		add(infoButton);
 
 		for (HeroClass cl : HeroClass.values()){
+			if (Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER) && cl == HeroClass.RAT_KING)
+				continue;
 			HeroBtn button = new HeroBtn(cl);
 			add(button);
 			heroBtns.add(button);

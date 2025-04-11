@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2;
 
+import com.badlogic.gdx.utils.ObjectMap;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
@@ -33,6 +34,8 @@ import com.zrp200.rkpd2.items.bags.ScrollHolder;
 import com.zrp200.rkpd2.items.bags.VelvetPouch;
 import com.zrp200.rkpd2.items.remains.RemainsItem;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
+import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -227,7 +230,8 @@ public class Badges {
 		CHAMPION_8                  (141),
 		CHAMPION_9                  (142),
 		CHAMPION_10                  (143),
-		CHAMPION_11                  (144);
+		CHAMPION_11                  (144),
+		DEFEATED_RK_FOREVER          (145, true);
 
 		public boolean meta;
 
@@ -999,6 +1003,22 @@ public class Badges {
 	}
 
 	public static void validateRatKing() {
+		if (Dungeon.hero.belongings.attackingWeapon() instanceof TrueTerminusBlade || Dungeon.hero.belongings.attackingWeapon() instanceof StarPieces){
+			boolean isAllChals = true;
+			for (ObjectMap.Entry<String, Integer> chal: Challenges.defaultChals){
+                if (!Dungeon.isChallenged(chal.value)) {
+                    isAllChals = false;
+                    break;
+                }
+			}
+			if (isAllChals){
+				if (!local.contains( Badge.DEFEATED_RK_FOREVER )) {
+					Badge badge = Badge.DEFEATED_RK_FOREVER;
+					local.add( badge );
+					displayBadge( badge );
+				}
+			}
+		}
 		if (!local.contains( Badge.DEFEATED_RK )) {
 			Badge badge = Badge.DEFEATED_RK;
 			local.add( badge );
@@ -1241,6 +1261,7 @@ public class Badges {
 			{Badge.BOSS_SLAIN_3, Badge.BOSS_CHALLENGE_3},
 			{Badge.BOSS_SLAIN_4, Badge.BOSS_CHALLENGE_4},
 			{Badge.VICTORY,      Badge.BOSS_CHALLENGE_5},
+			{Badge.DEFEATED_RK,  Badge.DEFEATED_RK_FOREVER}
 	};
 
 	//If the summary badge is unlocked, don't show the component badges
@@ -1261,7 +1282,9 @@ public class Badges {
 			{Badge.ALL_RINGS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 			{Badge.ALL_ARTIFACTS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 			{Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
-			{Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED}
+			{Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
+
+			{Badge.DEFEATED_RK_FOREVER, Badge.DEFEATED_RK}
 	};
 	
 	public static List<Badge> filterReplacedBadges( List<Badge> badges ) {

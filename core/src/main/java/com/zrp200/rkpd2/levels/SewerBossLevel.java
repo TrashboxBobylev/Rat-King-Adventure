@@ -29,6 +29,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Bones;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
@@ -118,7 +119,8 @@ public class SewerBossLevel extends SewerLevel {
 		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
 		initRooms.add(gooRoom);
 		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);
-		initRooms.add(new RatKingRoom());
+		if (Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER))
+			initRooms.add(new RatKingRoom());
 		return initRooms;
 	}
 	

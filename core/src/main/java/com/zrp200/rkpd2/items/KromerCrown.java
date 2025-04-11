@@ -98,7 +98,7 @@ public class KromerCrown extends TengusMask {
 					heroSubClasses.remove(hero.subClass);
 					//remove rat king class
 					heroSubClasses.remove(HeroSubClass.KING);
-					if (!Badges.isUnlocked(Badges.Badge.DEFEATED_RK))
+					if (!Badges.isUnlocked(Badges.Badge.DEFEATED_RK) && !Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER))
 						heroSubClasses.remove(HeroSubClass.RK_CHAMPION);
 					while (subClasses.size() < 3) {
 						HeroSubClass chosenSub;
