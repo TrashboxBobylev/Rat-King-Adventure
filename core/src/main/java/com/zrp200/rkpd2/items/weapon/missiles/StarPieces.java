@@ -143,7 +143,7 @@ public class StarPieces extends MissileWeapon {
 
         {
             inputs =  new Class[]{LiquidMetal.class};
-            inQuantity = new int[]{250};
+            inQuantity = new int[]{200};
 
             cost = 25;
 

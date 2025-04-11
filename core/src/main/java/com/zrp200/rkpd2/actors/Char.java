@@ -160,6 +160,7 @@ import com.zrp200.rkpd2.items.weapon.melee.Rapier;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.ShockingDart;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.features.Chasm;
@@ -420,7 +421,7 @@ public abstract class Char extends Actor {
 		
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 
-		if (enemy.isInvulnerable(getClass())) {
+		if (enemy.isInvulnerable(getClass()) && (!(this instanceof Hero) || !(((Hero) this).belongings.thrownWeapon instanceof StarPieces))) {
 
 			if (visibleFight) {
 				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
