@@ -290,7 +290,12 @@ public class GnollGeomancer extends Mob {
 		return super.isAlive() || !inFinalBracket;
 	}
 
-	public void linkSapper( GnollSapper sapper ){
+	@Override
+	public void trueDamageDie() {
+		inFinalBracket = true;
+	}
+
+	public void linkSapper(GnollSapper sapper ){
 		this.sapperID = sapper.id();
 		if (sprite instanceof GnollGeomancerSprite){
 			((GnollGeomancerSprite) sprite).setupArmor();

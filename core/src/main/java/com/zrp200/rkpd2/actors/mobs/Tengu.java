@@ -222,6 +222,12 @@ public class Tengu extends Mob {
 	}
 
 	@Override
+	public void trueDamageDie() {
+		while (((PrisonBossLevel)Dungeon.level).state() != PrisonBossLevel.State.WON)
+			((PrisonBossLevel)Dungeon.level).progress();
+	}
+
+	@Override
 	public void die( Object cause ) {
 		
 		if (Dungeon.hero.subClass.is(HeroSubClass.NONE)) {

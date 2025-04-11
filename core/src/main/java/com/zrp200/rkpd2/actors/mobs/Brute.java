@@ -29,13 +29,11 @@ import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ShieldBuff;
 import com.zrp200.rkpd2.actors.buffs.Terror;
-import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.levels.features.Chasm;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.BruteSprite;
-import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 
 public class Brute extends Mob {
@@ -92,7 +90,12 @@ public class Brute extends Mob {
 			return !buffs(BruteRage.class).isEmpty();
 		}
 	}
-	
+
+	@Override
+	public void trueDamageDie() {
+		hasRaged = true;
+	}
+
 	protected void triggerEnrage(){
 		Buff.affect(this, BruteRage.class).setShield(HT/2 + 4);
 		if (Dungeon.level.heroFOV[pos]) {

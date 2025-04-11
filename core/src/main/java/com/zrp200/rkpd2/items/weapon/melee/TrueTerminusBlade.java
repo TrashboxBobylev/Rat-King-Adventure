@@ -7,12 +7,10 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
-import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.Splash;
@@ -196,9 +194,7 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
                                                 Char enemy = Actor.findChar( cell );
                                                 if (enemy != null && enemy != curUser) {
                                                     if (Char.hit(curUser, enemy, true)) {
-                                                        int dmg = curBlade.damageRoll(curUser);
-                                                        if (curUser.subClass.is(HeroSubClass.GLADIATOR)) Buff.affect( curUser, Combo.class ).hit( enemy );
-                                                        curBlade.proc(curUser, enemy, dmg);
+                                                        curUser.attack(enemy, 1.0f, 0, 100000);
                                                         Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
                                                     } else {
                                                         enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
@@ -266,4 +262,8 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
             return isWorthy();
         }
     }
+
+    public static class DamageType {}
+
+
 }

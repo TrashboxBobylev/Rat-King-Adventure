@@ -159,6 +159,7 @@ import com.zrp200.rkpd2.items.weapon.melee.NuclearHatchet;
 import com.zrp200.rkpd2.items.weapon.melee.Rapier;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
+import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.ShockingDart;
@@ -421,7 +422,7 @@ public abstract class Char extends Actor {
 		
 		boolean visibleFight = Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[enemy.pos];
 
-		if (enemy.isInvulnerable(getClass()) && (!(this instanceof Hero) || !(((Hero) this).belongings.thrownWeapon instanceof StarPieces))) {
+		if (enemy.isInvulnerable(getClass()) && (!(this instanceof Hero) || !(((Hero) this).belongings.thrownWeapon instanceof StarPieces || ((Hero) this).belongings.weapon() instanceof TrueTerminusBlade))) {
 
 			if (visibleFight) {
 				enemy.sprite.showStatus( CharSprite.POSITIVE, Messages.get(this, "invulnerable") );
@@ -1139,7 +1140,7 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 			}
 		}
 
-		if (sprite != null) {
+		if (sprite != null && !(src instanceof TrueTerminusBlade.DamageType)) {
 			//defaults to normal damage icon if no other ones apply
 			int                                                         icon = FloatingText.PHYS_DMG;
 			if (NO_ARMOR_PHYSICAL_SOURCES.contains(src.getClass()))     icon = FloatingText.PHYS_DMG_NO_BLOCK;
@@ -1230,9 +1231,12 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 	public void trueDamage(int dmg){
 		HP = Math.max(HP - dmg, 0);
 		sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg), FloatingText.PHYS_DMG_NO_BLOCK);
-		if (!isAlive()){
-			onDamage(0, new Corruption());
+
+		if (HP == 0){
+			trueDamageDie();
 		}
+
+		onDamage(0, new TrueTerminusBlade.DamageType());
 	}
 
 	public void destroy() {
@@ -1267,6 +1271,11 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 	public void die( Object src ) {
 		destroy();
 		if (src != Chasm.class) sprite.die();
+	}
+
+	// used to manually clear things that makes things alive
+	public void trueDamageDie(){
+
 	}
 
 	//we cache this info to prevent having to call buff(...) in isAlive.

@@ -62,7 +62,6 @@ import com.zrp200.rkpd2.actors.buffs.Vertigo;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
 import com.zrp200.rkpd2.actors.buffs.WarpedEnemy;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
-import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.effects.TargetedCell;
@@ -617,6 +616,11 @@ public class DM300 extends Mob {
 	@Override
 	public boolean isAlive() {
 		return super.isAlive() || pylonsActivated < totalPylonsToActivate();
+	}
+
+	@Override
+	public void trueDamageDie() {
+		pylonsActivated = totalPylonsToActivate();
 	}
 
 	@Override

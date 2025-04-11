@@ -422,6 +422,11 @@ public class YogDzewa extends Mob {
 	}
 
 	@Override
+	public void trueDamageDie() {
+		phase = 5;
+	}
+
+	@Override
 	public void damage( int dmg, Object src ) {
 
 		int preHP = HP;

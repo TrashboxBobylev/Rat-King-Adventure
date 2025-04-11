@@ -689,6 +689,11 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 	}
 
 	@Override
+	public void trueDamageDie() {
+		phase = 3;
+	}
+
+	@Override
 	public void die(Object cause) {
 
 		GameScene.bossSlain();

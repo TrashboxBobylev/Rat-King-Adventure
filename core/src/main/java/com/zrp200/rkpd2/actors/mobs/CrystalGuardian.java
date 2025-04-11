@@ -145,6 +145,11 @@ public class CrystalGuardian extends Mob{
 	}
 
 	@Override
+	public void trueDamageDie() {
+		destroy();
+	}
+
+	@Override
 	public boolean isInvulnerable(Class effect) {
 		if (recovering){
 			//while recovering, immune to chars that aren't the hero or spire

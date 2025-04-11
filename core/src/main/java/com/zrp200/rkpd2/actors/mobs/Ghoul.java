@@ -172,6 +172,11 @@ public class Ghoul extends Mob {
 	}
 
 	@Override
+	public void trueDamageDie() {
+		beingLifeLinked = false;
+	}
+
+	@Override
 	public boolean isActive() {
 		return !beingLifeLinked && isAlive();
 	}
