@@ -259,7 +259,7 @@ public class Badges {
 		}
 	}
 	
-	private static HashSet<Badge> global;
+	public static HashSet<Badge> global;
 	private static HashSet<Badge> local = new HashSet<>();
 	
 	private static boolean saveNeeded = false;

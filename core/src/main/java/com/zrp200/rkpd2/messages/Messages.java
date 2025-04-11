@@ -134,8 +134,11 @@ public class Messages {
 		} else
 			key = k;
 
-		if (Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER))
-			key += "_no_rk";
+		if (Badges.global != null && Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER) && !key.contains("_no_rk")){
+			String byClass = get(key + "_no_rk", args);
+			//noinspection StringEquality
+			if(byClass != NO_TEXT_FOUND) return byClass;
+		}
 
 		String value = getFromBundle(key.toLowerCase(Locale.ENGLISH));
 		if (value != null){
