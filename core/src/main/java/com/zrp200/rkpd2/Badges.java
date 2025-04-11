@@ -1284,7 +1284,7 @@ public class Badges {
 			{Badge.ALL_POTIONS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 			{Badge.ALL_SCROLLS_IDENTIFIED, Badge.ALL_ITEMS_IDENTIFIED},
 
-			{Badge.DEFEATED_RK_FOREVER, Badge.DEFEATED_RK}
+			{Badge.DEFEATED_RK, Badge.DEFEATED_RK_FOREVER}
 	};
 	
 	public static List<Badge> filterReplacedBadges( List<Badge> badges ) {
