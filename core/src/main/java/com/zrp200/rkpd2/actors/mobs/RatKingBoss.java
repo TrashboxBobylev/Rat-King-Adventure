@@ -146,9 +146,9 @@ public class RatKingBoss extends Mob {
     public int phantomSpearPositions = -1;
 
     {
-        HP = HT = 2000 + Challenges.activeChallenges()*240;
+        HP = HT = 2400 + Challenges.activeChallenges()*180;
         if (rkMode()){
-            HP = HT = 3200 + Challenges.activeChallenges()*360;
+            HP = HT = 3600 + Challenges.activeChallenges()*275;
         }
 
         EXP = 100;
