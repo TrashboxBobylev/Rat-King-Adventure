@@ -79,15 +79,15 @@ public class DuelistGrass extends Item implements Recipe.AllQuantityIngredient {
             GameScene.selectItem( itemSelector );
 
         } else if (action.equals(AC_EAT)) {
-            if (quantity < 8){
+            if (quantity < 5){
                 GLog.w( Messages.get(this, "not_enough"));
                 return;
             }
 
-            if (quantity() <= 8){
+            if (quantity() <= 5){
                 detachAll(curUser.belongings.backpack);
             } else {
-                quantity(quantity() - 8);
+                quantity(quantity() - 5);
             }
 
             GLog.i( Messages.get(this, "eat_msg") );
