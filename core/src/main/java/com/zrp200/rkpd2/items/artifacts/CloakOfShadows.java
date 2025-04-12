@@ -383,9 +383,9 @@ public static final float LC_FACTOR =.2f, LC_FACTOR_RK =0.75f/3f;
 			case 1: default:
 				return 0.75f;
 			case 2:
-				return 0.87f;
-			case 3:
 				return 1f;
+			case 3:
+				return 1.33f;
 		}
 	}
 
