@@ -1360,6 +1360,16 @@ public enum Talent {
 		return dmg;
 	}
 
+	public static int heroicEnchantingProc(Char defender, Char attacker, int damage){
+		if (defender instanceof Hero && ((Hero) defender).hasTalent(Talent.HEROIC_ENDURANCE) && ((Hero) defender).belongings.weapon() != null && ((Weapon)((Hero) defender).belongings.weapon()).enchantment != null){
+			Weapon.Enchantment enchantment = ((Weapon)((Hero) defender).belongings.weapon()).enchantment;
+			enchantment.heroicEnchanted = true;
+			damage = enchantment.proc((Weapon) ((Hero) defender).belongings.weapon(), attacker, defender, damage);
+			enchantment.heroicEnchanted = false;
+		}
+		return damage;
+	}
+
 	public static class SuckerPunchTracker extends Buff{};
 	public static class FollowupStrikeTracker extends FlavourBuff{
 		public int object;

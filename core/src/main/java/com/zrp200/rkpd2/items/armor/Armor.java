@@ -69,7 +69,6 @@ import com.zrp200.rkpd2.items.armor.glyphs.Thorns;
 import com.zrp200.rkpd2.items.armor.glyphs.Viscosity;
 import com.zrp200.rkpd2.items.rings.RingOfArcana;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
-import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.HeroSprite;
@@ -463,15 +462,7 @@ public class Armor extends EquipableItem {
 			damage = glyph.proc( this, attacker, defender, damage );
 		}
 
-		if (defender instanceof Hero && ((Hero) defender).hasTalent(Talent.HEROIC_ENDURANCE) && ((Hero) defender).belongings.weapon() != null && ((Weapon)((Hero) defender).belongings.weapon()).enchantment != null){
-			Weapon.Enchantment enchantment = ((Weapon)((Hero) defender).belongings.weapon()).enchantment;
-
-			enchantment.heroicEnchanted = true;
-
-			enchantment.proc((Weapon) ((Hero) defender).belongings.weapon(), attacker, defender, damage);
-
-			enchantment.heroicEnchanted = false;
-		}
+		Talent.heroicEnchantingProc(defender, attacker, damage);
 		
 		if (!levelKnown && defender == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
