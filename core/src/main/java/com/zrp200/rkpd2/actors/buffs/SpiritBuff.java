@@ -17,7 +17,7 @@ import com.zrp200.rkpd2.ui.BuffIndicator;
 
 public class SpiritBuff extends CounterBuff implements ActionIndicator.Action {
 
-    private final int MAXCHARGE = 45;
+    private final int MAXCHARGE = 40;
 
     {
         revivePersists = true;
