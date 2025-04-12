@@ -50,6 +50,7 @@ import com.zrp200.rkpd2.items.wands.WandOfCorrosion;
 import com.zrp200.rkpd2.items.wands.WandOfCorruption;
 import com.zrp200.rkpd2.items.wands.WandOfDisintegration;
 import com.zrp200.rkpd2.items.wands.WandOfLivingEarth;
+import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
 import com.zrp200.rkpd2.items.wands.WandOfRegrowth;
 import com.zrp200.rkpd2.items.wands.WandOfUnstable2;
 import com.zrp200.rkpd2.items.weapon.Weapon;
@@ -195,8 +196,11 @@ public class MagesStaff extends MeleeWeapon {
 			else {
 				damage = Math.round(damage * (
 						1f + hero.byTalent(
-								Talent.EMPOWERED_STRIKE, 1/4f,
+								Talent.EMPOWERED_STRIKE, 0f,
 								Talent.RK_BATTLEMAGE, 1/6f)));
+				if (hero.hasTalent(Talent.EMPOWERED_STRIKE)){
+					defender.damage(Math.round(damage*(hero.pointsInTalent(Talent.EMPOWERED_STRIKE)*1f/5f)), wand != null ? wand : new WandOfMagicMissile());
+				}
 			}
 		}
 

@@ -22,6 +22,7 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
 
     import com.watabou.utils.Bundle;
     import com.watabou.utils.Random;
+    import com.watabou.utils.Reflection;
     import com.zrp200.rkpd2.actors.Actor;
     import com.zrp200.rkpd2.actors.Char;
     import com.zrp200.rkpd2.actors.blobs.CorrosiveGas;
@@ -33,6 +34,7 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
     import com.zrp200.rkpd2.actors.mobs.Mob;
     import com.zrp200.rkpd2.items.rings.RingOfAccuracy;
     import com.zrp200.rkpd2.items.rings.RingOfEvasion;
+    import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
     import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
     import com.zrp200.rkpd2.sprites.CharSprite;
     import com.zrp200.rkpd2.sprites.MirrorSprite;
@@ -141,9 +143,12 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
                         if (buff(Talent.EmpoweredStrikeTracker.class) != null) {
                             buff(Talent.EmpoweredStrikeTracker.class).detach();
                             damage = Math.round(damage * (1f + hero.byTalent(
-                                    Talent.EMPOWERED_STRIKE, 1/4f,
+                                    Talent.EMPOWERED_STRIKE, 0f,
                                     Talent.RK_BATTLEMAGE, 1/6f)
                             ));
+                            if (hero.hasTalent(Talent.EMPOWERED_STRIKE)){
+                                enemy.damage(Math.round(damage*(1f + hero.pointsInTalent(Talent.EMPOWERED_STRIKE)*1f/5f)), staff.wandClass() != null ? Reflection.newInstance(staff.wandClass()) : new WandOfMagicMissile());
+                            }
                         }
                 }
                 staff.wand().onHit(staff, this, enemy, damage);
