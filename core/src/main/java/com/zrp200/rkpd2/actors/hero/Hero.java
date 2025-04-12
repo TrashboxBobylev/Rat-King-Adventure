@@ -1823,17 +1823,6 @@ public class Hero extends Char {
 			}
 		}
 		if (wep != null) damage = wep.proc( this, enemy, damage );
-		if (hasTalent(Talent.HEROIC_ENDURANCE)){
-			Armor armor = belongings.armor();
-			if (armor != null){
-				if (armor.glyph != null && Random.Int(3) < pointsInTalent(Talent.HEROIC_ENDURANCE)){
-					if (armor.glyph.beneficial)
-						damage = armor.glyph.proc(armor, enemy, this, damage);
-					else
-						damage = armor.glyph.proc(armor, this, enemy, damage);
-				}
-			}
-		}
 		RingOfForce.Force forceBuff = buff(RingOfForce.Force.class);
 		if (forceBuff != null && !(wep instanceof MissileWeapon)) {
 			if (wep != null){

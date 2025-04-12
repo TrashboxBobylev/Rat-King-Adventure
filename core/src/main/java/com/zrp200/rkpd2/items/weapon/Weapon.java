@@ -448,7 +448,8 @@ abstract public class Weapon extends KindOfWeapon {
 				Sacrificial.class, Wayward.class, Polarized.class, Friendly.class,
 				Chaotic.class
 		};
-		
+
+		public boolean heroicEnchanted;
 			
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
@@ -521,7 +522,11 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 
 		protected float procChanceMultiplier( Char attacker) {
-			return genericProcChanceMultiplier(attacker);
+			float procChanceMultiplier = genericProcChanceMultiplier(attacker);
+			if (heroicEnchanted){
+				procChanceMultiplier *= 1.0f + 1.15f * Dungeon.hero.pointsInTalent(Talent.HEROIC_ENDURANCE);
+			}
+			return procChanceMultiplier;
 		}
 
 		public String name() {
