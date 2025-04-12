@@ -39,6 +39,7 @@ import com.zrp200.rkpd2.items.armor.ScaleArmor;
 import com.zrp200.rkpd2.items.armor.WarriorArmor;
 import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
+import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.artifacts.ChaliceOfBlood;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
@@ -46,6 +47,7 @@ import com.zrp200.rkpd2.items.artifacts.EtherealChains;
 import com.zrp200.rkpd2.items.artifacts.HornOfPlenty;
 import com.zrp200.rkpd2.items.artifacts.MasterThievesArmband;
 import com.zrp200.rkpd2.items.artifacts.SandalsOfNature;
+import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.artifacts.TalismanOfForesight;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
 import com.zrp200.rkpd2.items.artifacts.UnstableSpellbook;
@@ -162,7 +164,9 @@ import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.melee.Spear;
 import com.zrp200.rkpd2.items.weapon.melee.Starsmasher;
 import com.zrp200.rkpd2.items.weapon.melee.Sword;
+import com.zrp200.rkpd2.items.weapon.melee.TerminusBlade;
 import com.zrp200.rkpd2.items.weapon.melee.TheReaper;
+import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.melee.WarHammer;
 import com.zrp200.rkpd2.items.weapon.melee.WarScythe;
 import com.zrp200.rkpd2.items.weapon.melee.Whip;
@@ -178,6 +182,7 @@ import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.items.weapon.missiles.PhantomSpear;
 import com.zrp200.rkpd2.items.weapon.missiles.RedKunai;
 import com.zrp200.rkpd2.items.weapon.missiles.Shuriken;
+import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.items.weapon.missiles.SteelAxe;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingClub;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingHammer;
@@ -453,9 +458,11 @@ public class Generator {
 					ExoKnife.class,
 					TheReaper.class,
 					RoyalBrand.class,
-					Starsmasher.class
+					Starsmasher.class,
+					TerminusBlade.class,
+					TrueTerminusBlade.class
 			};
-			WEP_T6.probs = new float[]{ 9, 8, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 3, 3 };
+			WEP_T6.probs = new float[]{ 9, 8, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 3, 3, 0, 0 };
 
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{
@@ -524,8 +531,9 @@ public class Generator {
 					PhantomSpear.class,
 					HomingBoomerang.class,
 					SteelAxe.class,
+					StarPieces.class
 			};
-			MIS_T6.probs = new float[]{ 9, 8, 7, 3 };
+			MIS_T6.probs = new float[]{ 9, 8, 7, 3, 0 };
 			FOOD.classes = new Class<?>[]{
 					Food.class,
 					Pasty.class,
@@ -560,9 +568,11 @@ public class Generator {
 					SandalsOfNature.class,
 					TalismanOfForesight.class,
 					TimekeepersHourglass.class,
-					UnstableSpellbook.class
+					UnstableSpellbook.class,
+					BookOfWonder.class,
+					SoulOfYendor.class
 			};
-			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1 };
+			ARTIFACT.defaultProbs = new float[]{ 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
 			ARTIFACT.probs = ARTIFACT.defaultProbs.clone();
 
 			for (Category cat : Category.values()){
