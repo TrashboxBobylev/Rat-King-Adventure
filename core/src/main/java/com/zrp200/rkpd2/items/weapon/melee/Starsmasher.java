@@ -80,14 +80,14 @@ public class Starsmasher extends MeleeWeapon {
 
     @Override
     public int min(int lvl) {
-        return  tier*6 +  //36 base, up from 6
-                lvl*6;    //+6 scaling, up from 1
+        return  tier*4 +  //24 base, up from 6
+                lvl*4;    //+4 scaling, up from 1
     }
 
     @Override
     public int max(int lvl) {
-        return  15*(tier+1) +    //105 base, up from 35
-                lvl*(tier*4);   //+24 scaling, up from 8
+        return  10*(tier+1) +    //70 base, up from 35
+                Math.round(lvl*(tier*2.5f));   //+15 scaling, up from 8
     }
 
     @Override
