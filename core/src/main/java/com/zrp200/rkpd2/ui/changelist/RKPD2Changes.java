@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.ui.changelist;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Badges.Badge;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
@@ -35,6 +36,7 @@ import com.zrp200.rkpd2.effects.BadgeBanner;
 import com.zrp200.rkpd2.items.armor.RatKingArmor;
 import com.zrp200.rkpd2.items.TengusMask;
 import com.zrp200.rkpd2.items.armor.WarriorArmor;
+import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.bags.VelvetPouch;
 import com.zrp200.rkpd2.items.quest.FlexTape;
 import com.zrp200.rkpd2.items.quest.Kromer;
@@ -42,6 +44,7 @@ import com.zrp200.rkpd2.items.quest.NerfGun;
 import com.zrp200.rkpd2.items.wands.WandOfFirebolt;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.enchantments.Explosive;
+import com.zrp200.rkpd2.items.weapon.melee.DreadSlicer;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.ChangesScene;
 import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
@@ -89,6 +92,103 @@ interface ChangeLog {
 
 public enum RKPD2Changes {
     v1(() -> new ChangeInfo[][]{
+        {
+            new ChangeInfo("RKA-2.1.0", true, TITLE_COLOR,
+                new ChangeButton(new ItemSprite(ARMOR_RAT_KING), "RKPD 2.0.8 ports",
+                        "Successfully ported RKPD2 2.0.8, which means most of bugs and bugfixes have been implemented by parent mod.\n\n" +
+                                "_-_ Monastic Might talent is not present in RKA due to its simplicity."
+                        )
+            ),
+            NewContent(
+                new ChangeButton(new ItemSprite(DREAD_SWORD), "New T6 weapons!",
+                        "Added a couple of new toys at tier 6 rarity: \n" +
+                        list("_Dread Slicer_ inflicts Terror on enemies and allows to hit terrified enemies from any range. Its Duelist ability is inflicting Dread alongside with heavy damage.",
+                                "_Shark's Tooth_ works like a fishing rod, taking a while to reel, but doing more damage with distance and pulling enemies into melee range, while debuffing them. Its Duelist ability is spinning to buff the next attack.",
+                                "_The Reaper_ conjures friendly wraiths on each swing, swarming your enemies with necromancy. Its Duelist ability spawns a graveyard, corrupting everyone inside it and heavily damaging the living beings.",
+                                "_Starsmasher_ deals crushing and stunning damage and charges up for powerful attack on throwing it into the battlefield. Its Duelist ability casts a flashbang in large range, doing additional small damage when charged.")
+                ),
+                new ChangeButton(new ItemSprite(TRUE_TERMINUS), "Prime Artifacts",
+                        list(
+                                "Added two new powerful otherworldly weapons: _True Terminus Blade_ and _Star Pieces_.",
+                                "Their recipes can be unlocked by collecting research logs, spawned by beating the game with original Shattered challenges.",
+                                "The defining feature of those weapons is that their attacks deal \"true\" damage, ignoring armor, damage reduction and even invulnerability of enemies it touches.",
+                                "They also scale with player's strength, doing on-tier damage on any stage of the game.",
+                                "_True Terminus Blade_ can shoot sword beams, when using it from quickslots, but that takes 2 turns per attack.",
+                                "_Star Pieces_ throw 5 blades at once (can scale with upgrades), that home onto every visible enemy on the floor, even being able to hit targets several times. It lasts 6 throws before needing to be repaired, and its durability cannot be boosted."
+                        )
+                ),
+                new ChangeButton(BadgeBanner.image(Badge.DEFEATED_RK_FOREVER.image), "Permanent Rat King kill",
+                        list(
+                                "Added ability to permanently kill Rat King, if you use Prime Artifacts weapons during the Rat King boss fight empowered by all 9 original challenges.",
+                                "The consequences include no longer being able to play as RK, his room disappearing from world generation and the dungeon being in much more ruined state, now that Rat Kingdom no longer has its wise, powerful and just ruler.",
+                                "The only way to reverse it is to reset your game data."
+                        )
+                ),
+                new ChangeButton(new BookOfWonder(),
+                        list(
+                                "Added a new artifact, _Book of Wonder_, a much stronger variant of Unstable Spellbook.",
+                                "It recharges 50% faster and does empowered casts of scrolls, contained in it.",
+                                "The empowered scroll effects are the same as pre-0.7.0 Unstable Spellbook.",
+                                "The recipe for it is combining Kromer and Unstable Spellbook in alchemy pot. Due to this, it inflicts warp."
+                        ))
+            ),
+            Buffs(
+                    new ChangeButton(HIGHNESS,
+                            list(2,
+                                "Significantly reduced recovery length: " + list(
+                                        "now capped at 225 turns",
+                                        "reduced start of ramping from 2.25 grass to 2 grass",
+                                        "reduced escalation rate by 33%",
+                                        "decreased ramping impact of _Prolonged Joy_ talent from 10%/23%/39% to 8%/17%/25%"),
+                                    "Doubled most of effects of _Party Feeling_ talent.",
+                                    "Reduced grass value with _Prolonged Joy_ talent from 6/8/10 turns to 5/6/7 turns.",
+                                    "Increased _Wound Ignorance_'s healing and shielding from 7.5% to 12.5%.",
+                                    "Increased _Wound Ignorance_ +3's elemental resist during recovery from 50% to 80%.",
+                                    "Reworked _Agreenaline Rush_ into _Drug Moderation_:" + list(
+                                            "removed the consumption of all grass in inventory at once",
+                                            "increased cooldown reductions from 2/4/6 turns per action to 2.5/5/7.5 turns per action")
+                            )),
+                    new ChangeButton(Icons.get(TALENT), "Talent buffs",
+                            list(
+                                "_Heroic Enchanting_ has been reworked to use enchantments as extra glyphs instead of using glyphs as extra enchantments.",
+                                    "_Body Slam_ is able to use enchantments to boost its effect, when _Heroic Enchanting_ is active.",
+                                    "_Empowered Strike_ has been reworked to apply its damage bonus as magical damage, reduced bonus from 1/4 to 1/5 per level to compensate.",
+                                    "Increased _Thinking with Portals_' charge efficiency from 1.33/1.15/1 tile to 1.33/1/0.75 tile per cloak charge.",
+                                    "_Sixth Sense_ has been reworked to drop easy trickshots and show unaware enemies through walls and undiscovered locations and allowing to directly throw items at them.",
+                                    "Reduced _Grass Munching_'s grass requirements from 8 to 5.",
+                                    "Made _Hand of the God_ work with unarmed attacks, including Ring of Force."
+                            )
+                    )
+            ),
+            Changes(
+                    misc(
+                            list(
+                                "Restored the original behavior of mob loot dropping after level cap has been reached.",
+                                    "Rat King boss now gives 100 EXP. As consequence of this, he is much harder to doom with Wand of Corruption.",
+                                    "Rat King boss is now resistant to chill's speed reduction.",
+                                    "Voodoo champions no longer attempt to rebirth when falling into chasm.",
+                                    "Removed game log spam from not even attempting to make Soul of Yendor with cursed wand zaps.",
+                                    "Brawler is no longer able to use its special barehanded.",
+                                    "Added quickslot action for grass, which is throw it.",
+                                    "Changed Rat King boss' health from 2000/3200 (+240/+360) to 2400/3600 (+180/+275).",
+                                    "Decreased Spirit Caller's action cost from 45 to 40 turns."
+                            )
+                    ),
+                    bugFixes(
+                            "Fixed following bugs: \n" +
+                            list(
+                                    "Crash, when Rat King boss' Battlemage form fires missiles into invalid positions",
+                                    "Crash, when Scroll of Infinity Wealth enchants Spirit Bow, while not being a valid Scroll of Enchantment",
+                                    "Paladins being able to move under Terror effects",
+                                    "Drraedon +5 not giving rats champion titles",
+                                    "Seed + grass recipe not being a valid recipe",
+                                    "Mus Rex Ira's Warp Beacon effect always teleporting into main dungeon branch, despite Warp Beacon being able to keep the branch data",
+                                    "Brawler's Crossbow special duping darts",
+                                    "The ability to complete the run in reverse seed by just ascending from floor 1"
+                            )
+                    )
+            )
+        },
         {
             new ChangeInfo("RKA-2.0.0", true, TITLE_COLOR,
                 new ChangeButton(Icons.get(TRASHBOXBOBYLEV), "Developer Commentary",
