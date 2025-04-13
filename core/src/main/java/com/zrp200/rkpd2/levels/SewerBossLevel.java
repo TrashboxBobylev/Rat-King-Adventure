@@ -119,7 +119,7 @@ public class SewerBossLevel extends SewerLevel {
 		GooBossRoom gooRoom = GooBossRoom.randomGooRoom();
 		initRooms.add(gooRoom);
 		((FigureEightBuilder)builder).setLandmarkRoom(gooRoom);
-		if (Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER))
+		if (!Badges.isUnlocked(Badges.Badge.DEFEATED_RK_FOREVER))
 			initRooms.add(new RatKingRoom());
 		return initRooms;
 	}
