@@ -99,6 +99,11 @@ public enum RKPD2Changes {
                                 "_-_ Monastic Might talent is not present in RKA due to its simplicity."
                         )
             ),
+            new ChangeInfo("v2.1.1", false, TITLE_COLOR,
+                    bugFixes("Caused by v2.1.0:" + list(
+                            "Rat King's room not showing up."
+                    ))
+            ),
             NewContent(
                 new ChangeButton(new ItemSprite(DREAD_SWORD), "New T6 weapons!",
                         "Added a couple of new toys at tier 6 rarity: \n" +
