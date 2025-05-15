@@ -187,6 +187,7 @@ public class DungeonSeed {
 		MAGE("AMA-GEN-ERF"),
 		WARRIOR("COL-LOS-EUM"),
 		HUNTRESS("BUF-HUN-TRS"),
+		ALL_TALENTS("ULT-IMA-TEE"),
 		BALANCE("VBA-LAN-CED"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {

@@ -532,6 +532,8 @@ public class Hero extends Char {
 	}
 
 	public boolean canHaveTalent(Talent talent) {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
+			return true;
 		for(LinkedHashMap<Talent,Integer> tier : talents) if(tier.containsKey(talent)) return true;
 		return OmniAbility.findTalent(talent) != null;
 	}
@@ -546,6 +548,8 @@ public class Hero extends Char {
 	}
 
 	public int pointsInTalent( Talent talent ){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
+			return talent.maxPoints();
 		for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
 				if (f == talent) return tier.get(f);
