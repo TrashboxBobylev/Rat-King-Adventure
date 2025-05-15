@@ -188,6 +188,17 @@ public class DungeonSeed {
 		WARRIOR("COL-LOS-EUM"),
 		HUNTRESS("BUF-HUN-TRS"),
 		ALL_TALENTS("ULT-IMA-TEE"),
+		ALL_CLASSES("SUP-ERM-ANN"),
+		ALL_SUBS("IRO-NMA-NNN"),
+		ALL_POWERS("ASC-END-ANT"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(ALL_CLASSES);
+				list.add(ALL_TALENTS);
+				list.add(ALL_SUBS);
+			}
+		},
 		BALANCE("VBA-LAN-CED"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {

@@ -238,7 +238,7 @@ public class Hero extends Char {
 	}
 
 	public static boolean isSubclassedLoosely(Hero hero, HeroSubClass sub){
-		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) & hero.subClass != HeroSubClass.NONE){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
 			return true;
 		} else {
 			if (hero.subClass2 == HeroSubClass.NONE) {
@@ -254,7 +254,7 @@ public class Hero extends Char {
 	}
 
 	public static boolean isSubclassed(Hero hero, HeroSubClass sub){
-		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) & hero.subClass != HeroSubClass.NONE){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_SUBS)) & hero.subClass != HeroSubClass.NONE){
 			return true;
 		} else {
 			if (hero.subClass2 == HeroSubClass.NONE) {
@@ -298,7 +298,7 @@ public class Hero extends Char {
 	}
 
 	public static boolean isClassedLoosely(Hero hero, HeroClass sub){
-		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
 			return true;
 		} else {
 			if (hero.heroClass2 == null) {
@@ -314,7 +314,7 @@ public class Hero extends Char {
 	}
 
 	public boolean isClassed(Hero hero, HeroClass sub){
-		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
+		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
 			return true;
 		} else {
 			if (hero.heroClass2 == null) {
