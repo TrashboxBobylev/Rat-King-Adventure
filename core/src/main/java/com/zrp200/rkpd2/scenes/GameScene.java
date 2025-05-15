@@ -343,7 +343,7 @@ public class GameScene extends PixelScene {
 		mobs = new Group();
 		add( mobs );
 
-		hero = Dungeon.hero.heroClass.isExact(HeroClass.RAT_KING) ? new RatKingHeroSprite() : new HeroSprite();
+		hero = Dungeon.hero.heroClass == HeroClass.RAT_KING ? new RatKingHeroSprite() : new HeroSprite();
 		hero.place( Dungeon.hero.pos );
 		hero.updateArmor();
 		mobs.add( hero );
