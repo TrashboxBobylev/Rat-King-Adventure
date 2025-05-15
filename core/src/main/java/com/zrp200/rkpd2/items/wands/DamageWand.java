@@ -41,7 +41,8 @@ public abstract class DamageWand extends Wand{
 		int dmg = min(buffedLvl());
 		if (Dungeon.hero.hasTalent(Talent.ARCANITY_ENSUES)){
 			BrawlerBuff buff = Dungeon.hero.buff(BrawlerBuff.class);
-			dmg += Math.round(0.2f*Dungeon.hero.pointsInTalent(Talent.ARCANITY_ENSUES)*buff.damageFactor(dmg));
+			if (buff != null)
+				dmg += Math.round(0.2f*Dungeon.hero.pointsInTalent(Talent.ARCANITY_ENSUES)*buff.damageFactor(dmg));
 		}
 		return dmg;
 	}
@@ -52,7 +53,8 @@ public abstract class DamageWand extends Wand{
 		int dmg = max(buffedLvl());
 		if (Dungeon.hero.hasTalent(Talent.ARCANITY_ENSUES)){
 			BrawlerBuff buff = Dungeon.hero.buff(BrawlerBuff.class);
-			dmg += Math.round(0.2f*Dungeon.hero.pointsInTalent(Talent.ARCANITY_ENSUES)*buff.damageFactor(dmg));
+			if (buff != null)
+				dmg += Math.round(0.2f*Dungeon.hero.pointsInTalent(Talent.ARCANITY_ENSUES)*buff.damageFactor(dmg));
 		}
 		return dmg;
 	}
