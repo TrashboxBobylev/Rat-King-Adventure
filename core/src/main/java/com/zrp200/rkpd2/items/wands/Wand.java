@@ -550,7 +550,7 @@ public abstract class Wand extends Item {
 			ActionIndicator.clearAction(brawlerBuff);
 		}
 
-		if (Dungeon.hero.hasTalent(Talent.ECTOTOUGHNESS)){
+		if (Dungeon.hero.hasTalent(Talent.ECTOTOUGHNESS) && hero.buff(SpiritBuff.class) != null){
 			hero.buff(SpiritBuff.class).countUp(Dungeon.hero.pointsInTalent(Talent.ECTOTOUGHNESS)*2+1);
 		}
 
