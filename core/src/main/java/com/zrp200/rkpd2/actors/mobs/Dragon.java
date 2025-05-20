@@ -297,7 +297,7 @@ public class Dragon extends AbyssalMob {
         {
             spriteClass = SmallDragonSprite.class;
 
-            HP = HT = 0;
+            HP = HT = 70;
             defenseSkill = 70;
             viewDistance = Light.DISTANCE;
 
