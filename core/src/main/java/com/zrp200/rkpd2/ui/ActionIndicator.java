@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.input.GameAction;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Visual;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDAction;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
@@ -43,6 +40,9 @@ import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Visual;
 
 public class ActionIndicator extends Tag {
 

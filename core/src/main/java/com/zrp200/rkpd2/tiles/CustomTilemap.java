@@ -21,14 +21,14 @@
 
 package com.zrp200.rkpd2.tiles;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.levels.Level;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.levels.Level;
 
 public abstract class CustomTilemap implements Bundlable {
 

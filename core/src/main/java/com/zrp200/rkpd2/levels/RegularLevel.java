@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.levels;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Bones;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
@@ -84,6 +81,9 @@ import com.zrp200.rkpd2.levels.traps.PitfallTrap;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.levels.traps.WornDartTrap;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;

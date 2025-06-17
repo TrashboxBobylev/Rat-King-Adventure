@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 //A magical version of barkskin, essentially
 public class ArcaneArmor extends Buff {

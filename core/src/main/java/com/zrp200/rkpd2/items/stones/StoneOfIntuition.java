@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.stones;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.effects.Identification;
@@ -43,6 +41,8 @@ import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.IconTitle;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 

@@ -21,14 +21,14 @@
 
 package com.zrp200.rkpd2.levels.rooms.special;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.blobs.WaterOfAwareness;
 import com.zrp200.rkpd2.actors.blobs.WaterOfHealth;
 import com.zrp200.rkpd2.actors.blobs.WellWater;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class MagicWellRoom extends SpecialRoom {
 

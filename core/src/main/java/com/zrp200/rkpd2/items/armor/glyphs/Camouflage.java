@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor.glyphs;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
@@ -29,6 +28,7 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.noosa.audio.Sample;
 
 public class Camouflage extends Armor.Glyph {
 

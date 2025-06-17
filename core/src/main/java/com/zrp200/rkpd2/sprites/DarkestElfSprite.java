@@ -24,10 +24,10 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.mobs.DarkestElf;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 
 public class DarkestElfSprite extends MobSprite {
 

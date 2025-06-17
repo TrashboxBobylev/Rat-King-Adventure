@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor.curses;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
@@ -32,6 +31,7 @@ import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.plants.Plant;
 import com.zrp200.rkpd2.plants.Starflower;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 public class Overgrowth extends Armor.Glyph {
 	

@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
 
 public class TalentIcon extends Image {
 

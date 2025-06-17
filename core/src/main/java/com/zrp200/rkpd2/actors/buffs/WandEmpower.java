@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class WandEmpower extends Buff {
 

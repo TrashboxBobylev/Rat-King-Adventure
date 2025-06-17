@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.GamesInProgress;
 import com.zrp200.rkpd2.SPDSettings;
@@ -35,6 +34,7 @@ import com.zrp200.rkpd2.scenes.TitleScene;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Game;
 
 import java.io.IOException;
 

@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Chrome;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
-import com.zrp200.rkpd2.Chrome;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 public class Toast extends Component {
 

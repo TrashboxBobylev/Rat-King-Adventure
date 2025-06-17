@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.potions.exotic;
 
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.Recipe;
 import com.zrp200.rkpd2.items.potions.Potion;
@@ -37,6 +36,7 @@ import com.zrp200.rkpd2.items.potions.PotionOfParalyticGas;
 import com.zrp200.rkpd2.items.potions.PotionOfPurity;
 import com.zrp200.rkpd2.items.potions.PotionOfStrength;
 import com.zrp200.rkpd2.items.potions.PotionOfToxicGas;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

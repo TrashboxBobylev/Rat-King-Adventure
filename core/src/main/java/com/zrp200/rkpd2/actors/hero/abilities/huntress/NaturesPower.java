@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.huntress;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -34,6 +33,7 @@ import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.watabou.noosa.audio.Sample;
 
 public class NaturesPower extends ArmorAbility {
 

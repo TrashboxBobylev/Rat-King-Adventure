@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.builders;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.connection.ConnectionRoom;
 import com.zrp200.rkpd2.levels.rooms.connection.MazeConnectionRoom;
@@ -30,6 +29,7 @@ import com.zrp200.rkpd2.levels.rooms.special.ShopRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.ExitRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

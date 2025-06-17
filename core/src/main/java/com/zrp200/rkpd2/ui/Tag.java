@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.NinePatch;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.NinePatch;
 
 public class Tag extends Button {
 

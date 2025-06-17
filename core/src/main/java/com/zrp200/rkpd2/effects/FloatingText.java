@@ -21,6 +21,11 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.PixelScene;
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -28,11 +33,6 @@ import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
 import com.watabou.utils.SparseArray;
-import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.scenes.PixelScene;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
-import com.zrp200.rkpd2.ui.RenderedTextBlock;
 
 import java.util.ArrayList;
 

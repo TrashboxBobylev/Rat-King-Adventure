@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Dungeon;
+import com.watabou.noosa.Image;
 
 public class BusyIndicator extends Image {
 	

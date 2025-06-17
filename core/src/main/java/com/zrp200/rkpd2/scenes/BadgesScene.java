@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.scenes;
 
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.audio.Music;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
@@ -32,6 +30,8 @@ import com.zrp200.rkpd2.ui.BadgesGrid;
 import com.zrp200.rkpd2.ui.ExitButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.audio.Music;
 
 public class BadgesScene extends PixelScene {
 

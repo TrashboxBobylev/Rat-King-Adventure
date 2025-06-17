@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.scrolls.exotic;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.levels.Level;
@@ -29,6 +28,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.InterlevelScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.Game;
 
 public class ScrollOfPassage extends ExoticScroll {
 	

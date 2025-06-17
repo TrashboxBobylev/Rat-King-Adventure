@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.weapon.missiles.darts;
 
-import com.watabou.utils.BArray;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -31,6 +29,8 @@ import com.zrp200.rkpd2.items.artifacts.TalismanOfForesight;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.utils.BArray;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 

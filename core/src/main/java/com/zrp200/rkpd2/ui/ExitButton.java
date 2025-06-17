@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.input.GameAction;
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.TitleScene;
 import com.zrp200.rkpd2.windows.WndKeyBindings;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.Game;
 
 public class ExitButton extends IconButton {
 

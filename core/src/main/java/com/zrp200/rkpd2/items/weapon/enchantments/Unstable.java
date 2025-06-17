@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.items.weapon.enchantments;
 
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class Unstable extends Weapon.Enchantment {
 

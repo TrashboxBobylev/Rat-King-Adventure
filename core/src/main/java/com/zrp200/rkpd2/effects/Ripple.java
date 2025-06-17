@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.effects;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
 
 public class Ripple extends Image {
 

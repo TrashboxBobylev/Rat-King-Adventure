@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.RKChampionBuff;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Image;
 
 public class WndRkChampion extends Window {
 

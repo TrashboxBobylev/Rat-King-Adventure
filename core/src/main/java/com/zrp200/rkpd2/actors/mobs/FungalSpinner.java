@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
@@ -29,6 +28,7 @@ import com.zrp200.rkpd2.actors.blobs.Regrowth;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.FungalSpinnerSprite;
+import com.watabou.utils.PathFinder;
 
 public class FungalSpinner extends Spinner {
 

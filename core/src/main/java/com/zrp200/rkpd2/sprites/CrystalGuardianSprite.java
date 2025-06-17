@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.MovieClip;
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.CrystalGuardian;
+import com.watabou.noosa.MovieClip;
+import com.watabou.noosa.TextureFilm;
 
 public abstract class CrystalGuardianSprite extends MobSprite {
 

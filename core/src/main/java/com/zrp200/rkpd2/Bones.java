@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.FileUtils;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.items.Generator;
@@ -33,6 +29,10 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.remains.RemainsItem;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.io.IOException;
 import java.util.ArrayList;

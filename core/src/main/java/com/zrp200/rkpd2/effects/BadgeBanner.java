@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
@@ -29,8 +31,6 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.Badges;
 
 import java.util.ArrayList;
 import java.util.HashMap;

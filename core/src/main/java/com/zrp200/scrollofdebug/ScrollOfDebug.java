@@ -1,17 +1,7 @@
 package com.zrp200.scrollofdebug;
 
-import static com.zrp200.rkpd2.Dungeon.*;
-import static java.util.Arrays.copyOfRange;
-
-import com.watabou.utils.Bundle;
-import com.watabou.utils.FileUtils;
-import com.zrp200.rkpd2.GamesInProgress;
-import com.zrp200.rkpd2.items.scrolls.Scroll;
-
-import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.StringBuilder;
 import com.zrp200.rkpd2.Dungeon;
-// Commands
+import com.zrp200.rkpd2.GamesInProgress;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
@@ -22,38 +12,50 @@ import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.potions.Potion;
+import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.CellSelector;
 import com.zrp200.rkpd2.scenes.GameScene;
-// needed for HelpWindow
 import com.zrp200.rkpd2.scenes.PixelScene;
-
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.ScrollPane;
 import com.zrp200.rkpd2.ui.Window;
-// WndTextInput (added in v0.9.4)
-import com.zrp200.rkpd2.windows.WndTextInput;
-// Output
 import com.zrp200.rkpd2.utils.GLog;
-
+import com.zrp200.rkpd2.windows.WndTextInput;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.FileUtils;
 import com.watabou.utils.Reflection;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.zrp200.rkpd2.Dungeon.*;
+import static java.util.Arrays.copyOfRange;
 
 /**
  * Scroll of Debug uses ClassLoader to get every class that can be directly created and provides a command interface with which to interact with them.

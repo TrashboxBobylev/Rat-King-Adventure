@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.levels.painters;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.rooms.Room;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

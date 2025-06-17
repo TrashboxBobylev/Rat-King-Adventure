@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.effects;
 
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Random;
-import com.watabou.utils.RectF;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Random;
+import com.watabou.utils.RectF;
 
 public class BlobEmitter extends Emitter {
 	

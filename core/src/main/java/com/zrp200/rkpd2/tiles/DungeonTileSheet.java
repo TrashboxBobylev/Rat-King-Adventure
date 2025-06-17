@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.tiles;
 
-import com.watabou.utils.Random;
-import com.watabou.utils.SparseArray;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.levels.Terrain;
+import com.watabou.utils.Random;
+import com.watabou.utils.SparseArray;
 
 import java.util.Arrays;
 import java.util.HashSet;

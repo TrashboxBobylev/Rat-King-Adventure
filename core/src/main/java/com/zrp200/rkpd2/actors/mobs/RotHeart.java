@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
@@ -38,6 +36,8 @@ import com.zrp200.rkpd2.actors.buffs.Vertigo;
 import com.zrp200.rkpd2.plants.Rotberry;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.RotHeartSprite;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class RotHeart extends Mob {
 

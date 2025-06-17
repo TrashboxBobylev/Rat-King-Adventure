@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
-import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
@@ -30,6 +28,8 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
+import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 public class GrassyGraveRoom extends StandardRoom {
 

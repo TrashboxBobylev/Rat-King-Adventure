@@ -1,7 +1,7 @@
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Dungeon;
+import com.watabou.utils.Bundle;
 
 public abstract class AbyssalMob extends Mob {
     public boolean spawned = false;

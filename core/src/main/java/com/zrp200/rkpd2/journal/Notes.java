@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.journal;
 
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.keys.Key;
 import com.zrp200.rkpd2.messages.Messages;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 import java.util.Collections;

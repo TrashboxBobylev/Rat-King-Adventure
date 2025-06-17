@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.scrolls;
 
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.effects.Speck;
@@ -55,6 +54,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Plant;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Reflection;
 
 public class ScrollOfTransmutation extends InventoryScroll {
 	

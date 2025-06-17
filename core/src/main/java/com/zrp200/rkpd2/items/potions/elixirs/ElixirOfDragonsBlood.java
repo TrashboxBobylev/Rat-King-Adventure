@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.potions.elixirs;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FireImbue;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
 import com.zrp200.rkpd2.items.potions.exotic.PotionOfDragonsBreath;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class ElixirOfDragonsBlood extends Elixir {
 	

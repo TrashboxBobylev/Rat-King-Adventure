@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor.glyphs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -36,6 +35,7 @@ import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite.Glowing;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Bundle;
 
 public class Viscosity extends Glyph {
 	

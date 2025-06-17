@@ -1,6 +1,5 @@
 package com.zrp200.rkpd2.items.potions.elixirs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Warp;
@@ -12,6 +11,7 @@ import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Random;
 
 public class KromerPotion extends Elixir{
 

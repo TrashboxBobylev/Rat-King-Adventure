@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.secret;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.mobs.npcs.RatKing;
@@ -34,6 +33,7 @@ import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.sewerboss.SewerBossEntranceRoom;
+import com.watabou.utils.Random;
 
 public class RatKingRoom extends SecretRoom {
 	

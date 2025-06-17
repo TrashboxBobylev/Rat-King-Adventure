@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
-import com.watabou.utils.BArray;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.utils.BArray;
 
 public class WarpingTrap extends TeleportationTrap {
 

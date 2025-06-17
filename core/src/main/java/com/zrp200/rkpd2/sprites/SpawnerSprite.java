@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.sprites;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.effects.Splash;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.effects.Splash;
 
 public class SpawnerSprite extends MobSprite {
 

@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
@@ -29,7 +30,6 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.sprites.CharSprite;
 
 import java.nio.Buffer;
 import java.nio.ByteBuffer;

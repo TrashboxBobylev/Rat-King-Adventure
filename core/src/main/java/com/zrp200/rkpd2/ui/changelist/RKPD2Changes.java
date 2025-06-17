@@ -21,20 +21,16 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Badges.Badge;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
-import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.Wrath;
 import com.zrp200.rkpd2.effects.BadgeBanner;
-import com.zrp200.rkpd2.items.armor.RatKingArmor;
 import com.zrp200.rkpd2.items.TengusMask;
+import com.zrp200.rkpd2.items.armor.RatKingArmor;
 import com.zrp200.rkpd2.items.armor.WarriorArmor;
 import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.bags.VelvetPouch;
@@ -44,7 +40,6 @@ import com.zrp200.rkpd2.items.quest.NerfGun;
 import com.zrp200.rkpd2.items.wands.WandOfFirebolt;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.enchantments.Explosive;
-import com.zrp200.rkpd2.items.weapon.melee.DreadSlicer;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.ChangesScene;
 import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
@@ -57,8 +52,9 @@ import com.zrp200.rkpd2.sprites.RatKingBossSprite;
 import com.zrp200.rkpd2.sprites.ShopkeeperSprite;
 import com.zrp200.rkpd2.sprites.TormentedSpiritSprite;
 import com.zrp200.rkpd2.sprites.WraithSprite;
-import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.Icons;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

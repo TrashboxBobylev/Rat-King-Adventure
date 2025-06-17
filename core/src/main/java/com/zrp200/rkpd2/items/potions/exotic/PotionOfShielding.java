@@ -26,9 +26,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;
-import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
 public class PotionOfShielding extends ExoticPotion {

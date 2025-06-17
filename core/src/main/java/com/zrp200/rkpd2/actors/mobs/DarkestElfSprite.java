@@ -24,11 +24,11 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.sprites.MobSprite;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
-import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.sprites.MobSprite;
 
 public class DarkestElfSprite extends MobSprite {
 

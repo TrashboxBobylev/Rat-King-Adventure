@@ -21,14 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.input.ControllerHandler;
-import com.watabou.input.GameAction;
-import com.watabou.input.KeyBindings;
-import com.watabou.input.KeyEvent;
-import com.watabou.input.PointerEvent;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.ui.Component;
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.SPDAction;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.messages.Messages;
@@ -38,6 +30,14 @@ import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.ScrollPane;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.input.ControllerHandler;
+import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
+import com.watabou.input.KeyEvent;
+import com.watabou.input.PointerEvent;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.PointF;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

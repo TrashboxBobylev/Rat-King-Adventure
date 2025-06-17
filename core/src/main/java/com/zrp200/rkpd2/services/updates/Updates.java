@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.services.updates;
 
-import com.watabou.utils.Callback;
 import com.zrp200.rkpd2.SPDSettings;
+import com.watabou.utils.Callback;
 
 import java.util.Date;
 

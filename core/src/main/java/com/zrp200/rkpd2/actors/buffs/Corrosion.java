@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -30,6 +28,8 @@ import com.zrp200.rkpd2.items.wands.WandOfCorrosion;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class Corrosion extends Buff implements Hero.Doom, DamageOverTimeEffect {
 

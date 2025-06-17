@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
 
 public class Chains extends Group {
 

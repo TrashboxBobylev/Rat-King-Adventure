@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -30,6 +29,7 @@ import com.zrp200.rkpd2.actors.buffs.Poison;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.sprites.BanditSprite;
+import com.watabou.utils.Random;
 
 public class Bandit extends Thief {
 	

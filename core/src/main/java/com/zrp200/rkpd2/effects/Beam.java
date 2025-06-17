@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Assets;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Assets;
 
 public class Beam extends Image {
 	

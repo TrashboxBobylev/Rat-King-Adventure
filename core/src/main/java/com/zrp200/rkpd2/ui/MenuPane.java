@@ -21,12 +21,6 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.input.GameAction;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Component;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
@@ -43,6 +37,12 @@ import com.zrp200.rkpd2.windows.WndGame;
 import com.zrp200.rkpd2.windows.WndJournal;
 import com.zrp200.rkpd2.windows.WndKeyBindings;
 import com.zrp200.rkpd2.windows.WndStory;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
 
 public class MenuPane extends Component {
 

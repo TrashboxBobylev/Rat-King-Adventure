@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero;
 
-import com.watabou.utils.DeviceCompat;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
@@ -94,6 +91,9 @@ import com.zrp200.rkpd2.items.weapon.missiles.ThrowingSpike;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingStone;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;

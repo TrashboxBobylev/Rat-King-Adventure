@@ -21,15 +21,15 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.DM100;
 import com.zrp200.rkpd2.effects.Lightning;
 import com.zrp200.rkpd2.effects.Speck;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PointF;
 
 public class DM100Sprite extends MobSprite {
 	

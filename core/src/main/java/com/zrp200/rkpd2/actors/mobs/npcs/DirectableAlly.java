@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.actors.mobs.npcs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.Mob;
+import com.watabou.utils.Bundle;
 
 public class DirectableAlly extends NPC {
 

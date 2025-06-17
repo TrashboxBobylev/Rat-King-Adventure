@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.input.GameAction;
-import com.watabou.noosa.Game;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDAction;
 import com.zrp200.rkpd2.actors.Char;
@@ -33,6 +29,10 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.windows.WndKeyBindings;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 

@@ -21,14 +21,14 @@
 
 package com.zrp200.rkpd2.levels.rooms;
 
+import com.zrp200.rkpd2.levels.Level;
+import com.zrp200.rkpd2.levels.painters.Painter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
-import com.zrp200.rkpd2.levels.Level;
-import com.zrp200.rkpd2.levels.painters.Painter;
 
 import java.util.ArrayList;
 import java.util.Collection;

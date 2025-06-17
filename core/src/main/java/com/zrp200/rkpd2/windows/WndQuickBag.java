@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -37,6 +36,7 @@ import com.zrp200.rkpd2.ui.InventorySlot;
 import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Game;
 
 import java.util.ArrayList;
 import java.util.Collections;

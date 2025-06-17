@@ -21,14 +21,6 @@
 
 package com.zrp200.rkpd2;
 
-import com.watabou.noosa.Game;
-import com.watabou.utils.BArray;
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.FileUtils;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
-import com.watabou.utils.SparseArray;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Amok;
@@ -86,6 +78,14 @@ import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.ui.Toolbar;
 import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.windows.WndResurrect;
+import com.watabou.noosa.Game;
+import com.watabou.utils.BArray;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+import com.watabou.utils.SparseArray;
 
 import java.io.IOException;
 import java.text.DateFormat;

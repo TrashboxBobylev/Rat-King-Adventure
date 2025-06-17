@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.tiles;
 
+import com.zrp200.rkpd2.Dungeon;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.Tilemap;
@@ -28,7 +29,6 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Dungeon;
 
 public abstract class DungeonTilemap extends Tilemap {
 

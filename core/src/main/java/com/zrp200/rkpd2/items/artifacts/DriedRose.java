@@ -21,12 +21,6 @@
 
 package com.zrp200.rkpd2.items.artifacts;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
@@ -79,6 +73,12 @@ import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndInfoItem;
 import com.zrp200.rkpd2.windows.WndQuest;
 import com.zrp200.rkpd2.windows.WndUseItem;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

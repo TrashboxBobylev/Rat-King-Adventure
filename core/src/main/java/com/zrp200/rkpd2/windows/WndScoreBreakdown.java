@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.noosa.Group;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.Statistics;
@@ -30,6 +29,7 @@ import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Group;
 
 import java.text.NumberFormat;
 import java.util.Locale;

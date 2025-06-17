@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 import java.util.ArrayList;
 

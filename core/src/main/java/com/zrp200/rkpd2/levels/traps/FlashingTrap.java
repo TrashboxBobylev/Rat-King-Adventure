@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -32,6 +31,7 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.noosa.audio.Sample;
 
 public class FlashingTrap extends Trap {
 

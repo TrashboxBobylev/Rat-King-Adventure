@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.items.weapon.curses;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 public class Polarized extends Weapon.Enchantment {
 	

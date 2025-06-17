@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.quest;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.mobs.npcs.Blacksmith;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.quest.DarkGold;
@@ -29,6 +28,7 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.secret.SecretRoom;
+import com.watabou.utils.Random;
 
 public class MineSecretRoom extends SecretRoom {
 

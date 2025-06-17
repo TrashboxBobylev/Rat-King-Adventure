@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDSettings;
@@ -38,6 +36,8 @@ import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class EntranceRoom extends StandardRoom {
 	

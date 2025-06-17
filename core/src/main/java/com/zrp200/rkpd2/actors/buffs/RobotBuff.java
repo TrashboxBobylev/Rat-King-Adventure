@@ -1,7 +1,5 @@
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -10,6 +8,8 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.ui.ActionIndicator;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 
 public class RobotBuff extends Buff implements ActionIndicator.Action {
     {

@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.effects;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.noosa.Game;
 
 public class Enchanting extends ItemSprite {
 

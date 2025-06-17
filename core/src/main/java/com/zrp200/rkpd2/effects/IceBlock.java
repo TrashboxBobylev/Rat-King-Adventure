@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Gizmo;
 import com.watabou.noosa.audio.Sample;
-import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.sprites.CharSprite;
 
 public class IceBlock extends Gizmo {
 	

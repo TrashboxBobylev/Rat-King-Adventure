@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.tiles;
 
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.Tilemap;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.levels.HallsBossLevel;
 import com.zrp200.rkpd2.levels.MiningLevel;
 import com.zrp200.rkpd2.levels.Terrain;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.Tilemap;
 
 
 public class WallBlockingTilemap extends Tilemap {

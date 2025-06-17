@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.secret;
 
-import com.watabou.utils.Point;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
@@ -35,6 +34,7 @@ import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.plants.BlandfruitBush;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Point;
 
 public class SecretLarderRoom extends SecretRoom {
 	

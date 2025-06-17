@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor.glyphs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.particles.EnergyParticle;
@@ -29,6 +28,7 @@ import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.Armor.Glyph;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite.Glowing;
+import com.watabou.utils.Random;
 
 public class Potential extends Glyph {
 	

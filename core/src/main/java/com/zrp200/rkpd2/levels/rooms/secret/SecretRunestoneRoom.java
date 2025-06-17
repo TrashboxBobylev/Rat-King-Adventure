@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.secret;
 
-import com.watabou.utils.Point;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Heap;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Point;
 
 public class SecretRunestoneRoom extends SecretRoom {
 	

@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.effects.particles;
 
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
 
 public class SparkParticle extends PixelParticle {
 

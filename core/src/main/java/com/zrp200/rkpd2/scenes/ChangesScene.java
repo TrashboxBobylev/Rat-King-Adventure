@@ -21,12 +21,6 @@
 
 package com.zrp200.rkpd2.scenes;
 
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.Scene;
-import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.ui.Component;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
@@ -47,6 +41,12 @@ import com.zrp200.rkpd2.ui.changelist.WndChangesTabbed;
 import com.zrp200.rkpd2.ui.changelist.v1_X_Changes;
 import com.zrp200.rkpd2.ui.changelist.v2_X_Changes;
 import com.zrp200.rkpd2.windows.IconTitle;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.Scene;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 

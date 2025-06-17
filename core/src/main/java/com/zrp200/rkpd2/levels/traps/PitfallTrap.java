@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -37,6 +35,8 @@ import com.zrp200.rkpd2.levels.features.Chasm;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 
 public class PitfallTrap extends Trap {
 

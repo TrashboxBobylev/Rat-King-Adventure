@@ -24,7 +24,6 @@
 
 package com.zrp200.rkpd2.actors.blobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -42,6 +41,7 @@ import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.GooSprite;
+import com.watabou.utils.Random;
 
 import java.util.HashMap;
 

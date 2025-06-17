@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.input.PointerEvent;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.PointerArea;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.windows.IconTitle;
 import com.zrp200.rkpd2.windows.WndTabbed;
+import com.watabou.input.PointerEvent;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.PointerArea;
 
 import java.util.ArrayList;
 

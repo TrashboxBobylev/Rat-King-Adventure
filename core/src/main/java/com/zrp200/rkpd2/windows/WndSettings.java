@@ -21,14 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.input.ControllerHandler;
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.ui.Component;
-import com.watabou.utils.DeviceCompat;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.SPDSettings;
@@ -48,6 +40,14 @@ import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Toolbar;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.input.ControllerHandler;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.DeviceCompat;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;

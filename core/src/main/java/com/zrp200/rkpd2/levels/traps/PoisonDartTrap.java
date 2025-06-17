@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
@@ -35,6 +32,9 @@ import com.zrp200.rkpd2.actors.buffs.Poison;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.PoisonDart;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.sprites.MissileSprite;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 public class PoisonDartTrap extends Trap {
 

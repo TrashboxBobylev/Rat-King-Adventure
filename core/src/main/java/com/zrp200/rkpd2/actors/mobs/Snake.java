@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.Generator;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.SnakeSprite;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Random;
 
 public class Snake extends Mob {
 	

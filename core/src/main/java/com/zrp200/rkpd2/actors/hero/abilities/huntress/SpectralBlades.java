@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.huntress;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -53,6 +49,10 @@ import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.sprites.MissileSprite;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.HashSet;
 

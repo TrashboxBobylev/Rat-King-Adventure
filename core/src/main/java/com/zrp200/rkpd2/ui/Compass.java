@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
 
 public class Compass extends Image {
 

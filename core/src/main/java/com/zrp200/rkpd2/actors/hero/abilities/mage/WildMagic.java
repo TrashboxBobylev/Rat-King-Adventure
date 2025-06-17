@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.mage;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.tweeners.Delayer;
-import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -42,6 +38,10 @@ import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.tweeners.Delayer;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

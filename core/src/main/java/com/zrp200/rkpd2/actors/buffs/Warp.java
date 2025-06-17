@@ -1,11 +1,11 @@
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.WarpPile;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Warp extends Buff {
     {

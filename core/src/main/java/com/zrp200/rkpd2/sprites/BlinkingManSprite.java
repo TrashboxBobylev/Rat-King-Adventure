@@ -24,12 +24,12 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
-import com.watabou.utils.Callback;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.Callback;
 
 public class BlinkingManSprite extends MobSprite {
 

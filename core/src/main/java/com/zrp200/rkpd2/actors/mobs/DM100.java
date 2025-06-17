@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
@@ -46,6 +44,8 @@ import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.DM100Sprite;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
 

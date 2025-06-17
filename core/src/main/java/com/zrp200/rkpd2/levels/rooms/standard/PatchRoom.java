@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
-import com.watabou.utils.BArray;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Patch;
+import com.watabou.utils.BArray;
+import com.watabou.utils.PathFinder;
 
 //This room type uses the patch system to fill itself in in some manner
 //it's still up to the specific room to implement paint, but utility methods are provided

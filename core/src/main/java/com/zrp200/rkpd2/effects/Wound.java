@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
 
 public class Wound extends Image {
 

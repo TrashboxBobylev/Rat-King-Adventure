@@ -21,11 +21,9 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.PlateArmor;
@@ -33,6 +31,7 @@ import com.zrp200.rkpd2.items.armor.ScaleArmor;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ShieldedSprite;
+import com.watabou.utils.Random;
 
 public class ArmoredBrute extends Brute {
 

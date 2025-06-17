@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -28,7 +29,6 @@ import com.watabou.noosa.Image;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
 
 import java.util.Arrays;
 import java.util.List;

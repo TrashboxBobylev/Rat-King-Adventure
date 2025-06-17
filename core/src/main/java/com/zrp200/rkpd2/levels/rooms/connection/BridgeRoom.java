@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.levels.rooms.connection;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Rect;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
+import com.watabou.utils.Point;
+import com.watabou.utils.Rect;
 
 public class BridgeRoom extends TunnelRoom {
 	

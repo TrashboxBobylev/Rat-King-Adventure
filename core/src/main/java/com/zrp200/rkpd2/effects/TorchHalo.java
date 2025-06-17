@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Halo;
-import com.zrp200.rkpd2.sprites.CharSprite;
 
 public class TorchHalo extends Halo {
 

@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.actors.blobs;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Rect;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.levels.Level;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Rect;
+import com.watabou.utils.Reflection;
 
 public class Blob extends Actor {
 

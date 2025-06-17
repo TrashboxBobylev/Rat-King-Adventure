@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.bombs;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -31,6 +29,8 @@ import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.particles.BlastParticle;
 import com.zrp200.rkpd2.mechanics.ShadowCaster;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

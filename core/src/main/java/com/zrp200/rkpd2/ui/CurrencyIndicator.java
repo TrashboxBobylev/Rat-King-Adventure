@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ui.Component;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 public class CurrencyIndicator extends Component {
 

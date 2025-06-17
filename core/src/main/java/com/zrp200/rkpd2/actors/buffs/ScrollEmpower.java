@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
 import static com.zrp200.rkpd2.actors.hero.Talent.INSCRIBED_POWER;

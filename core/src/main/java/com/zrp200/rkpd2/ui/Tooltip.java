@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Chrome;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.NinePatch;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.RectF;
-import com.zrp200.rkpd2.Chrome;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 public class Tooltip extends Component {
 

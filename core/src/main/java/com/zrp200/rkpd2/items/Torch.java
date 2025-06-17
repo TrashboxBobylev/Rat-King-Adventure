@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.items;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.GodSlayerFire;
@@ -35,6 +32,9 @@ import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 

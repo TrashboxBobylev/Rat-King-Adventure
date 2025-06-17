@@ -21,13 +21,6 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.gltextures.SmartTexture;
-import com.watabou.gltextures.TextureCache;
-import com.watabou.glwrap.Quad;
-import com.watabou.glwrap.Vertexbuffer;
-import com.watabou.noosa.NoosaScript;
-import com.watabou.noosa.Visual;
-import com.watabou.utils.RectF;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.keys.CrystalKey;
@@ -36,6 +29,13 @@ import com.zrp200.rkpd2.items.keys.IronKey;
 import com.zrp200.rkpd2.items.keys.Key;
 import com.zrp200.rkpd2.items.keys.SkeletonKey;
 import com.zrp200.rkpd2.journal.Notes;
+import com.watabou.gltextures.SmartTexture;
+import com.watabou.gltextures.TextureCache;
+import com.watabou.glwrap.Quad;
+import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.noosa.NoosaScript;
+import com.watabou.noosa.Visual;
+import com.watabou.utils.RectF;
 
 import java.nio.Buffer;
 import java.nio.FloatBuffer;

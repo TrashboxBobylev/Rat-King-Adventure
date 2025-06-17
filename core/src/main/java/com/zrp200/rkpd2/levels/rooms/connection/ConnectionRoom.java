@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.levels.rooms.connection;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.levels.rooms.Room;
 
 import java.util.ArrayList;
 

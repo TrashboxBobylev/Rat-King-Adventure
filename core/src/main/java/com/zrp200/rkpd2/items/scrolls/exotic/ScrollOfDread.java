@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.scrolls.exotic;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class ScrollOfDread extends ExoticScroll {
 	

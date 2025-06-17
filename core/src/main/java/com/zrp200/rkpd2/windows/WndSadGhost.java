@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.mobs.npcs.Ghost;
 import com.zrp200.rkpd2.items.Item;
@@ -39,6 +38,7 @@ import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Random;
 
 public class WndSadGhost extends Window {
 

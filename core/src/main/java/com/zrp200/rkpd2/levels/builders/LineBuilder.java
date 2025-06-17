@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.levels.builders;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.connection.ConnectionRoom;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

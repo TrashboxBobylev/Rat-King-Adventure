@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.effects;
 
-import com.watabou.noosa.Gizmo;
 import com.zrp200.rkpd2.sprites.CharSprite;
+import com.watabou.noosa.Gizmo;
 
 public class DarkBlock extends Gizmo{
 

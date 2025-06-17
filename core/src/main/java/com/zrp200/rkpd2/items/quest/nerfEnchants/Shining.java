@@ -1,6 +1,5 @@
 package com.zrp200.rkpd2.items.quest.nerfEnchants;
 
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
@@ -10,6 +9,7 @@ import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.items.bombs.Flashbang;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.PathFinder;
 
 public class Shining extends Weapon.Enchantment {
     @Override

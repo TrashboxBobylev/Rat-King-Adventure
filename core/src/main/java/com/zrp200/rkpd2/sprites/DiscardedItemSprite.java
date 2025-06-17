@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.watabou.noosa.Game;
 
 public class DiscardedItemSprite extends ItemSprite {
 	

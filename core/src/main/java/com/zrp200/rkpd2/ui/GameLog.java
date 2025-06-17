@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.ui.Component;
-import com.watabou.utils.Signal;
 import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.utils.WarpPile;
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Signal;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;

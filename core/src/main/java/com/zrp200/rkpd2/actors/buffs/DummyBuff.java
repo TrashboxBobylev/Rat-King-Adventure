@@ -1,7 +1,7 @@
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.messages.Messages;
+import com.watabou.utils.Bundle;
 
 public abstract class DummyBuff extends FlavourBuff {
     {

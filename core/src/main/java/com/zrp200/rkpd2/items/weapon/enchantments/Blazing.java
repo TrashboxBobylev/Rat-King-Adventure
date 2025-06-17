@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.weapon.enchantments;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite.Glowing;
+import com.watabou.utils.Random;
 
 public class Blazing extends Weapon.Enchantment {
 

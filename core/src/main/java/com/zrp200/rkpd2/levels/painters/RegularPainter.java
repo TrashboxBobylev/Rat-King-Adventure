@@ -21,13 +21,6 @@
 
 package com.zrp200.rkpd2.levels.painters;
 
-import com.watabou.noosa.Game;
-import com.watabou.utils.Graph;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDSettings;
@@ -45,6 +38,13 @@ import com.zrp200.rkpd2.levels.rooms.special.SpecialRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
 import com.zrp200.rkpd2.levels.traps.Trap;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Graph;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

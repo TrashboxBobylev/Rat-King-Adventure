@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.mobs.npcs.AbstractMirrorImage;
+import com.watabou.utils.PointF;
 
 public class MirrorSprite extends MobSprite {
 	

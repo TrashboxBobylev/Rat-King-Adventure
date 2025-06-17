@@ -21,11 +21,6 @@
 
 package com.zrp200.rkpd2.tiles;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.tweeners.ScaleTweener;
-import com.watabou.utils.PointF;
-import com.watabou.utils.RectF;
-import com.watabou.utils.SparseArray;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.levels.AbyssLevel;
@@ -33,6 +28,11 @@ import com.zrp200.rkpd2.levels.LastShopLevel;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.plants.Plant;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.tweeners.ScaleTweener;
+import com.watabou.utils.PointF;
+import com.watabou.utils.RectF;
+import com.watabou.utils.SparseArray;
 
 //TODO add in a proper set of vfx for plants growing/withering, grass burning, discovering traps
 public class TerrainFeaturesTilemap extends DungeonTilemap {

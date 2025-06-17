@@ -21,14 +21,14 @@
 
 package com.zrp200.rkpd2.plants;
 
-import com.watabou.utils.BArray;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Freezing;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FrostImbue;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.utils.BArray;
+import com.watabou.utils.PathFinder;
 
 public class Icecap extends Plant {
 	

@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.glwrap.Blending;
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.ShaftParticle;
+import com.watabou.glwrap.Blending;
+import com.watabou.noosa.TextureFilm;
 
 public class GhostSprite extends MobSprite {
 	

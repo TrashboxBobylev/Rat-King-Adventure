@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Ooze;
 import com.zrp200.rkpd2.effects.Splash;
+import com.watabou.utils.PathFinder;
 
 public class OozeTrap extends Trap {
 

@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Assets;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.noosa.NinePatch;
-import com.zrp200.rkpd2.Assets;
 
 public class ShadowBox extends NinePatch {
 

@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.items.potions;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.ParalyticGas;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class PotionOfParalyticGas extends Potion {
 

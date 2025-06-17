@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.special;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.mobs.Piranha;
@@ -32,6 +31,7 @@ import com.zrp200.rkpd2.items.potions.PotionOfInvisibility;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.watabou.utils.Random;
 
 public class PoolRoom extends SpecialRoom {
 

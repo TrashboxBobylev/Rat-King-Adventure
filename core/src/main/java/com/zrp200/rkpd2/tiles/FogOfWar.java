@@ -21,14 +21,14 @@
 
 package com.zrp200.rkpd2.tiles;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.SPDSettings;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.utils.Rect;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.SPDSettings;
 
 import java.util.ArrayList;
 

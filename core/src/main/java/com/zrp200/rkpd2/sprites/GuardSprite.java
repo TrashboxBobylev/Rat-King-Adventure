@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.MovieClip;
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
+import com.watabou.noosa.MovieClip;
+import com.watabou.noosa.TextureFilm;
 
 public class GuardSprite extends MobSprite {
 

@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
@@ -49,6 +47,8 @@ import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndChooseAbility;
 import com.zrp200.rkpd2.windows.WndInfoArmorAbility;
 import com.zrp200.rkpd2.windows.WndOptions;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 

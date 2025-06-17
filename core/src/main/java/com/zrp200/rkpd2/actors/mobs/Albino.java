@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Bleeding;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.items.food.MysteryMeat;
 import com.zrp200.rkpd2.sprites.AlbinoSprite;
+import com.watabou.utils.Random;
 
 public class Albino extends Rat {
 

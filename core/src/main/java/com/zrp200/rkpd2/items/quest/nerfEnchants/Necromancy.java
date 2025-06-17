@@ -1,6 +1,5 @@
 package com.zrp200.rkpd2.items.quest.nerfEnchants;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -13,6 +12,7 @@ import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.ui.TargetHealthIndicator;
+import com.watabou.noosa.audio.Sample;
 
 public class Necromancy extends Weapon.Enchantment {
     @Override

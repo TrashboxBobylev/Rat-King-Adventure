@@ -1,12 +1,5 @@
 package com.zrp200.rkpd2.levels;
 
-import com.watabou.noosa.Group;
-import com.watabou.noosa.Halo;
-import com.watabou.noosa.audio.Music;
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.utils.GameMath;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
@@ -33,6 +26,13 @@ import com.zrp200.rkpd2.levels.traps.StormTrap;
 import com.zrp200.rkpd2.levels.traps.WarpingTrap;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.watabou.noosa.Group;
+import com.watabou.noosa.Halo;
+import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.GameMath;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

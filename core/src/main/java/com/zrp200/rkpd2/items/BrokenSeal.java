@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.Regeneration;
 import com.zrp200.rkpd2.actors.buffs.ShieldBuff;
@@ -40,6 +38,8 @@ import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndOptions;
 import com.zrp200.rkpd2.windows.WndUseItem;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 import java.util.Arrays;

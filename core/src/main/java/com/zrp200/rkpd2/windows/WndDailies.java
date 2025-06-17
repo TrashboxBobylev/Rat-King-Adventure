@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.ui.Component;
 import com.zrp200.rkpd2.Rankings;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.messages.Messages;
@@ -32,6 +30,8 @@ import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.ScrollPane;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.ui.Component;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;

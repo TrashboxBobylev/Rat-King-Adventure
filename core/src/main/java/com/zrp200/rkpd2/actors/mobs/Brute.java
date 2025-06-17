@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
@@ -35,6 +33,8 @@ import com.zrp200.rkpd2.levels.features.Chasm;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.BruteSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Brute extends Mob {
 	

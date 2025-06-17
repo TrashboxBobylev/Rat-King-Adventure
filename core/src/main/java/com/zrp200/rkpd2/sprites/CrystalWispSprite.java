@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.tweeners.AlphaTweener;
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.CrystalWisp;
@@ -32,6 +28,10 @@ import com.zrp200.rkpd2.effects.Beam;
 import com.zrp200.rkpd2.effects.TorchHalo;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.tweeners.AlphaTweener;
+import com.watabou.utils.PointF;
 
 public abstract class CrystalWispSprite extends MobSprite {
 

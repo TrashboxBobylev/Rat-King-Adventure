@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.sprites.GnollSprite;
+import com.watabou.utils.Random;
 
 public class Gnoll extends Mob {
 	

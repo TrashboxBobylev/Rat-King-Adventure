@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.effects;
 
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.Icons;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.utils.Random;
 
 public class EmoIcon extends Image {
 

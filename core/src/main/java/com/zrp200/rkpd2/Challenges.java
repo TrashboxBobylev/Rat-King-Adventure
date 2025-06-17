@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2;
 
-import com.badlogic.gdx.utils.OrderedMap;
-import com.watabou.utils.DeviceCompat;
 import com.zrp200.rkpd2.items.Dewdrop;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.HornOfPlenty;
 import com.zrp200.rkpd2.items.food.Blandfruit;
 import com.zrp200.rkpd2.items.rings.RingOfMight;
+import com.badlogic.gdx.utils.OrderedMap;
+import com.watabou.utils.DeviceCompat;
 
 public class Challenges {
 

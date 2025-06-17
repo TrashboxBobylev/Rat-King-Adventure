@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.effects.BadgeBanner;
@@ -60,6 +59,7 @@ import com.zrp200.rkpd2.ui.BuffIcon;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Image;
 
 import java.util.ArrayList;
 

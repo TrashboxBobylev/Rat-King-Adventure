@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.windows;
 
+import com.zrp200.rkpd2.ui.RedButton;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Component;
-import com.zrp200.rkpd2.ui.RedButton;
 
 //a notification window that the player can't get rid of quickly, good for forcibly telling a message
 //USE THIS SPARINGLY

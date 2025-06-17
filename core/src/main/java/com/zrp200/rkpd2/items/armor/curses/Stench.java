@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.items.armor.curses;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.ToxicGas;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 public class Stench extends Armor.Glyph {
 

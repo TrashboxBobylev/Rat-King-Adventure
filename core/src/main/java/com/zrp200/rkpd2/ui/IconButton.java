@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.scenes.PixelScene;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
 
 public class IconButton extends Button {
 	

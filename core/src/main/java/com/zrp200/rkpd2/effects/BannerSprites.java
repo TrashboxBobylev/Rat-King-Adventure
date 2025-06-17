@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.effects;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Assets;
+import com.watabou.noosa.Image;
 
 public class BannerSprites {
 

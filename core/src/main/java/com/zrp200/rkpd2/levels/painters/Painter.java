@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels.painters;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Rect;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -32,6 +30,8 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Point;
+import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
 import java.util.Arrays;

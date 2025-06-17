@@ -21,12 +21,6 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.Visual;
-import com.watabou.noosa.tweeners.PosTweener;
-import com.watabou.noosa.tweeners.Tweener;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.RobotTransform;
 import com.zrp200.rkpd2.actors.hero.abilities.huntress.SpectralBlades;
@@ -54,6 +48,12 @@ import com.zrp200.rkpd2.items.weapon.missiles.ThrowingSpike;
 import com.zrp200.rkpd2.items.weapon.missiles.Trident;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.watabou.noosa.Visual;
+import com.watabou.noosa.tweeners.PosTweener;
+import com.watabou.noosa.tweeners.Tweener;
+import com.watabou.utils.Callback;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import java.util.HashMap;
 

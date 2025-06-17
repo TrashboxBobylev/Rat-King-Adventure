@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.levels.features;
 
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
-import com.zrp200.rkpd2.levels.rooms.Room;
 
 public class Maze {
 	

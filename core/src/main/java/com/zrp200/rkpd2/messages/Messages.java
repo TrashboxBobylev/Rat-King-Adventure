@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.messages;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.I18NBundle;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.I18NBundle;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

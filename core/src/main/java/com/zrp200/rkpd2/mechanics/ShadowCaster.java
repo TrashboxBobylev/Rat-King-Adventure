@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.mechanics;
 
-import com.watabou.utils.BArray;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.watabou.utils.BArray;
 
 //based on: http://www.roguebasin.com/index.php?title=FOV_using_recursive_shadowcasting
 public final class ShadowCaster {

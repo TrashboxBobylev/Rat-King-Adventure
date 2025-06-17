@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.ui.Component;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
@@ -37,6 +34,9 @@ import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.ui.BuffIcon;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.TalentIcon;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Reflection;
 
 import static com.zrp200.rkpd2.sprites.HeroSprite.avatar;
 

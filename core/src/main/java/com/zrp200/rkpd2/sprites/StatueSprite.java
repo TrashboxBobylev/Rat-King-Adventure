@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.sprites;
 
+import com.zrp200.rkpd2.Assets;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.GameMath;
-import com.zrp200.rkpd2.Assets;
 
 public class StatueSprite extends MobSprite {
 	

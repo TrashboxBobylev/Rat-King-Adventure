@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.levels.features;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.levels.Level;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.levels.Level;
 
 public class LevelTransition extends Rect implements Bundlable {
 

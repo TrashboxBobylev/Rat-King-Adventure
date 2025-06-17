@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
+import com.watabou.noosa.TextureFilm;
 
 public class GnollSapperSprite extends MobSprite {
 

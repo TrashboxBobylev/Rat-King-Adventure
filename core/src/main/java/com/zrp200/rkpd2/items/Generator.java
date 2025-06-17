@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.items;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.GameMath;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.ClothArmor;
@@ -205,6 +201,10 @@ import com.zrp200.rkpd2.plants.Starflower;
 import com.zrp200.rkpd2.plants.Stormvine;
 import com.zrp200.rkpd2.plants.Sungrass;
 import com.zrp200.rkpd2.plants.Swiftthistle;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.GameMath;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

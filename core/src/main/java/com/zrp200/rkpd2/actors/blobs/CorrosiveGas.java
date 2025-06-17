@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.blobs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -30,6 +29,7 @@ import com.zrp200.rkpd2.actors.buffs.Corrosion;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.messages.Messages;
+import com.watabou.utils.Bundle;
 
 public class CorrosiveGas extends Blob {
 

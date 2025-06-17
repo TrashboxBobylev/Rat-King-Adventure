@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
@@ -32,6 +30,8 @@ import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.particles.ElmoParticle;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARMOR_MAGE;
 

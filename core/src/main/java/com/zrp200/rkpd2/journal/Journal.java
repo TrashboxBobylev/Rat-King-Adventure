@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.journal;
 
+import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.FileUtils;
-import com.zrp200.rkpd2.ShatteredPixelDungeon;
 
 import java.io.IOException;
 

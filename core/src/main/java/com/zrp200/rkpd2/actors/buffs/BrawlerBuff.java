@@ -1,7 +1,5 @@
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.particles.Emitter;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -20,6 +18,8 @@ import com.zrp200.rkpd2.ui.AttackIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.particles.Emitter;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;

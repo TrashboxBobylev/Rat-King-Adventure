@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Point;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.npcs.Imp;
@@ -32,6 +30,8 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.rooms.special.ShopRoom;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Point;
 
 import java.util.ArrayList;
 import java.util.Collection;

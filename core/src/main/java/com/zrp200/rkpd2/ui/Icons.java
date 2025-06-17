@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
@@ -29,6 +28,7 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.noosa.Image;
 
 public enum Icons {
 

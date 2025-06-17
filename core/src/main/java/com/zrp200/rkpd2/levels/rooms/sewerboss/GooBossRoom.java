@@ -21,14 +21,14 @@
 
 package com.zrp200.rkpd2.levels.rooms.sewerboss;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.Tilemap;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public abstract class GooBossRoom extends StandardRoom {
 

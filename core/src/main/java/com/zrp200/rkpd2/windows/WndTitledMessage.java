@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.windows;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.ui.Component;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.ScrollPane;
 import com.zrp200.rkpd2.ui.Window;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
 
 public class WndTitledMessage extends Window {
 

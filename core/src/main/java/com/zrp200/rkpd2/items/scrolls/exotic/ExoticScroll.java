@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.scrolls.exotic;
 
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.Recipe;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
@@ -37,6 +36,7 @@ import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTerror;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTransmutation;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
+import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashMap;

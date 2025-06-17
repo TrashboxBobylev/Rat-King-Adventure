@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.quest;
 
-import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.mobs.CrystalGuardian;
 import com.zrp200.rkpd2.actors.mobs.FungalSentry;
 import com.zrp200.rkpd2.actors.mobs.GnollGuard;
@@ -37,6 +33,10 @@ import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.secret.SecretRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.CaveRoom;
 import com.zrp200.rkpd2.levels.traps.GnollRockfallTrap;
+import com.watabou.utils.GameMath;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

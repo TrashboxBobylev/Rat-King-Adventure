@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2;
 
+import com.zrp200.rkpd2.items.Item;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.items.Item;
 
 import java.util.ArrayList;
 import java.util.Collection;

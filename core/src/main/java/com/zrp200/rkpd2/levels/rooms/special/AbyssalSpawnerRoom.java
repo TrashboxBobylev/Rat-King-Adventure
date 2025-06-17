@@ -1,7 +1,5 @@
 package com.zrp200.rkpd2.levels.rooms.special;
 
-import com.watabou.noosa.Tilemap;
-import com.watabou.utils.Point;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
@@ -13,6 +11,8 @@ import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
+import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
 
 public class AbyssalSpawnerRoom extends SpecialRoom {
     @Override

@@ -21,16 +21,6 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.input.GameAction;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.NinePatch;
-import com.watabou.noosa.particles.Emitter;
-import com.watabou.noosa.ui.Component;
-import com.watabou.utils.ColorMath;
-import com.watabou.utils.GameMath;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDAction;
@@ -44,6 +34,16 @@ import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.windows.WndHero;
 import com.zrp200.rkpd2.windows.WndKeyBindings;
+import com.watabou.input.GameAction;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.NinePatch;
+import com.watabou.noosa.particles.Emitter;
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.ColorMath;
+import com.watabou.utils.GameMath;
 
 public class StatusPane extends Component {
 

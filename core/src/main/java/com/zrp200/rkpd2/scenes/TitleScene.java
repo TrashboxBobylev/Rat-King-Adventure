@@ -21,14 +21,6 @@
 
 package com.zrp200.rkpd2.scenes;
 
-import com.watabou.glwrap.Blending;
-import com.watabou.noosa.BitmapText;
-import com.watabou.noosa.Camera;
-import com.watabou.noosa.Game;
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Music;
-import com.watabou.utils.ColorMath;
-import com.watabou.utils.DeviceCompat;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.Dungeon;
@@ -51,6 +43,14 @@ import com.zrp200.rkpd2.ui.StyledButton;
 import com.zrp200.rkpd2.ui.Window;
 import com.zrp200.rkpd2.windows.WndOptions;
 import com.zrp200.rkpd2.windows.WndSettings;
+import com.watabou.glwrap.Blending;
+import com.watabou.noosa.BitmapText;
+import com.watabou.noosa.Camera;
+import com.watabou.noosa.Game;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Music;
+import com.watabou.utils.ColorMath;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.Date;
 

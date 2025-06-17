@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.sprites;
 
+import com.zrp200.rkpd2.actors.mobs.Mob;
+import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.ScaleTweener;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.actors.mobs.Mob;
-import com.zrp200.rkpd2.tiles.DungeonTilemap;
 
 public class MobSprite extends CharSprite {
 

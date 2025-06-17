@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
 
 public abstract class ShieldBuff extends Buff {
 	

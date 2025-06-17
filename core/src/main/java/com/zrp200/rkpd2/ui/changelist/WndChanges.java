@@ -21,8 +21,8 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.windows.WndTitledMessage;
+import com.watabou.noosa.Image;
 
 public class WndChanges extends WndTitledMessage {
 

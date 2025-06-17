@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.special;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.blobs.Blob;
@@ -34,6 +32,8 @@ import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class SacrificeRoom extends SpecialRoom {
 

@@ -1,10 +1,10 @@
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
+import com.watabou.noosa.TextureFilm;
 
 public class RatKingHeroSprite extends HeroSprite {
     // placeholder

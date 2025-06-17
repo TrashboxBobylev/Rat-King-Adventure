@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Chrome;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.input.PointerEvent;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.NinePatch;
@@ -28,8 +30,6 @@ import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Chrome;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 public abstract class OptionSlider extends Component {
 

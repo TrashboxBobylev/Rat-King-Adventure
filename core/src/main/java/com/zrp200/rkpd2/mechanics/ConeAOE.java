@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.mechanics;
 
+import com.zrp200.rkpd2.Dungeon;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Dungeon;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.utils;
 
+import com.zrp200.rkpd2.messages.Messages;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Signal;
-import com.zrp200.rkpd2.messages.Messages;
 
 public class GLog {
 

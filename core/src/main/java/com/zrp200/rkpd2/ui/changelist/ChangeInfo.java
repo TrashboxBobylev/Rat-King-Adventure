@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.watabou.noosa.ColorBlock;
-import com.watabou.noosa.ui.Component;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
+import com.watabou.noosa.ColorBlock;
+import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
 

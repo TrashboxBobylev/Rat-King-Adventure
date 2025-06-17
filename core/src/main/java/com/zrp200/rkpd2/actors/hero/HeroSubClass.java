@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Item;
@@ -35,6 +34,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.noosa.Game;
 
 public enum HeroSubClass {
 

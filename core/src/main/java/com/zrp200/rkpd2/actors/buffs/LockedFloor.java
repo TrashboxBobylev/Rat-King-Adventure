@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
 
 public class LockedFloor extends Buff {
 

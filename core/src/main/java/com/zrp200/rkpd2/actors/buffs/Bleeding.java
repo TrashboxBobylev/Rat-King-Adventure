@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.effects.Splash;
@@ -33,6 +31,8 @@ import com.zrp200.rkpd2.levels.features.Chasm;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.PointF;
 
 import static com.watabou.utils.Random.NormalFloat;
 

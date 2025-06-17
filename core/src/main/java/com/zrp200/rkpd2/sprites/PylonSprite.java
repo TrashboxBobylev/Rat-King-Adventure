@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.Pylon;
 import com.zrp200.rkpd2.effects.particles.BlastParticle;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.noosa.audio.Sample;
 
 public class PylonSprite extends MobSprite {
 

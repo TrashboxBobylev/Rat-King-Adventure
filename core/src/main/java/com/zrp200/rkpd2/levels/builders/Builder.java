@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.levels.builders;
 
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
-import com.zrp200.rkpd2.levels.rooms.Room;
 
 import java.util.ArrayList;
 import java.util.Iterator;

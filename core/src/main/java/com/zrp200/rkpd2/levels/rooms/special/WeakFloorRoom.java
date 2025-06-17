@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.special;
 
-import com.watabou.noosa.Tilemap;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.levels.Level;
@@ -31,6 +28,9 @@ import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
+import com.watabou.noosa.Tilemap;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 public class WeakFloorRoom extends SpecialRoom {
 

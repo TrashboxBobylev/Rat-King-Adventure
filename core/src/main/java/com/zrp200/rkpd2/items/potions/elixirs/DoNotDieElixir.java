@@ -1,6 +1,5 @@
 package com.zrp200.rkpd2.items.potions.elixirs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.NoDeath;
@@ -10,6 +9,7 @@ import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
 import com.zrp200.rkpd2.items.quest.Kromer;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.utils.Random;
 
 public class DoNotDieElixir extends Elixir{
 

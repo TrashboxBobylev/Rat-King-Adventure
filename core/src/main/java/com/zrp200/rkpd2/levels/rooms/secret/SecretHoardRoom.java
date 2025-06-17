@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.levels.rooms.secret;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
-import com.watabou.utils.Reflection;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
@@ -36,6 +33,9 @@ import com.zrp200.rkpd2.levels.traps.PoisonDartTrap;
 import com.zrp200.rkpd2.levels.traps.RockfallTrap;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Reflection;
 
 public class SecretHoardRoom extends SecretRoom {
 	

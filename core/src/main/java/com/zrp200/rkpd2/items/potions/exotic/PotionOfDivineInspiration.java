@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.potions.exotic;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -38,6 +36,8 @@ import com.zrp200.rkpd2.ui.TalentsPane;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndHero;
 import com.zrp200.rkpd2.windows.WndOptions;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 public class PotionOfDivineInspiration extends ExoticPotion {
 	

@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.potions.elixirs;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -35,6 +34,7 @@ import com.zrp200.rkpd2.actors.mobs.Bee;
 import com.zrp200.rkpd2.items.Honeypot;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.noosa.audio.Sample;
 
 public class ElixirOfHoneyedHealing extends Elixir {
 	

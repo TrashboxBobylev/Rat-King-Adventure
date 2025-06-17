@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.ToxicGas;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.noosa.audio.Sample;
 
 public class ToxicTrap extends Trap{
 

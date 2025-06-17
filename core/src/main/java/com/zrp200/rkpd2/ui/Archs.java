@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Assets;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
@@ -29,7 +30,6 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.ui.Component;
-import com.zrp200.rkpd2.Assets;
 
 public class Archs extends Component {
 

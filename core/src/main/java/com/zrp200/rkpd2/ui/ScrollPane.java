@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.SPDAction;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
 import com.watabou.input.KeyEvent;
@@ -35,8 +37,6 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
-import com.zrp200.rkpd2.SPDAction;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 import static com.zrp200.rkpd2.utils.SafeCast.cast;
 

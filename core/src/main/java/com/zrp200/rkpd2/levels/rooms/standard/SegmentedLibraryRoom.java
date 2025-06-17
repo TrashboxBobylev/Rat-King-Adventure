@@ -21,12 +21,12 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
-import com.watabou.utils.Rect;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
+import com.watabou.utils.Rect;
 
 //FIXME some copypasta from segmented room with changed constants in here, might want to externalize
 public class SegmentedLibraryRoom extends StandardRoom {

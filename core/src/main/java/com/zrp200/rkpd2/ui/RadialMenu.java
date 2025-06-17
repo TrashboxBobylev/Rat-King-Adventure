@@ -21,17 +21,17 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Chrome;
+import com.zrp200.rkpd2.SPDSettings;
+import com.zrp200.rkpd2.effects.CircleArc;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.input.ControllerHandler;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.ui.Cursor;
 import com.watabou.utils.PointF;
-import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.Chrome;
-import com.zrp200.rkpd2.SPDSettings;
-import com.zrp200.rkpd2.effects.CircleArc;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 public class RadialMenu extends Window {
 

@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.noosa.TextureFilm;
-import com.watabou.utils.PointF;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.weapon.melee.AluminumSword;
+import com.watabou.noosa.TextureFilm;
+import com.watabou.utils.PointF;
 
 public class InWorldWeaponSprite extends MobSprite {
 

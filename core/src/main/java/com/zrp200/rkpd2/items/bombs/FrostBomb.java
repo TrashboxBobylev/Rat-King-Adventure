@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.bombs;
 
-import com.watabou.utils.BArray;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -33,6 +31,8 @@ import com.zrp200.rkpd2.actors.buffs.Frost;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.watabou.utils.BArray;
+import com.watabou.utils.PathFinder;
 
 public class FrostBomb extends Bomb {
 	

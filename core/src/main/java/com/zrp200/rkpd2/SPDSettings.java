@@ -21,15 +21,15 @@
 
 package com.zrp200.rkpd2;
 
+import com.zrp200.rkpd2.messages.Languages;
+import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameSettings;
 import com.watabou.utils.Point;
-import com.zrp200.rkpd2.messages.Languages;
-import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.scenes.PixelScene;
 
 public class SPDSettings extends GameSettings {
 	

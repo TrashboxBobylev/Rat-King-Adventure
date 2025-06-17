@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.tiles;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.levels.Terrain;
+import com.watabou.noosa.Image;
+import com.watabou.utils.PathFinder;
 
 public class DungeonTerrainTilemap extends DungeonTilemap {
 

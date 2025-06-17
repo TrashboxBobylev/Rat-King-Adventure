@@ -1,11 +1,11 @@
 package com.zrp200.rkpd2.items.weapon.curses;
 
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
 
 import java.util.HashMap;
 

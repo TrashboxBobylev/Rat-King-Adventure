@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.food;
 
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
@@ -35,6 +34,7 @@ import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.Holiday;
+import com.watabou.noosa.audio.Sample;
 
 public class Pasty extends Food {
 

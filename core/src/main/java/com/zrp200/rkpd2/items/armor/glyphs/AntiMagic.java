@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items.armor.glyphs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
@@ -61,6 +60,7 @@ import com.zrp200.rkpd2.items.weapon.enchantments.Shocking;
 import com.zrp200.rkpd2.levels.traps.DisintegrationTrap;
 import com.zrp200.rkpd2.levels.traps.GrimTrap;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Random;
 
 import java.util.HashSet;
 

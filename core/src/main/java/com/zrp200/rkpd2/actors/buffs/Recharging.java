@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.noosa.Image;
 
 public class Recharging extends FlavourBuff implements Wand.RechargeSource {
 

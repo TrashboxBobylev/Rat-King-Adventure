@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.items.weapon.enchantments;
 
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.levels.features.HighGrass;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

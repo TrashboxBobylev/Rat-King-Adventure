@@ -1,8 +1,8 @@
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.utils.Random;
 
 public class AmnesiaBuff extends Buff{
 

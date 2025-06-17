@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.Char;
@@ -32,6 +30,8 @@ import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.RatSprite;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class Rat extends Mob {
 

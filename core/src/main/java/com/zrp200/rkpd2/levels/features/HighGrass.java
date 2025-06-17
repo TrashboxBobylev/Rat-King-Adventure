@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.levels.features;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -45,6 +44,7 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.MiningLevel;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.utils.Random;
 
 import static com.zrp200.rkpd2.utils.SafeCast.cast;
 

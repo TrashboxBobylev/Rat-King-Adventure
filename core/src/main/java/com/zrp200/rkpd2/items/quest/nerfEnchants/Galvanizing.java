@@ -1,8 +1,5 @@
 package com.zrp200.rkpd2.items.quest.nerfEnchants;
 
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
@@ -12,6 +9,9 @@ import com.zrp200.rkpd2.effects.Lightning;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

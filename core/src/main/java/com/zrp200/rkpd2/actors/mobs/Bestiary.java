@@ -21,10 +21,10 @@
 
 package com.zrp200.rkpd2.actors.mobs;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.levels.AbyssLevel;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;

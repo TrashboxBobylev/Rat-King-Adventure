@@ -21,9 +21,9 @@
 
 package com.zrp200.rkpd2.sprites;
 
+import com.zrp200.rkpd2.Assets;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.particles.PixelParticle;
-import com.zrp200.rkpd2.Assets;
 
 public class ShopkeeperSprite extends MobSprite {
 	

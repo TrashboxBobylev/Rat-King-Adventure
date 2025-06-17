@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.blobs;
 
-import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Heap;
@@ -31,6 +29,8 @@ import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public abstract class WellWater extends Blob {
 

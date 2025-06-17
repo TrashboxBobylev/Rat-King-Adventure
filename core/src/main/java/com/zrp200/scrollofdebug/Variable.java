@@ -1,6 +1,5 @@
 package com.zrp200.scrollofdebug;
 
-import com.watabou.noosa.Game;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.messages.Messages;
@@ -9,6 +8,7 @@ import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndOptions;
+import com.watabou.noosa.Game;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

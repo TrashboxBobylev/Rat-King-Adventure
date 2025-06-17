@@ -20,9 +20,6 @@
      */
 package com.zrp200.rkpd2.actors.mobs.npcs;
 
-    import com.watabou.utils.Bundle;
-    import com.watabou.utils.Random;
-    import com.watabou.utils.Reflection;
     import com.zrp200.rkpd2.actors.Actor;
     import com.zrp200.rkpd2.actors.Char;
     import com.zrp200.rkpd2.actors.blobs.CorrosiveGas;
@@ -38,6 +35,9 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
     import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
     import com.zrp200.rkpd2.sprites.CharSprite;
     import com.zrp200.rkpd2.sprites.MirrorSprite;
+    import com.watabou.utils.Bundle;
+    import com.watabou.utils.Random;
+    import com.watabou.utils.Reflection;
 
     public abstract class AbstractMirrorImage extends NPC {
     {

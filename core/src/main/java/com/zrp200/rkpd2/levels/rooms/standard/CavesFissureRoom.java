@@ -21,13 +21,13 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
+import com.zrp200.rkpd2.levels.Level;
+import com.zrp200.rkpd2.levels.Terrain;
+import com.zrp200.rkpd2.levels.painters.Painter;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.levels.Level;
-import com.zrp200.rkpd2.levels.Terrain;
-import com.zrp200.rkpd2.levels.painters.Painter;
 
 import java.util.ArrayList;
 

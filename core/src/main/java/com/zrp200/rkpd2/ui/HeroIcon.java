@@ -21,11 +21,11 @@
 
 package com.zrp200.rkpd2.ui;
 
-import com.watabou.noosa.Image;
-import com.watabou.noosa.TextureFilm;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.TextureFilm;
 
 //icons for hero subclasses and abilities atm, maybe add classes?
 public class HeroIcon extends Image {

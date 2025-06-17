@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs.npcs;
 
-import com.watabou.noosa.Game;
-import com.watabou.utils.Callback;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
@@ -42,6 +40,8 @@ import com.zrp200.rkpd2.utils.Holiday;
 import com.zrp200.rkpd2.windows.WndInfoArmorAbility;
 import com.zrp200.rkpd2.windows.WndOptions;
 import com.zrp200.rkpd2.windows.WndQuest;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Callback;
 
 public class RatKing extends NPC {
 

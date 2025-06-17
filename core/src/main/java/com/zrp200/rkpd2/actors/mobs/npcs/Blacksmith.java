@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.actors.mobs.npcs;
 
-import com.watabou.noosa.Game;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
@@ -46,6 +42,10 @@ import com.zrp200.rkpd2.sprites.BlacksmithSprite;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndBlacksmith;
 import com.zrp200.rkpd2.windows.WndQuest;
+import com.watabou.noosa.Game;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Collection;

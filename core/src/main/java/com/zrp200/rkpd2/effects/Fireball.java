@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.effects;
 
+import com.zrp200.rkpd2.Assets;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -31,7 +32,6 @@ import com.watabou.noosa.ui.Component;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
-import com.zrp200.rkpd2.Assets;
 
 public class Fireball extends Component {
 
