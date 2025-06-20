@@ -169,7 +169,7 @@ public enum Icons {
 				icon.frame( icon.texture.uvRectBySize( 119, 0, 16, 16 ) );
 				break;
 			case TRASHBOXBOBYLEV:
-				icon.frame( icon.texture.uvRectBySize( 139, 0, 17, 17 ) );
+				icon.frame( icon.texture.uvRectBySize( 239, 111, 17, 17 ) );
 				break;
 
 			case JOURNAL:

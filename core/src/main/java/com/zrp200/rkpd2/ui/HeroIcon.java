@@ -121,19 +121,19 @@ public class HeroIcon extends Image {
 	public static final int MONK_ABILITIES  = 110;
 
 	//RKA hero/ability icons
-	public static final int BRAWLER         = imageAt(0, 6);
-	public static final int SPIRITUALIST    = imageAt(1, 6);
-	public static final int DECEPTICON      = imageAt(2, 6);
-	public static final int HIGHNESS        = imageAt(3, 6);
-	public static final int CHAMP           = imageAt(5, 6);
+	public static final int BRAWLER         = imageAt(0, 14);
+	public static final int SPIRITUALIST    = imageAt(1, 14);
+	public static final int DECEPTICON      = imageAt(2, 14);
+	public static final int HIGHNESS        = imageAt(3, 14);
+	public static final int CHAMP           = imageAt(5, 14);
 
-	public static final int LEGACYWRATH     = imageAt(6, 6);
-	public static final int MUS_REX         = imageAt(7, 6);
+	public static final int LEGACYWRATH     = imageAt(6, 14);
+	public static final int MUS_REX         = imageAt(7, 14);
 
-	public static final int BRAWLING        = imageAt(0, 7);
-	public static final int CLOAK_TELEPORT  = imageAt(1, 7);
-	public static final int BLOCKING        = imageAt(2, 7);
-	public static final int HIGHNESS_STOP   = imageAt(3, 7);
+	public static final int BRAWLING        = imageAt(0, 15);
+	public static final int CLOAK_TELEPORT  = imageAt(1, 15);
+	public static final int BLOCKING        = imageAt(2, 15);
+	public static final int HIGHNESS_STOP   = imageAt(3, 15);
 
 
 	public HeroIcon(HeroSubClass subCls){

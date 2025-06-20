@@ -524,8 +524,8 @@ public class ItemSpriteSheet {
 	public static final int ARTIFACT_ROSE2      = ARTIFACTS+21;
 	public static final int ARTIFACT_ROSE3      = ARTIFACTS+22;
 	public static final int ARTIFACT_TOME       = ARTIFACTS+23;
-	public static final int ARTIFACT_OMNI       = ARTIFACTS+24;
-	public static final int ARTIFACT_WONDER     = ARTIFACTS+25;
+	public static final int ARTIFACT_OMNI       = xy(1, 33);
+	public static final int ARTIFACT_WONDER     = ARTIFACT_OMNI+1;
 	static{
 		assignItemRect(ARTIFACT_CLOAK,      9,  15);
 		assignItemRect(ARTIFACT_ARMBAND,    16, 13);
