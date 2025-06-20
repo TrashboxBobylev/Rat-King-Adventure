@@ -212,7 +212,7 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 				Preparation.bloodbathProc((Hero) attacker, enemy);
 			}
 			if (((Hero) attacker).hasTalent(Talent.DARKENING_STEPS)){
-				Buff.affect(attacker, ArtifactRecharge.class).prolong(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
+				Buff.affect(attacker, ArtifactRecharge.class).postpone(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
 			}
 		}
 		return assassinated;

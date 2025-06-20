@@ -98,7 +98,7 @@ public class WndChallenges extends Window {
 						String challenge = finalChallenges.keys().toArray().get(i);
 
 						ShatteredPixelDungeon.scene().add(
-								new WndTitledMessage(Icons.get(Icons.CHALLENGE_ON),
+								new WndTitledMessage(Icons.get(Icons.CHALLENGE_COLOR),
 										Messages.titleCase(Messages.get(Challenges.class, challenge)),
 										Messages.get(Challenges.class, challenge+"_desc"))
 						);

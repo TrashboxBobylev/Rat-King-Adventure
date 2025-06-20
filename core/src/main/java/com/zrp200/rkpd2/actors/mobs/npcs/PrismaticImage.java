@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Burning;
+import com.zrp200.rkpd2.actors.buffs.Cooldown;
 import com.zrp200.rkpd2.actors.buffs.PrismaticGuard;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -66,7 +67,7 @@ public class PrismaticImage extends AbstractMirrorImage {
 				CellEmitter.get(pos).start( Speck.factory(Speck.LIGHT), 0.2f, 3 );
 				sprite.die();
 				Sample.INSTANCE.play( Assets.Sounds.TELEPORT );
-				Talent.Cooldown.affectHero(Talent.HelperToHeroReviveCooldown.class);
+				Cooldown.affectHero(Talent.HelperToHeroReviveCooldown.class);
 				return true;
 			}
 			if (hero != null && hero.pointsInTalent(Talent.HELPER_TO_HERO) < 2)

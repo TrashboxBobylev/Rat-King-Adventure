@@ -105,7 +105,7 @@ public class ElementalDirk extends AssassinsBlade {
     }
 
     @Override
-    protected void duelistAbility(Hero hero, Integer target) {
+    public void duelistAbility(Hero hero, Integer target) {
         if (target == null || hero.pos == target) {
             GLog.i( Messages.get(Wand.class, "self_target") );
             return;

@@ -33,6 +33,7 @@ import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Combo;
+import com.zrp200.rkpd2.actors.buffs.Cooldown;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
@@ -154,7 +155,7 @@ public abstract class Wand extends Item {
             Mob mob = (Mob) Actor.findChar(dst);
             if ( mob != null && mob.surprisedBy(Dungeon.hero) &&
                     mob.alignment != Dungeon.hero.alignment && (Dungeon.level.heroFOV[mob.pos] || Dungeon.level.distance(Dungeon.hero.pos, mob.pos) < 4)){
-                Talent.Cooldown.affectHero(Talent.SixthSenseCooldown.class);
+                Cooldown.affectHero(Talent.SixthSenseCooldown.class);
                 return dst;
             }
         }
@@ -291,7 +292,7 @@ public abstract class Wand extends Item {
 				target.die(new CurseInfusion());
 				target.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Wand.class, "banished"));
 				TargetHealthIndicator.instance.target(null);
-				Talent.Cooldown.affectHero(Talent.BanishedCooldown.class);
+				Cooldown.affectHero(Talent.BanishedCooldown.class);
 				return;
 			}
 		}
@@ -991,7 +992,7 @@ private int energizeTime = 0;
 					curCharges = maxCharges;
 					Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 					ScrollOfRecharging.charge(curUser);
-					Talent.Cooldown.affectHero(Talent.EnergizingUpgradeCooldown.class);
+					Cooldown.affectHero(Talent.EnergizingUpgradeCooldown.class);
 					updateQuickslot();
 					fx(false);
 				}

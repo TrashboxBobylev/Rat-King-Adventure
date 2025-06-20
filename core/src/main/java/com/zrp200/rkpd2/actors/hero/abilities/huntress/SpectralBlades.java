@@ -249,7 +249,7 @@ public class SpectralBlades extends ArmorAbility {
 								protected boolean act() {
 									if (ch.isAlive() || hero.hasTalent(Talent.MULTISHOT)) {
 										int level = hero.hasTalent(Talent.RK_SNIPER) || hero.canHaveTalent(Talent.SHARED_UPGRADES) ? hero.belongings.weapon().buffedLvl() : 0;
-										SnipersMark .add(ch, level);
+										SnipersMark .add(ch, level, 0);
 										// handles dead as well.
 									}
 									Actor.remove(this);

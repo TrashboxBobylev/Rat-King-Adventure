@@ -759,31 +759,31 @@ public abstract class Level implements Bundlable {
 			if (Dungeon.isChallenged(Challenges.KROMER)){
 				delay = 180f;
 			}
+			respawner.resetCooldown(delay);
 			Actor.add(respawner);
-			respawner.delay = delay;
 		} else {
 			Actor.add(respawner);
 			if (respawner.cooldown() > respawnCooldown()){
-				respawner.resetCooldown();
+				respawner.resetCooldown(respawnCooldown());
 			}
 		}
 		return respawner;
 	}
 
 	public float respawnCooldown(){
-		float cooldown;
+		float cooldown = TIME_TO_RESPAWN;
+		if (Dungeon.isChallenged(Challenges.HERO_PATHING)) cooldown *= 0.5f;
+		if (Dungeon.isChallenged(Challenges.KROMER)) cooldown = 0.5f;
 		if (Statistics.amuletObtained){
 			if (Dungeon.depth == 1){
 				//very fast spawns on floor 1! 0/2/4/6/8/10/12, etc.
-				cooldown = (Dungeon.level.mobCount()) * (TIME_TO_RESPAWN / 25f);
+				cooldown = (Dungeon.level.mobCount()) * (cooldown / 25f);
 			} else {
 				//respawn time is 5/5/10/15/20/25/25, etc.
-				cooldown = Math.round(GameMath.gate( TIME_TO_RESPAWN/10f, Dungeon.level.mobCount() * (TIME_TO_RESPAWN / 10f), TIME_TO_RESPAWN / 2f));
+				cooldown = Math.round(GameMath.gate( cooldown/10f, Dungeon.level.mobCount() * (cooldown / 10f), TIME_TO_RESPAWN / 2f));
 			}
 		} else if (Dungeon.level.feeling == Feeling.DARK){
-			cooldown = 2* timeToRespawn /3f;
-		} else {
-			cooldown = TIME_TO_RESPAWN;
+			cooldown = 2* cooldown /3f;
 		}
 		return cooldown / DimensionalSundial.spawnMultiplierAtCurrentTime();
 	}
@@ -1298,7 +1298,7 @@ public abstract class Level implements Bundlable {
 					Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 					ScrollOfRecharging.charge(Dungeon.hero);
 					Dungeon.hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
-					Talent.Cooldown.affectHero(Talent.TrapperMasteryCooldown.class);
+					Cooldown.affectHero(Talent.TrapperMasteryCooldown.class);
 				}
 				else
 					trap.trigger();

@@ -132,7 +132,7 @@ public class AmuletScene extends PixelScene {
 				Game.switchScene(InterlevelScene.class);
 			}
 		};
-		btnMastery.icon(Icons.CHALLENGE_ON.get());
+		btnMastery.icon(Icons.CHALLENGE_COLOR.get());
 		btnMastery.setSize( WIDTH, BTN_HEIGHT );
 		add( btnMastery );
 

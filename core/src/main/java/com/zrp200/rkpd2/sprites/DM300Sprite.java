@@ -88,10 +88,10 @@ public class DM300Sprite extends MobSprite {
 
 		super.zap( cell );
 
-		int type = ch.buff(WarpedEnemy.BossEffect.class) != null ? MagicMissile.CORROSION_CONE : MagicMissile.TOXIC_VENT;
+		int type = ch.buff(WarpedEnemy.BossEffect.class) != null ? MagicMissile.CORROSION_CONE : MagicMissile.SPECK + Speck.TOXIC;
 
 		MagicMissile.boltFromChar( parent,
-				MagicMissile.SPECK + Speck.TOXIC,
+				type,
 				this,
 				cell,
 				new Callback() {

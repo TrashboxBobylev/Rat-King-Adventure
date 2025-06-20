@@ -92,8 +92,8 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	protected float shadowOffset    = 0.25f;
 
 	public enum State {
-		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, HEARTS, GLOWING, AURA,
-        GODBURNING, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, AURA, SWORDS, STONED, HEARTS, WARPED, VINECOVERED
+		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, GLOWING, AURA,
+        GODBURNING, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, SWORDS, STONED, HEARTS, WARPED, VINECOVERED
 	}
 
 	protected Animation idle;
@@ -299,7 +299,7 @@ protected void copyAnimations(CharSprite other) {
 		play( attack );
 	}
 	
-	public final void attack( int cell, Callback callback ) {
+	public void attack( int cell, Callback callback ) {
 		doAfterAnim(callback,true);
 		attack(cell);
 	}

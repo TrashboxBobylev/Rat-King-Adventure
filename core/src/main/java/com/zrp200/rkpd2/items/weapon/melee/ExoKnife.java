@@ -163,7 +163,7 @@ public class ExoKnife extends MeleeWeapon{
                         shield.putOut();
                         Viscosity.DeferedDamage deferred = Buff.affect( ch, Viscosity.DeferedDamage.class );
                         int amount = weapon().damageRoll(hero) * 5;
-                        deferred.prolong(amount);
+                        deferred.postpone(amount);
 
                         ch.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", amount) );
                     }

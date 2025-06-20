@@ -47,6 +47,7 @@ import com.zrp200.rkpd2.actors.buffs.Bless;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Combo;
@@ -1954,7 +1955,7 @@ if (wep != null) {
 			}
 		}
 
-		if (buff(ChampionEnemy.Blessed.class) != null && hasTalent(Talent.RK_BLESSED) && (wep instanceof MeleeWeapon || forceBuff != null)){
+		if (buff(ChampionEnemy.Blessed.class) != null && hasTalent(Talent.RK_BLESSED) && (wep instanceof MeleeWeapon || buff(RingOfForce.Force.class) != null)){
 			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Dungeon.level.solid, null), pointsInTalent(Talent.RK_BLESSED));
 			ShieldHalo shield;
 			GameScene.effect(shield = new ShieldHalo(enemy.sprite));

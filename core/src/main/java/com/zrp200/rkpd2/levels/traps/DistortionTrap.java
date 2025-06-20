@@ -33,6 +33,7 @@ import com.zrp200.rkpd2.actors.mobs.DM201;
 import com.zrp200.rkpd2.actors.mobs.Elemental;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
+import com.zrp200.rkpd2.actors.mobs.MobSpawner;
 import com.zrp200.rkpd2.actors.mobs.Piranha;
 import com.zrp200.rkpd2.actors.mobs.Senior;
 import com.zrp200.rkpd2.actors.mobs.Statue;
@@ -112,7 +113,7 @@ public class DistortionTrap extends Trap{
 					do {
 						floor = Random.Int(25);
 					} while( Dungeon.bossLevel(floor));
-					ArrayList<Class<? extends Mob>> mobRotation = Bestiary.getMobRotation(floor);
+					ArrayList<Class<? extends Mob>> mobRotation = MobSpawner.getMobRotation(floor);
 					if (!mobRotation.isEmpty())
 						mob = Reflection.newInstance(mobRotation.get(0));
 					else

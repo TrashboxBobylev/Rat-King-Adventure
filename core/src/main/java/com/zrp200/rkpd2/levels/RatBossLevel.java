@@ -248,7 +248,7 @@ public class RatBossLevel extends Level {
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.SURFACE){
 			Statistics.ascended = true;
-			Badges.silentValidateHappyEnd();
+			Badges.validateHappyEnd();
 			Dungeon.win( RatKing.class );
 			Dungeon.deleteGame( GamesInProgress.curSlot, true );
 			Game.switchScene( SurfaceScene.class );

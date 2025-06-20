@@ -449,7 +449,7 @@ public class YogDzewa extends Mob {
 		if (buff(WarpedEnemy.BossEffect.class) != null){
 			boolean[] FOV = new boolean[Dungeon.level.length()];
 			Point c = Dungeon.level.cellToPoint(pos);
-			ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, 6);
+			ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, 6);
 
 			ArrayList<Char> affected = new ArrayList<>();
 

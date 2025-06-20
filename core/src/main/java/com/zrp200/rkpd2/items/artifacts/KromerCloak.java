@@ -54,9 +54,7 @@ public class KromerCloak extends CloakOfShadows {
                     turnsToCharge /= RingOfEnergy.artifactChargeMultiplier(target);
                     float chargeToGain = (1f / turnsToCharge);
                     if (!isEquipped(Dungeon.hero)){
-                        chargeToGain *= Dungeon.hero.byTalent(
-                                Talent.LIGHT_CLOAK, LC_FACTOR,
-                                Talent.RK_FREERUNNER, LC_FACTOR_RK);
+                        chargeToGain *= lightCloakFactor(Dungeon.hero);
                     }
                     partialCharge += chargeToGain;
                 }

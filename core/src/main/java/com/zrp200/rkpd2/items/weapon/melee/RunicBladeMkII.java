@@ -417,7 +417,7 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
 
     @Override
     protected DuelistAbility duelistAbility() {
-        return new MeleeAbility(1f);
+        return new MeleeAbility(1);
     }
 
     @Override

@@ -191,7 +191,7 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
             Buff.affect(Dungeon.hero, RoundShield.Block.class, 8f);
             damage*=1.5;
         }
-        Buff.affect(enemy, Viscosity.DeferedDamage.class).prolong(damage*2);
+        Buff.affect(enemy, Viscosity.DeferedDamage.class).postpone(damage*2);
         Buff.affect(enemy, Paralysis.class, 3.5f);
         return super.warriorAttack(damage, enemy);
     }
@@ -205,7 +205,7 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
     public static class DuelistInfo {
         public static float powerModifier(Hero hero){
             if (hero.buff(Charger.class) != null){
-                return hero.buff(Charger.class).charges[0] / 5f;
+                return hero.buff(Charger.class).charges / 5f;
             } else {
                 return 2f;
             }
@@ -308,7 +308,7 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
             }
 
             if (hero.buff(Sai.ComboStrikeTracker.class) != null){
-                multi += comboStrikeBoost(powerModifier)*(hero.buff(Sai.ComboStrikeTracker.class).totalHits());
+                multi += comboStrikeBoost(powerModifier)*(hero.buff(Sai.ComboStrikeTracker.class).hits);
                 hero.buff(Sai.ComboStrikeTracker.class).detach();
             }
 
@@ -353,7 +353,7 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
                 @Override
                 public void call() {
                     for (Char ch : targets) {
-                        Buff.affect(ch, Sickle.HarvestBleedTracker.class, 0).bleedFactor = 1f;
+                        Buff.affect(ch, Sickle.HarvestBleedTracker.class, 0);
                         hero.attack(ch, bleedDamage(powerModifier), 0, Char.INFINITE_ACCURACY);
                         if (!ch.isAlive()){
                             onAbilityKill(hero, ch);
@@ -456,6 +456,6 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
 
     @Override
     protected int baseChargeUse(Hero hero, Char target) {
-        return (int) Math.max(1, hero.buff(Charger.class).charges[0]);
+        return Math.max(1, hero.buff(Charger.class).charges);
     }
 }

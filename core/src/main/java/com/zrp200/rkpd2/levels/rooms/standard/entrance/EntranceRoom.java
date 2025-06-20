@@ -27,7 +27,7 @@ import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.journal.GuidePage;
 import com.zrp200.rkpd2.items.journal.Guidebook;
-import com.zrp200.rkpd2.items.spells.AquaBlast;
+import com.zrp200.rkpd2.items.potions.brews.AquaBrew;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.levels.Level;
@@ -125,7 +125,7 @@ public class EntranceRoom extends StandardRoom {
 				pos = level.pointToCell(new Point( Random.IntRange( left + 1, right - 1 ),
 						Random.IntRange( top + 1, bottom - 2 )));
 			} while (pos == level.entrance() || level.findMob(level.entrance()) != null);
-			level.drop( new AquaBlast(), pos ).type = type;
+			level.drop( new AquaBrew(), pos ).type = type;
 			Document.ADVENTURERS_GUIDE.deletePage(Document.GUIDE_INTRO);
 		}
 

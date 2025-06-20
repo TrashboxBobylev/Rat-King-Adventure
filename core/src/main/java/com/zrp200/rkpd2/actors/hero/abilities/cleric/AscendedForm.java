@@ -47,7 +47,7 @@ public class AscendedForm extends ArmorAbility {
 	}
 
 	@Override
-	protected void activate(ClassArmor armor, Hero hero, Integer target) {
+	public void activate(ClassArmor armor, Hero hero, Integer target) {
 
 		Buff.affect(hero, AscendBuff.class).reset();
 		hero.sprite.operate(hero.pos);

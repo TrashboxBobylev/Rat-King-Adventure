@@ -757,7 +757,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			Hero hero = SafeCast.cast(target, Hero.class);
 			if (hero.hasTalent(Talent.ADVENTUROUS_SNOOZING) && hero.resting){
 				float boostMod = hero.heroClass.isExact(HeroClass.DUELIST) ? 2f : 1f;
-				return 40f * (1f - ((hero.pointsInTalent(Talent.ADVENTUROUS_SNOOZING))*boostMod / (float) chargeCap(slot)));
+				return 40f * (1f - ((hero.pointsInTalent(Talent.ADVENTUROUS_SNOOZING))*boostMod / (float) chargeCap()));
 			}
 			return 40f;
 		}

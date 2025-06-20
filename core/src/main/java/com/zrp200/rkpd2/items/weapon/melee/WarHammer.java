@@ -45,7 +45,7 @@ public class WarHammer extends Mace {
 
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
-		Buff.affect(enemy, Viscosity.DeferedDamage.class).prolong(damage*2);
+		Buff.affect(enemy, Viscosity.DeferedDamage.class).postpone(damage*2);
 		Buff.affect(enemy, Paralysis.class, 3.5f);
 		return super.warriorAttack(damage, enemy);
 	}

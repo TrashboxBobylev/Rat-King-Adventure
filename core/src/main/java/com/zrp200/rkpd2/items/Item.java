@@ -640,7 +640,7 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 			Mob mob = (Mob) Actor.findChar(dst);
 			if ( mob != null && mob.surprisedBy(Dungeon.hero) &&
 					mob.alignment != Dungeon.hero.alignment && (Dungeon.level.heroFOV[mob.pos] || Dungeon.level.distance(Dungeon.hero.pos, mob.pos) < 4)){
-				Talent.Cooldown.affectHero(Talent.SixthSenseCooldown.class);
+				Cooldown.affectHero(Talent.SixthSenseCooldown.class);
 				return dst;
 			}
 		}

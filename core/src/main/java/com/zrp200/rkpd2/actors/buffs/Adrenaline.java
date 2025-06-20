@@ -43,7 +43,7 @@ public class Adrenaline extends FlavourBuff {
 	// I wonder if this can be generalized?
 	private float maxSpend = cooldown();
 	@Override
-	protected void spendConstant(float time) {
+	public void spendConstant(float time) {
 		if (time > maxSpend) maxSpend = time;
 		super.spendConstant(time);
 	}

@@ -61,38 +61,38 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 	private static final String AC_APPLY = "APPLY";
 
 	@Override
-	public ArrayList<String> actions( Hero hero ) {
-		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_APPLY );
+	public ArrayList<String> actions(Hero hero) {
+		ArrayList<String> actions = super.actions(hero);
+		actions.add(AC_APPLY);
 		return actions;
 	}
 
 	@Override
-	public void execute( Hero hero, String action ) {
+	public void execute(Hero hero, String action) {
 
-		super.execute( hero, action );
+		super.execute(hero, action);
 
 		if (action.equals(AC_APPLY)) {
 
 			curUser = hero;
-			GameScene.selectItem( itemSelector );
+			GameScene.selectItem(itemSelector);
 
 		}
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+	protected void onThrow(int cell) {
 		if (Dungeon.level.map[cell] == Terrain.WELL || Dungeon.level.pit[cell]) {
 
-			super.onThrow( cell );
+			super.onThrow(cell);
 
-		} else  {
+		} else {
 
-			Dungeon.level.pressCell( cell );
+			Dungeon.level.pressCell(cell);
 			if (Dungeon.level.heroFOV[cell]) {
-				GLog.i( Messages.get(Potion.class, "shatter") );
-				Sample.INSTANCE.play( Assets.Sounds.SHATTER );
-				Splash.at( cell, 0xBFBFBF, 5 );
+				GLog.i(Messages.get(Potion.class, "shatter"));
+				Sample.INSTANCE.play(Assets.Sounds.SHATTER);
+				Splash.at(cell, 0xBFBFBF, 5);
 			}
 
 		}
@@ -121,7 +121,7 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 		}
 
 		@Override
-		public Class<?extends Bag> preferredBag(){
+		public Class<? extends Bag> preferredBag() {
 			return MagicalHolster.class;
 		}
 
@@ -131,7 +131,7 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 		}
 
 		@Override
-		public void onSelect( Item item ) {
+		public void onSelect(Item item) {
 			if (item instanceof MissileWeapon) {
 				useToRepair((MissileWeapon) item);
 
@@ -144,46 +144,48 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 	};
 
 	public void useToRepair(MissileWeapon item) {
-		int maxToUse = 5*(item.tier+1);
-		if (!(item instanceof StarPieces))
-			maxToUse *= Math.pow(2, item.level());
+		if (item != null && item instanceof MissileWeapon) {
+			MissileWeapon m = (MissileWeapon) item;
+			int maxToUse = 5 * (item.tier + 1);
+			if (!(item instanceof StarPieces))
+				maxToUse *= Math.pow(2, item.level());
 
-		float durabilityPerMetal = 100 / (float)maxToUse;
+			float durabilityPerMetal = 100 / (float) maxToUse;
 
-				//we remove a tiny amount here to account for rounding errors
-				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
-				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
-				float durPerUse = m.durabilityPerUse()/100f;
-				if (maxToUse == 0 ||
-						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
-					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
-					return;
-				} else if (maxToUse < quantity()) {
-					Catalog.countUses(LiquidMetal.class, maxToUse);
-					m.repair(maxToUse*durabilityPerMetal);
-					quantity(quantity()-maxToUse);
-					GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
+			//we remove a tiny amount here to account for rounding errors
+			float percentDurabilityLost = 0.999f - (m.durabilityLeft() / 100f);
+			maxToUse = (int) Math.ceil(maxToUse * percentDurabilityLost);
+			float durPerUse = m.durabilityPerUse() / 100f;
+			if (maxToUse == 0 ||
+					Math.ceil(m.durabilityLeft() / m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY / m.durabilityPerUse())) {
+				GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
+				return;
+			} else if (maxToUse < quantity()) {
+				Catalog.countUses(LiquidMetal.class, maxToUse);
+				m.repair(maxToUse * durabilityPerMetal);
+				quantity(quantity() - maxToUse);
+				GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
 
-				} else {
-					Catalog.countUses(LiquidMetal.class, quantity());
-					m.repair(quantity()*durabilityPerMetal);
-					GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
-					detachAll(Dungeon.hero.belongings.backpack);
-				}
-
-				curUser.sprite.operate(curUser.pos);
-				Sample.INSTANCE.play(Assets.Sounds.DRINK);
-				updateQuickslot();
-				curUser.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 10);
+			} else {
+				Catalog.countUses(LiquidMetal.class, quantity());
+				m.repair(quantity() * durabilityPerMetal);
+				GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
+				detachAll(Dungeon.hero.belongings.backpack);
 			}
+
+			curUser.sprite.operate(curUser.pos);
+			Sample.INSTANCE.play(Assets.Sounds.DRINK);
+			updateQuickslot();
+			curUser.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 10);
 		}
+	}
 
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe {
 
 		@Override
 		public boolean testIngredients(ArrayList<Item> ingredients) {
-			for (Item i : ingredients){
-				if (!(i instanceof MissileWeapon)){
+			for (Item i : ingredients) {
+				if (!(i instanceof MissileWeapon)) {
 					return false;
 				}
 			}
@@ -194,7 +196,7 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 		@Override
 		public int cost(ArrayList<Item> ingredients) {
 			int cost = 1;
-			for (Item i : ingredients){
+			for (Item i : ingredients) {
 				cost += i.quantity();
 			}
 			return cost;
@@ -204,7 +206,7 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 		public Item brew(ArrayList<Item> ingredients) {
 			Item result = sampleOutput(ingredients);
 
-			for (Item i : ingredients){
+			for (Item i : ingredients) {
 				i.quantity(0);
 			}
 
@@ -215,15 +217,16 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 		public Item sampleOutput(ArrayList<Item> ingredients) {
 			int metalQuantity = 0;
 
-			for (Item i : ingredients){
+			for (Item i : ingredients) {
 				MissileWeapon m = (MissileWeapon) i;
-				float quantity = m.quantity()-1;
-				quantity += 0.25f + 0.0075f*m.durabilityLeft();
+				float quantity = m.quantity() - 1;
+				quantity += 0.25f + 0.0075f * m.durabilityLeft();
 				quantity *= Math.pow(2, Math.min(3, m.level()));
-				metalQuantity += Math.round((5*(m.tier+1))*quantity);
+				metalQuantity += Math.round((5 * (m.tier + 1)) * quantity);
 				if (Dungeon.hero.pointsInTalent(Talent.AUTO_RELOAD) > 2) metalQuantity *= 1.60f;
 			}
 
 			return new LiquidMetal().quantity(metalQuantity);
 		}
 	}
+}

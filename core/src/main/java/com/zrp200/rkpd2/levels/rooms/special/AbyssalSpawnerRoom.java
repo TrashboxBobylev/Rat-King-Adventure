@@ -9,7 +9,7 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
-import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
+import com.zrp200.rkpd2.levels.rooms.standard.entrance.EntranceRoom;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;

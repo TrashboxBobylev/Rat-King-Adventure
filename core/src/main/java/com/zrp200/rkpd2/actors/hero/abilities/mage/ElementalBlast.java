@@ -406,7 +406,7 @@ public class ElementalBlast extends ArmorAbility {
 									}
 								} else if (finalWandCls[0] == WandOfUnstable2.class){
 									if (mob.alignment != Char.Alignment.ALLY) {
-										CursedWand.cursedEffect(null, Dungeon.hero, mob);
+										CursedWand.randomValidEffect(null, hero, aim, false).effect(null, hero, aim, false);
 										charsHit++;
 									}
 								}

@@ -80,7 +80,7 @@ public class WandOfUnstable2 extends Wand {
         wand = Reflection.newInstance(Random.element(wands));
         if (wand != null) {
             if (Random.Int(3) == 0){
-                CursedWand.cursedEffect(null, attacker, defender);
+                CursedWand.randomValidEffect(null, attacker, new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET), false).effect(null, attacker, new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET), false);
             }
             else {
                 wand.level(level() * 4);

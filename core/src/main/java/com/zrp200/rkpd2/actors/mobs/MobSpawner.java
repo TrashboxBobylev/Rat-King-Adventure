@@ -55,9 +55,9 @@ public class MobSpawner extends Actor {
 		return true;
 	}
 
-	public void resetCooldown(){
+	public void resetCooldown(float delay){
 		spend(-cooldown());
-		spend(Dungeon.level.respawnCooldown());
+		spend(delay);
 	}
 
 	public static ArrayList<Class<? extends Mob>> getMobRotation(int depth ){

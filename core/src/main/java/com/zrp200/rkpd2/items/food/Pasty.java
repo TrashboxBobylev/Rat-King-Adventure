@@ -176,26 +176,33 @@ public class Pasty extends Food {
 	public String name() {
 		String name = super.name();
 		switch(Holiday.getCurrentHoliday()){
-			case NONE: default:
-				return super.name();
 			case LUNAR_NEW_YEAR:
 				name = Messages.get(this, "fish_name");
+				break;
 			case APRIL_FOOLS:
 				name = Messages.get(this, "amulet_name");
+				break;
 			case EASTER:
 				name = Messages.get(this, "egg_name");
+				break;
 			case PRIDE:
-				return Messages.get(this, "rainbow_name");
+				name = Messages.get(this, "rainbow_name");
+				break;
 			case SHATTEREDPD_BIRTHDAY:
-				return Messages.get(this, "shattered_name");
+				name = Messages.get(this, "shattered_name");
+				break;
 			case HALLOWEEN:
 				name = Messages.get(this, "pie_name");
+				break;
 			case PD_BIRTHDAY:
-				return Messages.get(this, "vanilla_name");
+				name = Messages.get(this, "vanilla_name");
+				break;
 			case WINTER_HOLIDAYS:
 				name = Messages.get(this, "cane_name");
+				break;
 			case NEW_YEARS:
-				return Messages.get(this, "sparkling_name");
+				name = Messages.get(this, "sparkling_name");
+				break;
 		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
 			return ShatteredPixelDungeon.turnIntoRrrr(name);

@@ -73,7 +73,7 @@ public class DreadSlicer extends MeleeWeapon implements Talent.SpellbladeForgery
 
     @Override
     protected DuelistAbility duelistAbility() {
-        return new MeleeAbility(2f) {
+        return new MeleeAbility(2) {
 
             @Override
             protected void proc(Hero hero, Char enemy) {

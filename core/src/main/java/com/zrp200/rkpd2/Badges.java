@@ -256,7 +256,7 @@ public class Badges {
 		CHAMPION_9                  (142),
 		CHAMPION_10                  (143),
 		CHAMPION_11                  (144),
-		DEFEATED_RK_FOREVER          (145, true);
+		DEFEATED_RK_FOREVER          (145, BadgeType.GLOBAL);
 
 		public boolean meta;
 

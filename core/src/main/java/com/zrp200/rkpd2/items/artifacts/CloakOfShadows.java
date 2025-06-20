@@ -249,7 +249,7 @@ public class CloakOfShadows extends Artifact {
 	protected ArtifactBuff activeBuff( ) {
 		return new cloakStealth();
 	}
-private float lightCloakFactor(Hero hero) {
+protected float lightCloakFactor(Hero hero) {
 		return Math.max(
 				!hero.canHaveTalent(Talent.LIGHT_CLOAK) ? 0 :
 						// 1/6 1/3 2/3 1

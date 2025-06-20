@@ -87,7 +87,7 @@ public class Trinity extends ArmorAbility {
 	private Bundlable spiritForm = null;
 
 	@Override
-	protected void activate(ClassArmor armor, Hero hero, Integer target) {
+	public void activate(ClassArmor armor, Hero hero, Integer target) {
 
 		if (bodyForm == null && mindForm == null && spiritForm == null){
 			GLog.w(Messages.get(this, "no_imbue"));

@@ -59,7 +59,7 @@ public class KromerizedBomb extends Bomb {
 		if (fuse != null){
 			boolean[] FOV = new boolean[Dungeon.level.length()];
 			Point c = Dungeon.level.cellToPoint(cell);
-			ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, 10);
+			ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, 10);
 
 			for (int i = 0; i < FOV.length; i++) {
 				if (FOV[i]) {
@@ -92,7 +92,7 @@ public class KromerizedBomb extends Bomb {
 
 		boolean[] FOV = new boolean[Dungeon.level.length()];
 		Point c = Dungeon.level.cellToPoint(cell);
-		ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, 10);
+		ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, 10);
 
 		for (int i = 0; i < FOV.length; i++) {
 			if (FOV[i]) {

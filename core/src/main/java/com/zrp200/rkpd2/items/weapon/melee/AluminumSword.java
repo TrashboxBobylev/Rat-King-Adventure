@@ -25,10 +25,10 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.buffs.AnkhInvulnerability;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
+import com.zrp200.rkpd2.actors.buffs.Invulnerability;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.npcs.NPC;
@@ -79,7 +79,7 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
-		Buff.affect(Dungeon.hero, AnkhInvulnerability.class, delayFactor(Dungeon.hero)*2);
+		Buff.affect(Dungeon.hero, Invulnerability.class, delayFactor(Dungeon.hero)*2);
 		return super.warriorAttack(damage, enemy);
 	}
 

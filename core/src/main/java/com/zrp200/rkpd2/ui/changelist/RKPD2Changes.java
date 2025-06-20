@@ -1046,7 +1046,7 @@ public enum RKPD2Changes {
                                         "_-_ This item combines properties of Horn of Plenty, Alchemical Toolkit, Ethereal Chains, Chalice of Blood, Sandals of Nature, Master Thieves\' Armband, Timekeeper\'s Hourglass and Unstable Spellbook.\n\n" +
                                         "_-_ To make it, use cursed wand in some way to combine all artifacts together.\n\n" +
                                         "_-_ Alternatively, use kromer, chaosstone, Amulet of Yendor and 101 energy."),
-                        new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "New challenges",
+                        new ChangeButton(Icons.get(Icons.CHALLENGE_COLOR), "New challenges",
                                 list(2,
                                         "Added 21 new challenges that are accessible from beating challenges!",
                                         "Each new challenge is connected to one that unlocks it but has separate effects.",
@@ -1309,7 +1309,7 @@ public enum RKPD2Changes {
                                             "_-_ T6 weapons also omni-melee weapon and omni-thrown weapon, called _Royal Brand_ and _Steel Axe_, respectively."),
                             new ChangeButton(new ItemSprite(WAND_UNSTABLE), "New wand",
                                     "Added wand of His Ratiness, which will create random wand zaps and use random wand effects for Battlemage and Elemental Blast."),
-                            new ChangeButton(Icons.get(Icons.CHALLENGE_ON), "New champions",
+                            new ChangeButton(Icons.get(Icons.CHALLENGE_COLOR), "New champions",
                                     "Added a lot of champion types, increasing their number to 15.")),
                     new ChangeInfo("", false, 0x000000, "",
                             bugFixes("_-_ Fixed light cloak charge speed being wrong (was higher than intended for Rogue and lower for RK)\n\n" +

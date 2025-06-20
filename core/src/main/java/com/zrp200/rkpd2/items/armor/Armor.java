@@ -795,9 +795,9 @@ public class Armor extends EquipableItem {
 				multi += 0.25f + 0.25f*Dungeon.hero.pointsInTalent(Talent.AURA_OF_PROTECTION);
 			}
 			if (defender instanceof Hero && ((Hero) defender).pointsInTalent(Talent.HEROIC_ENDURANCE) >= 4){
-				mult *= 1.25f;
+				multi *= 1.25f;
 			}
-			return mult;
+			return multi;
 		}
 
 		public String name() {

@@ -47,6 +47,7 @@ import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Chill;
+import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.Corrosion;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
@@ -756,7 +757,7 @@ public abstract class Char extends Actor {
 				}
 				if (this instanceof Hero && ((Hero) this).hasTalent(Talent.DARKENING_STEPS) &&
 						buff(Preparation.class) != null && Random.Float() < 0.4f){
-					Buff.affect(this, ArtifactRecharge.class).prolong(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
+					Buff.affect(this, ArtifactRecharge.class).postpone(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
 				}
 			}
 			
@@ -1102,11 +1103,11 @@ if (Dungeon.hero.heroClass != HeroClass.CLERIC
         if (buff(ChampionEnemy.Giant.class) != null && this instanceof Hero){
             int points = ((Hero)this).pointsInTalent(Talent.RK_GIANT);
             if (points > 0){
-                Buff.affect(this, Kinetic.ConservedDamage.class).setBonus((int) (0.25f*points*dmg));
+                Buff.affect(this, Kinetic.ConservedDamage.class).setBonus((int) (0.25f*points*damage));
             }
         }
         if (buff(ChampionEnemy.Paladin.invulnerability.class) != null){
-            dmg /= 4;
+            damage /= 4;
         }
 
         if (buff(PowerOfMany.PowerBuff.class) != null){
@@ -1143,49 +1144,48 @@ if (Dungeon.hero.heroClass != HeroClass.CLERIC
 				damage *= 1.67f;
 			}
 			if (buff(Petrified.class) != null) {
-				dmg *= 0.5f;
+				damage *= 0.5f;
 			}
 			if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null) {
 				damage *= DeathMark.damageMultiplier();
 			}
 			if (this.buff(WarpedEnemy.class) != null){
-				dmg *= 0.75f;
+				damage *= 0.75f;
 			}
 			if (this.buff(BloomingPick.VineCovered.class) != null){
-				dmg *= 0.25f;
+				damage *= 0.25f;
 			}
 			if (this.buff(NuclearHatchet.Exposed.class) != null && src instanceof DamageOverTimeEffect){
-				dmg *= 2.5f;
+				damage *= 2.5f;
 			}
 
 			Class<?> srcClass = src.getClass();
 			if (isImmune(srcClass)) {
 				damage = 0;
 			} else {
-				damage *= resist( srcClass );
+				damage *= resist(srcClass);
+			}
         }
 
-		intdmg = Math.round(damage);
+		int dmg = Math.round(damage);
 
         //we ceil these specifically to favor the player vs. champ dmg reduction
         // most important vs. giant champions in the earlygame
-        for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
-            dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
-				if (hero.pointsInTalent(Talent.LASER_PRECISION) > 1 && src instanceof Buff && !(src instanceof DwarfKing.KingDamager)) {
-					dmg /= 2;
-				}
-			}
-
-			//TODO improve this when I have proper damage source logic
-			if (AntiMagic.RESISTS.contains(src.getClass()) ){
-			dmg -= AntiMagic.drRoll(this, glyphLevel(AntiMagic.class));
-			if (alignment == Alignment.ALLY && Dungeon.hero.buff(HolyWard.HolyArmBuff.Empowered.class) != null) {
-				dmg -= HolyWard.proc(this);
-			}
-            if ( buff(ArcaneArmor.class) != null) {
-				dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());}
-				if (dmg < 0) dmg = 0;
-			}
+        for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
+			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
+		}
+		if (hero.pointsInTalent(Talent.LASER_PRECISION) > 1 && src instanceof Buff && !(src instanceof DwarfKing.KingDamager)) {
+			dmg /= 2;
+		}
+		//TODO improve this when I have proper damage source logic
+		if (AntiMagic.RESISTS.contains(src.getClass()) ){
+		dmg -= AntiMagic.drRoll(this, glyphLevel(AntiMagic.class));
+		if (alignment == Alignment.ALLY && Dungeon.hero.buff(HolyWard.HolyArmBuff.Empowered.class) != null) {
+			dmg -= HolyWard.proc(this);
+		}
+		if ( buff(ArcaneArmor.class) != null) {
+			dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());}
+			if (dmg < 0) dmg = 0;
 		}
 		if (this instanceof Hero && Dungeon.isChallenged(Challenges.UNSTABLE_DAMAGE)){
 			dmg *= Random.Float(0.5f, 2f);

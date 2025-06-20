@@ -135,7 +135,7 @@ public class DuelistGrass extends Item implements Recipe.AllQuantityIngredient {
                 protected boolean act() {
                     if (hero.pointsInTalent(Talent.GRASS_MUNCHING) > 1){
                         Buff.affect(hero, Recharging.class, 7f * (meditateTime / 5 - 1));
-                        Buff.affect(hero, ArtifactRecharge.class).prolong(7f * (meditateTime / 5 - 1)).ignoreHornOfPlenty = false;
+                        Buff.affect(hero, ArtifactRecharge.class).postpone(7f * (meditateTime / 5 - 1));
                     }
                     Actor.remove(this);
                     return true;

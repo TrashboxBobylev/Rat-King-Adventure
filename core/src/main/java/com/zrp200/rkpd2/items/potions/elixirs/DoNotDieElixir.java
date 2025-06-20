@@ -5,7 +5,7 @@ import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.NoDeath;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
+import com.zrp200.rkpd2.items.potions.brews.UnstableBrew;
 import com.zrp200.rkpd2.items.quest.Kromer;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -39,7 +39,7 @@ public class DoNotDieElixir extends Elixir{
     public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 
         {
-            inputs =  new Class[]{Kromer.class, AlchemicalCatalyst.class};
+            inputs =  new Class[]{Kromer.class, UnstableBrew.class};
             inQuantity = new int[]{1, 1};
 
             cost = 12;

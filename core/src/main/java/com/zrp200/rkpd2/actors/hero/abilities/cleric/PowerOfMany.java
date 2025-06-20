@@ -103,7 +103,7 @@ public class PowerOfMany extends ArmorAbility {
 	}
 
 	@Override
-	protected void activate(ClassArmor armor, Hero hero, Integer target) {
+	public void activate(ClassArmor armor, Hero hero, Integer target) {
 
 		Char ally = getPoweredAlly();
 

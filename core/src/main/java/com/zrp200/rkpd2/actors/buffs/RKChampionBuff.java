@@ -83,7 +83,7 @@ public class RKChampionBuff extends Buff implements ActionIndicator.Action {
         }
     }
 
-    public static class ChampionCooldown extends Talent.Cooldown {
+    public static class ChampionCooldown extends Cooldown {
         @Override
         public float duration() {
             return 50;
@@ -154,7 +154,7 @@ public class RKChampionBuff extends Buff implements ActionIndicator.Action {
                 Buff.affect(Dungeon.hero, title);
             }
             Dungeon.hero.sprite.resetColor();
-            Talent.Cooldown.affectHero(ChampionCooldown.class);
+            Cooldown.affectHero(ChampionCooldown.class);
             ActionIndicator.clearAction(this);
             Dungeon.hero.spendAndNext(1f);
         });

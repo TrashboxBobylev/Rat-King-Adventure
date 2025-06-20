@@ -30,8 +30,8 @@ import com.zrp200.rkpd2.actors.blobs.Fire;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
-import com.zrp200.rkpd2.actors.mobs.Bestiary;
 import com.zrp200.rkpd2.actors.mobs.Mob;
+import com.zrp200.rkpd2.actors.mobs.MobSpawner;
 import com.zrp200.rkpd2.actors.mobs.ThreadRipper;
 import com.zrp200.rkpd2.actors.mobs.npcs.MirrorImage;
 import com.zrp200.rkpd2.effects.Pushing;
@@ -42,6 +42,7 @@ import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
 import com.zrp200.rkpd2.levels.Terrain;
+import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -298,7 +299,7 @@ public abstract class ChampionEnemy extends Buff {
 			if (target instanceof Hero && ((Hero) target).hasTalent(Talent.RK_CURSED)) {
 				CursedWand.eldritchLevel = ((Hero) target).pointsInTalent(Talent.RK_CURSED);
 			}
-			CursedWand.cursedEffect(null, target, enemy);
+			CursedWand.randomValidEffect(null, target, new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET), false).effect(null, target, new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET), false);
 			CursedWand.eldritchLevel = 0;
 		}
 	}
@@ -497,7 +498,7 @@ public abstract class ChampionEnemy extends Buff {
 			if (Dungeon.level.map[target.pos] != Terrain.CHASM) {
 				ArrayList<Class<? extends Mob>> mobsToSpawn;
 
-				mobsToSpawn = Bestiary.getMobRotation(Dungeon.depth);
+				mobsToSpawn = MobSpawner.getMobRotation(Dungeon.depth);
 
 				Mob clone = Reflection.newInstance(mobsToSpawn.remove(0));
 				ChampionEnemy.rollForChampion(clone);

@@ -165,8 +165,8 @@ public class ElementalStrike extends ArmorAbility {
 		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_SWIPE)){
 			MeleeWeapon.Charger charge = Dungeon.hero.buff(MeleeWeapon.Charger.class);
 			if (charge != null){
-                maxDist = Math.round(maxDist * (1f + charge.charges[0] * (0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE))));
-				degrees = Math.round(degrees * (1f + charge.charges[0] * (0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE))));
+                maxDist = Math.round(maxDist * (1f + charge.charges * (0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE))));
+				degrees = Math.round(degrees * (1f + charge.charges * (0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE))));
 			}
 		}
 		int dist = Math.min(aim.dist, maxDist);
@@ -257,7 +257,7 @@ public class ElementalStrike extends ArmorAbility {
 		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_SWIPE)){
 			MeleeWeapon.Charger charge = Dungeon.hero.buff(MeleeWeapon.Charger.class);
 			if (charge != null){
-				powerMulti += charge.charges[0]*(0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
+				powerMulti += charge.charges*(0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
 			}
 		}
 
@@ -316,7 +316,7 @@ public class ElementalStrike extends ArmorAbility {
 		if (Dungeon.hero.hasTalent(Talent.EMPOWERED_SWIPE)){
 			MeleeWeapon.Charger charge = Dungeon.hero.buff(MeleeWeapon.Charger.class);
 			if (charge != null){
-				powerMulti += charge.charges[0]*(0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
+				powerMulti += charge.charges*(0.05f + 0.025f * Dungeon.hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
 			}
 		}
 
@@ -408,8 +408,8 @@ public class ElementalStrike extends ArmorAbility {
 		if (hero.hasTalent(Talent.EMPOWERED_SWIPE)){
 			MeleeWeapon.Charger charge = hero.buff(MeleeWeapon.Charger.class);
 			if (charge != null){
-				powerMulti += charge.charges[0]*(0.05f + 0.025f * hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
-				charge.charges[0] = 0;
+				powerMulti += charge.charges*(0.05f + 0.025f * hero.pointsInTalent(Talent.EMPOWERED_SWIPE));
+				charge.charges = 0;
 				Item.updateQuickslot();
 			}
 		}

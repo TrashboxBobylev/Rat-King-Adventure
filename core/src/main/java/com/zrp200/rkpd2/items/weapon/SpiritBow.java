@@ -357,7 +357,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			hitSound = Assets.Sounds.HIT_ARROW;
 		}
 
-		private boolean sniperSpecial = false;
+		public boolean sniperSpecial = false;
 		private Collection<Char> sniperSpecialTargets;
 		public float sniperSpecialBonusDamage = 0f;
 		public boolean doNotDelay = false;

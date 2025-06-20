@@ -219,7 +219,7 @@ public class HallsLevel extends RegularLevel {
 				return false;
 			} else {
 				Statistics.ascended = true;
-				Badges.silentValidateHappyEnd();
+				Badges.validateHappyEnd();
 				Dungeon.win( Amulet.class );
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
 				Game.switchScene( SurfaceScene.class );

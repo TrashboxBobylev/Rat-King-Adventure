@@ -447,7 +447,7 @@ public class RatKingBoss extends Mob {
     }
 
     @Override
-    protected int modifyDamage(int dmg, Object src) {
+    protected int modifyDamage(float dmg, Object src) {
         if (phase3()){
             return 0;
         }

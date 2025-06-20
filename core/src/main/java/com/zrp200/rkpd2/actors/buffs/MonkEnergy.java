@@ -34,8 +34,8 @@ import com.zrp200.rkpd2.actors.mobs.RipperDemon;
 import com.zrp200.rkpd2.actors.mobs.Wraith;
 import com.zrp200.rkpd2.actors.mobs.YogDzewa;
 import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.items.potions.brews.AquaBrew;
 import com.zrp200.rkpd2.items.rings.RingOfForce;
-import com.zrp200.rkpd2.items.spells.AquaBlast;
 import com.zrp200.rkpd2.items.stones.StoneOfClairvoyance;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
@@ -735,7 +735,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 						if (MonkEnergy.isFeelingEmpowered(Level.Feeling.WATER)){
 							GeyserTrap geyser = new GeyserTrap();
 							geyser.pos = hero.pos;
-							geyser.source = new AquaBlast();
+							geyser.source = new AquaBrew();
 							geyser.activate();
 						}
 						return true;

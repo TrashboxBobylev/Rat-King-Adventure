@@ -154,6 +154,11 @@ public class Invisibility extends FlavourBuff {
 		if (prep != null){
 			prep.detach();
 		}
+
+		RoundShield.GuardTracker guard = ch.buff(RoundShield.GuardTracker.class);
+		if (guard != null && guard.hasBlocked){
+			guard.detach();
+		}
 	}
 
 	public static class DispelDelayer extends FlavourBuff {
@@ -173,11 +178,6 @@ public class Invisibility extends FlavourBuff {
 		public void fx(boolean on) {
 			if (on) target.sprite.add(CharSprite.State.SPIRIT);
 			else target.sprite.remove(CharSprite.State.SPIRIT);
-		}
-
-		RoundShield.GuardTracker guard = ch.buff(RoundShield.GuardTracker.class);
-		if (guard != null && guard.hasBlocked){
-			guard.detach();
 		}
 	}
 }

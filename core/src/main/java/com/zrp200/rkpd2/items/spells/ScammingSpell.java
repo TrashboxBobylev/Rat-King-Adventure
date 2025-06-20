@@ -49,7 +49,7 @@ public class ScammingSpell extends Spell{
     public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 
         {
-            inputs =  new Class[]{Kromer.class, ArcaneCatalyst.class};
+            inputs =  new Class[]{Kromer.class, UnstableSpell.class};
             inQuantity = new int[]{1, 1};
 
             cost = 22;
