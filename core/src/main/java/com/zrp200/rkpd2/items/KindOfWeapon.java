@@ -36,7 +36,6 @@ import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
-import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;

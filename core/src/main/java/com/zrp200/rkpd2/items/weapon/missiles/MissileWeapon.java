@@ -52,7 +52,6 @@ import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.enchantments.Projecting;
 import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
-import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.items.weapon.melee.RunicBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;

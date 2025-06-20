@@ -23,9 +23,9 @@ package com.zrp200.rkpd2.actors.mobs;
 
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.items.trinkets.RatSkull;
+import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;

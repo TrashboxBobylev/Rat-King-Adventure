@@ -40,7 +40,6 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.ui.HeroIcon;
-import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 

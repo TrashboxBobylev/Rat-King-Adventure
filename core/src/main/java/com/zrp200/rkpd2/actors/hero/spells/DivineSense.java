@@ -37,7 +37,6 @@ import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
-import com.zrp200.rkpd2.utils.GLog;
 
 public class DivineSense extends ClericSpell {
 

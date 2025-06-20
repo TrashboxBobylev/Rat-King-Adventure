@@ -29,7 +29,6 @@ import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.Wrath;
 import com.zrp200.rkpd2.effects.BadgeBanner;
-import com.zrp200.rkpd2.items.TengusMask;
 import com.zrp200.rkpd2.items.armor.RatKingArmor;
 import com.zrp200.rkpd2.items.armor.WarriorArmor;
 import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
@@ -68,7 +67,6 @@ import static com.zrp200.rkpd2.messages.Messages.h;
 import static com.zrp200.rkpd2.sprites.CharSprite.*;
 import static com.zrp200.rkpd2.sprites.HeroSprite.avatar;
 import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.*;
-
 import static com.zrp200.rkpd2.ui.Icons.CHANGES;
 import static com.zrp200.rkpd2.ui.Icons.DEPTH;
 import static com.zrp200.rkpd2.ui.Icons.DISPLAY_LAND;

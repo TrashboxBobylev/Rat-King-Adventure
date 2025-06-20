@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;

@@ -35,7 +35,6 @@ import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.potions.exotic.PotionOfCleansing;
-import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
 

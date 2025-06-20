@@ -39,7 +39,6 @@ import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public abstract class ExoticScroll extends Scroll {

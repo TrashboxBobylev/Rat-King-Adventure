@@ -30,7 +30,6 @@ import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Warp;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.Mob;

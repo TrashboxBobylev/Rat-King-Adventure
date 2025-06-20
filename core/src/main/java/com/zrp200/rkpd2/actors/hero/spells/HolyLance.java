@@ -21,14 +21,11 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Cooldown;
-import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Splash;
@@ -50,6 +47,8 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class HolyLance extends MultiTargetSpell {
 

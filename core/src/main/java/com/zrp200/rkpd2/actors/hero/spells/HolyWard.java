@@ -21,13 +21,8 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
-import com.watabou.noosa.Image;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
@@ -38,7 +33,11 @@ import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class HolyWard extends ClericSpell {
 

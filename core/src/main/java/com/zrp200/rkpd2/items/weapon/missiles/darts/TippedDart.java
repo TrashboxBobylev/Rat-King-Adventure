@@ -54,7 +54,6 @@ import com.zrp200.rkpd2.windows.WndOptions;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public abstract class TippedDart extends Dart {

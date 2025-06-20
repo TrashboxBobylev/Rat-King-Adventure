@@ -21,13 +21,10 @@
 
 package com.zrp200.rkpd2.items.weapon.enchantments;
 
-import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Adrenaline;
-import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
-import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.ItemSprite;

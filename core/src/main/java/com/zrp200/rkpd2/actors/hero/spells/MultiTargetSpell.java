@@ -24,8 +24,6 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import static com.zrp200.rkpd2.Dungeon.level;
-
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
@@ -36,6 +34,8 @@ import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
+
+import static com.zrp200.rkpd2.Dungeon.level;
 
 public abstract class MultiTargetSpell extends TargetedClericSpell {
 

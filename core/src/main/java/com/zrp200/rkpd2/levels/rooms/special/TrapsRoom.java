@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.levels.rooms.special;
 
+import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Heap;

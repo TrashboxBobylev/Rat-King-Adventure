@@ -22,10 +22,6 @@
 package com.zrp200.rkpd2.actors.mobs;
 
 
-import static com.zrp200.rkpd2.Assets.Sounds.CHALLENGE;
-import static com.zrp200.rkpd2.Assets.Sounds.SHATTER;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.RAT_KING;
-
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
@@ -85,6 +81,10 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static com.zrp200.rkpd2.Assets.Sounds.CHALLENGE;
+import static com.zrp200.rkpd2.Assets.Sounds.SHATTER;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.RAT_KING;
 
 public class DwarfKing extends Mob implements Hero.DeathCommentator {
 	@Override public void sayHeroKilled() {

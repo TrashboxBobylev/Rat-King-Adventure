@@ -34,7 +34,6 @@ import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfFeatherFall;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.RegularLevel;
-import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.special.WeakFloorRoom;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;

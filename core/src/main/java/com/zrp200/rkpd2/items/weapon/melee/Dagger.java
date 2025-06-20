@@ -39,6 +39,7 @@ import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 public class Dagger extends MeleeWeapon {
 	

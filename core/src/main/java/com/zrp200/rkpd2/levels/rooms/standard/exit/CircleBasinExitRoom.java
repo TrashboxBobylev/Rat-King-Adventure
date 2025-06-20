@@ -21,15 +21,12 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard.exit;
 
-import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.actors.mobs.FinalFroggit;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.standard.CircleBasinRoom;
-import com.watabou.utils.Random;
 
 public class CircleBasinExitRoom extends CircleBasinRoom {
 

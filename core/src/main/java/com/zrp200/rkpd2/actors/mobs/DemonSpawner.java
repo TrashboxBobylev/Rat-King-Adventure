@@ -24,7 +24,6 @@ package com.zrp200.rkpd2.actors.mobs;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
-import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;

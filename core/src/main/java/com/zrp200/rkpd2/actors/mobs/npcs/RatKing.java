@@ -24,7 +24,6 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
-import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
@@ -36,15 +35,14 @@ import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.scenes.RankingsScene;
 import com.zrp200.rkpd2.scenes.InterlevelScene;
 import com.zrp200.rkpd2.sprites.RatKingSprite;
 import com.zrp200.rkpd2.utils.Holiday;
 import com.zrp200.rkpd2.windows.WndInfoArmorAbility;
 import com.zrp200.rkpd2.windows.WndOptions;
+import com.zrp200.rkpd2.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
-import com.zrp200.rkpd2.windows.WndQuest;
 
 public class RatKing extends NPC {
 

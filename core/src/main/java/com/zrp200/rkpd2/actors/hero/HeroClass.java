@@ -21,20 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero;
 
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.ASSASSIN;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.BATTLEMAGE;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.BERSERKER;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.CHAMPION;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.FREERUNNER;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.GLADIATOR;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.KING;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.MONK;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.PALADIN;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.PRIEST;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.SNIPER;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.WARDEN;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.WARLOCK;
-
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
@@ -45,6 +31,9 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.AscendedForm;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.Challenge;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.ElementalStrike;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.Feint;
@@ -64,9 +53,6 @@ import com.zrp200.rkpd2.actors.hero.abilities.rogue.SmokeBomb;
 import com.zrp200.rkpd2.actors.hero.abilities.warrior.Endure;
 import com.zrp200.rkpd2.actors.hero.abilities.warrior.HeroicLeap;
 import com.zrp200.rkpd2.actors.hero.abilities.warrior.Shockwave;
-import com.zrp200.rkpd2.actors.hero.abilities.cleric.AscendedForm;
-import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
-import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.items.BrokenSeal;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
@@ -122,6 +108,8 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.PALADIN;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.PRIEST;
 public enum HeroClass {
 
 	WARRIOR(HeroSubClass.BERSERKER, HeroSubClass.GLADIATOR),

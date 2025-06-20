@@ -24,13 +24,10 @@ package com.zrp200.rkpd2.actors.buffs;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.actors.hero.spells.SpiritForm;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
 import com.zrp200.rkpd2.levels.Terrain;
-import com.zrp200.rkpd2.items.trinkets.ChaoticCenser;
-import com.zrp200.rkpd2.items.trinkets.SaltCube;
 import com.watabou.utils.Bundle;
 
 public class Regeneration extends Buff {

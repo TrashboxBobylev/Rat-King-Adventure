@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -60,6 +58,8 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class HallowedGround extends TargetedClericSpell {
 

@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import com.watabou.noosa.Image;
-import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -36,8 +33,6 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.MagicMissile;
-import com.zrp200.rkpd2.effects.SelectableCell;
-import com.zrp200.rkpd2.effects.TargetedCell;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.levels.Level;
@@ -46,15 +41,16 @@ import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.CellSelector;
 import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

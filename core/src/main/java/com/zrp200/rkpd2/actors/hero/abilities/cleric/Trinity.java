@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.cleric;
 
-import com.watabou.noosa.ui.Component;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
@@ -70,6 +69,7 @@ import com.zrp200.rkpd2.ui.Window;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;

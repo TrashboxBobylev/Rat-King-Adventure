@@ -21,13 +21,9 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.QuickSlot;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -46,7 +42,6 @@ import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.AttackIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
-import com.watabou.utils.BArray;
 import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndCombo;
@@ -60,8 +55,9 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
-import java.util.Arrays;
 import java.util.HashMap;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class Combo extends Buff implements ActionIndicator.Action {
 

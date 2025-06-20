@@ -28,7 +28,6 @@ import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
-import com.zrp200.rkpd2.items.journal.Guidebook;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.messages.Messages;

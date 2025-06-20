@@ -22,8 +22,8 @@
 package com.zrp200.rkpd2.ui;
 
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;

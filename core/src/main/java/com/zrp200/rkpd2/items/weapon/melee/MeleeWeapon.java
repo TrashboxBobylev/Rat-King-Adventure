@@ -21,17 +21,14 @@
 
 package com.zrp200.rkpd2.items.weapon.melee;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-import static com.zrp200.rkpd2.Dungeon.level;
-
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.GreaterHaste;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
@@ -81,6 +78,7 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.Dungeon.level;
 
 public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 

@@ -21,8 +21,7 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
@@ -30,6 +29,8 @@ import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class HoldFast extends Buff {
 

@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2;
 
-import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.scenes.TitleScene;
@@ -32,8 +31,6 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
-
-import static com.watabou.utils.Bundle.addAlias;
 
 @SuppressWarnings("unused")
 public class ShatteredPixelDungeon extends Game {

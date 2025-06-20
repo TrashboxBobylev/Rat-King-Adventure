@@ -21,10 +21,8 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.watabou.utils.Bundle;
-import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.watabou.utils.Bundle;
 
 public class Adrenaline extends FlavourBuff {
 	

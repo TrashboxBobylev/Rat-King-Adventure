@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import com.watabou.utils.GameMath;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
@@ -36,6 +35,7 @@ import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.Collections;

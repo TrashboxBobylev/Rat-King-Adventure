@@ -32,8 +32,8 @@ import com.zrp200.rkpd2.actors.mobs.DwarfKing;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.FloatingText;
-import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 

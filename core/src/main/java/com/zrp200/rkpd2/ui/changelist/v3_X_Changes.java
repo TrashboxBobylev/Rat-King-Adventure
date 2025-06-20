@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.ui.changelist;
 
-import com.badlogic.gdx.utils.SharedLibraryLoader;
-import com.watabou.utils.DeviceCompat;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -35,7 +33,9 @@ import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.TalentIcon;
 import com.zrp200.rkpd2.ui.Window;
+import com.badlogic.gdx.utils.SharedLibraryLoader;
 import com.watabou.noosa.Image;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.ArrayList;
 

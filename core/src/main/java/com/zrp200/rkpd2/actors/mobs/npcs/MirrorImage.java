@@ -26,27 +26,16 @@
 package com.zrp200.rkpd2.actors.mobs.npcs;
 
 import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.blobs.CorrosiveGas;
-import com.zrp200.rkpd2.actors.blobs.ToxicGas;
-import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.Fury;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.KindOfWeapon;
-import com.zrp200.rkpd2.actors.mobs.Mob;
-import com.zrp200.rkpd2.items.rings.RingOfAccuracy;
-import com.zrp200.rkpd2.items.rings.RingOfEvasion;
 import com.zrp200.rkpd2.messages.Messages;
-import com.zrp200.rkpd2.sprites.CharSprite;
-import com.zrp200.rkpd2.sprites.MirrorSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 public class MirrorImage extends AbstractMirrorImage {

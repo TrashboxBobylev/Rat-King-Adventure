@@ -1,10 +1,9 @@
 package com.zrp200.rkpd2.actors.buffs;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
-import com.watabou.utils.GameMath;
-import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
+import com.watabou.utils.GameMath;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public abstract class Cooldown extends FlavourBuff {
     public static <T extends Cooldown> T affectHero(Class<T> cls) {

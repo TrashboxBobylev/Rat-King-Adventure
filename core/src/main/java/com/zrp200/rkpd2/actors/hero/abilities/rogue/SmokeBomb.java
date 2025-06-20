@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.rogue;
 
-import static com.watabou.utils.Reflection.newInstance;
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -68,6 +65,9 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+
+import static com.watabou.utils.Reflection.newInstance;
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class SmokeBomb extends ArmorAbility {
 

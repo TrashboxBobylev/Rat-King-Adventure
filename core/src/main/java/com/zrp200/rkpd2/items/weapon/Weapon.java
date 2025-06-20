@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.weapon;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
@@ -92,6 +90,8 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 abstract public class Weapon extends KindOfWeapon {
 

@@ -32,7 +32,6 @@ import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
-import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.SafeCast;

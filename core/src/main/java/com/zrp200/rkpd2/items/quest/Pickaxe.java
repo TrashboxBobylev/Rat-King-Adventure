@@ -21,36 +21,20 @@
 
 package com.zrp200.rkpd2.items.quest;
 
-import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.actors.mobs.Bat;
 import com.zrp200.rkpd2.actors.mobs.Bee;
 import com.zrp200.rkpd2.actors.mobs.Crab;
 import com.zrp200.rkpd2.actors.mobs.Scorpio;
 import com.zrp200.rkpd2.actors.mobs.Spinner;
 import com.zrp200.rkpd2.actors.mobs.Swarm;
-import com.zrp200.rkpd2.actors.mobs.npcs.Blacksmith;
-import com.zrp200.rkpd2.effects.CellEmitter;
-import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
-import com.zrp200.rkpd2.levels.AbyssLevel;
-import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.MiningLevel;
-import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
-import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.sprites.ItemSprite.Glowing;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
-import com.zrp200.rkpd2.utils.GLog;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 

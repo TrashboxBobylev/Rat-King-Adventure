@@ -29,7 +29,6 @@ import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
-import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.spells.GuidingLight;
 import com.zrp200.rkpd2.items.Item;

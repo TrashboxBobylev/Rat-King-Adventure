@@ -44,7 +44,6 @@ import com.zrp200.rkpd2.ui.HeroIcon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Reflection;
-import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.Collections;
 import java.util.List;

@@ -29,7 +29,6 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Charm;
-import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.Beam;

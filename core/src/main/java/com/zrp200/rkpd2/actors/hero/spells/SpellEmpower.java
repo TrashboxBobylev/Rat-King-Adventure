@@ -1,10 +1,5 @@
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
-import com.watabou.noosa.Image;
-import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.GameMath;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.Cooldown;
 import com.zrp200.rkpd2.actors.buffs.CounterBuff;
@@ -14,13 +9,17 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.messages.Messages;
-import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.watabou.noosa.Image;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public abstract class SpellEmpower extends ClericSpell {
 

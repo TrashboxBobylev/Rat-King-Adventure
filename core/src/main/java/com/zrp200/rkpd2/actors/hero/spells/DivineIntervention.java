@@ -35,8 +35,8 @@ import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.HeroIcon;
-import com.watabou.noosa.audio.Sample;
 import com.zrp200.rkpd2.utils.GLog;
+import com.watabou.noosa.audio.Sample;
 
 public class DivineIntervention extends ClericSpell {
 

@@ -32,7 +32,6 @@ import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.buffs.Preparation;
 import com.zrp200.rkpd2.actors.buffs.RevealedArea;
 import com.zrp200.rkpd2.actors.buffs.Roots;
-import com.zrp200.rkpd2.actors.buffs.SnipersMark;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -74,7 +73,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 

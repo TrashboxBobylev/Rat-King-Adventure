@@ -29,7 +29,6 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.Transmuting;
 import com.zrp200.rkpd2.items.scrolls.InventoryScroll;
-import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;

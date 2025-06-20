@@ -44,6 +44,7 @@ import com.zrp200.rkpd2.items.spells.UnstableSpell;
 import com.zrp200.rkpd2.items.stones.StoneOfEnchantment;
 import com.zrp200.rkpd2.items.trinkets.ExoticCrystals;
 import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.Bundle;

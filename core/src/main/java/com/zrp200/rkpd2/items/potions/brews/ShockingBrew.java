@@ -26,7 +26,6 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.Electricity;
 import com.zrp200.rkpd2.actors.hero.Talent;
-import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
 import com.zrp200.rkpd2.items.potions.PotionOfParalyticGas;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;

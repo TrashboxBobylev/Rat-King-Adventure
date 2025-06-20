@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import static com.zrp200.rkpd2.Dungeon.*;
-
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;

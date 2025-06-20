@@ -24,7 +24,6 @@ package com.zrp200.rkpd2.scenes;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
-import com.zrp200.rkpd2.messages.Languages;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.Archs;
 import com.zrp200.rkpd2.ui.ExitButton;

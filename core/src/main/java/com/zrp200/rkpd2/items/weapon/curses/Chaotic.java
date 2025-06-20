@@ -1,8 +1,5 @@
 package com.zrp200.rkpd2.items.weapon.curses;
 
-import com.watabou.utils.Bundlable;
-import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -11,10 +8,11 @@ import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.watabou.utils.Bundlable;
+import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 import java.util.HashMap;
-
-import static com.zrp200.rkpd2.items.wands.CursedWand.cursedEffect;
 
 public class Chaotic extends Weapon.Enchantment{
 

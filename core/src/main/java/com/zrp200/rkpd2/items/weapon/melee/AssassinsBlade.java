@@ -26,10 +26,8 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
-import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
-import com.watabou.utils.Random;
 
 public class AssassinsBlade extends Dirk {
 

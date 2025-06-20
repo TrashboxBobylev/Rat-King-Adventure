@@ -32,7 +32,6 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 //for wands that directly damage a target
 //wands with AOE or circumstantial direct damage count here (e.g. fireblast, transfusion), but wands with indirect damage do not (e.g. corrosion)

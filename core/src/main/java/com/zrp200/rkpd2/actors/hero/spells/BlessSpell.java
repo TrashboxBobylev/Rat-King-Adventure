@@ -21,10 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-import static com.zrp200.rkpd2.Dungeon.level;
-
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -43,6 +39,9 @@ import com.watabou.noosa.audio.Sample;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.Dungeon.level;
 
 public class BlessSpell extends TargetedClericSpell {
 

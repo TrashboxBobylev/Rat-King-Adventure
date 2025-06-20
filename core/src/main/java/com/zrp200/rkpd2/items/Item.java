@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.items;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
@@ -58,6 +57,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;

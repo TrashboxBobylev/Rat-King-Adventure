@@ -21,23 +21,20 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Identification;
-import com.zrp200.rkpd2.items.EquipableItem;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfIdentify;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRemoveCurse;
 import com.zrp200.rkpd2.items.wands.CursedWand;
-import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class HolyIntuition extends InventoryClericSpell {
 

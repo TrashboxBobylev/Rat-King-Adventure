@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.items.spells;
 
-import com.watabou.noosa.ui.Component;
-import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
@@ -44,6 +42,7 @@ import com.zrp200.rkpd2.windows.WndInfoItem;
 import com.zrp200.rkpd2.windows.WndTradeItem;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

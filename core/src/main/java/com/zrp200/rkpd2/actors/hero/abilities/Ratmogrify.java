@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;

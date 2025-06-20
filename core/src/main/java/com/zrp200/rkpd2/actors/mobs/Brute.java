@@ -26,8 +26,6 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ShieldBuff;
-import com.zrp200.rkpd2.actors.buffs.Terror;
-import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.levels.features.Chasm;

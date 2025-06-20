@@ -28,7 +28,6 @@ import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.PotionOfPurity;
-import com.zrp200.rkpd2.items.quest.FlexTape;
 import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -36,7 +35,6 @@ import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.watabou.utils.Point;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 

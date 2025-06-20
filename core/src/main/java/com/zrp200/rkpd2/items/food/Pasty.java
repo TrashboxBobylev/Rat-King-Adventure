@@ -39,8 +39,8 @@ import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
-import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.ui.TargetHealthIndicator;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.Holiday;
 import com.watabou.noosa.audio.Sample;
 

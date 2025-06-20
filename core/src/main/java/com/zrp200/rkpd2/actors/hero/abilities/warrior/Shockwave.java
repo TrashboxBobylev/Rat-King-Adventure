@@ -21,11 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities.warrior;
 
-import static com.zrp200.rkpd2.actors.hero.Talent.AFTERSHOCK;
-import static com.zrp200.rkpd2.actors.hero.Talent.EXPANDING_WAVE;
-import static com.zrp200.rkpd2.actors.hero.Talent.SHOCK_FORCE;
-import static com.zrp200.rkpd2.actors.hero.Talent.STRIKING_WAVE;
-
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -37,13 +32,11 @@ import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.Petrified;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.effects.MagicMissile;
-import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.mechanics.ConeAOE;

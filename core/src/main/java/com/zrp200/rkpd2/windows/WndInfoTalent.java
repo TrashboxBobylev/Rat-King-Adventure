@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.Icons;
@@ -30,7 +28,7 @@ import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.TalentIcon;
 import com.watabou.utils.Callback;
 
-import com.watabou.utils.Callback;
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class WndInfoTalent extends WndTitledMessage {
 

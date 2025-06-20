@@ -35,8 +35,6 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-import static com.watabou.utils.Random.NormalFloat;
-
 public class Bleeding extends Buff implements DamageOverTimeEffect {
 
 	{

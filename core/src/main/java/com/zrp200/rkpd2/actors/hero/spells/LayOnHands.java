@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
@@ -40,6 +39,7 @@ import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.PathFinder;
 
 import java.util.Arrays;
 import java.util.List;

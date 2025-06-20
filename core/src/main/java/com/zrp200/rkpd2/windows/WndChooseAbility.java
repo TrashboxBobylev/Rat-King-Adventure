@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.windows;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-import static com.zrp200.rkpd2.Dungeon.initialVersion;
-
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.items.KingsCrown;
@@ -43,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.Dungeon.initialVersion;
 
 // I have systematically reworked this class to let me abuse it for nefarious purposes.
 

@@ -21,11 +21,9 @@
 
 package com.zrp200.rkpd2.actors.hero.spells;
 
-import com.watabou.noosa.Image;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Speck;
@@ -33,6 +31,7 @@ import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 

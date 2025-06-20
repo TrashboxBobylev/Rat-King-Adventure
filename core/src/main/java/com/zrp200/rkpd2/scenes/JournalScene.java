@@ -36,7 +36,6 @@ import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.tiles.TerrainFeaturesTilemap;
 import com.zrp200.rkpd2.ui.Archs;
 import com.zrp200.rkpd2.ui.ExitButton;
-import com.zrp200.rkpd2.ui.IconButton;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.StyledButton;
 import com.zrp200.rkpd2.windows.IconTitle;

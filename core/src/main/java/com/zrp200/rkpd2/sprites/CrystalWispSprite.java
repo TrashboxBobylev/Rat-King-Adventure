@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import com.watabou.utils.Callback;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.CrystalWisp;

@@ -42,9 +42,9 @@ import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
 import java.util.Iterator;

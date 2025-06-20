@@ -21,14 +21,13 @@
 
 package com.zrp200.rkpd2.sprites;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
-
-import com.watabou.noosa.TextureFilm;
-import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.mobs.npcs.AbstractMirrorImage;
+import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.PointF;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class MirrorSprite extends MobSprite {
 
