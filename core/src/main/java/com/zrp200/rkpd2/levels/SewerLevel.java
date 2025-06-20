@@ -169,10 +169,20 @@ public class SewerLevel extends RegularLevel {
 				return false;
 			} else {
 				Statistics.ascended = true;
-				Badges.silentValidateHappyEnd();
-				Dungeon.win( Amulet.class );
-				Dungeon.deleteGame( GamesInProgress.curSlot, true );
-				Game.switchScene( SurfaceScene.class );
+				Game.switchScene(SurfaceScene.class, new Game.SceneChangeCallback() {
+					@Override
+					public void beforeCreate() {
+
+					}
+
+					@Override
+					public void afterCreate() {
+						Badges.validateHappyEnd();
+						Dungeon.win( Amulet.class );
+						Dungeon.deleteGame( GamesInProgress.curSlot, true );
+						Badges.saveGlobal();
+					}
+				});
 				return true;
 			}
 		} else {

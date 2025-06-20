@@ -24,10 +24,14 @@ package com.zrp200.rkpd2.actors.buffs;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.spells.SpiritForm;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
 import com.zrp200.rkpd2.levels.Terrain;
+import com.zrp200.rkpd2.items.trinkets.ChaoticCenser;
+import com.zrp200.rkpd2.items.trinkets.SaltCube;
+import com.watabou.utils.Bundle;
 
 public class Regeneration extends Buff {
 	
@@ -36,8 +40,10 @@ public class Regeneration extends Buff {
 		//healing is much more useful if you get some of it off before taking damage
 		actPriority = HERO_PRIO - 1;
 	}
-	
-	private static final float REGENERATION_DELAY = 10;
+
+	private float partialRegen = 0f;
+
+	private static final float REGENERATION_DELAY = 10; //1HP every 10 turns
 	
 	@Override
 	public boolean act() {
@@ -59,13 +65,13 @@ public class Regeneration extends Buff {
 
 			float delay = getRegenDelay(target);
 			spend( delay );
-			
+
 		} else {
-			
+
 			diactivate();
-			
+
 		}
-		
+
 		return true;
 	}
 
@@ -104,5 +110,19 @@ public class Regeneration extends Buff {
 			return false;
 		}
 		return true;
+	}
+
+	public static final String PARTIAL_REGEN = "partial_regen";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(PARTIAL_REGEN, partialRegen);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		partialRegen = bundle.getFloat(PARTIAL_REGEN);
 	}
 }

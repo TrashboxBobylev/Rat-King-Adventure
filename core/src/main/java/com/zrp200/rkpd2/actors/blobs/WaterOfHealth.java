@@ -23,6 +23,8 @@ package com.zrp200.rkpd2.actors.blobs;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Healing;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.BlobEmitter;
@@ -36,6 +38,7 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.Waterskin;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRemoveCurse;
+import com.zrp200.rkpd2.items.trinkets.VialOfBlood;
 import com.zrp200.rkpd2.journal.Notes.Landmark;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
@@ -55,10 +58,15 @@ public class WaterOfHealth extends WellWater {
 		hero.belongings.uncurseEquipped();
 		hero.buff( Hunger.class ).satisfy( Hunger.STARVING );
 
-		hero.HP = hero.HT;
+		if (VialOfBlood.delayBurstHealing()){
+			Healing healing = Buff.affect(hero, Healing.class);
+			healing.setHeal(hero.HT, 0, VialOfBlood.maxHealPerTurn());
+			healing.applyVialEffect();
+		} else {hero.HP = hero.HT;
 		hero.sprite.emitter().start( Speck.factory( Speck.HEALING ), 0.4f, 4 );
 		hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(hero.HT), FloatingText.HEALING);
-
+}
+		
 		CellEmitter.get( hero.pos ).start( ShaftParticle.FACTORY, 0.2f, 3 );
 
 		Dungeon.hero.interrupt();
@@ -91,7 +99,7 @@ public class WaterOfHealth extends WellWater {
 	}
 	
 	@Override
-	protected Landmark record() {
+	public Landmark landmark() {
 		return Landmark.WELL_OF_HEALTH;
 	}
 	

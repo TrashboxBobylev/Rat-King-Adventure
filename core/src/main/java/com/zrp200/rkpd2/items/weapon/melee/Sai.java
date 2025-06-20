@@ -26,10 +26,12 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
+import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.utils.Bundle;
 
 public class Sai extends MeleeWeapon {
@@ -60,16 +62,33 @@ public class Sai extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-	protected DuelistAbility duelistAbility() {
+	protected ComboStrike duelistAbility() {
 		return new ComboStrike();
+	}
+
+	public int abilityStat(int level) {
+		//+(4+lvl) damage, roughly +60% base damage, +67% scaling
+		return augment.damageFactor(3 + tier / 2 + level);
+	}
+
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", abilityStat(buffedLvl()));
+		} else {
+			return Messages.get(this, "typical_ability_desc", abilityStat(0));
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		return "+" + abilityStat(level);
 	}
 
 	protected class ComboStrike extends MeleeAbility {
 
-		// 1 - 0.45
-		// 3 - 0.4
-		// 5 - 0.35
-		public final float boostPerHit = 0.45f - (tier-1)*.025f;
+		{
+			dmgBoost = abilityStat(buffedLvl());
+		}
 
 		private int recentHits;
 
@@ -79,14 +98,11 @@ public class Sai extends MeleeWeapon {
 			recentHits = 0;
 			ComboStrikeTracker buff = hero.buff(ComboStrikeTracker.class);
 			if (buff != null){
-				recentHits = buff.totalHits();
+				recentHits = buff.hits;
+				// dmgMulti = 1 + dmgMulti * buff.hits;
+				dmgBoost *= buff.hits;
 				buff.detach();
 			}
-		}
-
-		@Override
-		public float dmgMulti(Char enemy) {
-			return boostPerHit*recentHits;
 		}
 
 		@Override
@@ -101,14 +117,12 @@ public class Sai extends MeleeWeapon {
 			type = buffType.POSITIVE;
 		}
 
-		public static int DURATION = 6; //to account for the turn the attack is made in
-		public int[] hits = new int[DURATION];
+		public static int DURATION = 5;
+		private float comboTime = 0f;
+		public int hits = 0;
 
 		@Override
 		public int icon() {
-			//pre-v2.1 saves
-			if (totalHits() == 0) return BuffIndicator.NONE;
-
 			if (Dungeon.hero.belongings.weapon() instanceof Gloves
 					|| Dungeon.hero.belongings.weapon() instanceof Sai
 					|| Dungeon.hero.belongings.weapon() instanceof Gauntlet
@@ -123,59 +137,63 @@ public class Sai extends MeleeWeapon {
 
 		@Override
 		public boolean act() {
-
-			//shuffle all hits down one turn
-			for (int i = 0; i < DURATION; i++){
-				if (i == DURATION-1){
-					hits[i] = 0;
-				} else {
-					hits[i] =  hits[i+1];
-				}
-			}
-
-			if (totalHits() == 0){
+			comboTime-=TICK;
+			spend(TICK);
+			if (comboTime <= 0) {
 				detach();
 			}
-
-			spend(TICK);
 			return true;
 		}
 
 		public void addHit(){
-			hits[DURATION-1]++;
+			hits++;
+			comboTime = 5f;
+
+			if (hits >= 2 && icon() != BuffIndicator.NONE){
+				GLog.p( Messages.get(Combo.class, "combo", hits) );
+			}
 		}
 
-		public int totalHits(){
-			int sum = 0;
-			for (int i = 0; i < DURATION; i++){
-				sum += hits[i];
-			}
-			return sum;
+		@Override
+		public float iconFadePercent() {
+			return Math.max(0, (DURATION - comboTime)/ DURATION);
 		}
 
 		@Override
 		public String iconTextDisplay() {
-			return Integer.toString(totalHits());
+			return Integer.toString((int)comboTime);
 		}
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc", totalHits());
+			return Messages.get(this, "desc", hits, dispTurns(comboTime));
 		}
 
+		private static final String TIME  = "combo_time";
 		public static String RECENT_HITS = "recent_hits";
 
 		@Override
 		public void storeInBundle(Bundle bundle) {
 			super.storeInBundle(bundle);
+			bundle.put(TIME, comboTime);
 			bundle.put(RECENT_HITS, hits);
 		}
 
 		@Override
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
-			if (bundle.contains(RECENT_HITS)) {
-				hits = bundle.getIntArray(RECENT_HITS);
+			if (bundle.contains(TIME)){
+				comboTime = bundle.getInt(TIME);
+				hits = bundle.getInt(RECENT_HITS);
+			} else {
+				//pre-2.4.0 saves
+				comboTime = 5f;
+				hits = 0;
+				if (bundle.contains(RECENT_HITS)) {
+					for (int i : bundle.getIntArray(RECENT_HITS)) {
+						hits += i;
+					}
+				}
 			}
 		}
 	}

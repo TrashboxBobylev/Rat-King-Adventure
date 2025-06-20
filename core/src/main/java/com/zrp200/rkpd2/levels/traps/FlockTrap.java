@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.mobs.npcs.Sheep;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
@@ -66,13 +67,15 @@ public class FlockTrap extends Trap {
 				if ((t = Dungeon.level.traps.get(i)) != null && t.active){
 					if (t.disarmedByActivation) t.disarm();
 					t.reveal();
+					Bestiary.setSeen(t.getClass());
+					Bestiary.countEncounter(t.getClass());
 					t.activate();
 				}
 				Dungeon.level.occupyCell(sheep);
-				Sample.INSTANCE.play(Assets.Sounds.PUFF);
-				Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 			}
 		}
+		Sample.INSTANCE.play(Assets.Sounds.PUFF);
+		Sample.INSTANCE.play(Assets.Sounds.SHEEP);
 	}
 
 }

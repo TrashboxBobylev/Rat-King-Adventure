@@ -33,6 +33,7 @@ import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.Light;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Speck;
@@ -41,6 +42,7 @@ import com.zrp200.rkpd2.effects.particles.PurpleParticle;
 import com.zrp200.rkpd2.items.Dewdrop;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.stones.StoneOfAggression;
 import com.zrp200.rkpd2.items.wands.WandOfDisintegration;
 import com.zrp200.rkpd2.levels.traps.DisintegrationTrap;
 import com.zrp200.rkpd2.mechanics.Ballistica;
@@ -152,6 +154,17 @@ public class Eye extends Mob {
 
 			spend( attackDelay() );
 
+			int dist = 0;
+			for (int pos : beam.subPath(1, beam.dist)) {
+				dist++;
+				Char ch = Actor.findChar(pos);
+				if (ch == null) continue;
+				if (ch.alignment != alignment && ShieldOfLight.DivineShield.find(ch, this) != null) {
+					beam.dist = dist;
+					beam.collisionPos = pos;
+				}
+			}
+
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[beam.collisionPos] ) {
 				sprite.zap( beam.collisionPos );
 				return false;
@@ -169,16 +182,30 @@ public class Eye extends Mob {
 		if (beamCharged) dmg /= 4;
 		super.damage(dmg, src);
 	}
-	
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
+	}
+
 	//used so resistances can differentiate between melee and magical attacks
 	public static class DeathGaze{}
 
-	public void deathGaze(){
-		if (!beamCharged || beamCooldown > 0 || beam == null)
+	public void deathGaze() {
+		if (!beamCharged || beamCooldown > 0 || beam == null) {
 			return;
+		}
 
 		beamCharged = false;
 		beamCooldown = Random.IntRange(4, 6);
+
+		deathGaze(beam);
+
+		beam = null;
+		beamTarget = -1;
+	}
+	public void deathGaze(final Ballistica beam){
 
 		boolean terrainAffected = false;
 
@@ -198,9 +225,29 @@ public class Eye extends Mob {
 				continue;
 			}
 
+			if (pos == beam.collisionPos) {
+				if (ShieldOfLight.DivineShield.tryUse(ch, this, () -> {
+					Ballistica reflected = new Ballistica(beam.collisionPos, beam.sourcePos, Ballistica.STOP_SOLID);
+					if (Dungeon.level.heroFOV[beam.sourcePos] || Dungeon.level.heroFOV[beam.collisionPos]) {
+						sprite.parent.add(EyeSprite.deathGaze(ch.sprite, beam.sourcePos));
+					}
+					deathGaze(reflected);
+				})) break;
+			}
 			if (hit( this, ch, true )) {
 				int dmg = Random.NormalIntRange( 30, 50 );
 				dmg = Math.round(dmg * AscensionChallenge.statModifier(this));
+
+				//logic for fists or Yog-Dzewa taking 1/2 or 1/4 damage from aggression stoned minions
+				if ( ch.buff(StoneOfAggression.Aggression.class) != null
+						&& ch.alignment == alignment
+						&& (Char.hasProp(ch, Property.BOSS) || Char.hasProp(ch, Property.MINIBOSS))){
+					dmg *= 0.5f;
+					if (ch instanceof YogDzewa){
+						dmg *= 0.5f;
+					}
+				}
+
 				if (ch.buff(WarriorParry.BlockTrock.class) != null){
 					ch.sprite.emitter().burst( Speck.factory( Speck.FORGE ), 15 );
 					SpellSprite.show(ch, SpellSprite.BLOCK, 2f, 2f, 2f);
@@ -230,8 +277,6 @@ public class Eye extends Mob {
 			Dungeon.observe();
 		}
 
-		beam = null;
-		beamTarget = -1;
 	}
 
 	//generates an average of 1 dew, 0.25 seeds, and 0.25 stones

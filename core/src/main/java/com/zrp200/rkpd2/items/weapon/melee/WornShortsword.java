@@ -34,4 +34,6 @@ public class WornShortsword extends Sword {
 		bones = false;
 	}
 
+	//+(3+lvl) damage, roughly +55% base dmg, +67% scaling
+
 }

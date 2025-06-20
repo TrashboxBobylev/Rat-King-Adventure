@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.wands.WandOfLivingEarth;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Earthroot;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -131,6 +132,7 @@ public class ChaliceOfBlood extends Artifact {
 			GLog.n( Messages.get(this, "ondeath") );
 		} else {
 			upgrade();
+			Catalog.countUse(getClass());
 		}
 	}
 

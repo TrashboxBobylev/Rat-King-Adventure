@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.actors.mobs;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.hero.spells.ClericSpell;
 import com.zrp200.rkpd2.actors.mobs.npcs.Ghost;
 import com.zrp200.rkpd2.items.food.MysteryMeat;
 import com.zrp200.rkpd2.items.wands.Wand;
@@ -77,7 +78,7 @@ public class GreatCrab extends Crab {
 		if (enemySeen
 				&& state != SLEEPING
 				&& paralysed == 0
-				&& src instanceof Wand
+				&& (src instanceof Wand || src instanceof ClericSpell)
 				&& enemy == Dungeon.hero
 				&& enemy.invisible == 0){
 			GLog.n( Messages.get(this, "noticed") );

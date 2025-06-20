@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.actors;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
@@ -34,70 +36,68 @@ import com.zrp200.rkpd2.actors.buffs.Adrenaline;
 import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Amok;
 import com.zrp200.rkpd2.actors.buffs.ArcaneArmor;
-import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Barkskin;
-import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.Bleeding;
 import com.zrp200.rkpd2.actors.buffs.Bless;
-import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Chill;
-import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.Corrosion;
 import com.zrp200.rkpd2.actors.buffs.Corruption;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
-import com.zrp200.rkpd2.actors.buffs.DamageOverTimeEffect;
 import com.zrp200.rkpd2.actors.buffs.Daze;
 import com.zrp200.rkpd2.actors.buffs.Doom;
 import com.zrp200.rkpd2.actors.buffs.Dread;
 import com.zrp200.rkpd2.actors.buffs.FireImbue;
 import com.zrp200.rkpd2.actors.buffs.Frost;
-import com.zrp200.rkpd2.actors.buffs.FrostBurn;
 import com.zrp200.rkpd2.actors.buffs.FrostImbue;
 import com.zrp200.rkpd2.actors.buffs.Fury;
 import com.zrp200.rkpd2.actors.buffs.Haste;
 import com.zrp200.rkpd2.actors.buffs.Hex;
-import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
+import com.zrp200.rkpd2.actors.buffs.Invulnerability;
 import com.zrp200.rkpd2.actors.buffs.LifeLink;
 import com.zrp200.rkpd2.actors.buffs.LostInventory;
-import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.buffs.MagicalSleep;
 import com.zrp200.rkpd2.actors.buffs.Momentum;
 import com.zrp200.rkpd2.actors.buffs.MonkEnergy;
-import com.zrp200.rkpd2.actors.buffs.NoDeath;
 import com.zrp200.rkpd2.actors.buffs.Ooze;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
-import com.zrp200.rkpd2.actors.buffs.Petrified;
 import com.zrp200.rkpd2.actors.buffs.Poison;
 import com.zrp200.rkpd2.actors.buffs.Preparation;
-import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.buffs.ShieldBuff;
-import com.zrp200.rkpd2.actors.buffs.Shrink;
+import com.zrp200.rkpd2.actors.buffs.Sleep;
 import com.zrp200.rkpd2.actors.buffs.Slow;
 import com.zrp200.rkpd2.actors.buffs.SnipersMark;
 import com.zrp200.rkpd2.actors.buffs.SoulMark;
 import com.zrp200.rkpd2.actors.buffs.Speed;
 import com.zrp200.rkpd2.actors.buffs.Stamina;
 import com.zrp200.rkpd2.actors.buffs.Terror;
-import com.zrp200.rkpd2.actors.buffs.TimedShrink;
 import com.zrp200.rkpd2.actors.buffs.Vertigo;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
-import com.zrp200.rkpd2.actors.buffs.WarpedEnemy;
-import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.Challenge;
 import com.zrp200.rkpd2.actors.hero.abilities.rogue.DeathMark;
 import com.zrp200.rkpd2.actors.hero.abilities.warrior.Endure;
+import com.zrp200.rkpd2.actors.hero.spells.AuraOfProtection;
+import com.zrp200.rkpd2.actors.hero.spells.BeamingRay;
+import com.zrp200.rkpd2.actors.hero.spells.GuidingLight;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWard;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
+import com.zrp200.rkpd2.actors.hero.spells.LifeLinkSpell;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
+import com.zrp200.rkpd2.actors.hero.spells.Smite;
+import com.zrp200.rkpd2.actors.mobs.Brute;
 import com.zrp200.rkpd2.actors.mobs.CrystalSpire;
 import com.zrp200.rkpd2.actors.mobs.DwarfKing;
 import com.zrp200.rkpd2.actors.mobs.Elemental;
@@ -107,6 +107,7 @@ import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.Necromancer;
 import com.zrp200.rkpd2.actors.mobs.RatKingBoss;
 import com.zrp200.rkpd2.actors.mobs.Tengu;
+import com.zrp200.rkpd2.actors.mobs.YogDzewa;
 import com.zrp200.rkpd2.actors.mobs.npcs.MirrorImage;
 import com.zrp200.rkpd2.actors.mobs.npcs.PrismaticImage;
 import com.zrp200.rkpd2.effects.FloatingText;
@@ -116,8 +117,14 @@ import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.DuelistGrass;
 import com.zrp200.rkpd2.items.Heap;
+import com.zrp200.rkpd2.items.armor.Armor;
+import com.zrp200.rkpd2.items.armor.curses.Bulk;
 import com.zrp200.rkpd2.items.armor.glyphs.AntiMagic;
+import com.zrp200.rkpd2.items.armor.glyphs.Brimstone;
+import com.zrp200.rkpd2.items.armor.glyphs.Flow;
+import com.zrp200.rkpd2.items.armor.glyphs.Obfuscation;
 import com.zrp200.rkpd2.items.armor.glyphs.Potential;
+import com.zrp200.rkpd2.items.armor.glyphs.Swiftness;
 import com.zrp200.rkpd2.items.armor.glyphs.Viscosity;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
@@ -133,6 +140,7 @@ import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfChallenge;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfSirensSong;
+import com.zrp200.rkpd2.items.stones.StoneOfAggression;
 import com.zrp200.rkpd2.items.stones.StoneOfAggression;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.items.wands.WandOfFireblast;
@@ -151,6 +159,7 @@ import com.zrp200.rkpd2.items.weapon.melee.BloomingPick;
 import com.zrp200.rkpd2.items.weapon.melee.NuclearHatchet;
 import com.zrp200.rkpd2.items.weapon.melee.Rapier;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
+import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.items.weapon.melee.Sickle;
 import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
@@ -169,6 +178,8 @@ import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.zrp200.rkpd2.sprites.MobSprite;
+import com.zrp200.rkpd2.ui.TargetHealthIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
@@ -182,8 +193,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-
-import static com.zrp200.rkpd2.Dungeon.hero;
 
 public abstract class Char extends Actor {
 	
@@ -325,7 +334,8 @@ public abstract class Char extends Actor {
 		}
 
 		//can't swap places if one char has restricted movement
-		if (rooted || c.rooted || buff(Vertigo.class) != null || c.buff(Vertigo.class) != null){
+		if (paralysed > 0 || c.paralysed > 0 || rooted || c.rooted
+				|| buff(Vertigo.class) != null || c.buff(Vertigo.class) != null){
 			return true;
 		}
 
@@ -454,9 +464,6 @@ public abstract class Char extends Actor {
 
 				if (h.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
 					dr = 0;
-				} else if (h.subClass.is(HeroSubClass.MONK)) {
-					//3 turns with standard attack delay
-					Buff.prolong(h, MonkEnergy.MonkAbility.JustHitTracker.class, 4f);
 				}
 
 				if (hero.belongings.weapon() instanceof Slingshot.Stone){
@@ -488,7 +495,21 @@ public abstract class Char extends Actor {
 				}
 			}
 
-			dmg = Math.round(dmg*dmgMulti);
+			dmg = dmg*dmgMulti;
+
+			//flat damage bonus is affected by multipliers
+			dmg += dmgBonus;
+
+			if (enemy.buff(GuidingLight.Illuminated.class) != null){
+				enemy.buff(GuidingLight.Illuminated.class).detach();
+				if (this == Dungeon.hero){
+					dmg += 3*Dungeon.hero.shiftedPoints(Talent.SEARING_LIGHT) - 1;
+				}
+				if (this != Dungeon.hero && Dungeon.hero.subClass == HeroSubClass.PRIEST){
+					enemy.damage(Dungeon.hero.lvl, GuidingLight.INSTANCE);
+				}
+			}
+			GuidingLight.Illuminated.checkReapply(enemy);
 
 			Berserk berserk = buff(Berserk.class);
 			if (berserk != null) dmg = berserk.damageFactor((int)dmg);
@@ -505,14 +526,20 @@ public abstract class Char extends Actor {
 				dmg *= 1.75f;
 			}
 
+			if (buff( PowerOfMany.PowerBuff.class) != null){
+				if (buff( BeamingRay.BeamingRayBoost.class) != null
+					&& buff( BeamingRay.BeamingRayBoost.class).object == enemy.id()){
+					dmg *= 1.3f + 0.05f*Dungeon.hero.pointsInTalent(Talent.BEAMING_RAY);
+				} else {
+					dmg *= 1.25f;
+				}
+			}
+
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 				dmg *= buff.meleeDamageFactor();
 			}
 
 			dmg *= AscensionChallenge.statModifier(this);
-
-			//flat damage bonus is applied after positive multipliers, but before negative ones
-			dmg += dmgBonus;
 
 			//friendly endure
 			Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
@@ -538,6 +565,14 @@ public abstract class Char extends Actor {
 				dmg = endure.adjustDamageTaken(dmg);
 			}
 
+			if (AuraOfProtection.isActiveFor(enemy)){
+				float reduction = dmg * AuraOfProtection.reduction();
+				if (reduction > 0 && Dungeon.hero.buff(AuraOfProtection.RetributionBuff.class) != null) {
+					damage(Random.round(Random.Float(1, 2) * reduction), AuraOfProtection.INSTANCE);
+				}
+				dmg -= reduction;
+			}
+
 			if (enemy.buff(Shrink.class) != null || enemy.buff(TimedShrink.class) != null) dmg *= 1.4f;
 
 			if (enemy.buff(ScrollOfChallenge.ChallengeArena.class) != null){
@@ -554,7 +589,16 @@ public abstract class Char extends Actor {
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
 			}
-
+//characters influenced by aggression deal 1/2 damage to bosses
+			if ( enemy.buff(StoneOfAggression.Aggression.class) != null
+					&& enemy.alignment == alignment
+					&& (Char.hasProp(enemy, Property.BOSS) || Char.hasProp(enemy, Property.MINIBOSS))){
+				dmg *= 0.5f;
+				//yog-dzewa specifically takes 1/4 damage
+				if (enemy instanceof YogDzewa){
+					dmg *= 0.5f;
+				}
+			}
 			int effectiveDamage = enemy.defenseProc( this, Math.round(dmg) );
 			//do not trigger on-hit logic if defenseProc returned a negative value
 			if (effectiveDamage >= 0) {
@@ -630,6 +674,9 @@ public abstract class Char extends Actor {
 
 			if (enemy.isAlive() && enemy.alignment != alignment && prep != null && prep.canKO(enemy)){
 				enemy.HP = 0;
+				if (enemy.buff(Brute.BruteRage.class) != null){
+					enemy.buff(Brute.BruteRage.class).detach();
+				}
 				if (!enemy.isAlive()) {
 					enemy.die(this);
 				} else {
@@ -642,12 +689,15 @@ public abstract class Char extends Actor {
 				}
 			}
 
-			Talent.CombinedLethalityTriggerTracker combinedLethality = buff(Talent.CombinedLethalityTriggerTracker.class);
-			if (combinedLethality != null){
+			Talent.CombinedLethalityAbilityTracker combinedLethality = buff(Talent.CombinedLethalityAbilityTracker.class);
+			if (combinedLethality != null && this instanceof Hero && ((Hero) this).belongings.attackingWeapon() instanceof MeleeWeapon && combinedLethality.weapon != ((Hero) this).belongings.attackingWeapon()){
 				if ( enemy.isAlive() && enemy.alignment != alignment && !Char.hasProp(enemy, Property.BOSS)
-						&& !Char.hasProp(enemy, Property.MINIBOSS) && this instanceof Hero &&
+						&& !Char.hasProp(enemy, Property.MINIBOSS) &&
 						(enemy.HP/(float)enemy.HT) <= 0.4f*((Hero)this).pointsInTalent(Talent.COMBINED_LETHALITY)/3f) {
 					enemy.HP = 0;
+					if (enemy.buff(Brute.BruteRage.class) != null){
+						enemy.buff(Brute.BruteRage.class).detach();
+					}
 					if (!enemy.isAlive()) {
 						enemy.die(this);
 					} else {
@@ -656,7 +706,7 @@ public abstract class Char extends Actor {
 						DeathMark.processFearTheReaper(enemy, false);
 					}
 					if (enemy.sprite != null) {
-						enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityTriggerTracker.class, "executed"));
+						enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Talent.CombinedLethalityAbilityTracker.class, "executed"));
 					}
 				}
 				combinedLethality.detach();
@@ -781,10 +831,8 @@ public abstract class Char extends Actor {
 			acuStat = INFINITE_ACCURACY;
 		}
 
-		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null && !magic){
+		if (defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
 			defStat = INFINITE_EVASION;
-			defender.buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
-			Buff.affect(defender, MonkEnergy.MonkAbility.Focus.FocusActivation.class, 0);
 		}
 
 		//if accuracy or evasion are large enough, treat them as infinite.
@@ -805,7 +853,12 @@ public abstract class Char extends Actor {
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
 acuRoll *= AscensionChallenge.statModifier(attacker);
-
+if (Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& attacker.alignment == Alignment.ALLY){
+			// + 3%/5%
+			acuRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+		}
 		float defRoll = Random.Float( defStat );
 		if (defender == hero && hero.hasTalent(Talent.SCOURGING_THE_UNIVERSE) && accMulti == 2f) {
 			defRoll *= 2;
@@ -827,10 +880,15 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		}
 
 		defRoll *= AscensionChallenge.statModifier(defender);
-
+if (Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.BLESS)
+				&& defender.alignment == Alignment.ALLY){
+			// + 3%/5%
+			defRoll *= 1.01f + 0.02f*Dungeon.hero.pointsInTalent(Talent.BLESS);
+		}
 		return (acuRoll * accMulti) >= defRoll;
 	}
-	
+
 	public int attackSkill( Char target ) {
 		return 0;
 	}
@@ -841,7 +899,8 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 
 	public String defenseVerb() {
 		if (buff(RoundShield.Block.class) != null) return Messages.get(Hero.class, "absorbed");
-		return Messages.get(this, "def_verb");
+		return ShieldOfLight.DivineShield.tryUse(this) ? Messages.get(ShieldOfLight.DivineShield.class, "def_verb") :
+				Messages.get(this, "def_verb");
 	}
 	
 	public int drRoll() {
@@ -890,19 +949,25 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 			Buff.affect(enemy, Weakness.class, 3);
 		}
 
-		if(alignment == Alignment.ALLY && hero.hasTalent(Talent.WARLOCKS_TOUCH)) {
-			// warlock+allies can soul mark by simply attacking via warlock's touch.
-
-			float shift=.05f, scaling=.1f;
-			// 15/25/35 for melee and spirit bow, 20/35/50 for thrown weapons. Not sure if this is a good gimmick or if I'm forcing a synergy here.
-			if(this == hero && hero.belongings.thrownWeapon != null && !(hero.belongings.thrownWeapon instanceof SpiritBow.SpiritArrow) ) {
-				// thrown weapons have a slight boost.
-				scaling *= 1.5f;
+		if(alignment == Alignment.ALLY) {
+			if (this != hero) {
+				HolyWeapon.HolyWepBuff.Empowered buff = hero.buff(HolyWeapon.HolyWepBuff.Empowered.class);
+				if (buff != null) buff.proc(this, enemy);
 			}
-			SoulMark.process(enemy,
-					-4, // 10 - 4 = 6 turns
-					shift + scaling*hero.pointsInTalent(Talent.WARLOCKS_TOUCH),
-					true, false);
+			if (hero.hasTalent(Talent.WARLOCKS_TOUCH)) {
+				// warlock+allies can soul mark by simply attacking via warlock's touch.
+
+				float shift=.05f, scaling=.1f;
+				// 15/25/35 for melee and spirit bow, 20/35/50 for thrown weapons. Not sure if this is a good gimmick or if I'm forcing a synergy here.
+				if(this == hero && hero.belongings.thrownWeapon != null && !(hero.belongings.thrownWeapon instanceof SpiritBow.SpiritArrow) ) {
+					// thrown weapons have a slight boost.
+					scaling *= 1.5f;
+				}
+				SoulMark.process(enemy,
+						-4, // 10 - 4 = 6 turns
+						shift + scaling*hero.pointsInTalent(Talent.WARLOCKS_TOUCH),
+						true, false);
+			}
 		}
 
 		return damage;
@@ -915,9 +980,38 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 			damage = armor.absorb( damage );
 		}
 
+		ShieldOfLight.ShieldOfLightTracker shield = ShieldOfLight.ShieldOfLightTracker.find(this, enemy);
+		if (shield != null){
+			damage -= Random.NormalIntRange(ShieldOfLight.min(), ShieldOfLight.max());
+			damage = Math.max(damage, 0);
+		} else if (this == Dungeon.hero
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
+				&& Dungeon.hero.canHaveTalent(Talent.SHIELD_OF_LIGHT)
+				&& TargetHealthIndicator.instance.target() == enemy){
+			//25/50/100%
+			if (Random.Int(4) < Dungeon.hero.shiftedPoints2(Talent.SHIELD_OF_LIGHT)){
+				damage -= 1;
+			}
+		}
+
+		// hero and pris images skip this as they already benefit from hero's armor glyph proc
+		if (!(this instanceof Hero || this instanceof PrismaticImage) && AuraOfProtection.isActiveFor(this)) {
+			damage = Dungeon.hero.belongings.armor().proc( enemy, this, damage );
+		}
+
 		return damage;
 	}
-	
+
+	//Returns the level a glyph is at for a char, or -1 if they are not benefitting from that glyph
+	//This function is needed as (unlike enchantments) many glyphs trigger in a variety of cases
+	public int glyphLevel(Class<? extends Armor.Glyph> cls){
+		if (Dungeon.hero != null && Dungeon.level != null && this != Dungeon.hero && AuraOfProtection.isActiveFor(this)) {
+			return Dungeon.hero.glyphLevel(cls);
+		} else {
+			return -1;
+		}
+	}
+
 	public float speed() {
 		float speed = baseSpeed;
 		if ( buff( Cripple.class ) != null ) speed /= 2f;
@@ -925,6 +1019,11 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;
+
+		speed *= Swiftness.speedBoost(this, glyphLevel(Swiftness.class));
+		speed *= Flow.speedBoost(this, glyphLevel(Flow.class));
+		speed *= Bulk.speedBoost(this, glyphLevel(Bulk.class));
+
 		if (Dungeon.isChallenged(Challenges.FORGET_PATH)) speed *= 1.2f;
 		if (Ratmogrify.drratedonEffect(this) > 1) {
 			speed *= 3f;
@@ -972,25 +1071,40 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 	}
 
 	// splitting damage into different parts.
-	protected int modifyDamage(int dmg, Object src) {
+    // temporarily assign to a float to avoid rounding a bunch
+	protected int modifyDamage(float damage, Object src) {
 
-		if (buff(ChampionEnemy.Giant.class) != null && this instanceof Hero){
-			int points = ((Hero)this).pointsInTalent(Talent.RK_GIANT);
-			if (points > 0){
-				Buff.affect(this, Kinetic.ConservedDamage.class).setBonus((int) (0.25f*points*dmg));
-			}
-		}
-		if (buff(ChampionEnemy.Paladin.invulnerability.class) != null){
-			dmg /= 4;
-		}
+        //if dmg is from a character we already reduced it in defenseProc
+        if (!(src instanceof Char)) {
+            if (AuraOfProtection.isActiveFor(this)) {
+                damage *= 1 - AuraOfProtection.reduction();
+            }
+        }
 
-		if (!(src instanceof Hunger) && !(src instanceof Viscosity.DeferedDamage)) {
-			for (ChampionEnemy buff : buffs(ChampionEnemy.class)) {
-				dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
-			}
+		if (src instanceof Hero
+				&& ((Char) src).buff(Smite.OmniSmite.OmniSmiteTracker.class) != null) {
+			damage *= Smite.OmniSmite.MULTI;
 		}
 
-		if (!(src instanceof LifeLink) && buff(LifeLink.class) != null) {
+        if (buff(ChampionEnemy.Giant.class) != null && this instanceof Hero){
+            int points = ((Hero)this).pointsInTalent(Talent.RK_GIANT);
+            if (points > 0){
+                Buff.affect(this, Kinetic.ConservedDamage.class).setBonus((int) (0.25f*points*dmg));
+            }
+        }
+        if (buff(ChampionEnemy.Paladin.invulnerability.class) != null){
+            dmg /= 4;
+        }
+
+        if (buff(PowerOfMany.PowerBuff.class) != null){
+            if (buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+                damage *= 0.70f - 0.05f*Dungeon.hero.pointsInTalent(Talent.LIFE_LINK);
+            } else {
+                damage *= 0.75f;
+            }
+        }
+
+		if (!(src instanceof LifeLink || src instanceof Hunger) && buff(LifeLink.class) != null) {
 			HashSet<LifeLink> links = buffs(LifeLink.class);
 			for (LifeLink link : links.toArray(new LifeLink[0])) {
 				if (Actor.findById(link.object) == null) {
@@ -998,13 +1112,13 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 					link.detach();
 				}
 			}
-			int linkedDmg = (int) Math.ceil(dmg / (float) (links.size() + 1));
+			int linkedDmg = (int) Math.ceil(damage / (float) (links.size() + 1));
 			for (LifeLink link : links) {
 				Char ch = (Char) Actor.findById(link.object);
 				if (ch == null) continue;
 				// this reduces the effectiveness of life link for redirecting huge hits.
 				int recieved = Math.min(ch.HP, linkedDmg);
-				dmg -= recieved;
+				damage -= recieved;
 				ch.damage(recieved, link);
 				if (!ch.isAlive()) {
 					link.detach();
@@ -1013,13 +1127,13 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		}
 		if (!(src instanceof DwarfKing.KingDamager)) {
 			if (this.buff(Doom.class) != null && !isImmune(Doom.class)) {
-				dmg *= 1.67f;
+				damage *= 1.67f;
 			}
 			if (buff(Petrified.class) != null) {
 				dmg *= 0.5f;
 			}
 			if (alignment != Alignment.ALLY && this.buff(DeathMark.DeathMarkTracker.class) != null) {
-				dmg *= DeathMark.damageMultiplier();
+				damage *= DeathMark.damageMultiplier();
 			}
 			if (this.buff(WarpedEnemy.class) != null){
 				dmg *= 0.75f;
@@ -1033,17 +1147,30 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 
 			Class<?> srcClass = src.getClass();
 			if (isImmune(srcClass)) {
-				dmg = 0;
+				damage = 0;
 			} else {
-				dmg = Math.round(dmg * resist(srcClass));
+				damage *= resist( srcClass );
+        }
+
+		intdmg = Math.round(damage);
+
+        //we ceil these specifically to favor the player vs. champ dmg reduction
+        // most important vs. giant champions in the earlygame
+        for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
+            dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
 				if (hero.pointsInTalent(Talent.LASER_PRECISION) > 1 && src instanceof Buff && !(src instanceof DwarfKing.KingDamager)) {
 					dmg /= 2;
 				}
 			}
 
 			//TODO improve this when I have proper damage source logic
-			if (AntiMagic.RESISTS.contains(src.getClass()) && buff(ArcaneArmor.class) != null) {
-				dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());
+			if (AntiMagic.RESISTS.contains(src.getClass()) ){
+			dmg -= AntiMagic.drRoll(this, glyphLevel(AntiMagic.class));
+			if (alignment == Alignment.ALLY && Dungeon.hero.buff(HolyWard.HolyArmBuff.Empowered.class) != null) {
+				dmg -= HolyWard.proc(this);
+			}
+            if ( buff(ArcaneArmor.class) != null) {
+				dmg -= Random.NormalIntRange(0, buff(ArcaneArmor.class).level());}
 				if (dmg < 0) dmg = 0;
 			}
 		}
@@ -1078,22 +1205,19 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		}
 
 		if (buff(Sickle.HarvestBleedTracker.class) != null){
-			if (isImmune(Bleeding.class)){
-				sprite.showStatus(CharSprite.POSITIVE, Messages.titleCase(Messages.get(this, "immune")));
-				buff(Sickle.HarvestBleedTracker.class).detach();
+			buff(Sickle.HarvestBleedTracker.class).detach();
+
+			if (!isImmune(Bleeding.class)){
+				Bleeding b = buff(Bleeding.class);
+				if (b == null){
+					b = new Bleeding();
+				}
+				b.announced = false;
+				b.set(dmg, Sickle.HarvestBleedTracker.class);
+				b.attachTo(this);
+				sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + (int)b.level());
 				return;
 			}
-
-			Bleeding b = buff(Bleeding.class);
-			if (b == null){
-				b = new Bleeding();
-			}
-			b.announced = false;
-			b.set(dmg*buff(Sickle.HarvestBleedTracker.class).bleedFactor, Sickle.HarvestBleedTracker.class);
-			b.attachTo(this);
-			sprite.showStatus(CharSprite.WARNING, Messages.titleCase(b.name()) + " " + (int)b.level());
-			buff(Sickle.HarvestBleedTracker.class).detach();
-			return;
 		}
 
 		if (buff( Paralysis.class ) != null) {
@@ -1110,6 +1234,12 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		}
 		shielded -= dmg;
 		HP -= dmg;
+
+		if (HP > 0 && shielded > 0 && shielding() == 0){
+			if (this instanceof Hero && ((Hero) this).hasTalent(Talent.PROVOKED_ANGER, Talent.KINGS_WISDOM)){
+				Buff.affect(this, Talent.ProvokedAngerTracker.class).reset();
+			}
+		}
 
 		if (HP > 0 && buff(Grim.GrimTracker.class) != null){
 
@@ -1155,9 +1285,15 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 				icon = FloatingText.PHYS_DMG_NO_BLOCK;
 			}
 
+			//special case for monk using unarmed abilities
+			if (src == Dungeon.hero
+					&& Dungeon.hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) != null){
+				icon = FloatingText.PHYS_DMG_NO_BLOCK;
+			}
+
 			if (src instanceof Hunger)                                  icon = FloatingText.HUNGER;
 			if (src instanceof Burning)                                 icon = FloatingText.BURNING;
-			if (src instanceof Chill || src instanceof Frost)        icon = FloatingText.FROST;
+			if (src instanceof Chill || src instanceof Frost)           icon = FloatingText.FROST;
 			if (src instanceof GeyserTrap || src instanceof StormCloud) icon = FloatingText.WATER;
 			if (src instanceof Burning)                                 icon = FloatingText.BURNING;
 			if (src instanceof Electricity)                             icon = FloatingText.SHOCKING;
@@ -1206,6 +1342,7 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		NO_ARMOR_PHYSICAL_SOURCES.add(GnollRockfallTrap.class);
 		NO_ARMOR_PHYSICAL_SOURCES.add(DwarfKing.KingDamager.class);
 		NO_ARMOR_PHYSICAL_SOURCES.add(DwarfKing.Summoning.class);
+		NO_ARMOR_PHYSICAL_SOURCES.add(LifeLink.class);
 		NO_ARMOR_PHYSICAL_SOURCES.add(Chasm.class);
 		NO_ARMOR_PHYSICAL_SOURCES.add(WandOfBlastWave.Knockback.class);
 		NO_ARMOR_PHYSICAL_SOURCES.add(Heap.class); //damage from wraiths attempting to spawn from heaps
@@ -1262,6 +1399,9 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 					&& ch.buff(Talent.DeadlyFollowupTracker.class).object == id()){
 				ch.buff(Talent.DeadlyFollowupTracker.class).detach();
 			}
+			for (ShieldOfLight.ShieldOfLightTracker buff : ch.buffs(ShieldOfLight.ShieldOfLightTracker.class)) {
+				if (buff.object == id()) buff.detach();
+			}
 		}
 		// the current setup makes it impossible for anyone but Dungeon.hero to use Sniper's Mark properly.
 		// If it were to be given to multiple characters it would need another refactor.
@@ -1270,7 +1410,12 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 	
 	public void die( Object src ) {
 		destroy();
-		if (src != Chasm.class) sprite.die();
+		if (src != Chasm.class) {
+			sprite.die();
+			if (!flying && Dungeon.level != null && sprite instanceof MobSprite && Dungeon.level.map[pos] == Terrain.CHASM){
+				((MobSprite) sprite).fall();
+			}
+		}
 	}
 
 	// used to manually clear things that makes things alive
@@ -1373,6 +1518,9 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		}
 		return null;
 	}
+	public synchronized <T extends Buff> T virtualBuff( Class<T> c) {
+		return buff(c, false);
+	}
 
 	public synchronized boolean isCharmedBy( Char ch ) {
 		int chID = ch.id();
@@ -1468,7 +1616,11 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 	}
 	
 	public float stealth() {
-		return 0;
+		float stealth = 0;
+
+		stealth += Obfuscation.stealthBoost(this, glyphLevel(Obfuscation.class));
+
+		return stealth;
 	}
 
 	public void move( int step ) {
@@ -1566,7 +1718,10 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 		for (Buff b : buffs()){
 			immunes.addAll(b.immunities());
 		}
-		
+		if (glyphLevel(Brimstone.class) >= 0){
+			immunes.add(Burning.class);
+		}
+
 		for (Class c : immunes){
 			if (c.isAssignableFrom(effect)){
 				return true;
@@ -1578,7 +1733,7 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 	//similar to isImmune, but only factors in damage.
 	//Is used in AI decision-making
 	public boolean isInvulnerable( Class effect ){
-		return buff(Challenge.SpectatorFreeze.class) != null;
+		return buff(Challenge.SpectatorFreeze.class) != null || buff(Invulnerability.class) != null;
 	}
 
 	protected HashSet<Property> properties = new HashSet<>();
@@ -1609,11 +1764,17 @@ acuRoll *= AscensionChallenge.statModifier(attacker);
 				new HashSet<Class>( Arrays.asList(Frost.class, Chill.class))),
 		ACIDIC ( new HashSet<Class>( Arrays.asList(Corrosion.class)),
 				new HashSet<Class>( Arrays.asList(Ooze.class))),
-		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class, Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
+		ELECTRIC ( new HashSet<Class>( Arrays.asList(WandOfLightning.class, Shocking.class, Potential.class,
+										Electricity.class, ShockingDart.class, Elemental.ShockElemental.class )),
 				new HashSet<Class>()),
 		LARGE,
-		IMMOVABLE;
-		
+		IMMOVABLE ( new HashSet<Class>(),
+				new HashSet<Class>( Arrays.asList(Vertigo.class) )),
+		//A character that acts in an unchanging manner. immune to AI state debuffs or stuns/slows
+		STATIC( new HashSet<Class>(),
+				new HashSet<Class>( Arrays.asList(AllyBuff.class, Dread.class, Terror.class, Amok.class, Charm.class, Sleep.class,
+									Paralysis.class, Frost.class, Chill.class, Slow.class, Speed.class) ));
+
 		private HashSet<Class> resistances;
 		private HashSet<Class> immunities;
 		

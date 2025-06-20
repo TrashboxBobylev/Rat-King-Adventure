@@ -34,9 +34,12 @@ import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
+import com.zrp200.rkpd2.windows.WndUpgrade;
 
 public class ScrollOfUpgrade extends InventoryScroll {
 	
@@ -57,6 +60,17 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	@Override
 	protected void onItemSelected( Item item ) {
 
+		GameScene.show(new WndUpgrade(this, item, identifiedByUse));
+
+	}
+
+	public void reShowSelector(boolean force){
+		identifiedByUse = force;
+		curItem = this;
+		GameScene.selectItem(itemSelector);
+	}
+
+	public Item upgradeItem( Item item ){
 		upgrade( curUser );
 
 		Degrade.detach( curUser, Degrade.class );
@@ -70,7 +84,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean hadCursedEnchant = w.hasCurseEnchant();
 			boolean hadGoodEnchant = w.hasGoodEnchant();
 
-			w.upgrade();
+			item = w.upgrade();
 
 			if (w.cursedKnown && hadCursedEnchant && !w.hasCurseEnchant()){
 				removeCurse( Dungeon.hero );
@@ -90,7 +104,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 			boolean hadCursedGlyph = a.hasCurseGlyph();
 			boolean hadGoodGlyph = a.hasGoodGlyph();
 
-			a.upgrade();
+			item = a.upgrade();
 
 			if (a.cursedKnown && hadCursedGlyph && !a.hasCurseGlyph()){
 				removeCurse( Dungeon.hero );
@@ -106,19 +120,23 @@ public class ScrollOfUpgrade extends InventoryScroll {
 		} else if (item instanceof Wand || item instanceof Ring) {
 			boolean wasCursed = item.cursed;
 
-			item.upgrade();
+			item = item.upgrade();
 
 			if (item.cursedKnown && wasCursed && !item.cursed){
 				removeCurse( Dungeon.hero );
 			}
 
 		} else {
-			item.upgrade();
+			item = item.upgrade();
 		}
-		
+
 		Badges.validateItemLevelAquired( item );
 		Statistics.upgradesUsed++;
 		Badges.validateMageUnlock();
+
+		Catalog.countUse(item.getClass());
+
+		return item;
 	}
 	
 	public static void upgrade( Hero hero ) {
@@ -133,6 +151,7 @@ public class ScrollOfUpgrade extends InventoryScroll {
 	public static void removeCurse( Hero hero ){
 		GLog.p( Messages.get(ScrollOfUpgrade.class, "remove_curse") );
 		hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
+		Badges.validateClericUnlock();
 	}
 	
 	@Override
@@ -142,6 +161,6 @@ public class ScrollOfUpgrade extends InventoryScroll {
 
 	@Override
 	public int energyVal() {
-		return isKnown() ? 8 * quantity : super.energyVal();
+		return isKnown() ? 10 * quantity : super.energyVal();
 	}
 }

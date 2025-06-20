@@ -164,6 +164,8 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
         hero = (Hero)Actor.findById(heroID);
         if (hero != null) {
             armTier = hero.tier();
+        } else {
+            armTier = 1;
         }
         ((MirrorSprite)s).updateArmor( armTier );
         return s;

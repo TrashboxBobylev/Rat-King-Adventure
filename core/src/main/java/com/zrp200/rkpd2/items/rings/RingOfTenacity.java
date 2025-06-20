@@ -30,11 +30,17 @@ public class RingOfTenacity extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_TENACITY;
+		buffClass = Tenacity.class;
 	}
 
 	@Override
 	protected float multiplier() {
 		return 0.85f;
+	}
+
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return formatBonus(level + 1) + "%";
 	}
 
 	@Override

@@ -40,6 +40,7 @@ import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.mechanics.Ballistica;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
@@ -136,6 +137,20 @@ public class WandOfPrismaticLight extends DamageWand {
 			Sample.INSTANCE.play( Assets.Sounds.SECRET );
 
 		GameScene.updateFog();
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Messages.decimalFormat("#", 100*(1-(3/(float)(5+level)))) + "%";
+	}
+
+	@Override
+	public String upgradeStat3(int level) {
+		if (Dungeon.isChallenged(Challenges.DARKNESS)){
+			return Integer.toString(2 + level);
+		} else {
+			return Integer.toString(10 + 5*level);
+		}
 	}
 
 	@Override

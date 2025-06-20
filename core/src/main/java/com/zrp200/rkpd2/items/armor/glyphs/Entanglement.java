@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.items.armor.glyphs;
 
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.effects.CellEmitter;
@@ -49,7 +50,7 @@ public class Entanglement extends Glyph {
 
 			Buff.affect( defender, Earthroot.Armor.class ).level( Math.round((5 + 2 * level)*powerMulti) );
 			CellEmitter.bottom( defender.pos ).start( EarthParticle.FACTORY, 0.05f, 8 );
-			PixelScene.shake( 1, 0.4f );
+			if (defender == Dungeon.hero) PixelScene.shake( 1, 0.4f );
 			
 		}
 

@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.items.armor.glyphs;
 
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -31,13 +32,16 @@ public class Flow extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see:
-		// Hero.isImmune
-		// GhostHero.isImmune
-		// Shadowclone.isImmune
-		// ArmoredStatue.isImmune
-		// PrismaticImage.isImmune
+		//no proc effect, triggers in Char.speed()
 		return damage;
+	}
+
+	public static float speedBoost( Char owner, int level ){
+		if (level == -1 || !Dungeon.level.water[owner.pos]){
+			return 1;
+		} else {
+			return (2f + 0.5f*level) * genericProcChanceMultiplier(owner);
+		}
 	}
 
 	@Override

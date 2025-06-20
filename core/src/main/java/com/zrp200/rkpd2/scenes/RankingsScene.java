@@ -22,8 +22,10 @@
 package com.zrp200.rkpd2.scenes;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Rankings;
+import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.mobs.npcs.RatKing;
@@ -39,8 +41,10 @@ import com.zrp200.rkpd2.ui.IconButton;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
 import com.zrp200.rkpd2.ui.Window;
+import com.zrp200.rkpd2.windows.IconTitle;
 import com.zrp200.rkpd2.windows.WndDailies;
 import com.zrp200.rkpd2.windows.WndRanking;
+import com.zrp200.rkpd2.windows.WndVictoryCongrats;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
@@ -79,10 +83,10 @@ public class RankingsScene extends PixelScene {
 		
 		Rankings.INSTANCE.load();
 
-		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9);
-		title.hardlight(Window.TITLE_COLOR);
+		IconTitle title = new IconTitle( Icons.RANKINGS.get(), Messages.get(this, "title"));
+		title.setSize(200, 0);
 		title.setPos(
-				(w - title.width()) / 2f,
+				(w - title.reqWidth()) / 2f,
 				(20 - title.height()) / 2f
 		);
 		align(title);
@@ -158,13 +162,16 @@ public class RankingsScene extends PixelScene {
 				}
 			};
 			btnDailies.icon().hardlight(0.5f, 1f, 2f);
-			btnDailies.setRect( left, 0, 20, 20 );
-			left += 20;
+			btnDailies.setRect( left, 0, 16, 20 );
+			left += 16;
 			add(btnDailies);
 		}
 
 		if (Dungeon.daily){
 			addToFront(new WndDailies());
+		} else if (Badges.isUnlocked(Badges.Badge.VICTORY) && !SPDSettings.victoryNagged()) {
+			SPDSettings.victoryNagged(true);
+			add(new WndVictoryCongrats());
 		}
 
 		fadeIn();

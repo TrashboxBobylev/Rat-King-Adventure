@@ -22,7 +22,6 @@
 package com.zrp200.rkpd2.actors.blobs;
 
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Awareness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -31,6 +30,7 @@ import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.Identification;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfIdentify;
 import com.zrp200.rkpd2.journal.Notes.Landmark;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
@@ -77,8 +77,7 @@ public class WaterOfAwareness extends WellWater {
 		if (item.isIdentified()) {
 			return null;
 		} else {
-			item.identify();
-			Badges.validateItemLevelAquired( item );
+			ScrollOfIdentify.IDItem(item);
 			
 			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
@@ -88,7 +87,7 @@ public class WaterOfAwareness extends WellWater {
 	}
 	
 	@Override
-	protected Landmark record() {
+	public Landmark landmark() {
 		return Landmark.WELL_OF_AWARENESS;
 	}
 	

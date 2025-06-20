@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.items.weapon.enchantments;
 
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.sprites.CharSprite;
@@ -42,7 +43,9 @@ public class Vampiric extends Weapon.Enchantment {
 
 		healChance *= procChanceMultiplier(attacker);
 		
-		if (Random.Float() < healChance){
+		if (Random.Float() < healChance
+				&& attacker.alignment != defender.alignment
+				&& (defender.alignment != Char.Alignment.NEUTRAL || defender instanceof Mimic)){
 
 			float powerMulti = Math.max(1f, healChance);
 			

@@ -32,7 +32,6 @@ import com.zrp200.rkpd2.ui.Window;
 import com.watabou.noosa.Group;
 
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class WndScoreBreakdown extends Window {
 
@@ -48,7 +47,7 @@ public class WndScoreBreakdown extends Window {
 
 		float pos = title.bottom()+2;
 
-		NumberFormat num = NumberFormat.getInstance(Locale.US);
+		NumberFormat num = NumberFormat.getInstance(Messages.locale());
 		if (Dungeon.initialVersion > ShatteredPixelDungeon.v1_2_3) {
 			pos = statSlot(this, Messages.get(this, "progress_title"),
 					num.format(Statistics.progressScore), pos, Statistics.progressScore >= 50_000);
@@ -75,10 +74,10 @@ public class WndScoreBreakdown extends Window {
 		}
 
 		if (Statistics.winMultiplier > 1) {
-			pos = statSlot(this, Messages.get(this, "win_multiplier"), Statistics.winMultiplier + "x", pos, false);
+			pos = statSlot(this, Messages.get(this, "win_multiplier"), Messages.decimalFormat("#.##", Statistics.winMultiplier) + "x", pos, false);
 		}
 		if (Statistics.chalMultiplier > 1) {
-			pos = statSlot(this, Messages.get(this, "challenge_multiplier"), Statistics.chalMultiplier + "x", pos, false);
+			pos = statSlot(this, Messages.get(this, "challenge_multiplier"), Messages.decimalFormat("#.##", Statistics.chalMultiplier) + "x", pos, false);
 		}
 		pos = statSlot(this, Messages.get(this, "total"), num.format(Statistics.totalScore), pos, false);
 

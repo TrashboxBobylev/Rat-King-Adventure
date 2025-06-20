@@ -56,4 +56,5 @@ public class Greatsword extends Sword {
 	public float warriorMod() {
 		return 1f;
 	}
+	//+(7+lvl) damage, roughly +40% base dmg, +30% scaling
 }

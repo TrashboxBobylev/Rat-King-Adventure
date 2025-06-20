@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.PotionOfPurity;
 import com.zrp200.rkpd2.items.quest.FlexTape;
+import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -74,7 +75,7 @@ public class ToxicGasRoom extends SpecialRoom {
 		}
 
 		//skeleton with 2x gold, somewhat far from entry
-		//then 2 chests with regular gold (no mimics here)
+		//then 2 chests with regular gold (no mimics, chance for trinket catalyst)
 		//we generate excess positions to ensure skull is far from entrance
 		ArrayList<Integer> goldPositions = new ArrayList<>();
 		for (int i = 0; i < 8; i++){
@@ -99,11 +100,9 @@ public class ToxicGasRoom extends SpecialRoom {
 		level.drop(mainGold, furthestPos).type = Heap.Type.SKELETON;
 
 		for (int i = 0; i < 2; i++){
-			if (Random.Int(2) == 0){
-				level.drop(new FlexTape().random(), goldPositions.remove(0)).type = Heap.Type.CHEST;
-			} else {
-				level.drop(new Gold().random(), goldPositions.remove(0)).type = Heap.Type.CHEST;
-			}
+			Item item = level.findPrizeItem(TrinketCatalyst.class);
+			if (item == null) item = new Gold().random();
+			level.drop(item, goldPositions.remove(0)).type = Heap.Type.CHEST;
 		}
 
 		level.addItemToSpawn(new PotionOfPurity());
@@ -116,6 +115,11 @@ public class ToxicGasRoom extends SpecialRoom {
 	public boolean canPlaceCharacter(Point p, Level l) {
 		Blob gas = l.blobs.get(ToxicGas.class);
 		return gas == null || gas.volume == 0 || gas.cur[l.pointToCell(p)] == 0;
+	}
+
+	@Override
+	public boolean canPlaceTrap(Point p) {
+		return false; //room is already filled with trap-hazards, no need to add more
 	}
 
 	public static class ToxicGasSeed extends Blob {

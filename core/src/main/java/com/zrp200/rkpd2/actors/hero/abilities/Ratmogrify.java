@@ -31,7 +31,6 @@ import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
@@ -44,6 +43,7 @@ import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.RatSprite;
@@ -145,11 +145,11 @@ public class Ratmogrify extends ArmorAbility {
 			rat.setup((Mob)ch);
 			rat.pos = ch.pos;
 
-			//preserve champion enemy buffs
-			HashSet<ChampionEnemy> champBuffs = ch.buffs(ChampionEnemy.class);
-			for (ChampionEnemy champ : champBuffs){
-				if (ch.remove(champ)) {
-					ch.sprite.clearAura();
+			//preserve some buffs
+			HashSet<Buff> persistentBuffs = new HashSet<>();
+			for (Buff b : ch.buffs()){
+				if (b.revivePersists){
+					persistentBuffs.add(b);
 				}
 			}
 
@@ -157,8 +157,8 @@ public class Ratmogrify extends ArmorAbility {
 			ch.sprite.killAndErase();
 			Dungeon.level.mobs.remove(ch);
 
-			for (ChampionEnemy champ : champBuffs){
-				ch.add(champ);
+			for (Buff b : persistentBuffs){
+				ch.add(b);
 			}
 
 			GameScene.add(rat);
@@ -167,11 +167,11 @@ public class Ratmogrify extends ArmorAbility {
 			CellEmitter.get(rat.pos).burst(Speck.factory(Speck.WOOL), 4);
 			Sample.INSTANCE.play(Assets.Sounds.PUFF);
 
-			Dungeon.level.occupyCell(rat);
-
-			//for rare cases where a buff was keeping a mob alive (e.g. gnoll brutes)
+			//for rare cases where a buff was keeping a mob alive (e.g. gnoll brute rage)
 			if (!rat.isAlive()){
 				rat.die(this);
+			} else {
+				Dungeon.level.occupyCell(rat);
 			}
 		}
 
@@ -224,6 +224,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		public void setup(Mob original) {
 			this.original = original;
+			original.clearTime();
 
 			HP = original.HP;
 			HT = original.HT;
@@ -267,7 +268,6 @@ public class Ratmogrify extends ArmorAbility {
 			if (timeLeft <= 0){
 				Mob original = getOriginal();
 				this.original = null;
-				original.clearTime();
 				GameScene.add(original);
 				if(original.HP == 0) original.die(this); // avoid shittery.
 
@@ -293,6 +293,8 @@ public class Ratmogrify extends ArmorAbility {
 			alignment = Alignment.ALLY;
 			if (drratedonEffect(this) > 4 && !ChampionEnemy.isChampion(this)) ChampionEnemy.rollForChampionInstantly(this);
 			timeLeft = Float.POSITIVE_INFINITY;
+			Bestiary.setSeen(original.getClass());
+			Bestiary.countEncounter(original.getClass());
 		}
 
 		public int attackSkill(Char target) {
@@ -339,6 +341,15 @@ public class Ratmogrify extends ArmorAbility {
 		public void rollToDropLoot() {
 			original.pos = pos;
 			original.rollToDropLoot();
+		}
+
+		@Override
+		public void destroy() {
+			super.destroy();
+			if (alignment == Alignment.ENEMY && original != null) {
+				Bestiary.setSeen(original.getClass());
+				Bestiary.countEncounter(original.getClass());
+			}
 		}
 
 		@Override

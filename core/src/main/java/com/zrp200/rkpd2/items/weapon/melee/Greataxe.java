@@ -49,7 +49,11 @@ public class Greataxe extends MeleeWeapon {
 
 	@Override
 	public int STRReq(int lvl) {
-		return STRReq(tier+1, lvl); //20 base strength req, up from 18
+		int req = STRReq(tier+1, lvl); //20 base strength req, up from 18
+		if (masteryPotionBonus){
+			req -= 2;
+		}
+		return req;
 	}
 
 	@Override
@@ -76,6 +80,32 @@ public class Greataxe extends MeleeWeapon {
 		}
 
 	} @Override protected DuelistAbility duelistAbility() {
-		return new MeleeAbility(1.5f);
+		return new MeleeAbility() {
+			{
+				//+(15+(2*lvl)) damage, roughly +60% base damage, +55% scaling
+				dmgBoost = augment.damageFactor(15 + 2*buffedLvl());
+			}
+
+			@Override
+			protected void onKill(Hero hero) {
+				super.onKill(hero);
+				delayMulti = 0f;
+			}
+		};
+	}
+
+	@Override
+	public String abilityInfo() {
+		int dmgBoost = levelKnown ? 15 + 2*buffedLvl() : 15;
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = 15 + 2*level;
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
 	}
 }

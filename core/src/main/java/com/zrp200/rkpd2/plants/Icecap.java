@@ -27,7 +27,6 @@ import com.zrp200.rkpd2.actors.blobs.Freezing;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FrostImbue;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
-import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 
 public class Icecap extends Plant {
@@ -44,11 +43,9 @@ public class Icecap extends Plant {
 			Buff.affect(ch, FrostImbue.class, FrostImbue.DURATION*0.3f);
 		}
 
-		PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.losBlocking, null ), 1 );
-
-		for (int i=0; i < PathFinder.distance.length; i++) {
-			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-				Freezing.affect( i );
+		for (int i : PathFinder.NEIGHBOURS9){
+			if (!Dungeon.level.solid[pos+i]) {
+				Freezing.affect( pos+i );
 			}
 		}
 	}

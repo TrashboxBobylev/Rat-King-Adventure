@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.huntress.SpiritHawk;
 import com.zrp200.rkpd2.actors.mobs.Elemental;
 import com.zrp200.rkpd2.effects.MagicMissile;
@@ -42,6 +43,7 @@ import com.zrp200.rkpd2.items.quest.Embers;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTransmutation;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
@@ -63,6 +65,8 @@ public class SummonElemental extends Spell {
 
 	{
 		image = ItemSpriteSheet.SUMMON_ELE;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 
 	private Class<? extends Elemental> summonClass = Elemental.AllyNewBornElemental.class;
@@ -116,9 +120,11 @@ public class SummonElemental extends Spell {
 			curUser.sprite.operate(curUser.pos);
 			curUser.spendAndNext(Actor.TICK);
 
-			summonClass = Elemental.AllyNewBornElemental.class;
-
 			detach(Dungeon.hero.belongings.backpack);
+			Catalog.countUse(getClass());
+			if (Random.Float() < talentChance){
+				Talent.onScrollUsed(curUser, curUser.pos, talentFactor, getClass());
+			}
 
 		} else {
 			GLog.w(Messages.get(SpiritHawk.class, "no_space"));
@@ -225,14 +231,16 @@ public class SummonElemental extends Spell {
 
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 
-		{
-			inputs =  new Class[]{Embers.class, ArcaneCatalyst.class};
-			inQuantity = new int[]{1, 1};
+		private static final int OUT_QUANTITY = 6;
 
-			cost = 6;
+		{
+			inputs =  new Class[]{Embers.class};
+			inQuantity = new int[]{1};
+
+			cost = 10;
 
 			output = SummonElemental.class;
-			outQuantity = 5;
+			outQuantity = OUT_QUANTITY;
 		}
 
 	}

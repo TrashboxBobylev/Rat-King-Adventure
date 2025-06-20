@@ -66,11 +66,12 @@ public class WndTitledMessage extends Window {
 		add(titlebar);
 
 		RenderedTextBlock text = PixelScene.renderTextBlock(6);
+		if (!useHighlighting()) text.setHightlighting(false);
 		text.text(message, width);
 		text.setPos(titlebar.left(), titlebar.bottom() + 2 * GAP);
 
 		while (PixelScene.landscape()
-				&& text.bottom() > (PixelScene.MIN_HEIGHT_L - 10)
+				&& text.bottom() > targetHeight()
 				&& width < maxWidth) {
 			width += 20;
 			titlebar.setRect(0, 0, width, 0);
@@ -86,11 +87,16 @@ public class WndTitledMessage extends Window {
 		comp.setSize(text.width(), text.height() + GAP * 2);
 		resize(width, (int) Math.min((int) comp.bottom() + 2 + titlebar.height() + GAP, maxHeight()));
 
-		add(sp = new ScrollPane(comp));
+		add(sp = new ScrollPane(comp) {
+			public void onClick(float x, float y) { WndTitledMessage.this.onClick(x, y); }
+		});
 		sp.setRect(titlebar.left(), titlebar.bottom() + GAP, comp.width(), Math.min((int) comp.bottom() + 2, maxHeight() - titlebar.bottom() - GAP));
 
 		bringToFront(titlebar);
 	}
+
+	// scroll bar precludes adding new blockers, this forwards to the scroll bar
+	protected void onClick(float x, float y) {/* do nothing */}
 
 	@Override
 	public void offset(int xOffset, int yOffset) {
@@ -103,6 +109,14 @@ public class WndTitledMessage extends Window {
 	// this only works ONCE currently.
 	public final void addToBottom(Component c) {
 		addToBottom(c, GAP);
+	}
+
+	protected boolean useHighlighting(){
+		return true;
+	}
+
+	protected float targetHeight() {
+		return PixelScene.MIN_HEIGHT_L - 10;
 	}
 
 	public final void addToBottom(Component c, int gap) {

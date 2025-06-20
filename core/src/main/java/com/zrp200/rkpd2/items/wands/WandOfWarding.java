@@ -33,11 +33,13 @@ import com.zrp200.rkpd2.actors.buffs.Sleep;
 import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.buffs.Vertigo;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.spells.Stasis;
 import com.zrp200.rkpd2.actors.mobs.npcs.NPC;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -57,6 +59,7 @@ public class WandOfWarding extends Wand {
 
 	{
 		image = ItemSpriteSheet.WAND_WARDING;
+		usesTargeting = false; //player usually targets wards or spaces, not enemies
 	}
 
 	@Override
@@ -76,6 +79,10 @@ public class WandOfWarding extends Wand {
 			if (ch instanceof Ward){
 				currentWardEnergy += ((Ward) ch).tier;
 			}
+		}
+
+		if (Stasis.getStasisAlly() instanceof Ward){
+			currentWardEnergy += ((Ward) Stasis.getStasisAlly()).tier;
 		}
 		
 		int maxWardEnergy = 0;
@@ -122,11 +129,7 @@ public class WandOfWarding extends Wand {
 			}
 		}
 
-		if (!Dungeon.level.passable[target]){
-			GLog.w( Messages.get(this, "bad_location"));
-			Dungeon.level.pressCell(target);
-			
-		} else if (ch != null){
+		if (ch != null){
 			if (ch instanceof Ward){
 				if (wardAvailable) {
 					((Ward) ch).upgrade( buffedLvl() );
@@ -139,6 +142,10 @@ public class WandOfWarding extends Wand {
 				Dungeon.level.pressCell(target);
 			}
 			
+		} else if (!Dungeon.level.passable[target]){
+			GLog.w( Messages.get(this, "bad_location"));
+			Dungeon.level.pressCell(target);
+
 		} else {
 			Ward ward = new Ward();
 			ward.pos = target;
@@ -198,10 +205,21 @@ public class WandOfWarding extends Wand {
 
 	@Override
 	public String statsDesc() {
+		int bonus = 2 + (Dungeon.hero != null ? Dungeon.hero.getBonus(this) : 0);
 		if (levelKnown)
-			return Messages.get(this, "stats_desc", level()+2+Dungeon.hero.getBonus(this));
+			return Messages.get(this, "stats_desc", level()+bonus);
 		else
-			return Messages.get(this, "stats_desc", 2+Dungeon.hero.getBonus(this));
+			return Messages.get(this, "stats_desc", bonus);
+	}
+
+	@Override
+	public String upgradeStat1(int level) {
+		return 2+level + "-" + (8+4*level);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		return Integer.toString(level+2);
 	}
 
 	public static class Ward extends NPC {
@@ -253,6 +271,10 @@ public class WandOfWarding extends Wand {
 					break;
 			}
 
+			if (Actor.chars().contains(this) && tier >= 3){
+				Bestiary.setSeen(WardSentry.class);
+			}
+
 			if (tier < 6){
 				tier++;
 				viewDistance++;
@@ -264,6 +286,9 @@ public class WandOfWarding extends Wand {
 			}
 
 		}
+
+		//this class is used so that wards and sentries can have two entries in the Bestiary
+		public static class WardSentry extends Ward{};
 
 		public void wandHeal( int wandLevel ){
 			wandHeal( wandLevel, 1f );
@@ -333,7 +358,7 @@ public class WandOfWarding extends Wand {
 			spend( 1f );
 
 			//always hits
-			int dmg = Random.NormalIntRange( 2 + wandLevel, 8 + 4*wandLevel );
+			int dmg = Hero.heroDamageIntRange( 2 + wandLevel, 8 + 4*wandLevel );
 			Char enemy = this.enemy;
 			enemy.damage( dmg, this );
 			if(enemy.isAlive()) {
@@ -434,7 +459,16 @@ public class WandOfWarding extends Wand {
 
 		@Override
 		public String description() {
-			return Messages.get(this, "desc_" + tier, 2+wandLevel, 8 + 4*wandLevel, tier );
+			if (!Actor.chars().contains(this)){
+				//for viewing in the journal
+				if (tier < 4){
+					return Messages.get(this, "desc_generic_ward");
+				} else {
+					return Messages.get(this, "desc_generic_sentry");
+				}
+			} else {
+				return Messages.get(this, "desc_" + tier, 2 + wandLevel, 8 + 4 * wandLevel, tier);
+			}
 		}
 		
 		{

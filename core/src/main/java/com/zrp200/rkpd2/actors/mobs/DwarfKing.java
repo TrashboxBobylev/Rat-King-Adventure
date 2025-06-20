@@ -22,6 +22,10 @@
 package com.zrp200.rkpd2.actors.mobs;
 
 
+import static com.zrp200.rkpd2.Assets.Sounds.CHALLENGE;
+import static com.zrp200.rkpd2.Assets.Sounds.SHATTER;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.RAT_KING;
+
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
@@ -59,6 +63,7 @@ import com.zrp200.rkpd2.items.rings.RingOfForce;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfLightning;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.levels.CityBossLevel;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
@@ -80,10 +85,6 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-
-import static com.zrp200.rkpd2.Assets.Sounds.CHALLENGE;
-import static com.zrp200.rkpd2.Assets.Sounds.SHATTER;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.RAT_KING;
 
 public class DwarfKing extends Mob implements Hero.DeathCommentator {
 	@Override public void sayHeroKilled() {
@@ -549,7 +550,7 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 
 		if (phase == 3 && !(src instanceof Viscosity.DeferedDamage)) {
 			Viscosity.DeferedDamage deferred = Buff.affect( this, Viscosity.DeferedDamage.class );
-			deferred.prolong( dmg );
+			deferred.extend( dmg );
 			sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", dmg) );
 		}
 		else if (phase < 2) {
@@ -646,21 +647,26 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 			enterPhase3();
 			return;
 		}
-		summonsMade = SUMMONS_PER_WAVE * skippedWaves;
 		sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
 				ScrollOfTeleportation.appear(this, CityBossLevel.throne);
 		properties.add(Property.IMMOVABLE);
 		phase = 2;
+		summonsMade = SUMMONS_PER_WAVE * skippedWaves;
 		sprite.idle();
 		Buff.affect(this, DKBarrior.class).setShield(HT * (3 - skippedWaves)/3, true);
 		for (Summoning s : buffs(Summoning.class)) {
 			s.detach();
 		}
-		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
-					if (m instanceof Ghoul || m instanceof Monk || m instanceof Warlock || m instanceof Golem) {
-				m.die(null);
-			}
+        Bestiary.skipCountingEncounters = true;
+		for (Mob m : getSubjects()) {
+			m.die(null);
 		}
+        Bestiary.skipCountingEncounters = false;
+        for (Buff b: buffs()){
+            if (b instanceof LifeLink){
+                b.detach();
+            }
+        }
 	}
 	private void enterPhase3 () {
 		HP = PHASE2_HP; // force him into the proper amount of starting HP.
@@ -708,7 +714,7 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 			h.destroy();
 		}
 
-		if (Dungeon.level.solid[pos]){
+		if (pos == CityBossLevel.throne){
 			Dungeon.level.drop(new KingsCrown(), pos + Dungeon.level.width()).sprite.drop(pos);
 		} else {
 			Dungeon.level.drop(new KingsCrown(), pos).sprite.drop();
@@ -724,9 +730,11 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 
 		Dungeon.level.unseal();
 
+		Bestiary.skipCountingEncounters = true;
 		for (Mob m : getSubjects()){
 			m.die(null);
 		}
+		Bestiary.skipCountingEncounters = false;
 
 		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
 		if (beacon != null) {
@@ -963,6 +971,10 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 	}
 
 	public static class KingDamager extends Buff {
+
+		{
+			revivePersists = true;
+		}
 
 		@Override
 		public boolean act() {

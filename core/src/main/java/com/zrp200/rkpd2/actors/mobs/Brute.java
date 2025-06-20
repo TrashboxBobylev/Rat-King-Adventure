@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ShieldBuff;
 import com.zrp200.rkpd2.actors.buffs.Terror;
+import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.levels.features.Chasm;
@@ -56,8 +57,8 @@ public class Brute extends Mob {
 	@Override
 	public int damageRoll() {
 		return buff(BruteRage.class) != null ?
-			Random.NormalIntRange( 15, 40 ) :
-			Random.NormalIntRange( 5, 25 );
+				Random.NormalIntRange( 15, 40 ) :
+				Random.NormalIntRange( 5, 25 );
 	}
 	
 	@Override
@@ -154,8 +155,5 @@ public class Brute extends Mob {
 			return Messages.get(this, "desc", shielding());
 		}
 
-		{
-			immunities.add(Terror.class);
-		}
 	}
 }

@@ -24,13 +24,8 @@ package com.zrp200.rkpd2.actors.mobs;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
-import com.zrp200.rkpd2.actors.buffs.Amok;
+import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
-import com.zrp200.rkpd2.actors.buffs.Dread;
-import com.zrp200.rkpd2.actors.buffs.Paralysis;
-import com.zrp200.rkpd2.actors.buffs.Sleep;
-import com.zrp200.rkpd2.actors.buffs.Terror;
-import com.zrp200.rkpd2.actors.buffs.Vertigo;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;
 import com.zrp200.rkpd2.journal.Notes;
@@ -63,6 +58,7 @@ public class DemonSpawner extends Mob {
 		properties.add(Property.IMMOVABLE);
 		properties.add(Property.MINIBOSS);
 		properties.add(Property.DEMONIC);
+		properties.add(Property.STATIC);
 	}
 
 	@Override
@@ -89,10 +85,6 @@ public class DemonSpawner extends Mob {
 		if (!spawnRecorded){
 			Statistics.spawnersAlive++;
 			spawnRecorded = true;
-		}
-
-		if (Dungeon.level.visited[pos]){
-			Notes.add( Notes.Landmark.DEMON_SPAWNER );
 		}
 
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null && spawnCooldown > 20){
@@ -150,10 +142,15 @@ public class DemonSpawner extends Mob {
 	}
 
 	@Override
+	public Notes.Landmark landmark() {
+		return Notes.Landmark.DEMON_SPAWNER;
+	}
+
+	@Override
 	public void die(Object cause) {
 		if (spawnRecorded){
 			Statistics.spawnersAlive--;
-			Notes.remove(Notes.Landmark.DEMON_SPAWNER);
+			Notes.remove(landmark());
 		}
 		GLog.h(Messages.get(this, "on_death"));
 		super.die(cause);
@@ -176,12 +173,4 @@ public class DemonSpawner extends Mob {
 		spawnRecorded = bundle.getBoolean(SPAWN_RECORDED);
 	}
 
-	{
-		immunities.add( Paralysis.class );
-		immunities.add( Amok.class );
-		immunities.add( Sleep.class );
-		immunities.add( Dread.class );
-		immunities.add( Terror.class );
-		immunities.add( Vertigo.class );
-	}
 }

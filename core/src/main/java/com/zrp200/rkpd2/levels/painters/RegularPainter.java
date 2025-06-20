@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.Fire;
+import com.zrp200.rkpd2.items.trinkets.TrapMechanism;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Patch;
@@ -35,7 +36,6 @@ import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.connection.ConnectionRoom;
 import com.zrp200.rkpd2.levels.rooms.special.SpecialRoom;
-import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.watabou.noosa.Game;
@@ -135,20 +135,26 @@ public abstract class RegularPainter extends Painter {
 		}
 		
 		paintDoors( level, rooms );
+
+		//use a separate RNG here so that extra painting variance doesn't affect the rest of levelgen
+		//e.g. this minimizes mossy clump's effect on levelgen
+		Random.pushGenerator(Random.Long());
+
+			if (waterFill > 0f) {
+				paintWater( level, rooms );
+			}
+
+			if (grassFill > 0f){
+				paintGrass( level, rooms );
+			}
+
+			if (nTraps > 0){
+				paintTraps( level, rooms );
+			}
 		
-		if (waterFill > 0f) {
-			paintWater( level, rooms );
-		}
-		
-		if (grassFill > 0f){
-			paintGrass( level, rooms );
-		}
-		
-		if (nTraps > 0){
-			paintTraps( level, rooms );
-		}
-		
-		decorate( level, rooms );
+			decorate( level, rooms );
+
+		Random.popGenerator();
 		
 		return true;
 	}
@@ -258,7 +264,7 @@ public abstract class RegularPainter extends Painter {
 
 					//entrance doors on floor 1 are hidden during tutorial
 					//entrance doors on floor 2 are hidden if the player hasn't picked up 2nd guidebook page
-					if (r instanceof EntranceRoom || n instanceof EntranceRoom){
+					if (r.isEntrance() || n.isEntrance()){
 						if ((Dungeon.depth == 1 && SPDSettings.intro())
 							|| (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING))) {
 							d.type = Room.Door.Type.HIDDEN;
@@ -309,12 +315,12 @@ public abstract class RegularPainter extends Painter {
 			merge.top = merge.bottom = start != null ? start.y : intersect.center().y;
 
 			Point p = new Point(merge.left, merge.top);
-			while(merge.top > intersect.top && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.top > intersect.top && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.top--;
 				p.y--;
 			}
 			p.y = merge.bottom;
-			while(merge.bottom < intersect.bottom && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.bottom < intersect.bottom && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.bottom++;
 				p.y++;
 			}
@@ -333,12 +339,12 @@ public abstract class RegularPainter extends Painter {
 			merge.top = merge.bottom = intersect.top;
 
 			Point p = new Point(merge.left, merge.top);
-			while(merge.left > intersect.left && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.left > intersect.left && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.left--;
 				p.x--;
 			}
 			p.x = merge.right;
-			while(merge.right < intersect.right && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.right < intersect.right && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.right++;
 				p.x++;
 			}
@@ -465,6 +471,9 @@ public abstract class RegularPainter extends Painter {
 		//no more than one trap every 5 valid tiles.
 		nTraps = Math.min(nTraps, validCells.size()/5);
 
+		float revealedChance = TrapMechanism.revealHiddenTrapChance();
+		float revealInc = 0;
+
 		//5x traps on traps level feeling, but the extra traps are all visible
 		for (int i = 0; i < (l.feeling == Level.Feeling.TRAPS ? 5*nTraps : nTraps); i++) {
 
@@ -480,8 +489,13 @@ public abstract class RegularPainter extends Painter {
 			validCells.remove(trapPos);
 			validNonHallways.remove(trapPos);
 
-			if (i < nTraps) trap.hide();
-			else            trap.reveal();
+			revealInc += revealedChance;
+			if (i >= nTraps || revealInc >= 1) {
+				trap.reveal();
+				revealInc--;
+			} else {
+				trap.hide();
+			}
 
 			l.setTrap( trap, trapPos );
 			//some traps will not be hidden

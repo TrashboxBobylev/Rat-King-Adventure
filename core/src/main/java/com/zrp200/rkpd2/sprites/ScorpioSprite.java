@@ -28,8 +28,9 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Callback;
 
 public class ScorpioSprite extends MobSprite {
-	
+
 	private int cellToAttack;
+	public final ScorpioShot shot = new ScorpioShot();
 	
 	public ScorpioSprite() {
 		super();
@@ -78,14 +79,7 @@ public class ScorpioSprite extends MobSprite {
 	public void onComplete( Animation anim ) {
 		if (anim == zap) {
 			idle();
-			
-			((MissileSprite)parent.recycle( MissileSprite.class )).
-			reset( this, cellToAttack, new ScorpioShot(), new Callback() {
-				@Override
-				public void call() {
-					ch.onAttackComplete();
-				}
-			} );
+			shot.shoot(this, cellToAttack, ch::onAttackComplete);
 		} else {
 			super.onComplete( anim );
 		}
@@ -94,6 +88,11 @@ public class ScorpioSprite extends MobSprite {
 	public class ScorpioShot extends Item {
 		{
 			image = ItemSpriteSheet.FISHING_SPEAR;
+		}
+
+		public void shoot(CharSprite src, int cellToAttack, Callback callback) {
+			parent.recycle(MissileSprite.class).
+					reset(src, cellToAttack, this, callback);
 		}
 	}
 }

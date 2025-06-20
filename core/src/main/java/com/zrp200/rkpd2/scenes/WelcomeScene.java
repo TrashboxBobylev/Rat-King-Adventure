@@ -53,7 +53,7 @@ import java.util.Collections;
 
 public class WelcomeScene extends PixelScene {
 
-	private static final int LATEST_UPDATE = ShatteredPixelDungeon.RKA_2_0;
+	private static final int LATEST_UPDATE = ShatteredPixelDungeon.V3_0_0;
 
 	//used so that the game does not keep showing the window forever if cleaning fails
 	private static boolean triedCleaningTemp = false;
@@ -102,7 +102,7 @@ public class WelcomeScene extends PixelScene {
 		//darkens the arches
 		add(new ColorBlock(w, h, 0x88000000));
 
-		Image title = BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON );
+		Image title = BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_LAND : BannerSprites.Type.TITLE_PORT);
 		add( title );
 
 		float topRegion = Math.max(title.height - 6, h*0.45f);
@@ -112,10 +112,15 @@ public class WelcomeScene extends PixelScene {
 
 		align(title);
 
-		placeTorch(title.x + 22, title.y + 46);
-		placeTorch(title.x + title.width - 22, title.y + 46);
+		if (landscape()){
+			placeTorch(title.x + 30, title.y + 35);
+			placeTorch(title.x + title.width - 30, title.y + 35);
+		} else {
+			placeTorch(title.x + 16, title.y + 70);
+			placeTorch(title.x + title.width - 16, title.y + 70);
+		}
 
-		Image signs = new Image( BannerSprites.get( BannerSprites.Type.PIXEL_DUNGEON_SIGNS ) ) {
+		Image signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
 			private float time = 0;
 			@Override
 			public void update() {
@@ -162,6 +167,8 @@ public class WelcomeScene extends PixelScene {
 
 		float buttonY = Math.min(topRegion + (PixelScene.landscape() ? 60 : 120), h - 24);
 
+		float buttonAreaWidth = landscape() ? PixelScene.MIN_WIDTH_L-6 : PixelScene.MIN_WIDTH_P-2;
+		float btnAreaLeft = (Camera.main.width - buttonAreaWidth) / 2f;
 		if (previousVersion != 0 && !SPDSettings.intro()){
 			StyledButton changes = new StyledButton(Chrome.Type.GREY_BUTTON_TR, Messages.get(TitleScene.class, "changes")){
 				@Override
@@ -171,15 +178,15 @@ public class WelcomeScene extends PixelScene {
 					ShatteredPixelDungeon.switchScene(ChangesScene.class);
 				}
 			};
-			okay.setRect(title.x, buttonY, (title.width()/2)-2, 20);
+			okay.setRect(btnAreaLeft, buttonY, (buttonAreaWidth/2)-1, 20);
 			add(okay);
 
-			changes.setRect(okay.right()+2, buttonY, (title.width()/2)-2, 20);
+			changes.setRect(okay.right()+1, buttonY, okay.width(), 20);
 			changes.icon(Icons.get(Icons.CHANGES));
 			add(changes);
 		} else {
 			okay.text(Messages.get(TitleScene.class, "enter"));
-			okay.setRect(title.x, buttonY, title.width(), 20);
+			okay.setRect(btnAreaLeft, buttonY, buttonAreaWidth, 20);
 			okay.icon(Icons.get(Icons.ENTER));
 			add(okay);
 		}
@@ -196,6 +203,7 @@ public class WelcomeScene extends PixelScene {
 				//TODO: change the messages here in accordance with the type of patch.
 				message = Messages.get(this, "patch_intro");
 				message += "\n";
+				//message += "\n" + Messages.get(this, "patch_balance");
 				message += "\n" + Messages.get(this, "patch_bugfixes");
 //				message += "\n" + Messages.get(this, "patch_translations");
 
@@ -206,8 +214,9 @@ public class WelcomeScene extends PixelScene {
 		}
 
 		text.text(message, Math.min(w-20, 300));
-		float textSpace = okay.top() - topRegion - 4;
-		text.setPos((w - text.width()) / 2f, (topRegion + 2) + (textSpace - text.height())/2);
+		float titleBottom = title.y + title.height();
+		float textSpace = okay.top() - titleBottom - 4;
+		text.setPos((w - text.width()) / 2f, (titleBottom + 2) + (textSpace - text.height())/2);
 		add(text);
 
 		if (SPDSettings.intro() && ControllerHandler.isControllerConnected()){
@@ -226,7 +235,10 @@ public class WelcomeScene extends PixelScene {
 
 	private void placeTorch( float x, float y ) {
 		Fireball fb = new Fireball();
-		fb.setPos( x, y );
+		fb.x = x - fb.width()/2f;
+		fb.y = y - fb.height();
+
+		align(fb);
 		add( fb );
 	}
 
@@ -239,11 +251,36 @@ public class WelcomeScene extends PixelScene {
 			Badges.loadGlobal();
 			Journal.loadGlobal();
 
-			//pre-unlock Duelist for those who already have a win
-			if (previousVersion <= ShatteredPixelDungeon.v2_0_2){
-				if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_DUELIST)){
-					Badges.unlock(Badges.Badge.UNLOCK_DUELIST);
+			//pre-unlock Cleric for those who already have a win
+			if (previousVersion <= ShatteredPixelDungeon.v3_0_0){
+				if (Badges.isUnlocked(Badges.Badge.VICTORY) && !Badges.isUnlocked(Badges.Badge.UNLOCK_CLERIC)){
+					Badges.unlock(Badges.Badge.UNLOCK_CLERIC);
 				}
+				//Dwarf King's final journal entry changed, set it as un-read
+				if (Document.HALLS_KING.isPageRead(Document.KING_ATTRITION)){
+					Document.HALLS_KING.unreadPage(Document.KING_ATTRITION);
+				}
+			}
+
+			if (previousVersion < ShatteredPixelDungeon.V3_0_0) {
+				// changed entries
+				if (Document.SEWERS_GUARD.isPageFound("not_worth")) Document.SEWERS_GUARD.findPage("nothing");
+				Document.SEWERS_GUARD.unreadAllPages();
+
+				Document.PRISON_WARDEN.unreadPage("journal");
+				Document.PRISON_WARDEN.unreadPage("mines");
+				Document.PRISON_WARDEN.unreadPage("no_support");
+
+				Document.CAVES_EXPLORER.unreadPage("expedition");
+				Document.CAVES_EXPLORER.unreadPage("gold");
+				Document.CAVES_EXPLORER.unreadPage("troll");
+				Document.CAVES_EXPLORER.unreadPage("alive");
+
+				if (Document.CITY_WARLOCK.anyPagesFound()) {
+					Document.CITY_WARLOCK.findPage("treason");
+				}
+				Document.CITY_WARLOCK.unreadAllPages();
+				Document.HALLS_KING.unreadAllPages();
 			}
 
 			try {
@@ -276,6 +313,10 @@ public class WelcomeScene extends PixelScene {
 				Game.reportException( new RuntimeException("Rankings Updating Failed!",e));
 			}
 			Dungeon.daily = Dungeon.dailyReplay = false;
+
+			if (previousVersion <= ShatteredPixelDungeon.v3_0_0){
+				Document.ADVENTURERS_GUIDE.findPage(Document.GUIDE_ALCHEMY);
+			}
 
 			Badges.saveGlobal(true);
 			Journal.saveGlobal(true);

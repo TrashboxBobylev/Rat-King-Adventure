@@ -28,7 +28,6 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.LostInventory;
 import com.zrp200.rkpd2.actors.mobs.Eye;
 import com.zrp200.rkpd2.actors.mobs.npcs.NPC;
 import com.zrp200.rkpd2.effects.Beam;
@@ -36,7 +35,10 @@ import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.potions.PotionOfHaste;
+import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.items.quest.FlexTape;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -187,13 +189,18 @@ public class SentryRoom extends SpecialRoom {
 			}
 
 			//1 floor set higher in probability, never cursed
-			do {
+			//1 floor set higher in probability, never cursed
 				if (Random.Int(2) == 0) {
 					prize = Generator.randomWeapon((Dungeon.depth / 5) + 1);
-				} else {
+				if (((Weapon)prize).hasCurseEnchant()){
+				((Weapon) prize).enchant(null);
+			}} else {
 					prize = Generator.randomArmor((Dungeon.depth / 5) + 1);
-				}
-			} while (prize.cursed || Challenges.isItemBlocked(prize));
+				if (((Armor)prize).hasCurseGlyph()){
+			((Armor) prize).inscribe(null);
+			}
+		}
+		prize.cursed = false;
 			prize.cursedKnown = true;
 
 			//33% chance for an extra update.
@@ -235,6 +242,10 @@ public class SentryRoom extends SpecialRoom {
 
 		@Override
 		protected boolean act() {
+			if (Dungeon.level.heroFOV[pos]){
+				Bestiary.setSeen(getClass());
+			}
+
 			if (fieldOfView == null || fieldOfView.length != Dungeon.level.length()){
 				fieldOfView = new boolean[Dungeon.level.length()];
 			}
@@ -248,7 +259,7 @@ public class SentryRoom extends SpecialRoom {
 				if (fieldOfView[Dungeon.hero.pos]
 						&& Dungeon.level.map[Dungeon.hero.pos] == Terrain.EMPTY_SP
 						&& room.inside(Dungeon.level.cellToPoint(Dungeon.hero.pos))
-						&& Dungeon.hero.buff(LostInventory.class) == null){
+						&& !Dungeon.hero.belongings.lostInventory()){
 
 					if (curChargeDelay > 0.001f){ //helps prevent rounding errors
 						if (curChargeDelay == initialChargeDelay) {

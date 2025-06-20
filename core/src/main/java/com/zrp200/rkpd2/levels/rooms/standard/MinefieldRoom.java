@@ -21,9 +21,11 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
+import com.zrp200.rkpd2.items.trinkets.TrapMechanism;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.traps.ExplosiveTrap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -37,7 +39,7 @@ public class MinefieldRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		int cell = l.pointToCell(pointInside(p, 1));
 		return l.map[cell] == Terrain.EMPTY;
 	}
@@ -64,6 +66,8 @@ public class MinefieldRoom extends StandardRoom {
 				break;
 		}
 
+		float revealedChance = TrapMechanism.revealHiddenTrapChance();
+		float revealInc = 0;
 		for (int i = 0; i < mines; i++ ){
 			int pos;
 			do {
@@ -78,8 +82,15 @@ public class MinefieldRoom extends StandardRoom {
 				}
 			}
 
-			Painter.set(level, pos, Terrain.SECRET_TRAP);
-			level.setTrap(new ExplosiveTrap().hide(), pos);
+			revealInc += revealedChance;
+			if (revealInc >= 1) {
+				Painter.set(level, pos, Terrain.TRAP);
+				level.setTrap(new ExplosiveTrap().reveal(), pos);
+				revealInc--;
+			} else {
+				Painter.set(level, pos, Terrain.SECRET_TRAP);
+				level.setTrap(new ExplosiveTrap().hide(), pos);
+			}
 
 		}
 

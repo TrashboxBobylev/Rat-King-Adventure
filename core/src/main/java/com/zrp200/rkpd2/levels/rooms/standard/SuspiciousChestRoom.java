@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.trinkets.MimicTooth;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -61,7 +62,8 @@ public class SuspiciousChestRoom extends StandardRoom {
 
 		Painter.set(level, center, Terrain.PEDESTAL);
 
-		if (Random.Int(3) == 0) {
+		float mimicChance = 1/3f * MimicTooth.mimicChanceMultiplier();
+		if (Random.Float() < mimicChance) {
 			level.mobs.add(Mimic.spawnAt(center, i));
 		} else {
 			level.drop(i, center).type = Heap.Type.CHEST;

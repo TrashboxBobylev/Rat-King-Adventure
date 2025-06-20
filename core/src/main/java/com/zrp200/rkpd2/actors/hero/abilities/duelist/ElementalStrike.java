@@ -56,6 +56,7 @@ import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.items.trinkets.WondrousResin;
 import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.items.weapon.Weapon;
@@ -384,7 +385,11 @@ public class ElementalStrike extends ArmorAbility {
 					if (c != null ? c == enemy : Random.Int(2) == 0) continue;
 					if (powerMulti > Random.Float(MAX_POWER)) {
 						// empty cells are less likely to trigger hero related effects
-						CursedWand.cursedEffect(weapon, c != null || Random.Float(powerMulti) < .5f ? Dungeon.hero : null, cell);
+						Ballistica aim = new Ballistica(Dungeon.hero.pos, cell, Ballistica.STOP_TARGET);
+						Char attacker = c != null || Random.Float(powerMulti) < .5f ? Dungeon.hero : null;
+						boolean positiveOnly = Random.Float() < WondrousResin.positiveCurseEffectChance();
+						CursedWand.randomValidEffect(weapon, attacker, aim, positiveOnly)
+								.effect(weapon, attacker, aim, positiveOnly);
 					}
 				}
 			} finally {
@@ -420,7 +425,7 @@ public class ElementalStrike extends ArmorAbility {
 		//*** no enchantment ***
 		if (ench == null) {
 			for (Char ch : affected){
-				ch.damage(Math.round(powerMulti*Random.NormalIntRange(6, 12)), ElementalStrike.this);
+				ch.damage(Math.round(powerMulti* Hero.heroDamageIntRange(6, 12)), ElementalStrike.this);
 			}
 
 		//*** Kinetic ***
@@ -588,7 +593,7 @@ public class ElementalStrike extends ArmorAbility {
 		} else if (ench instanceof Polarized){
 			for (Char ch : affected){
 				if (Random.Float() < 0.5f*powerMulti){
-					ch.damage(Random.NormalIntRange(24, 36), ElementalStrike.this);
+					ch.damage(Hero.heroDamageIntRange(24, 36), ElementalStrike.this);
 				}
 			}
 

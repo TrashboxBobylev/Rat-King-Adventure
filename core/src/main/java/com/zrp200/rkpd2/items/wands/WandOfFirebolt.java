@@ -78,6 +78,11 @@ public class WandOfFirebolt extends DamageWand {
     }
 
     @Override
+    public String upgradeStat2(int level) {
+        return Integer.toString(6 + level);
+    }
+
+    @Override
     public void fx(Ballistica bolt, Callback callback) {
         MagicMissile.boltFromChar( curUser.sprite.parent,
                 curUser.pointsInTalent(Talent.CRYONIC_SPELL) > 1 ? MagicMissile.FROST : MagicMissile.FIRE,

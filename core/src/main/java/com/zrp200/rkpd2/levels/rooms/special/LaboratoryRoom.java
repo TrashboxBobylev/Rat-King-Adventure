@@ -31,7 +31,8 @@ import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.journal.AlchemyPage;
 import com.zrp200.rkpd2.items.keys.IronKey;
-import com.zrp200.rkpd2.items.potions.Potion;
+import com.zrp200.rkpd2.items.potions.PotionOfStrength;
+import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -78,7 +79,7 @@ public class LaboratoryRoom extends SpecialRoom {
 				level.map[pos] != Terrain.EMPTY_SP ||
 						level.heaps.get( pos ) != null);
 		if (!Dungeon.isChallenged(Challenges.NO_ALCHEMY))
-			level.drop( new EnergyCrystal().random(), pos ).type = type;
+			level.drop( new EnergyCrystal().quantity(5), pos ).type = type;
 		else
 			level.drop( new EnergyCrystal().quantity(1 + chapter*7 + Random.NormalIntRange(0, 8)), pos).type = type;
 
@@ -133,9 +134,13 @@ public class LaboratoryRoom extends SpecialRoom {
 	
 	private static Item prize( Level level ) {
 
-		Item prize = level.findPrizeItem( Potion.class );
-		if (prize == null)
-			prize = Generator.random( Random.oneOf( Generator.Category.POTION, Generator.Category.STONE ));
+		Item prize = level.findPrizeItem( TrinketCatalyst.class );
+		if (prize == null){
+			prize = level.findPrizeItem( PotionOfStrength.class );
+			if (prize == null) {
+				prize = Generator.random(Random.oneOf(Generator.Category.POTION, Generator.Category.STONE));
+			}
+		}
 
 		return prize;
 	}

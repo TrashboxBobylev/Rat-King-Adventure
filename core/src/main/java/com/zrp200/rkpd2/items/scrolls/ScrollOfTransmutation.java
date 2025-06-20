@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.scrolls;
 
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.Transmuting;
 import com.zrp200.rkpd2.items.EquipableItem;
@@ -31,7 +32,6 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
-import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
 import com.zrp200.rkpd2.items.potions.Potion;
 import com.zrp200.rkpd2.items.potions.brews.Brew;
 import com.zrp200.rkpd2.items.potions.elixirs.Elixir;
@@ -40,6 +40,7 @@ import com.zrp200.rkpd2.items.quest.Pickaxe;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.scrolls.exotic.ExoticScroll;
 import com.zrp200.rkpd2.items.stones.Runestone;
+import com.zrp200.rkpd2.items.trinkets.Trinket;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
@@ -76,17 +77,21 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof MissileWeapon){
 			return item.getClass() != Dart.class;
 
-		//all regular or exotic potions. No brews, elixirs, or catalysts
+		//all regular or exotic potions. No brews or elixirs
 		} else if (item instanceof Potion){
-			return !(item instanceof Elixir || item instanceof Brew || item instanceof AlchemicalCatalyst);
+			return !(item instanceof Elixir || item instanceof Brew);
 
-		//all regular or exotic scrolls, except itself
-		} else if (item instanceof Scroll){
-			return item != this || item.quantity() > 1;
+		//all regular or exotic scrolls, except itself (unless un-ided, in which case it was already consumed)
+		} else if (item instanceof Scroll) {
+			return item != this || item.quantity() > 1 || identifiedByUse;
 
-		//all rings, wands, artifacts, seeds, and runestones
+		//all non-unique artifacts (no holy tome or cloak of shadows, basically)
+		} else if (item instanceof Artifact) {
+			return !item.unique;
+
+		//all rings, wands, trinkets, seeds, and runestones
 		} else {
-			return item instanceof Ring || item instanceof Wand || item instanceof Artifact
+			return item instanceof Ring || item instanceof Wand || item instanceof Trinket
 					|| item instanceof Plant.Seed || item instanceof Runestone;
 		}
 	}
@@ -140,6 +145,7 @@ public class ScrollOfTransmutation extends InventoryScroll {
 			}
 			if (result.isIdentified()){
 				Catalog.setSeen(result.getClass());
+				Statistics.itemTypesDiscovered.add(result.getClass());
 			}
 			Transmuting.show(curUser, item, result);
 			curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
@@ -170,16 +176,25 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		} else if (item instanceof Artifact) {
 			Artifact a = changeArtifact( (Artifact)item );
 			if (a == null){
-				//if no artifacts are left, generate a random +0 ring with shared ID/curse state
+				//if no artifacts are left, generate a random ring with shared ID/curse state
+				//artifact and ring levels are not exactly equivalent, give the ring up to +2
 				Item result = Generator.randomUsingDefaults(Generator.Category.RING);
 				result.levelKnown = item.levelKnown;
 				result.cursed = item.cursed;
 				result.cursedKnown = item.cursedKnown;
-				result.level(0);
+				if (item.visiblyUpgraded() == 10){
+					result.level(2);
+				} else if (item.visiblyUpgraded() >= 5){
+					result.level(1);
+				} else {
+					result.level(0);
+				}
 				return result;
 			} else {
 				return a;
 			}
+		} else if (item instanceof Trinket) {
+			return changeTrinket( (Trinket)item );
 		} else {
 			return null;
 		}
@@ -295,6 +310,20 @@ public class ScrollOfTransmutation extends InventoryScroll {
 		
 		return null;
 	}
+
+	private static Trinket changeTrinket( Trinket t ){
+		Trinket n;
+		do {
+			n = (Trinket)Generator.random(Generator.Category.TRINKET);
+		} while ( Challenges.isItemBlocked(n) || n.getClass() == t.getClass());
+
+		n.level(t.trueLevel());
+		n.levelKnown = t.levelKnown;
+		n.cursedKnown = t.cursedKnown;
+		n.cursed = t.cursed;
+
+		return n;
+	}
 	
 	private static Wand changeWand( Wand w ) {
 		Wand n;
@@ -362,6 +391,6 @@ public class ScrollOfTransmutation extends InventoryScroll {
 
 	@Override
 	public int energyVal() {
-		return isKnown() ? 8 * quantity : super.energyVal();
+		return isKnown() ? 10 * quantity : super.energyVal();
 	}
 }

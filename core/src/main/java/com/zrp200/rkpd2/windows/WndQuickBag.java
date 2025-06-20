@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
+import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -72,7 +73,8 @@ public class WndQuickBag extends Window {
 			}
 			if (i instanceof Artifact
 					&& !i.isEquipped(Dungeon.hero)
-					&& (!(i instanceof CloakOfShadows) || !Dungeon.hero.hasTalent(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER))){
+					&& (!(i instanceof CloakOfShadows) || Dungeon.hero.shiftedPoints(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER) == 0)
+					&& (!(i instanceof HolyTome) || !Dungeon.hero.canHaveTalent(Talent.LIGHT_READING))){
 				continue;
 			}
 			items.add(i);
@@ -107,6 +109,7 @@ public class WndQuickBag extends Window {
 						int idx = Dungeon.quickslot.getSlot(WndQuickBag.bag);
 						if (idx != -1){
 							QuickSlotButton.useTargeting(idx);
+							bag.quickUseItem = item;
 						}
 					}
 				}

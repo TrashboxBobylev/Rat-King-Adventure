@@ -40,11 +40,13 @@ import com.zrp200.rkpd2.actors.buffs.GodSlayerBurning;
 import com.zrp200.rkpd2.actors.buffs.LockedFloor;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.Slow;
+import com.zrp200.rkpd2.actors.buffs.Roots;
 import com.zrp200.rkpd2.actors.buffs.Terror;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
 import com.zrp200.rkpd2.actors.buffs.WarpedEnemy;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.FloatingText;
@@ -98,9 +100,7 @@ public class Tengu extends Mob {
 		defenseSkill = 15;
 		
 		HUNTING = new Hunting();
-		
-		flying = true; //doesn't literally fly, but he is fleet-of-foot enough to avoid hazards
-		
+
 		properties.add(Property.BOSS);
 		
 		viewDistance = 12;
@@ -165,7 +165,7 @@ public class Tengu extends Mob {
 		dmg = beforeHitHP - HP;
 
 		LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-		if (lock != null) {
+		if (lock != null && !isImmune(src.getClass()) && !isInvulnerable(src.getClass())){
 			if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.addTime(2*dmg/3f);
 			else                                                    lock.addTime(dmg);
 		}
@@ -267,6 +267,28 @@ public class Tengu extends Mob {
 			if (Random.Int(3) == 0) Buff.affect(enemy, Vulnerable.class, 2f);
 		}
 		return super.attackProc(enemy, damage);
+	}
+
+	@Override
+	public void onAttackComplete() {
+		Char enemy = this.enemy;
+		if (!Dungeon.level.adjacent(pos, enemy.pos) &&
+				ShieldOfLight.DivineShield.tryUse(enemy, this, () ->
+						sprite.parent.recycle(MissileSprite.class)
+								.reset(
+										enemy.sprite,
+										pos,
+										new TenguSprite.TenguShuriken(),
+										() -> {
+											this.enemy = this;
+											super.onAttackComplete();
+											this.enemy = enemy;
+										})
+				)) {
+			next();
+			return;
+		}
+		super.onAttackComplete();
 	}
 
 	private void jump() {
@@ -389,6 +411,7 @@ public class Tengu extends Mob {
 	}
 	
 	{
+		immunities.add( Roots.class );
 		immunities.add( Blindness.class );
 		immunities.add( Dread.class );
 		immunities.add( Terror.class );
@@ -440,6 +463,8 @@ public class Tengu extends Mob {
 				if (buff(WarpedEnemy.BossEffect.class) != null && Random.Int(2) == 0 )
 					jump();
 
+				recentlyAttackedBy.clear();
+				target = enemy.pos;
 				return doAttack( enemy );
 				
 			} else {

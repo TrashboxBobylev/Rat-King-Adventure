@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.bags.MagicalHolster;
 import com.zrp200.rkpd2.items.wands.Wand;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -118,6 +119,7 @@ public class ArcaneResin extends Item {
 
 				} else {
 
+					Catalog.countUses(ArcaneResin.class, resinToUse);
 					if (resinToUse < quantity()){
 						quantity(quantity()-resinToUse);
 					} else {

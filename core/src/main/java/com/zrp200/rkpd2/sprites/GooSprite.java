@@ -78,9 +78,11 @@ public class GooSprite extends MobSprite {
 		play(idle);
 
 		spray = centerEmitter();
-		spray.autoKill = false;
-		spray.pour( GooParticle.FACTORY, 0.04f );
-		spray.on = false;
+		if (spray != null) {
+			spray.autoKill = false;
+			spray.pour(GooParticle.FACTORY, 0.04f);
+			spray.on = false;
+		}
 	}
 
 	@Override
@@ -150,8 +152,10 @@ public class GooSprite extends MobSprite {
 	@Override
 	public void update() {
 		super.update();
-		spray.pos(center());
-		spray.visible = visible;
+		if (spray != null) {
+			spray.pos(center());
+			spray.visible = visible;
+		}
 	}
 
 	public void zap( int cell ) {

@@ -34,6 +34,7 @@ import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.artifacts.HornOfPlenty;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
@@ -73,14 +74,15 @@ public class Food extends Item {
 		if (action.equals( AC_EAT )) {
 			
 			detach( hero.belongings.backpack );
-			
+			Catalog.countUse(getClass());
+
 			satisfy(hero);
 			GLog.i( Messages.get(this, "eat_msg") );
 			
 			hero.sprite.operate( hero.pos );
 			hero.busy();
 			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.Sounds.EAT );
+			eatSFX();
 			
 			hero.spend( eatingTime() );
 
@@ -92,20 +94,24 @@ public class Food extends Item {
 		}
 	}
 
+    protected void eatSFX(){
+        Sample.INSTANCE.play( Assets.Sounds.EAT );
+    }
+
+    protected float eatingTime(){
+        return eatingTime(Dungeon.hero);
+    }
 	public static float eatingTime(Hero hero) {
 		int reduction = hero.hasTalent(Talent.IRON_STOMACH)
 				|| hero.hasTalent(Talent.ENERGIZING_MEAL_II)
 				|| hero.hasTalent(Talent.MYSTICAL_MEAL)
 				|| hero.hasTalent(Talent.INVIGORATING_MEAL)
 				|| hero.hasTalent(Talent.ROYAL_MEAL)
-				|| Dungeon.hero.hasTalent(Talent.FOCUSED_MEAL)
-				|| hero.hasTalent(Talent.EFFICIENT_TRAINING) ? 2
+				|| hero.hasTalent(Talent.FOCUSED_MEAL)
+                || hero.hasTalent(Talent.EFFICIENT_TRAINING)
+                || hero.hasTalent(Talent.ENLIGHTENING_MEAL)? 2
 				: 0;
 		return TIME_TO_EAT - reduction;
-	}
-
-	protected float eatingTime(){
-		return eatingTime(Dungeon.hero);
 	}
 	
 	protected void satisfy( Hero hero ){

@@ -25,6 +25,8 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.items.trinkets.VialOfBlood;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
@@ -88,6 +90,15 @@ public class Waterskin extends Item {
 				
 				float missingHealthPercent = 1f - (hero.HP / (float)hero.HT);
 
+				//each drop is worth 5% of total health
+				float dropsNeeded = missingHealthPercent / 0.05f;
+
+				//we are getting extra heal value, scale back drops needed accordingly
+				if (dropsNeeded > 1.01f && VialOfBlood.delayBurstHealing()){
+					dropsNeeded /= VialOfBlood.totalHealMultiplier();
+				}
+
+				//add extra drops if we can gain shielding
 				int curShield = 0;
 				if (hero.buff(Barrier.class) != null) curShield = hero.buff(Barrier.class).shielding();
 				//if (hero.hasTalent(Talent.SHIELDING_DEW)) curShield += Math.floor((missingHealthPercent/0.05f)*0.2f*hero.pointsInTalent(Talent.SHIELDING_DEW)); // this tries to predict the total increase via individual dewdrops.
@@ -96,16 +107,17 @@ public class Waterskin extends Item {
 					float missingShieldPercent = 1f - (curShield / (float)maxShield);
 					missingShieldPercent *= 0.2f*hero.pointsInTalent(Talent.SHIELDING_DEW,Talent.RK_WARDEN);
 					if (missingShieldPercent > 0){
-						missingHealthPercent += missingShieldPercent;
+						dropsNeeded += missingShieldPercent / 0.05f;
 					}
 				}
 
 				//trimming off 0.01 drops helps with floating point errors
-				int dropsNeeded = (int)Math.ceil((missingHealthPercent / 0.05f) - 0.01f);
-				dropsNeeded = (int)GameMath.gate(1, dropsNeeded, volume);
+				int dropsToConsume = (int)Math.ceil(dropsNeeded - 0.01f);
+				dropsToConsume = (int)GameMath.gate(1, dropsToConsume, volume);
 
-				if (Dewdrop.consumeDew(dropsNeeded, hero, true)){
-					volume -= dropsNeeded;
+				if (Dewdrop.consumeDew(dropsToConsume, hero, true)){
+					volume -= dropsToConsume;
+					Catalog.countUses(Dewdrop.class, dropsToConsume);
 
 					hero.spend(TIME_TO_DRINK);
 					hero.busy();
@@ -128,7 +140,7 @@ public class Waterskin extends Item {
 
 	@Override
 	public String info() {
-		String info = desc();
+		String info = super.info();
 
 		if (volume == 0){
 			info += "\n\n" + Messages.get(this, "desc_water");

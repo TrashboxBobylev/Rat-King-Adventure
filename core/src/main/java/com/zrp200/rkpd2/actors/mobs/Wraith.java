@@ -42,6 +42,7 @@ import com.zrp200.rkpd2.effects.particles.ChallengeParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.mechanics.Ballistica;
+import com.zrp200.rkpd2.items.trinkets.RatSkull;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.WraithSprite;
 import com.watabou.noosa.audio.Sample;
@@ -192,7 +193,7 @@ public class Wraith extends Mob {
 
 	public static void spawnAround( int pos, Class<? extends Wraith> wraithClass ) {
 		for (int n : PathFinder.NEIGHBOURS4) {
-			spawnAt( pos + n, wraithClass );
+			spawnAt( pos + n, wraithClass, false );
 		}
 	}
 
@@ -273,12 +274,36 @@ public class Wraith extends Mob {
 	}
 
 	public static Wraith spawnAt( int pos, Class<? extends Wraith> wraithClass ) {
-		if ((!Dungeon.level.solid[pos] || Dungeon.level.passable[pos]) && Actor.findChar( pos ) == null) {
+		return spawnAt( pos, wraithClass, true );
+	}
+
+	private static Wraith spawnAt( int pos, Class<? extends Wraith> wraithClass, boolean allowAdjacent ) {
+
+		//if the position itself is blocked, try to place in an adjacent cell if allowed
+		if (Dungeon.level.solid[pos] || Actor.findChar( pos ) != null){
+			ArrayList<Integer> candidates = new ArrayList<>();
+
+			for (int i : PathFinder.NEIGHBOURS8){
+				if (!Dungeon.level.solid[pos+i] && Actor.findChar( pos+i ) == null){
+					candidates.add(pos+i);
+				}
+			}
+
+			if (allowAdjacent && !candidates.isEmpty()){
+				pos = Random.element(candidates);
+			} else {
+				pos = -1;
+			}
+
+		}
+
+		if (pos != -1) {
 
 			Wraith w;
 			//if no wraith type is specified, 1/100 chance for exotic, otherwise normal
 			if (wraithClass == null){
-				if (Random.Int(100) == 0){
+				float altChance = 1/100f * RatSkull.exoticChanceMultiplier();
+				if (Random.Float() < altChance){
 					w = new TormentedSpirit();
 				} else {
 					w = new Wraith();

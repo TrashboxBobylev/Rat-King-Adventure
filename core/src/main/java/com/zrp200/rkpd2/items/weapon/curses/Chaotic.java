@@ -1,11 +1,16 @@
 package com.zrp200.rkpd2.items.weapon.curses;
 
-import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.items.weapon.Weapon;
-import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
+import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.items.trinkets.WondrousResin;
+import com.zrp200.rkpd2.items.wands.CursedWand;
+import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.mechanics.Ballistica;
+import com.zrp200.rkpd2.sprites.ItemSprite;
 
 import java.util.HashMap;
 
@@ -31,7 +36,10 @@ public class Chaotic extends Weapon.Enchantment{
             Buff.detach(attacker, Wayward.WaywardBuff.class);
         }
         if(curse instanceof Chaotic) {
-            cursedEffect(weapon, attacker, defender);
+            boolean positiveOnly = attacker instanceof Hero && Random.Float() < WondrousResin.positiveCurseEffectChance();
+            Ballistica aim = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
+            CursedWand.randomValidEffect(weapon, attacker, aim, positiveOnly)
+                    .effect(weapon, attacker, aim, positiveOnly);
             return damage;
         }
         Class<? extends Weapon.Enchantment> curseClass = curse.getClass();

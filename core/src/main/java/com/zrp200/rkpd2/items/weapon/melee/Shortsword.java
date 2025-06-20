@@ -31,6 +31,8 @@ public class Shortsword extends Sword {
 		hitSoundPitch = 1.1f;
 
 		tier = 2;
+
+		//+(4+lvl) damage, roughly +55% base dmg, +67% scaling
 	}
 
 	@Override

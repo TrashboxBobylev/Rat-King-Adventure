@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.sprites;
 
+import com.watabou.utils.Callback;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.CrystalWisp;
@@ -72,12 +73,16 @@ public abstract class CrystalWispSprite extends MobSprite {
 			public void onComplete() {
 				light.alpha(0.3f);
 				((CrystalWisp)ch).onZapComplete();
-				Beam ray = new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell));
-				ray.hardlight(blood() & 0x00FFFFFF);
-				parent.add( ray );
+				onZap(CrystalWispSprite.this, cell);
 			}
 		});
 
+	}
+
+	public void onZap(CharSprite source, int cell) {
+		Beam ray = new Beam.LightRay(source.center(), DungeonTilemap.raisedTileCenterToWorld(cell));
+		ray.hardlight(blood() & 0x00FFFFFF);
+		parent.add( ray );
 	}
 
 	@Override

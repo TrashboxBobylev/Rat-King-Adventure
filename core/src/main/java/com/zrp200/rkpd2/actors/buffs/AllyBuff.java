@@ -32,13 +32,18 @@ import com.zrp200.rkpd2.actors.mobs.DwarfKing;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 
 //generic class for buffs which convert an enemy into an ally
 // There is a decent amount of logic that ties into this, which is why it has its own abstract class
-public abstract class AllyBuff extends Buff{
+public abstract class AllyBuff extends Buff {
+
+	{
+		revivePersists = true;
+	}
 
 	@Override
 	public boolean attachTo(Char target) {
@@ -68,6 +73,8 @@ public abstract class AllyBuff extends Buff{
 			Statistics.enemiesSlain++;
 			Badges.validateMonstersSlain();
 			Statistics.qualifiedForNoKilling = false;
+			Bestiary.setSeen(enemy.getClass());
+			Bestiary.countEncounter(enemy.getClass());
 
 			AscensionChallenge.processEnemyKill(enemy);
 

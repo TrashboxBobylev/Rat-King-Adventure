@@ -36,6 +36,7 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.items.trinkets.MimicTooth;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.MimicSprite;
@@ -82,7 +83,10 @@ public class CrystalMimic extends Mimic {
 			if (desc == null) {
 				desc = Messages.get(Heap.class, "locked_chest_desc");
 			}
-			return desc + "\n\n" + Messages.get(this, "hidden_hint");
+			if (!MimicTooth.stealthyMimics()){
+				desc += "\n\n" + Messages.get(this, "hidden_hint");
+			}
+			return desc;
 		} else {
 			return super.description();
 		}

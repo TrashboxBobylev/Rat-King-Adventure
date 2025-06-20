@@ -66,33 +66,54 @@ public class Spear extends MeleeWeapon {
 		return Messages.get(this, "prompt");
 	}
 
-	@Override
-	protected DuelistAbility duelistAbility() {
-		// 1.45 at t2, 1.3 at t5
-		return new MeleeAbility(1.45f - (tier-2)/20f) {
-			@Override
-			protected boolean canAttack(Hero hero, Char enemy) {
-				return super.canAttack(hero, enemy) && !Dungeon.level.adjacent(hero.pos, enemy.pos);
-			}
-			int oldPos;
-
-			@Override
-			protected void beforeAbilityUsed(Hero hero, Char target) {
-				super.beforeAbilityUsed(hero, target);
-				if(target != null) oldPos = target.pos;
-			}
-
-			@Override
-			protected void proc(Hero hero, Char enemy) {
-				if (enemy.pos != oldPos) return;
-				//trace a ballistica to our target (which will also extend past them
-				Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
-				//trim it to just be the part that goes past them
-				trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
-				//knock them back along that ballistica
-				WandOfBlastWave.throwChar(enemy, trajectory, 1, true, false, hero.getClass());
-			}
-		};
+	public int abilityStat(int level) {
+		//+(9+2*lvl) damage, roughly +83% base damage, +80% scaling
+		return augment.damageFactor(9 + Math.round(2f*level));
 	}
 
+	protected DuelistAbility duelistAbility() {
+		Spike spike = new Spike();
+		spike.dmgBoost = abilityStat(buffedLvl());
+		return spike;
+	}
+
+	@Override
+	public String abilityInfo() {
+		int dmgBoost = abilityStat(levelKnown ? buffedLvl() : 0);
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = abilityStat(level);
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
+	}
+
+	private static class Spike extends MeleeAbility {
+		@Override
+		protected boolean canAttack(Hero hero, Char enemy) {
+			return super.canAttack(hero, enemy) && !Dungeon.level.adjacent(hero.pos, enemy.pos);
+		}
+		int oldPos;
+
+		@Override
+		protected void beforeAbilityUsed(Hero hero, Char target) {
+			super.beforeAbilityUsed(hero, target);
+			if(target != null) oldPos = target.pos;
+		}
+
+		@Override
+		protected void proc(Hero hero, Char enemy) {
+			if (enemy.pos != oldPos) return;
+			//trace a ballistica to our target (which will also extend past them
+			Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+			//trim it to just be the part that goes past them
+			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+			//knock them back along that ballistica
+			WandOfBlastWave.throwChar(enemy, trajectory, 1, true, false, hero.getClass());
+		}
+	}
 }

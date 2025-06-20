@@ -34,6 +34,7 @@ import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
+import com.zrp200.rkpd2.items.trinkets.MimicTooth;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.sprites.CharSprite;
@@ -64,15 +65,19 @@ public class Mimic extends Mob {
 	}
 	
 	public ArrayList<Item> items;
-	
+
+	private boolean stealthy = false;
+
 	private static final String LEVEL	= "level";
 	private static final String ITEMS	= "items";
-	
+	private static final String STEALTHY= "stealthy";
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		if (items != null) bundle.put( ITEMS, items );
 		bundle.put( LEVEL, level );
+		bundle.put( STEALTHY, stealthy );
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -83,6 +88,7 @@ public class Mimic extends Mob {
 		}
 		level = bundle.getInt( LEVEL );
 		adjustStats(level);
+		stealthy = bundle.getBoolean(STEALTHY);
 		super.restoreFromBundle(bundle);
 		if (state != PASSIVE && alignment == Alignment.NEUTRAL){
 			alignment = Alignment.ENEMY;
@@ -114,7 +120,11 @@ public class Mimic extends Mob {
 	@Override
 	public String description() {
 		if (alignment == Alignment.NEUTRAL){
-			return Messages.get(Heap.class, "chest_desc") + "\n\n" + Messages.get(this, "hidden_hint");
+			if (MimicTooth.stealthyMimics()){
+				return Messages.get(Heap.class, "chest_desc");
+			} else {
+				return Messages.get(Heap.class, "chest_desc") + "\n\n" + Messages.get(this, "hidden_hint");
+			}
 		} else {
 			return super.description();
 		}
@@ -137,7 +147,7 @@ public class Mimic extends Mob {
 	@Override
 	public CharSprite sprite() {
 		MimicSprite sprite = (MimicSprite) super.sprite();
-		if (alignment == Alignment.NEUTRAL) sprite.hideMimic();
+		if (alignment == Alignment.NEUTRAL) sprite.hideMimic(this);
 		return sprite;
 	}
 
@@ -208,6 +218,11 @@ public class Mimic extends Mob {
 			CellEmitter.get(pos).burst(Speck.factory(Speck.STAR), 10);
 			Sample.INSTANCE.play(Assets.Sounds.MIMIC);
 		}
+	}
+
+	//stealthy mimics have changes to visual behaviour that make them much harder to detect
+	public boolean stealthy(){
+		return stealthy;
 	}
 
 	@Override
@@ -291,6 +306,8 @@ public class Mimic extends Mob {
 			m = new GoldenMimic();
 		} else if (mimicType == CrystalMimic.class) {
 			m = new CrystalMimic();
+		} else if (mimicType == EbonyMimic.class) {
+			m = new EbonyMimic();
 		} else {
 			m = new Mimic();
 		}
@@ -301,7 +318,9 @@ public class Mimic extends Mob {
 
 		//generate an extra reward for killing the mimic
 		if (!Dungeon.isChallenged(Challenges.REDUCED_POWER))
-			m.generatePrize(useDecks);
+			m.generatePrize(useDecks);if (MimicTooth.stealthyMimics()){
+			m.stealthy = true;
+		}
 		return m;
 	}
 
@@ -327,6 +346,11 @@ public class Mimic extends Mob {
 			}
 		} while (reward == null || Challenges.isItemBlocked(reward));
 		items.add(reward);
+
+		if (MimicTooth.stealthyMimics()){
+			//add an extra random item if player has a mimic tooth
+			items.add(Generator.randomUsingDefaults());
+		}
 	}
 
 }

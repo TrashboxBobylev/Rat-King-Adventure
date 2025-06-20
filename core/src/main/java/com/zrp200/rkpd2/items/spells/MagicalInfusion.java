@@ -21,17 +21,25 @@
 
 package com.zrp200.rkpd2.items.spells;
 
+import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
+import com.zrp200.rkpd2.actors.buffs.Invisibility;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.GLog;
+import com.zrp200.rkpd2.windows.WndUpgrade;
+import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Random;
 
 public class MagicalInfusion extends InventorySpell {
 	
@@ -39,6 +47,8 @@ public class MagicalInfusion extends InventorySpell {
 		image = ItemSpriteSheet.MAGIC_INFUSE;
 
 		unique = true;
+
+		talentFactor = 2;
 	}
 
 	@Override
@@ -49,41 +59,73 @@ public class MagicalInfusion extends InventorySpell {
 	@Override
 	protected void onItemSelected( Item item ) {
 
+		GameScene.show(new WndUpgrade(this, item, false));
+
+	}
+
+	public void reShowSelector(){
+		curItem = this;
+		GameScene.selectItem(itemSelector);
+	}
+
+	public void useAnimation(){
+		curUser.spend(1f);
+		curUser.busy();
+		(curUser.sprite).operate(curUser.pos);
+
+		Sample.INSTANCE.play(Assets.Sounds.READ);
+		Invisibility.dispel();
+
+		Catalog.countUse(curItem.getClass());
+		if (Random.Float() < ((Spell) curItem).talentChance) {
+			Talent.onScrollUsed(curUser, curUser.pos, ((Spell) curItem).talentFactor, getClass());
+		}
+	}
+
+	public Item upgradeItem( Item item ){
 		ScrollOfUpgrade.upgrade(curUser);
 
 		Degrade.detach( curUser, Degrade.class );
 
 		if (item instanceof Weapon && ((Weapon) item).enchantment != null) {
-			((Weapon) item).upgrade(true);
+			item = ((Weapon) item).upgrade(true);
 		} else if (item instanceof Armor && ((Armor) item).glyph != null) {
-			((Armor) item).upgrade(true);
+			item = ((Armor) item).upgrade(true);
 		} else {
 			boolean wasCursed = item.cursed;
 			boolean wasCurseInfused = item instanceof Wand && ((Wand) item).curseInfusionBonus;
-			item.upgrade();
+			item = item.upgrade();
 			if (wasCursed) item.cursed = true;
 			if (wasCurseInfused) ((Wand) item).curseInfusionBonus = true;
 		}
-		
+
 		GLog.p( Messages.get(this, "infuse") );
 		Badges.validateItemLevelAquired(item);
 
+		Catalog.countUse(item.getClass());
+
 		Statistics.upgradesUsed++;
+
+		return item;
 	}
 	
 	@Override
 	public int value() {
-		//prices of ingredients
-		return (50 + 40) * quantity;
+		return 60 * quantity;
+	}
+
+	@Override
+	public int energyVal() {
+		return 12 * quantity;
 	}
 	
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{ScrollOfUpgrade.class, ArcaneCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{ScrollOfUpgrade.class};
+			inQuantity = new int[]{1};
 			
-			cost = 4;
+			cost = 12;
 			
 			output = MagicalInfusion.class;
 			outQuantity = 1;

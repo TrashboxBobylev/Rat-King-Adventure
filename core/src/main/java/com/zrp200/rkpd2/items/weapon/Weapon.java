@@ -21,10 +21,13 @@
 
 package com.zrp200.rkpd2.items.weapon;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
@@ -36,13 +39,20 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.AscendedForm;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.ElementalStrike;
+import com.zrp200.rkpd2.actors.hero.spells.BodyForm;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
+import com.zrp200.rkpd2.actors.hero.spells.Smite;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
+import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.rings.RingOfArcana;
 import com.zrp200.rkpd2.items.rings.RingOfForce;
 import com.zrp200.rkpd2.items.rings.RingOfFuror;
+import com.zrp200.rkpd2.items.trinkets.ParchmentScrap;
+import com.zrp200.rkpd2.items.trinkets.ShardOfOblivion;
 import com.zrp200.rkpd2.items.wands.WandOfDisintegration;
 import com.zrp200.rkpd2.items.weapon.curses.Annoying;
 import com.zrp200.rkpd2.items.weapon.curses.Chaotic;
@@ -67,8 +77,10 @@ import com.zrp200.rkpd2.items.weapon.enchantments.Shocking;
 import com.zrp200.rkpd2.items.weapon.enchantments.Unstable;
 import com.zrp200.rkpd2.items.weapon.enchantments.Vampiric;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
+import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.items.weapon.melee.RunicBlade;
 import com.zrp200.rkpd2.items.weapon.melee.Scimitar;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.utils.DungeonSeed;
@@ -131,9 +143,56 @@ abstract public class Weapon extends KindOfWeapon {
 	@Override
 	public int proc( Char attacker, Char defender, int damage) {
 
-		if (enchantment != null && attacker.buff(MagicImmune.class) == null
-				&& (Random.Float() < Talent.SpiritBladesTracker.getProcModifier())) {
-			damage = enchantment.proc( this, attacker, defender, damage );
+		boolean becameAlly = false;
+		boolean wasAlly = defender.alignment == Char.Alignment.ALLY;
+		if (attacker.buff(MagicImmune.class) == null) {
+			Enchantment trinityEnchant = null;
+			if (Dungeon.hero.buff(BodyForm.BodyFormBuff.class) != null && this instanceof MeleeWeapon){
+				trinityEnchant = Dungeon.hero.buff(BodyForm.BodyFormBuff.class).enchant();
+				if (enchantment != null && trinityEnchant != null && trinityEnchant.getClass() == enchantment.getClass()){
+					trinityEnchant = null;
+				}
+			}
+
+			HolyWeapon.HolyWepBuff holyWep = attacker.virtualBuff(HolyWeapon.HolyWepBuff.class);
+			if (attacker instanceof Hero && isEquipped((Hero) attacker)
+					&& holyWep != null){
+				if (enchantment != null &&
+						(holyWep instanceof HolyWeapon.HolyWepBuff.Empowered || ((Hero) attacker).subClass == HeroSubClass.PALADIN || hasCurseEnchant())){
+					damage = enchantment.proc(this, attacker, defender, damage);
+					if (defender.alignment == Char.Alignment.ALLY && !wasAlly){
+						becameAlly = true;
+					}
+				}
+				if (defender.isAlive() && !becameAlly && trinityEnchant != null){
+					damage = trinityEnchant.proc(this, attacker, defender, damage);
+				}
+				if (defender.isAlive() && !becameAlly) {
+					holyWep.proc(attacker, defender);
+				}
+			} else {
+				if (holyWep == null) holyWep = Dungeon.hero.buff(HolyWeapon.HolyWepBuff.Empowered.class);
+				if (enchantment != null
+						&& (Random.Float() < Talent.SpiritBladesTracker.getProcModifier())) {
+					damage = enchantment.proc(this, attacker, defender, damage);
+					if (defender.alignment == Char.Alignment.ALLY && !wasAlly) {
+						becameAlly = true;
+					}
+				}
+
+				if (defender.isAlive() && !becameAlly && trinityEnchant != null){
+					damage = trinityEnchant.proc(this, attacker, defender, damage);
+				}
+
+				if (defender.isAlive() && !becameAlly && holyWep != null) {
+					holyWep.proc(attacker, defender);
+				}
+			}
+
+			if (attacker instanceof Hero && isEquipped((Hero) attacker) &&
+					attacker.virtualBuff(Smite.SmiteTracker.class) != null && !becameAlly){
+				defender.damage(attacker.virtualBuff(Smite.SmiteTracker.class).bonusDmg((Hero) attacker, defender), Smite.INSTANCE);
+			}
 		}
 		
 		if (!levelKnown && attacker == Dungeon.hero) {
@@ -141,9 +200,16 @@ abstract public class Weapon extends KindOfWeapon {
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
-				identify();
-				GLog.p( Messages.get(Weapon.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+				if (ShardOfOblivion.passiveIDDisabled()){
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					setIDReady();
+				} else {
+					identify();
+					GLog.p(Messages.get(Weapon.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
 			}
 		}
 
@@ -197,7 +263,37 @@ abstract public class Weapon extends KindOfWeapon {
 		usesLeftToID = USES_TO_ID;
 		availableUsesToID = USES_TO_ID/2f;
 	}
-	
+
+	@Override
+	public boolean collect(Bag container) {
+		if(super.collect(container)){
+			if (Dungeon.hero != null && Dungeon.hero.isAlive() && isIdentified() && enchantment != null){
+				Catalog.setSeen(enchantment.getClass());
+				Statistics.itemTypesDiscovered.add(enchantment.getClass());
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public Item identify(boolean byHero) {
+		if (enchantment != null && byHero && Dungeon.hero != null && Dungeon.hero.isAlive()){
+			Catalog.setSeen(enchantment.getClass());
+			Statistics.itemTypesDiscovered.add(enchantment.getClass());
+		}
+		return super.identify(byHero);
+	}
+
+	public void setIDReady(){
+		usesLeftToID = -1;
+	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
+	}
+
 	@Override
 	public float accuracyFactor(Char owner, Char target) {
 		
@@ -252,6 +348,9 @@ abstract public class Weapon extends KindOfWeapon {
 				return reach;
 			}
 		}
+		if (owner instanceof Hero && owner.buff(AscendedForm.AscendBuff.class) != null){
+			reach += 2;
+		}
 		if(hasEnchant(Projecting.class, owner)) reach +=Math.round(RingOfArcana.enchantPowerMultiplier(owner));
 		if(owner.buff(ChampionEnemy.Projecting.class) != null) reach += 2;
 		if(owner.buff(ChampionEnemy.Giant.class) != null) reach += 1;
@@ -270,11 +369,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public int STRReq(){
-		int req = STRReq(level());
-		if (masteryPotionBonus){
-			req -= 2;
-		}
-		return req;
+		return STRReq(level());
 	}
 
 	public abstract int STRReq(int lvl);
@@ -305,7 +400,7 @@ abstract public class Weapon extends KindOfWeapon {
 	public int buffedLvl() {
 		if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
 		int lvl = super.buffedLvl();
-		if((isEquipped(Dungeon.hero) || Dungeon.hero.belongings.contains(this))
+		if((isEquipped(Dungeon.hero) || Dungeon.hero != null && Dungeon.hero.belongings.contains(this))
 				&& (Dungeon.hero.buff(CloakOfShadows.cloakStealth.class, false) != null && Dungeon.hero.heroClass.isExact(HeroClass.ROGUE))) lvl++;
 
 		if (!evaluatingTwinUpgrades && isEquipped(Dungeon.hero) && Dungeon.hero.hasTalent(Talent.TWIN_UPGRADES)){
@@ -322,7 +417,7 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 		return lvl;
 	}
-	
+
 	@Override
 	public Item upgrade() {
 		return upgrade(false);
@@ -358,7 +453,13 @@ abstract public class Weapon extends KindOfWeapon {
 	
 	@Override
 	public String name() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( super.name() ) : super.name();
+		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && Dungeon.hero.buff(HolyWeapon.HolyWepBuff.class) != null
+			&& (Dungeon.hero.subClass != HeroSubClass.PALADIN || enchantment == null)){
+				return Messages.get(HolyWeapon.class, "ench_name", super.name());
+			} else {
+				return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name(super.name()) : super.name();
+
+		}
 	}
 	
 	@Override
@@ -375,19 +476,25 @@ abstract public class Weapon extends KindOfWeapon {
 		}
 		if (!Dungeon.isChallenged(Challenges.REDUCED_POWER))
 		level(n);
-		
-		//30% chance to be cursed
-		//10% chance to be enchanted
-		cursed = false; // not cursed by default.
+
+		//we use a separate RNG here so that variance due to things like parchment scrap
+		//does not affect levelgen
+		Random.pushGenerator(Random.Long());
+
+			//30% chance to be cursed
+			//10% chance to be enchanted
+			cursed = false; // not cursed by default.
 		float effectRoll = Random.Float();
-		if (effectRoll < 0.3f) {
-			enchant(Enchantment.randomCurse());
-			cursed = true;
-		} else if (effectRoll >= 0.9f){
+		if (effectRoll < 0.3f* ParchmentScrap.curseChanceMultiplier()) {
+				enchant(Enchantment.randomCurse());
+				cursed = true;
+			} else if (effectRoll >= 1f - (0.1f * ParchmentScrap.enchantChanceMultiplier())){
 			enchant();
 		} else {
 			enchant(null);
 		}
+
+		Random.popGenerator();
 
 		return this;
 	}
@@ -396,6 +503,11 @@ abstract public class Weapon extends KindOfWeapon {
 		if (ench == null || !ench.curse()) curseInfusionBonus = false;
 		enchantment = ench;
 		updateQuickslot();
+		if (ench != null && isIdentified() && Dungeon.hero != null
+				&& Dungeon.hero.isAlive() && Dungeon.hero.belongings.contains(this)){
+			Catalog.setSeen(ench.getClass());
+			Statistics.itemTypesDiscovered.add(ench.getClass());
+		}
 		return this;
 	}
 
@@ -408,7 +520,24 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 
 	public boolean hasEnchant(Class<?extends Enchantment> type, Char owner) {
-		return enchantment != null && enchantment.getClass() == type && owner.buff(MagicImmune.class) == null;
+		if (enchantment == null){
+			return false;
+		} else if (owner.buff(MagicImmune.class) != null) {
+			return false;
+		} else if (!enchantment.curse()
+				&& owner instanceof Hero
+				&& isEquipped((Hero) owner)
+				&& owner.buff(HolyWeapon.HolyWepBuff.class) != null
+				&& ((Hero) owner).subClass != HeroSubClass.PALADIN) {
+			return false;
+		} else if (owner.buff(BodyForm.BodyFormBuff.class) != null
+				&& owner.buff(BodyForm.BodyFormBuff.class).enchant() != null
+				&& owner.buff(BodyForm.BodyFormBuff.class).enchant().getClass().equals(type)){
+			return true;
+		} else {
+			// idk why evan's so anti-oop
+			return type.isInstance(enchantment);
+		}
 	}
 	
 	//these are not used to process specific enchant effects, so magic immune doesn't affect them
@@ -420,10 +549,19 @@ abstract public class Weapon extends KindOfWeapon {
 		return enchantment != null && enchantment.curse();
 	}
 
+	protected static ItemSprite.Glowing HOLY = new ItemSprite.Glowing( 0xFFFF00 );
+
 	@Override
 	public ItemSprite.Glowing glowing() {
-		return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
+		// fixme should probably cause thrown weapons to glow
+		if (isEquipped(Dungeon.hero) && !hasCurseEnchant() && (enchantment == null ? hero.virtualBuff(HolyWeapon.HolyWepBuff.class) != null
+				: hero.buff(HolyWeapon.HolyWepBuff.class) != null && hero.subClass != HeroSubClass.PALADIN)){
+			return HOLY;
+		} else {
+			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.glowing() : null;
+		}
 	}
+	public static float procChanceMultiplier = 0;
 
 	public static abstract class Enchantment implements Bundlable {
 
@@ -442,8 +580,8 @@ abstract public class Weapon extends KindOfWeapon {
 				40, //6.67% each
 				10  //3.33% each
 		};
-		
-		private static final Class<?>[] curses = new Class<?>[]{
+
+		public static final Class<?>[] curses = new Class<?>[]{
 				Annoying.class, Displacing.class, Dazzling.class, Explosive.class,
 				Sacrificial.class, Wayward.class, Polarized.class, Friendly.class,
 				Chaotic.class
@@ -479,6 +617,7 @@ abstract public class Weapon extends KindOfWeapon {
 
 		public static float genericProcChanceMultiplier( Char attacker, boolean applyArcana ){
 			float multi = 1;
+			if (procChanceMultiplier != 0) multi *= procChanceMultiplier;
 			if(applyArcana) multi *= RingOfArcana.enchantPowerMultiplier(attacker);
 			boolean heroAttack = attacker instanceof Hero;
 			Berserk rage = attacker.buff(Berserk.class);
@@ -489,13 +628,17 @@ abstract public class Weapon extends KindOfWeapon {
 			multi += Math.max(0, Talent.SpiritBladesTracker.getProcModifier()-1);
 
 			if (attacker.buff(RunicBlade.RunicSlashTracker.class) != null){
-				multi += 3f;
-				//handled already
+				multi += attacker.buff(RunicBlade.RunicSlashTracker.class).boost;
+                //handled already
 				//attacker.buff(RunicBlade.RunicSlashTracker.class).detach();
 			}
 
 			if (heroAttack && HighnessBuff.isEnergized() && ((Hero) attacker).pointsInTalent(Talent.SLASH_RUNNER) > 1){
 				multi += 1f;
+			}
+
+			if (attacker.virtualBuff(Smite.SmiteTracker.class) != null){
+				multi += attacker.virtualBuff(Smite.SmiteTracker.class).enchMulti();
 			}
 
 			if (attacker.buff(ElementalStrike.DirectedPowerTracker.class) != null){
@@ -515,6 +658,10 @@ abstract public class Weapon extends KindOfWeapon {
 			if (attacker.buff(RingOfForce.Force.class) != null && heroAttack && ((Hero) attacker).belongings.weapon() == null){
 				multi *= 1.5f;
 			}
+			if (attacker.buff(Smite.OmniSmite.OmniSmiteTracker.class) != null) {
+				multi *= Smite.OmniSmite.MULTI;
+			}
+
 			return multi;
 		}
 		public static float genericProcChanceMultiplier(Char attacker) {

@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Flare;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -38,6 +39,7 @@ import com.zrp200.rkpd2.windows.WndHero;
 import com.zrp200.rkpd2.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 
 public class PotionOfDivineInspiration extends ExoticPotion {
 	
@@ -133,8 +135,11 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 					new Flare( 6, 32 ).color(0xFFFF00, true).show( curUser.sprite, 2f );
 					GLog.p(Messages.get(PotionOfDivineInspiration.class, "bonus"));
 
-					if (!anonymous){
-						Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+					if (!anonymous) {
+						Catalog.countUse(PotionOfDivineInspiration.class);
+						if (Random.Float() < talentChance) {
+							Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+						}
 					}
 
 				}

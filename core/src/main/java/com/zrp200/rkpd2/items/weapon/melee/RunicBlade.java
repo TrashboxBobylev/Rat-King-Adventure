@@ -57,13 +57,14 @@ public class RunicBlade extends MeleeWeapon implements Talent.SpellbladeForgeryW
 	protected void duelistAbility(Hero hero, Integer target) {
 		//we apply here because of projecting
 		RunicSlashTracker tracker = Buff.affect(hero, RunicSlashTracker.class);
+		tracker.boost = 3f + 0.50f*buffedLvl();
 		boolean abilityUsed = duelistAbility().execute(hero, target, this);
 		if (!abilityUsed) tracker.detach();
 	}
 
 	@Override
 	protected DuelistAbility duelistAbility() {
-		return new MeleeAbility(1f);
+		return new MeleeAbility(0);
 	}
 
 	@Override
@@ -72,6 +73,25 @@ public class RunicBlade extends MeleeWeapon implements Talent.SpellbladeForgeryW
 		super.afterAbilityUsed(hero);
 	}
 
-	public static class RunicSlashTracker extends FlavourBuff{};
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", 300+50*buffedLvl());
+		} else {
+			return Messages.get(this, "typical_ability_desc", 300);
+		}
+	}
+
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return "+" + (300+50*level) + "%";
+	}
+
+
+	public static class RunicSlashTracker extends FlavourBuff{
+
+		public float boost = 2f;
+
+	};
 
 }

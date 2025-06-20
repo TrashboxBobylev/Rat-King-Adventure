@@ -36,7 +36,7 @@ public class Senior extends Monk {
 		if (Dungeon.isChallenged(Challenges.NO_VEGAN))
 			loot = new MysteryMeat();
 		else
-			loot = new Pasty();
+			loot = Pasty.class;
 		lootChance = 1f;
 	}
 	

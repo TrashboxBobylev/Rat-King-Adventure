@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.items.scrolls;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
@@ -69,6 +70,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 				Degrade.detach(curUser, Degrade.class);
 			}
 
+			detach(curUser.belongings.backpack);
 			GLog.p(Messages.get(this, "spirit"));
 			spirit.cleanse();
 		} else {
@@ -109,19 +111,23 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 
 	@Override
 	protected void onItemSelected(Item item) {
+		doEffect(curUser, item);
+	}
+
+	public static void doEffect(Hero hero, Item item) {
 		new Flare( 6, 32 ).show( curUser.sprite, 2f );
 
-		boolean procced = uncurse( curUser, item );
+		boolean procced = uncurse( hero, item );
 
-		if (curUser.buff(Degrade.class) != null) {
+		if (hero.buff(Degrade.class) != null) {
 			Degrade.detach(curUser, Degrade.class);
 			procced = true;
 		}
 
 		if (procced) {
-			GLog.p( Messages.get(this, "cleansed") );
+			GLog.p( Messages.get(ScrollOfRemoveCurse.class, "cleansed") );
 		} else {
-			GLog.i( Messages.get(this, "not_cleansed") );
+			GLog.i( Messages.get(ScrollOfRemoveCurse.class, "not_cleansed") );
 		}
 	}
 
@@ -155,10 +161,14 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			}
 		}
 		
-		if (procced && hero != null) {
-			hero.sprite.emitter().start( ShadowParticle.UP, 0.05f, 10 );
-			hero.updateHT( false ); //for ring of might
-			updateQuickslot();
+		if (procced) {
+			if (hero != null) {
+				hero.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
+				hero.updateHT(false); //for ring of might
+				updateQuickslot();
+			}
+
+			Badges.validateClericUnlock();
 		}
 		
 		return procced;

@@ -29,7 +29,9 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Mob;
-import com.zrp200.rkpd2.items.spells.FeatherFall;
+import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfFeatherFall;
+import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.RegularLevel;
 import com.zrp200.rkpd2.levels.rooms.Room;
@@ -105,9 +107,10 @@ public class Chasm implements Hero.Doom {
 		if (Dungeon.hero.isAlive()) {
 			Dungeon.hero.interrupt();
 			InterlevelScene.mode = InterlevelScene.Mode.FALL;
-			if (Dungeon.level instanceof RegularLevel) {
-				Room room = ((RegularLevel)Dungeon.level).room( pos );
-				InterlevelScene.fallIntoPit = room != null && room instanceof WeakFloorRoom;
+			if (Dungeon.level instanceof RegularLevel &&
+						((RegularLevel)Dungeon.level).room( pos ) instanceof WeakFloorRoom){
+				InterlevelScene.fallIntoPit = true;
+				Notes.remove(Notes.Landmark.DISTANT_WELL);
 			} else {
 				InterlevelScene.fallIntoPit = false;
 			}
@@ -129,11 +132,11 @@ public class Chasm implements Hero.Doom {
 		
 		Hero hero = Dungeon.hero;
 		
-		FeatherFall.FeatherBuff b = hero.buff(FeatherFall.FeatherBuff.class);
+		ElixirOfFeatherFall.FeatherBuff b = hero.buff(ElixirOfFeatherFall.FeatherBuff.class);
 		
 		if (b != null){
-			//TODO visuals
-			b.detach();
+			hero.sprite.emitter().burst( Speck.factory( Speck.JET ), 20);
+			b.processFall();
 			return;
 		}
 		

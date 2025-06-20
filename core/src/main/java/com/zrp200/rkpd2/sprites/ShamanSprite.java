@@ -63,17 +63,17 @@ public abstract class ShamanSprite extends MobSprite {
 	public void zap( int cell ) {
 
 		super.zap( cell );
-		
+
+		onZap(this, cell, ((Shaman) ch)::onZapComplete);
+
+	}
+
+	public void onZap(CharSprite sprite, int cell, Callback onZapComplete) {
 		MagicMissile.boltFromChar( parent,
 				boltType,
-				this,
+				sprite,
 				cell,
-				new Callback() {
-					@Override
-					public void call() {
-						((Shaman)ch).onZapComplete();
-					}
-				} );
+				onZapComplete);
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 

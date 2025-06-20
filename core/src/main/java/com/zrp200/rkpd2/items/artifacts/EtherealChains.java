@@ -36,6 +36,7 @@ import com.zrp200.rkpd2.effects.Chains;
 import com.zrp200.rkpd2.effects.Effects;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.levels.MiningLevel;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
@@ -113,6 +114,12 @@ public class EtherealChains extends Artifact {
 		}
 	}
 
+	@Override
+	public void resetForTrinity(int visibleLevel) {
+		super.resetForTrinity(visibleLevel);
+		charge = 5+(level()*2); //sets charge to soft cap
+	}
+
 	public CellSelector.Listener caster = new CellSelector.Listener(){
 
 		@Override
@@ -187,15 +194,18 @@ public class EtherealChains extends Artifact {
 				Actor.add(new Pushing(enemy, enemy.pos, pulledPos, new Callback() {
 					public void call() {
 						enemy.pos = pulledPos;
-						Dungeon.level.occupyCell(enemy);
-						Dungeon.observe();
-						GameScene.updateFog();
-						hero.spendAndNext(1f);
 
 						charge -= chargeUse;
 						Invisibility.dispel(hero);
 						Talent.onArtifactUsed(hero);
 						updateQuickslot();
+
+						Dungeon.level.occupyCell(enemy);
+						Dungeon.observe();
+						GameScene.updateFog();
+						hero.spendAndNext(1f);
+
+						artifactProc(enemy, visiblyUpgraded(), chargeUse);
 					}
 				}));
 				hero.next();
@@ -252,15 +262,16 @@ public class EtherealChains extends Artifact {
 				Actor.add(new Pushing(hero, hero.pos, newHeroPos, new Callback() {
 					public void call() {
 						hero.pos = newHeroPos;
-						Dungeon.level.occupyCell(hero);
-						hero.spendAndNext(1f);
-						Dungeon.observe();
-						GameScene.updateFog();
 
 						charge -= chargeUse;
 						Invisibility.dispel(hero);
 						Talent.onArtifactUsed(hero);
 						updateQuickslot();
+
+						Dungeon.level.occupyCell(hero);
+						hero.spendAndNext(1f);
+						Dungeon.observe();
+						GameScene.updateFog();
 					}
 				}));
 				hero.next();
@@ -279,7 +290,7 @@ public class EtherealChains extends Artifact {
 		int chargeTarget = 5+(level()*2);
 		if (charge < chargeTarget*2){
 			partialCharge += 0.5f*amount;
-			if (partialCharge >= 1){
+			while (partialCharge >= 1){
 				partialCharge--;
 				charge++;
 				updateQuickslot();
@@ -318,7 +329,7 @@ public class EtherealChains extends Artifact {
 				Buff.prolong( target, Cripple.class, 10f);
 			}
 
-			if (partialCharge >= 1) {
+			while (partialCharge >= 1) {
 				partialCharge --;
 				charge ++;
 			}
@@ -344,6 +355,7 @@ public class EtherealChains extends Artifact {
 			if (exp > 100+level()*100 && level() < levelCap){
 				exp -= 100+level()*100;
 				GLog.p( Messages.get(this, "levelup") );
+				Catalog.countUses(EtherealChains.class, 2);
 				upgrade();
 			}
 

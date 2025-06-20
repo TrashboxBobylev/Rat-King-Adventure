@@ -51,7 +51,7 @@ public class Monk extends Mob {
 		if (Dungeon.isChallenged(Challenges.NO_VEGAN)){
 			loot = new MysteryMeat();
 		}
-		else loot = new Food();
+		else loot = Food.class;
 		lootChance = 0.083f;
 
 		properties.add(Property.UNDEAD);

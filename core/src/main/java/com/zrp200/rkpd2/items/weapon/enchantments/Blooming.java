@@ -23,8 +23,14 @@ package com.zrp200.rkpd2.items.weapon.enchantments;
 
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.Regeneration;
+import com.zrp200.rkpd2.effects.CellEmitter;
+import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.levels.Level;
+import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.features.HighGrass;
+import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -90,7 +96,10 @@ public class Blooming extends Weapon.Enchantment {
 
 	private boolean plantGrass(int cell){
 		if( HighGrass.plant(cell) ) {
-			HighGrass.playVFX(cell);
+            if (!Regeneration.regenOn()) {
+                Level.set(cell, Terrain.FURROWED_GRASS);
+            }
+            HighGrass.playVFX(cell);
 			return true;
 		}
 		return false;

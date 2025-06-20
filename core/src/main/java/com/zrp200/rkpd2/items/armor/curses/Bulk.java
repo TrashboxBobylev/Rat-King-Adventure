@@ -21,8 +21,10 @@
 
 package com.zrp200.rkpd2.items.armor.curses;
 
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.armor.Armor;
+import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 
 public class Bulk extends Armor.Glyph {
@@ -31,9 +33,18 @@ public class Bulk extends Armor.Glyph {
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		
-		//no proc effect, see armor.speedfactor
+		//no proc effect, triggers in Char.speed()
 		return damage;
+	}
+
+	//more of a reduction really
+	public static float speedBoost( Char owner, int level ){
+		if (level == -1 ||
+				(Dungeon.level.map[owner.pos] != Terrain.DOOR && Dungeon.level.map[owner.pos] != Terrain.OPEN_DOOR )) {
+			return 1;
+		} else {
+			return 1/3f * genericProcChanceMultiplier(owner);
+		}
 	}
 	
 	@Override

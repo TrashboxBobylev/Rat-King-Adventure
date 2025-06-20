@@ -33,8 +33,8 @@ import com.zrp200.rkpd2.levels.builders.LineBuilder;
 import com.zrp200.rkpd2.levels.painters.CityPainter;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
-import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
-import com.zrp200.rkpd2.levels.rooms.standard.ExitRoom;
+import com.zrp200.rkpd2.levels.rooms.standard.entrance.EntranceRoom;
+import com.zrp200.rkpd2.levels.rooms.standard.exit.ExitRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.ImpShopRoom;
 import com.zrp200.rkpd2.messages.Messages;
 import com.watabou.noosa.Group;
@@ -167,6 +167,7 @@ public class LastShopLevel extends RegularLevel {
 	public String tileDesc(int tile) {
 		switch (tile) {
 			case Terrain.ENTRANCE:
+			case Terrain.ENTRANCE_SP:
 				return Messages.get(CityLevel.class, "entrance_desc");
 			case Terrain.EXIT:
 				return Messages.get(CityLevel.class, "exit_desc");

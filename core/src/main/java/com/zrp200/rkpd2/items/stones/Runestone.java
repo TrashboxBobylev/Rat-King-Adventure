@@ -22,9 +22,13 @@
 package com.zrp200.rkpd2.items.stones;
 
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
+import com.zrp200.rkpd2.actors.buffs.MagicImmune;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
 public abstract class Runestone extends Item {
@@ -34,16 +38,28 @@ public abstract class Runestone extends Item {
 		defaultAction = AC_THROW;
 	}
 
-	//runestones press the cell they're thrown to by default, but a couple stones override this
-	protected boolean pressesCell = true;
+	//anonymous stones don't count as consumed, do not drop, etc.
+	//useful for stones which are only spawned for their effects
+	protected boolean anonymous = false;
+	public void anonymize(){
+		image = ItemSpriteSheet.STONE_HOLDER;
+		anonymous = true;
+	}
 
 	@Override
 	protected void onThrow(int cell) {
-		if (Dungeon.level.pit[cell] || !defaultAction().equals(AC_THROW)){
-			super.onThrow( cell );
+		///inventory stones are thrown like normal items, other stones don't trigger when thrown into pits
+		if (this instanceof InventoryStone ||
+				Dungeon.hero.buff(MagicImmune.class) != null ||
+				(Dungeon.level.pit[cell] && Actor.findChar(cell) == null)){
+			if (!anonymous) super.onThrow( cell );
 		} else {
-			if (pressesCell) Dungeon.level.pressCell( cell );
+			if (!anonymous) {
+				Catalog.countUse(getClass());
+				Talent.onRunestoneUsed(curUser, cell, getClass());
+			}
 			activate(cell);
+			if (Actor.findChar(cell) == null) Dungeon.level.pressCell( cell );
 			HighnessBuff.agreenalineProc();
 			Invisibility.dispel();
 		}

@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.bags;
 
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.LiquidMetal;
+import com.zrp200.rkpd2.items.Waterskin;
 import com.zrp200.rkpd2.items.potions.Potion;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
@@ -34,7 +35,7 @@ public class PotionBandolier extends Bag {
 
 	@Override
 	public boolean canHold( Item item ) {
-		if (item instanceof Potion || item instanceof LiquidMetal){
+		if (item instanceof Potion || item instanceof LiquidMetal || item instanceof Waterskin){
 			return super.canHold(item);
 		} else {
 			return false;

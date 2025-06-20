@@ -126,15 +126,20 @@ public class EyeSprite extends MobSprite {
 		
 		if (anim == zap) {
 			idle();
-			if (Actor.findChar(zapPos) != null){
-				parent.add(new Beam.DeathRay(center(), Actor.findChar(zapPos).sprite.center()));
-			} else {
-				parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(zapPos)));
-			}
+			parent.add(deathGaze(this, zapPos));
 			((Eye)ch).deathGaze();
 			ch.next();
 		} else if (anim == die){
 			chargeParticles.killAndErase();
+		}
+	}
+
+	public static Beam.DeathRay deathGaze(CharSprite src, int zapPos) {
+		Char ch = Actor.findChar(zapPos);
+		if (ch != null){
+			return new Beam.DeathRay(src.center(), ch.sprite.center());
+		} else {
+			return new Beam.DeathRay(src.center(), DungeonTilemap.raisedTileCenterToWorld(zapPos));
 		}
 	}
 }

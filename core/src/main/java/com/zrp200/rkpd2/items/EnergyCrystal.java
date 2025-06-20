@@ -23,12 +23,13 @@ package com.zrp200.rkpd2.items;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,9 @@ public class EnergyCrystal extends Item {
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
 
+		Catalog.setSeen(getClass());
+		Statistics.itemTypesDiscovered.add(getClass());
+
 		Dungeon.energy += quantity;
 		//TODO track energy collected maybe? We do already track recipes crafted though..
 
@@ -77,12 +81,6 @@ public class EnergyCrystal extends Item {
 	@Override
 	public boolean isIdentified() {
 		return true;
-	}
-
-	@Override
-	public Item random() {
-		quantity = Random.IntRange( 4, 6 );
-		return this;
 	}
 
 }

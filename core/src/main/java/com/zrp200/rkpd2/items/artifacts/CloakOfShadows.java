@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.CellSelector;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -46,12 +47,12 @@ import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.utils.GLog;
-import com.zrp200.rkpd2.utils.SafeCast;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.zrp200.rkpd2.utils.SafeCast;
 
 import java.util.ArrayList;
 
@@ -81,7 +82,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if ((isEquipped( hero ) || hero.hasTalent(Talent.LIGHT_CLOAK,Talent.RK_FREERUNNER))
+		if ((isEquipped( hero ) || lightCloakFactor(hero) > 0)
 				&& !cursed
 				&& hero.buff(MagicImmune.class) == null
 				&& (charge > 0 || activeBuff != null)) {
@@ -104,7 +105,7 @@ public class CloakOfShadows extends Artifact {
 		if (action.equals( AC_STEALTH )) {
 
 			if (activeBuff == null){
-				if (!isEquipped(hero) && !hero.hasTalent(Talent.LIGHT_CLOAK,Talent.RK_FREERUNNER)) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
+				if (!isEquipped(hero) && lightCloakFactor(hero) == 0) GLog.i( Messages.get(Artifact.class, "need_to_equip") );
 				else if (cursed)       GLog.i( Messages.get(this, "cursed") );
 				else if (charge <= 0)  GLog.i( Messages.get(this, "no_charge") );
 				else {
@@ -199,7 +200,7 @@ public class CloakOfShadows extends Artifact {
 	@Override
 	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
 		if (super.doUnequip(hero, collect, single)){
-			if (!collect || !hero.hasTalent(Talent.LIGHT_CLOAK,Talent.RK_FREERUNNER)){
+			if (!collect || lightCloakFactor(hero) == 0){
 				if (activeBuff != null){
 					activeBuff.detach();
 					activeBuff = null;
@@ -218,7 +219,7 @@ public class CloakOfShadows extends Artifact {
 		if (super.collect(container)){
 			if (container.owner instanceof Hero
 					&& passiveBuff == null
-					&& ((Hero) container.owner).hasTalent(Talent.LIGHT_CLOAK,Talent.RK_FREERUNNER)){
+					&& lightCloakFactor((Hero) container.owner) > 0) {
 				activate((Hero) container.owner);
 			}
 			return true;
@@ -248,28 +249,40 @@ public class CloakOfShadows extends Artifact {
 	protected ArtifactBuff activeBuff( ) {
 		return new cloakStealth();
 	}
-public static final float LC_FACTOR =.2f, LC_FACTOR_RK =0.75f/3f;
+private float lightCloakFactor(Hero hero) {
+		return Math.max(
+				!hero.canHaveTalent(Talent.LIGHT_CLOAK) ? 0 :
+						// 1/6 1/3 2/3 1
+						Math.max(2 * hero.pointsInTalent(Talent.LIGHT_CLOAK), 1)/6f,
+				hero.pointsInTalent(Talent.RK_FREERUNNER)/4f
+		);
+	}
+
 	@Override
 	public void charge(Hero target, float amount) {
 		if (cursed || target.buff(MagicImmune.class) != null) return;
 
 		if (charge < chargeCap) {
 			// moved previous equip for free mechanic to light cloak
-			if (!isEquipped(target)) amount *= target.byTalent(
-					Talent.LIGHT_CLOAK, LC_FACTOR,
-					Talent.RK_FREERUNNER, LC_FACTOR_RK);
+			if (!isEquipped(target)) {
+				amount *= lightCloakFactor(target);
+			}
 			if(target.heroClass.isExact(HeroClass.ROGUE)) amount *= ROGUE_BOOST;
 			partialCharge += 0.25f*amount;
-			if (partialCharge >= 1){
-				partialCharge--;
+			while (partialCharge >= 1f) {
 				charge++;
-				updateQuickslot();
+				partialCharge--;
 			}
+			if (charge >= chargeCap){
+				partialCharge = 0;
+				charge = chargeCap;
+			}
+			updateQuickslot();
 		}
 	}
 
-	public void overCharge(int amount){
-		charge = Math.min(charge+amount, chargeCap+amount);
+	public void directCharge(int amount){
+		charge = Math.min(charge+amount, chargeCap);
 		updateQuickslot();
 	}
 
@@ -315,14 +328,12 @@ public static final float LC_FACTOR =.2f, LC_FACTOR_RK =0.75f/3f;
 					turnsToCharge /= RingOfEnergy.artifactChargeMultiplier(target);
 					float chargeToGain = (1f / turnsToCharge);
 					if (!isEquipped(Dungeon.hero)){
-						chargeToGain *= Dungeon.hero.byTalent(
-								Talent.LIGHT_CLOAK, LC_FACTOR,
-								Talent.RK_FREERUNNER, LC_FACTOR_RK);
+						chargeToGain *= lightCloakFactor(Dungeon.hero);
 					}
 					partialCharge += chargeToGain;
 				}
 
-				if (partialCharge >= 1) {
+				while (partialCharge >= 1) {
 					charge++;
 					partialCharge -= 1;
 					if (charge == chargeCap){
@@ -472,6 +483,7 @@ public static final float LC_FACTOR =.2f, LC_FACTOR_RK =0.75f/3f;
 					int expPerLevel = 50;
 					if (exp >= (level() + 1) * expPerLevel && level() < levelCap) {
 						upgrade();
+						Catalog.countUse(CloakOfShadows.class);
 						exp -= level() * expPerLevel;
 						GLog.p(Messages.get(cloakStealth.class, "levelup"));
 

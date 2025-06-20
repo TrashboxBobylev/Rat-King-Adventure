@@ -41,6 +41,8 @@ public class Longsword extends Sword {
 		tier = 4;
 	}
 
+	//+(6+lvl) damage, roughly +40% base dmg, +33% scaling
+
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
 		GameScene.selectCell(leaper);

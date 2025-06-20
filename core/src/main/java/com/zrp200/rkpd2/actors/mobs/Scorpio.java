@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Cripple;
 import com.zrp200.rkpd2.actors.buffs.Light;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.Potion;
@@ -104,9 +105,28 @@ public class Scorpio extends Mob {
 	@Override
 	public void aggro(Char ch) {
 		//cannot be aggroed to something it can't see
-		if (ch == null || fieldOfView == null || fieldOfView[ch.pos]) {
+		//skip this check if FOV isn't initialized
+		if (ch == null || fieldOfView == null
+				|| fieldOfView.length != Dungeon.level.length() || fieldOfView[ch.pos]) {
 			super.aggro(ch);
 		}
+	}
+
+	@Override
+	public void onAttackComplete() {
+		// reflect logic
+		if (ShieldOfLight.DivineShield.tryUse(enemy, this, () ->
+				((ScorpioSprite) sprite).shot.shoot(enemy.sprite, pos, () -> {
+					Char enemy = this.enemy;
+					this.enemy = this;
+					super.onAttackComplete();
+					this.enemy = enemy;
+				})
+		)) {
+			next();
+			return;
+		}
+		super.onAttackComplete();
 	}
 
 	@Override

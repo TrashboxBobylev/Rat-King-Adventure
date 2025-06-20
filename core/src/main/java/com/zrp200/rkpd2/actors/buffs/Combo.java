@@ -21,9 +21,13 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.QuickSlot;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -42,6 +46,8 @@ import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.AttackIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.watabou.utils.BArray;
+import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndCombo;
 import com.watabou.noosa.BitmapText;
@@ -54,6 +60,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Combo extends Buff implements ActionIndicator.Action {
@@ -61,20 +68,20 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	{
 		type = buffType.POSITIVE;
 	}
-	
+
 	private int count = 0;
 	private float comboTime = 0f;
 	private float initialComboTime = baseComboTime();
 
 	private static float baseComboTime() {
-		return 5f+(Dungeon.hero != null ? Dungeon.hero.pointsInTalent(Talent.SKILL) : 0);
+		return 5f+(hero != null ? hero.pointsInTalent(Talent.SKILL) : 0);
 	}
 
 	@Override
 	public int icon() {
 		return BuffIndicator.COMBO;
 	}
-	
+
 	@Override
 	public void tintIcon(Image icon) {
 		ComboMove move = getHighestMove();
@@ -94,23 +101,34 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	public String iconTextDisplay() {
 		return Integer.toString((int)comboTime);
 	}
-	
+
+	public void resetTime(float time, boolean force) {
+		if (force || time > comboTime) {
+			comboTime = initialComboTime = time;
+		}
+	}
+	public void resetTime(boolean force) {
+		resetTime(baseComboTime(), force);
+	}
+
+	public void resetTime() {
+		resetTime(false);
+	}
+
 	public void hit( Char enemy ) {
 
-		if(Dungeon.hero.pointsInTalent(Talent.SKILL) == 3 && Random.Int(3) == 0) count++;
-		comboTime = baseComboTime();
+		if(hero.pointsInTalent(Talent.SKILL) == 3 && Random.Int(3) == 0) count++;
 
 		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
 			Hero hero = (Hero)target;
-			int time = 15 * hero.pointsInTalent(Talent.RK_GLADIATOR);
-			if (Dungeon.hero.subClass.isExact(HeroSubClass.GLADIATOR)) time = 25;
-			comboTime = Math.max(comboTime, time);
+			resetTime(15 * hero.shiftedPoints(Talent.CLEAVE,Talent.RK_GLADIATOR), false);
+		} else {
+			resetTime(hero.subClass != HeroSubClass.GLADIATOR);
 		}
 		incCombo();
 	}
 	public void incCombo() {
 		count++;
-		initialComboTime = comboTime;
 
 		if ((getHighestMove() != null)) {
 
@@ -118,7 +136,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 			Badges.validateMasteryCombo( count );
 
 			GLog.p( Messages.get(this, "combo", count) );
-			
+
 		}
 
 		BuffIndicator.refreshHero(); //refresh the buff visually on-hit
@@ -127,7 +145,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 	public void miss() {
 		if(((Hero)target).pointsInTalent(Talent.SKILL) >= 2 && Random.Int(3) == 0) {
-			comboTime = baseComboTime();
+			resetTime();
 			incCombo();
 		}
 	}
@@ -189,8 +207,8 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		initialComboTime = bundle.getFloat( INITIAL_TIME );
 
-		clobberUsed = bundle.getBoolean(CLOBBER_USED);
-		parryUsed = bundle.getBoolean(PARRY_USED);
+		clobberUsed = bundle.getBoolean(CLOBBER_USED) ? 1 : bundle.getInt(CLOBBER_USED);
+		parryUsed = bundle.getBoolean(PARRY_USED) ? 1 : bundle.getInt(PARRY_USED);
 
 		if (getHighestMove() != null) ActionIndicator.setAction(this);
 	}
@@ -253,21 +271,47 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		}
 
 		public String desc(int count){
-			switch (this){
-				default:
-					return Messages.get(this, name() + ".desc");
-				case SLAM:
-					return Messages.get(this,  name() + ".desc", count*20);
-				case CRUSH:
-					return Messages.get(this,  name() + ".desc", count*25);
-			}
+			// ensures proper descriptions
+			count = Math.max(count, comboReq);
 
+			// note, this includes a desc fix for clobber that causes it to already proc one earlier than expected
+			int enhancedCombo = hero.shiftedPoints(Talent.ENHANCED_COMBO);
+			int baseEnhancedCombo = hero.pointsInTalent(Talent.RK_GLADIATOR);
+			// leap distance
+			int reqCount =
+					enhancedCombo >= 1 ? 5 - (enhancedCombo - 1) :
+					baseEnhancedCombo == 3 ? 3 :
+							-1;
+
+            Object[] args = {reqCount == 0 ? 0 : count / reqCount, null};
+			switch (this){
+				case CLOBBER:
+					// 8 / 6 / 4 / 2
+					reqCount = baseEnhancedCombo >= 1 ? 6 :
+							enhancedCombo > 0 ? 8 - 2 * (enhancedCombo - 1) :
+									-1;
+                    break;
+				case SLAM:
+                    args[count >= reqCount ? 1 : 0] = count * 20;
+                    break;
+				case PARRY:
+					reqCount = baseEnhancedCombo >= 2 ? 9 :
+							// - / 12 / 9 / 6
+							enhancedCombo > 1 ? 12 - 3 * (enhancedCombo - 2) :
+									-1;
+                    break;
+				case CRUSH:
+                    args[count >= reqCount ? 1 : 0] = count * 25;
+                    break;
+			}
+			boolean empowered = reqCount > 0 && count >= reqCount;
+            return Messages.get(this, name() + (empowered ? ".empower_desc" : ".desc"), args);
 		}
 
 	}
 
-	private boolean clobberUsed = false;
-	private boolean parryUsed = false;
+	private int clobberUsed = 0;
+	private int parryUsed = 0;
 
 	public ComboMove getHighestMove(){
 		ComboMove best = null;
@@ -284,19 +328,20 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	}
 
 	public boolean canUseMove(ComboMove move){
-		if (move == ComboMove.CLOBBER && clobberUsed)   return false;
-		if (move == ComboMove.PARRY && parryUsed)       return false;
+		int times = Math.max(1, hero.pointsInTalent(Talent.ENHANCED_COMBO));
+		if (move == ComboMove.CLOBBER && clobberUsed >= times)   return false;
+		if (move == ComboMove.PARRY && parryUsed >= times)       return false;
 		return move.comboReq <= count;
 	}
 
 	public void useMove(ComboMove move){
 		if (move == ComboMove.PARRY){
-			parryUsed = true;
-			comboTime = 5f;
+			parryUsed++;
+			resetTime();
 			Invisibility.dispel();
 			Buff.affect(target, ParryTracker.class, Actor.TICK);
 			((Hero)target).spendAndNext(Actor.TICK);
-			Dungeon.hero.busy();
+			hero.busy();
 		} else {
 			moveBeingUsed = move;
 			GameScene.selectCell(new Selector());
@@ -352,9 +397,6 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		float dmgMulti = 1f;
 		int dmgBonus = 0;
-		// todo reimplement this, v0.9.3 changes broke this code.
-		// if(hero.hasTalent(Talent.SKILL)) dmg = Math.max(target.damageRoll(), dmg); // free reroll. This will be rather...noticable on fury.
-
 		//variance in damage dealt
 		switch (moveBeingUsed) {
 			case CLOBBER:
@@ -377,16 +419,21 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		int oldPos = enemy.pos;
 		if (hero.attack(enemy, dmgMulti, dmgBonus, Char.INFINITE_ACCURACY, hero.hasTalent(Talent.SKILL)?2:1)){
 			//special on-hit effects
+			int enhancedCombo = hero.shiftedPoints(Talent.ENHANCED_COMBO);
+			int baseEnhancedCombo = hero.pointsInTalent(Talent.RK_GLADIATOR);
 			switch (moveBeingUsed) {
 				case CLOBBER:
-					if (!wasAlly) hit(enemy);
 					//trace a ballistica to our target (which will also extend past them
 					Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
 					//trim it to just be the part that goes past them
 					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
 					//knock them back along that ballistica, ensuring they don't fall into a pit
 					int dist = 2;
-					if (enemy.isAlive() && (hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1 && count >= 4 || count >= 7 && hero.pointsInTalent(Talent.RK_GLADIATOR) >= 1)){
+					if (enemy.isAlive() && count >= (
+							enhancedCombo > 0 ? 8 - 2 * (enhancedCombo - 1) :
+									baseEnhancedCombo >= 1 ? 6 :
+											count + 1
+					)) {
 						dist++;
 						Buff.prolong(enemy, Vertigo.class, 3);
 					} else if (!enemy.flying) {
@@ -395,6 +442,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 							dist--;
 						}
 					}
+					if (!wasAlly) hit(enemy); // prevent skill talent from weirdly interacting with clobber
 					if (enemy.pos == oldPos) {
 						WandOfBlastWave.throwChar(enemy, trajectory, dist, true, false, hero);
 					}
@@ -443,7 +491,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 		//Post-attack behaviour
 		switch(moveBeingUsed){
 			case CLOBBER:
-				clobberUsed = true;
+				clobberUsed++;
 				if (getHighestMove() == null) ActionIndicator.clearAction(Combo.this);
 				hero.spendAndNext(hero.attackDelay());
 				break;
@@ -492,46 +540,99 @@ public class Combo extends Buff implements ActionIndicator.Action {
 	// more than just a selector
 	private class Selector extends CellSelector.TargetedListener {
 		private int getLeapDistance() {
-			return 1 + count/(((Hero)target).hasTalent(Talent.ENHANCED_COMBO)?2:3);
+			int factor = hero.hasTalent(Talent.RK_GLADIATOR) ? 3 :
+					hero.canHaveTalent(Talent.ENHANCED_COMBO) ? 6 - hero.shiftedPoints(Talent.ENHANCED_COMBO) :
+					0;
+			return factor <= 0 ? 0 : count / factor;
 		}
 
 		private HashMap<Char, Integer> targets = new HashMap<>();
 		protected boolean isValidTarget(Char enemy) {
-			if (enemy != null
-					&& enemy.alignment != Char.Alignment.ALLY
-					&& enemy != target
-					&& Dungeon.level.heroFOV[enemy.pos]
-					&& !target.isCharmedBy(enemy)) {
-				if (target.canAttack(enemy)) {
-					targets.put(enemy, target.pos); // no need to generate a ballistica.
-					return true;
-				} else if (!target.rooted && ((Hero) target).pointsInTalent(Talent.ENHANCED_COMBO, Talent.RK_GLADIATOR) == 3
-						&& Dungeon.level.distance(target.pos, enemy.pos) <= getLeapDistance()) {
-					Ballistica b = new Ballistica(target.pos, enemy.pos, Ballistica.PROJECTILE);
-					if(b.collisionPos == enemy.pos) {
-						int leapPos = b.path.get(b.dist-1);
-						if(Dungeon.level.passable[leapPos] || target.flying && Dungeon.level.avoid[leapPos]) {
-							targets.put(enemy, leapPos);
-							return true;
-						}
-					}
-				}
-			}
-			return false;
+			int pos = Leap.findLeapPos(target, enemy, getLeapDistance());
+			if (pos < 0) return false;
+			targets.put(enemy, pos);
+			return true;
 		}
 
 		@Override
 		protected void onInvalid(int cell) {
 			if(cell == -1) return;
-			if(target.rooted) {
-				PixelScene.shake( 1, 1f );
-			}
-			GLog.w(Messages.get(Combo.class, "bad_target"));
+			Leap.onInvalid(Messages.get(Combo.this, "bad_target"));
 		}
 
 		@Override
 		protected void action(Char enemy) {
-			int leapPos = targets.get(enemy);
+			Leap.execute((Hero) target, enemy, targets.get(enemy), () -> doAttack(enemy));
+		}
+
+		@Override
+		public String prompt() {
+			return Messages.get(Combo.class, "prompt");
+		}
+	}
+	public interface Leap extends Callback {
+
+		static int findLeapPos(Char target, int dest, int leapDistance) {
+			return findLeapPos(target, new Char() {{pos = dest;}}, leapDistance, false);
+		}
+
+		static int findLeapPos(Char target, Char enemy, int leapDistance) {
+			if (enemy != null
+					&& enemy.alignment != Char.Alignment.ALLY
+					&& enemy != target
+					&& Dungeon.level.heroFOV[enemy.pos]
+					&& !target.isCharmedBy(enemy)) {
+				return findLeapPos(target, enemy, leapDistance, true);
+			}
+			return -1;
+		}
+
+		static int findLeapPos(Char target, Char enemy, int leapDistance, boolean willAttack) {
+			if (willAttack ? target.canAttack(enemy) : Dungeon.level.adjacent(target.pos, enemy.pos)) {
+				return target.pos;
+			} else if (!target.rooted && leapDistance > 0) {
+				// friendlier version of combo leap that doesn't require actually colliding with the target
+				// as a note, shattered would force the final position to be adjacent to the target
+				// this behavior isn't retained by this implementation
+
+				// fixme really this should not be using auto-aim but its own custom logic,
+				//  as it is attempting to auto-aim to an illegal position (the enemy pos),
+				//  which means that some tiles may be passed over when the hero has increased attack range.
+				//  instead, it should attempt to target the leap tile directly.
+
+				int to = QuickSlotButton.autoAim(enemy);
+
+                Ballistica b = new Ballistica(target.pos, to == -1 ? enemy.pos : to, Ballistica.PROJECTILE);
+
+				// if the target was never in the field of view to begin with, treat any valid leap to a space out of view as valid
+				boolean targetInFOV = willAttack;
+                int leapPos;
+                do {
+					if (!targetInFOV) targetInFOV = Dungeon.level.heroFOV[b.path.get(b.dist)];
+					if (--b.dist <= 0) return -1;
+                    leapPos = b.path.get(b.dist);
+                } while (
+                        !Dungeon.level.passable[leapPos] ||
+                                (!target.flying && Dungeon.level.avoid[leapPos]) ||
+                                // ballistica's dist isn't a good measure of distance, so it needs to be checked per tile
+                                Dungeon.level.distance(target.pos, leapPos) > leapDistance
+                );
+                if (willAttack) {
+                    int initialPos = target.pos;
+                    try {
+                        target.pos = leapPos;
+                        if (target.canAttack(enemy)) return leapPos;
+                    } finally {
+						target.pos = initialPos;
+					}
+                } else if (!targetInFOV || Dungeon.level.adjacent(leapPos, enemy.pos)) {
+                    return leapPos;
+                }
+			}
+			return -1;
+		}
+
+		static void execute(Hero target, int leapPos, Leap onLeapComplete) {
 			((Hero)target).busy();
 			if(leapPos != target.pos) {
 				target.sprite.jump(target.pos, leapPos, () -> {
@@ -539,16 +640,21 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					Dungeon.level.occupyCell(target);
 					Dungeon.observe();
 					GameScene.updateFog();
-					target.sprite.attack(enemy.pos, () -> doAttack(enemy));
+					onLeapComplete.call();
 				});
 			} else {
-				target.sprite.attack(enemy.pos, ()->doAttack(enemy));
+				onLeapComplete.call();
 			}
 		}
+		static void execute(Hero target, Char enemy, int leapPos, Leap doAttack) {
+			execute(target, leapPos, () -> target.sprite.attack(enemy.pos, doAttack));
+		}
 
-		@Override
-		public String prompt() {
-			return Messages.get(Combo.class, "prompt");
+		static void onInvalid(String message) {
+			if (hero.rooted) {
+				PixelScene.shake(1, 1);
+			}
+			GLog.w(message);
 		}
 	}
 }

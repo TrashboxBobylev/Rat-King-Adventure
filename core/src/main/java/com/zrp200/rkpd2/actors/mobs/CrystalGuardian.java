@@ -30,6 +30,7 @@ import com.zrp200.rkpd2.actors.buffs.Doom;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Splash;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -117,7 +118,8 @@ public class CrystalGuardian extends Mob{
 	@Override
 	public int defenseProc(Char enemy, int damage) {
 		if (recovering){
-			sprite.showStatus(CharSprite.NEGATIVE, Integer.toString(damage));
+			//this triggers before blocking, so the dmg as block-bypassing
+			sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(damage), FloatingText.PHYS_DMG_NO_BLOCK);
 			HP = Math.max(1, HP-damage);
 			damage = -1;
 		}
@@ -138,6 +140,8 @@ public class CrystalGuardian extends Mob{
 
 			if (!recovering) {
 				recovering = true;
+				Bestiary.setSeen(getClass());
+				Bestiary.countEncounter(getClass());
 				if (sprite != null) ((CrystalGuardianSprite) sprite).crumple();
 			}
 		}

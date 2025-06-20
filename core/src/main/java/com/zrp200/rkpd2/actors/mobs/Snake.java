@@ -24,12 +24,9 @@ package com.zrp200.rkpd2.actors.mobs;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.items.Generator;
-import com.zrp200.rkpd2.items.journal.Guidebook;
 import com.zrp200.rkpd2.journal.Document;
-import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.SnakeSprite;
-import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.utils.Random;
 
 public class Snake extends Mob {
@@ -64,7 +61,6 @@ public class Snake extends Mob {
 		dodges++;
 		if ((dodges >= 2 && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS))
 				|| (dodges >= 4 && !Badges.isUnlocked(Badges.Badge.BOSS_SLAIN_1))){
-			GLog.p(Messages.get(Guidebook.class, "hint"));
 			GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_SURPRISE_ATKS);
 			dodges = 0;
 		}

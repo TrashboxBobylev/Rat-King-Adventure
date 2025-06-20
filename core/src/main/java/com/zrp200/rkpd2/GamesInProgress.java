@@ -82,7 +82,15 @@ public class GamesInProgress {
 			Info curr = check(i);
 			if (curr != null) result.add(curr);
 		}
-		Collections.sort(result, scoreComparator);
+		switch (SPDSettings.gamesInProgressSort()){
+			case "level": default:
+				Collections.sort(result, levelComparator);
+				break;
+			case "last_played":
+				Collections.sort(result, lastPlayedComparator);
+				break;
+		}
+
 		return result;
 	}
 	
@@ -103,13 +111,14 @@ public class GamesInProgress {
 			try {
 				
 				Bundle bundle = FileUtils.bundleFromFile(gameFile(slot));
-				info = new Info();
-				info.slot = slot;
-				Dungeon.preview(info, bundle);
-				
-				//saves from before v1.2.3 are not supported
-				if (info.version < ShatteredPixelDungeon.v1_2_3) {
+
+				if (bundle.getInt( "version" ) < ShatteredPixelDungeon.v2_3_2) {
 					info = null;
+				} else {
+
+					info = new Info();
+					info.slot = slot;
+					Dungeon.preview(info, bundle);
 				}
 
 			} catch (IOException e) {
@@ -128,7 +137,9 @@ public class GamesInProgress {
 	public static void set(int slot) {
 		Info info = new Info();
 		info.slot = slot;
-		
+
+		info.lastPlayed = Dungeon.lastPlayed;
+
 		info.depth = Dungeon.depth;
 		info.challenges = Dungeon.challenges;
 		info.branch = Dungeon.branch;
@@ -165,7 +176,7 @@ public class GamesInProgress {
 	
 	public static class Info {
 		public int slot;
-		
+
 		public int depth;
 		public int version;
 		public int challenges;
@@ -174,6 +185,7 @@ public class GamesInProgress {
 		public String customSeed;
 		public boolean daily;
 		public boolean dailyReplay;
+		public long lastPlayed;
 
 		public int level;
 		public int str;
@@ -192,12 +204,21 @@ public class GamesInProgress {
 		public int branch;
 	}
 	
-	public static final Comparator<GamesInProgress.Info> scoreComparator = new Comparator<GamesInProgress.Info>() {
+	public static final Comparator<GamesInProgress.Info> levelComparator = new Comparator<GamesInProgress.Info>() {
 		@Override
 		public int compare(GamesInProgress.Info lhs, GamesInProgress.Info rhs ) {
-			int lScore = (lhs.level * lhs.maxDepth * 100) + lhs.goldCollected;
-			int rScore = (rhs.level * rhs.maxDepth * 100) + rhs.goldCollected;
-			return (int)Math.signum( rScore - lScore );
+			if (rhs.level != lhs.level){
+				return (int)Math.signum( rhs.level - lhs.level );
+			} else {
+				return lastPlayedComparator.compare(lhs, rhs);
+			}
+		}
+	};
+
+	public static final Comparator<GamesInProgress.Info> lastPlayedComparator = new Comparator<GamesInProgress.Info>() {
+		@Override
+		public int compare(GamesInProgress.Info lhs, GamesInProgress.Info rhs ) {
+			return (int)Math.signum( rhs.lastPlayed - lhs.lastPlayed );
 		}
 	};
 }

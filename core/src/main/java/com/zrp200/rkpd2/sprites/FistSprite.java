@@ -123,16 +123,15 @@ public abstract class FistSprite extends MobSprite {
 
 		super.zap( cell );
 
-		MagicMissile.boltFromChar( parent,
+		onZap(this, cell, ((YogFist) ch)::onZapComplete);
+	}
+
+	public void onZap(CharSprite from, int cell, Callback onZapComplete) {
+		MagicMissile.boltFromChar( from.parent,
 				boltType,
-				this,
+				from,
 				cell,
-				new Callback() {
-					@Override
-					public void call() {
-						((YogFist)ch).onZapComplete();
-					}
-				} );
+				onZapComplete );
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 
@@ -199,7 +198,7 @@ public abstract class FistSprite extends MobSprite {
 	public static class Rotting extends FistSprite {
 
 		{
-			boltType = MagicMissile.TOXIC_VENT;
+			boltType = MagicMissile.SPECK + Speck.TOXIC;
 		}
 
 		@Override
@@ -265,12 +264,11 @@ public abstract class FistSprite extends MobSprite {
 		}
 
 		@Override
-		public void zap( int cell ) {
-			super.zap( cell );
-
-			((YogFist)ch).onZapComplete();
-			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+		public void onZap(CharSprite from, int cell, Callback onZapComplete) {
+			onZapComplete.call();
+			from.parent.add( new Beam.LightRay(from.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
 		}
+
 		@Override
 		public int blood() {
 			return 0xFFFFFFFF;

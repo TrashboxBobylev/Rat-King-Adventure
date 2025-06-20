@@ -36,7 +36,7 @@ public class SealShard extends RemainsItem {
 
 	@Override
 	protected void doEffect(Hero hero) {
-		Buff.affect(hero, Barrier.class).incShield(hero.HT/10, true);
+		Buff.affect(hero, Barrier.class).incShield(Math.round(hero.HT/5f), true);
 		Sample.INSTANCE.play(Assets.Sounds.UNLOCK);
 	}
 

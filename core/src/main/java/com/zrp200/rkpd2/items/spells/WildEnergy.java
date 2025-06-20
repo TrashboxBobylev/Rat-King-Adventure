@@ -27,20 +27,26 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Recharging;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.SpellSprite;
+import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.quest.MetalShard;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
-import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfMysticalEnergy;
 import com.zrp200.rkpd2.items.wands.CursedWand;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 
+import java.util.ArrayList;
+
 public class WildEnergy extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.WILD_ENERGY;
+
 		usesTargeting = true;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 	
 	//we rely on cursedWand to do fx instead
@@ -60,26 +66,37 @@ public class WildEnergy extends TargetedSpell {
 		ArtifactRecharge.chargeArtifacts(hero, 4f);
 
 		Buff.affect(hero, Recharging.class, 8f);
-		Buff.affect(hero, ArtifactRecharge.class).prolong( 8 ).ignoreHornOfPlenty = false;
+		Buff.affect(hero, ArtifactRecharge.class).extend( 8 ).ignoreHornOfPlenty = false;
 	}
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity, rounds down
-		return (int)((50 + 50) * (quantity/5f));
+		return (int)(60 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
-	
+
+	@Override
+	public int energyVal() {
+		return (int)(12 * (quantity/(float)Recipe.OUT_QUANTITY));
+	}
+
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
+
+		private static final int OUT_QUANTITY = 5;
 		
 		{
-			inputs =  new Class[]{ScrollOfMysticalEnergy.class, MetalShard.class};
+			inputs =  new Class[]{ScrollOfRecharging.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
 			cost = 4;
 			
 			output = WildEnergy.class;
-			outQuantity = 5;
+			outQuantity = OUT_QUANTITY;
 		}
-		
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			Catalog.countUse(MetalShard.class);
+			return super.brew(ingredients);
+		}
 	}
 }

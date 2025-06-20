@@ -44,7 +44,7 @@ public class Dirk extends Dagger {
 
 	@Override
 	protected int maxDist() {
-		return 5;
+		return 4;
 	}
 
 	@Override

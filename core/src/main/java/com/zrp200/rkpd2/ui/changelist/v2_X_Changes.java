@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.items.weapon.melee.Whip;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.ChangesScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.sprites.GhostSprite;
 import com.zrp200.rkpd2.sprites.GnollGuardSprite;
 import com.zrp200.rkpd2.sprites.HeroSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -45,32 +46,527 @@ import java.util.ArrayList;
 public class v2_X_Changes {
 
 	public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
-		add_Coming_Soon(changeInfos);
+		add_v2_5_Changes(changeInfos);
+		add_v2_4_Changes(changeInfos);
 		add_v2_3_Changes(changeInfos);
 		add_v2_2_Changes(changeInfos);
 		add_v2_1_Changes(changeInfos);
 		add_v2_0_Changes(changeInfos);
 	}
 
-	public static void add_Coming_Soon( ArrayList<ChangeInfo> changeInfos ) {
+	public static void add_v2_5_Changes( ArrayList<ChangeInfo> changeInfos ) {
 
-		ChangeInfo changes = new ChangeInfo("Coming Soon", true, "");
-		changes.hardlight(0xCCCCCC);
+		ChangeInfo changes = new ChangeInfo("v2.5", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Overview",
-				"The next update will be v2.4.0, including a new type of item called trinkets!\n" +
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released September 11th, 2024\n" +
+				"_-_ 119 days after v2.4.0\n" +
 				"\n" +
-				"I'd like to try and release v2.4.0 fairly quickly to put us onto a good pace for 2024, but we'll see how well that actually turns out. Expect to hear something from me one way or another later in early to mid March. Please keep in mind that while I always try to keep to the ETAs I provide, they are just estimates. If you don't hear from me by the ETA, it means I'm still busy with the update!"));
+				"Dev commentary will be added here in the future"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SKULL), "Trinkets",
-				"Trinkets are a new item type that are more about tweaking gameplay variables than giving direct power or utility. You'll be able to get one trinket per run (with some choice), which will change up the game slightly with effects such as increasing rare enemy spawn rates or making enchantments and curses more likely. Trinkets will be upgradeable via alchemical energy, increasing the strength of their effect."));
+		changes.addButton( new ChangeButton(Icons.JOURNAL.get(), "Journal Overhaul!",
+				"_The game's Journal interface has been completely overhauled!_\n" +
+				"\n" +
+				"The Notes section has an entirely new grid-based UI with new icons, and _support for custom notes!_ Custom notes feature user-enterable text and can be tied to a floor, specific item, item type, or just be plain text.\n" +
+				"\n" +
+				"The Catalogs section has also been moved to a grid UI, and has been massively expanded with _almost 500 entries!_ The catalogs now contain almost every item in the game, and a bestiary featuring almost every character, plant, and trap! There are also _9 new badges_ which can be unlocked by filling the catalogs out!\n" +
+				"\n" +
+				"You can also now _view badges directly from the journal_, both the ones for your current run and overall badges.\n" +
+				"\n" +
+				"The guidebook tabs are unchanged, and the lore tab has been merged into the catalogs."));
 
-		changes.addButton( new ChangeButton(Icons.get(Icons.PREFS), "Smaller Changes/Fixes",
-				"As always, v2.4.0 will include some smaller changes and fixes as well. Right now I'm considering making some targeted balance and design tweaks to various hero abilities, but I haven't locked that in yet as there are lots of little things I could choose to look into changing or improving."));
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SALT_CUBE), "New Trinkets!",
+				"_Four new trinkets have been added!_ Bringing the total to 15 trinkets.\n" +
+				"\n" +
+				"The _Salt Cube_ extends the duration that food keeps you full, but also reduces HP regeneration.\n" +
+				"\n" +
+				"The _Vial of Blood_ increases the healing granted by major healing sources, but also slows that healing down.\n" +
+				"\n" +
+				"The _Shard of Oblivion_ increases the amount of loot you'll find from enemies when you are wearing unidentified equipment.\n" +
+				"\n" +
+				"The _Chaotic Censer_ randomly spreads gasses nearby, that are harmful to you and to enemies.\n" +
+				"\n" +
+				"There is also now a fourth 'random' option when selecting trinkets, if you don't want any of the first three."));
 
-		changes.addButton( new ChangeButton(Icons.WARNING.get(), "iOS 9 and 10 Support",
-				"The next update will also be dropping support for iOS 9 and 10, which currently make up ~0.05% of Shattered's iOS playerbase. I'm making this change due to an update to Shattered's game library (libGDX), and to remove the requirement to include 32-bit iOS code with the game. iOS 9 and 10 players will still be able to continue playing Shattered Pixel Dungeon v2.3.0"));
+		changes.addButton( new ChangeButton(Icons.DISPLAY_LAND.get(), "Region Splash Arts!",
+				"_New splash arts have been added to the game's loading screens!_\n" +
+				"\n" +
+				"There's one for each of the five regions, once again made by Aleksandar Komitov!\n" +
+				"\n" +
+				"Loading times have not been increased, but the first loading screen of each region now pauses to display that region's story text. This gives an opportunity to appreciate the art without making players wait longer on every loading screen. The game will even start panning the loading screen art during this pause for mobile portrait users!"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SCROLL_TIWAZ), "Interface Improvements",
+				"In addition to the journal overhaul, there are several smaller UI changes and additions in this update too:\n" +
+				"\n" +
+				"_Scrolls of Upgrade_ now have a preview window that appears when they are used, that summarizes how the stats of an item will change when upgraded.\n" +
+				"\n" +
+				"The main menu _Badges Screen_ has been replaced with a new journal screen, containing the catalogs and guidebooks as well as unlocked badges.\n" +
+				"\n" +
+				"The _Alchemy Screen_ has been adjusted, primarily for desktop users. The guidebook button is now more visible, and shows the guidebook to the side when used on desktop.\n" +
+				"\n" +
+				"The game now displays a little congratulations message after your first win, and clarity on what winning the game unlocks has been improved."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAND_MAGIC_MISSILE), "Cursed Wand Expansion",
+				"Cursed wand effects have been massively expanded! There are now 16 new effects bringing the total number of effects up to 32. These include simple common effects like shooting bubbles and new super rare effects like a giant supernova explosion!\n" +
+				"\n" +
+				"A few existing cursed effects have also been changed:\n" +
+				"_-_ Reduced healing from the uncommon health transfer effect by 50%\n" +
+				"_-_ The uncommon 'shock and recharge' effect is now a lightning bolt, does more damage to a target and grants less wand recharge\n" +
+				"_-_ The rare inter-floor teleport effect now caps at sending the player back 10 floors"));
+
+		changes.addButton( new ChangeButton(Icons.BACKPACK_LRG.get(), "Inventory Management Improvements",
+				"I've made various smaller changes to make inventory management a bit easier:\n" +
+				"\n" +
+				"_-_ The potion bandolier can now store the waterskin, and the scroll holder can now store arcane styli\n" +
+				"_-_ Converting a potion or scroll into alchemical energy now also identifies it\n" +
+				"_-_ Reduced the chance for multiple equipment drops from slimes, skeletons, guards, DM-200s, and golems\n" +
+				"_-_ Increased the base drop rate of equipment from DM-200s and golems to compensate\n" +
+				"_-_ Stones of Intuition now always get 2 uses each, even if the first guess is incorrect\n" +
+				"_-_ Dark dungeon levels no longer contain a torch, but also reduce vision by 3/8, down from 4/8"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.BOMB), "Bombs and Identification",
+				"I've fixed a long-standing exploit where players could use explosions to determine if equipment was upgraded. Explosions will now avoid destroying any equipment, previously they would destroy un-upgraded equipment only.\n" +
+				"\n" +
+				"As compensation to this change, I'm changing up a runestone, and buffing bombs and explosion effects:\n" +
+				"\n" +
+				"Firstly _Stones of Detect Magic_ are a new item that replace stones of disarming. Each stone can be used on a piece of equipment to identify whether it is cursed, and whether it is enchanted/upgraded. This should give a few more options when it comes to IDing equipment.",
+
+				"Secondly, bombs and explosion effects are buffed across the board:\n" +
+				"_-_ Explosion max damage +50% (this increases average damage by 33%)\n" +
+				"_-_ Bombs no longer bounce when thrown directly at characters\n" +
+				"_-_ Damage falloff removed from ALL explosion and bomb types\n" +
+				"_-_ Alchemy bombs now all explode in a minimum AOE of 5x5 (up from 3x3)\n" +
+				"_- Flashbangs_ redesigned, they are now smoke bombs, and spread shrouding fog in a 5x5 AOE in addition to dealing damage.\n" +
+				"_- Shocks Bombs_ redesigned, they are now flashbangs, and deal +25% electricity damage and stun for 10 turns within their 5x5 AOE.\n" +
+				"_- Regrowth Bomb_ AOE size up to 7x7 from 5x5, now always generate at least 3 plants, up from 2."));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Highlights:_\n" +
+				"_-_ Enemies are now less willing to follow the hero's movement path when approaching from a distance\n" +
+				"_-_ Improved the quality of loot from tormented spirits\n" +
+				"_-_ Traps which choose targets now have a max range of 8 tiles (or 6 on dark floors)\n" +
+				"_-_ Burn and Ooze now end the moment water is entered, but still always do at least 1 turn of damage\n" +
+				"_-_ Improved visibility of the ambitious imp\n" +
+				"_-_ Trinkets can now be energized to get 5 energy back\n" +
+				"_-_ Rings transmuted from artifacts can now be +1 or +2 if the artifact was +5 or +10\n" +
+				"_-_ Vampiric no longer triggers on NPCs or allies\n" +
+				"_-_ Blooming now produces furrowed grass if regen effects are disabled during boss fights",
+
+				"_Characters:_\n" +
+				"_-_ Tengu no longer avoids ground-based effects as if he were flying\n" +
+				"_-_ Flying characters now visually fall into pits when they die\n" +
+				"_-_ Flying characters now only wake sleeping enemies they are next to\n" +
+				"_-_ Wraiths spawned by spectral necromancers are now more powerful\n" +
+				"_-_ Shadow clone now inherits silent steps from the Rogue\n" +
+				"_-_ DM-300 no longer spews gas at inorganic allies\n" +
+				"_-_ DM-300 can no longer use an ability immediately after exiting supercharge state\n" +
+				"_-_ Necromancers now interrupt the hero if they start summoning within vision\n" +
+				"\n" +
+				"_Effects:_\n" +
+				"_-_ Drowsy and Sniper's Mark now state remaining duration in their descriptions\n" +
+				"_-_ Wells of health and awareness descriptions are now more accurate\n" +
+				"_-_ Thorns glyph no longer rebounds damage to allies",
+
+				"_Items:_\n" +
+				"_-_ Rapier's lunge ability no longer triggers weapon ability use effects when it is aimed at empty space\n" +
+				"_-_ Warrior's broken seal now includes glyph info in its description\n" +
+				"_-_ Added a cancel confirmation window to scrolls of enchantment\n" +
+				"_-_ Armor now always takes 1 turn to equip, instead of 2 turns multiplied by movement speed\n" +
+				"_-_ Minor visual changes to hourglass stasis effect\n" +
+				"_-_ Styli can now be used on known uncursed armor\n" +
+				"_-_ Potion of Storm Clouds no longer triggers traps when thrown",
+
+				"_Misc:_\n" +
+				"_-_ The game now remembers which monitor it was set to fullscreen on in multi-monitor setups\n" +
+				"_-_ The journal window and hero info window can now be closed via key binding\n" +
+				"_-_ Single wraiths can now spawn adjacent to their spawning cell if it is blocked\n" +
+				"_-_ Added a little game log text when shopkeepers flee\n" +
+				"_-_ Reduced the maximum size of some trap-filled rooms\n" +
+				"_-_ Toxic gas rooms can no longer contain extra traps\n" +
+				"_-_ Updated internal code libraries\n" +
+				"_-_ Made slight tweaks to tutorial functionality\n" +
+				"_-_ Added a new buff icon for wand-based buffs\n" +
+				"_-_ ShatteredPD is now categorized as a game on Android devices\n" +
+				"_-_ Updated translations and translator credits\n" +
+				"_-_ Added dev commentary for v1.4.0"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Highlights:_\n" +
+				"_-_ Hall of Heroes pages 5-10 not syncing via Google Play Games on Google Play version\n" +
+				"_-_ Incorrect behaviour when game is force-closed from trinket selection window\n" +
+				"_-_ Scroll of remove curse not being consumed when freeing tormented spirits\n" +
+				"_-_ Sleeping enemies not being alerted by allies in many cases\n" +
+				"_-_ Shopkeepers often failing to clear gasses from their shops\n" +
+				"_-_ Ripper Demons refusing to leap onto enemies above chasms\n" +
+				"_-_ Cases where a locked laboratory room could contain the solution potion to a hazard room that contains its key",
+
+				"_Characters:_\n" +
+				"_-_ Final boss not immediately advancing to its final phase in some cases\n" +
+				"_-_ Sad Ghost rarely spawning inside of walls\n" +
+				"_-_ Ally position swapping working when allies are paralyzed\n" +
+				"_-_ DM-300's exposed wire shielding mechanic and the vertigo debuff interacting incorrectly\n" +
+				"_-_ Enemies not properly prioritizing targets based on distance\n" +
+				"_-_ Very specific cases where the hero would refuse to walk onto visible traps\n" +
+				"_-_ Rare cases where the rot heart could be boxed in and not spawn gas\n" +
+				"_-_ Statue enemies reverting to being passive when ascending\n" +
+				"_-_ Wards not being targetable if they were in solid terrain\n" +
+				"_-_ Necromancers not being able to summon their minions in unlocked doors\n" +
+				"_-_ Cases where the gnoll geomancer could be awoken via debuff\n" +
+				"_-_ Spawned mimics (e.g. via cursed wand) not scaling with ascension challenge",
+
+				"_Effects:_\n" +
+				"_-_ Warrior being able to gain extra upgrades on his armor via hero armor transfer effect\n" +
+				"_-_ Earthroot and living rock armor not applying to bone explosion damage\n" +
+				"_-_ Precise Assault not working with unarmed melee attacks\n" +
+				"_-_ Deferred damage sometimes being delayed on save/load\n" +
+				"_-_ Various situational errors when enemies are transmogrified over chasms\n" +
+				"_-_ Challenge Arena effect briefly persisting between floors\n" +
+				"_-_ Magically slept enemies waking up when terror expires on them\n" +
+				"_-_ Corpse Dust sometimes spawning many wraiths in quick succession after spawning none\n" +
+				"_-_ Assassinate/execute effects not working on enraged brutes\n" +
+				"_-_ Terror not affecting brutes in specific cases\n" +
+				"_-_ Debuffs disappearing from DM-300's pylons on save/load\n" +
+				"_-_ Duelist's Spike ability incorrectly triggering on-kill effects in specific circumstances",
+
+				"_Items:_\n" +
+				"_-_ Trinkets becoming unidentified when transmuted\n" +
+				"_-_ Wondrous resin applying its effect to chaos elementals\n" +
+				"_-_ Exotic crystals and Parchment Scrap trinkets affecting levelgen in some cases\n" +
+				"_-_ Auto-aim not working correctly with cursed wands\n" +
+				"_-_ Aqua brew always knocking hero up and left when thrown on self\n" +
+				"_-_ Bomb fuses not being visually cleared when boss levels are reset by unblessed ankhs\n" +
+				"_-_ Helpful darts dealing damage to allies in rare cases\n" +
+				"_-_ Specific cases where beacon of returning could place the hero inside of closed dooors\n" +
+				"_-_ Tipped dart cleaning window showing 'clean all' and 'clean one' even with just 1 dart\n" +
+				"_-_ Specific cases where one scroll of transmutation couldn't be used on another\n" +
+				"_-_ Death via a reclaimed trap not counting as dying to your own magic item",
+
+				"_Misc:_\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Rare cases of levelgen hanging\n" +
+				"_-_ Game log spam during the tutorial in specific cases\n" +
+				"_-_ Surface victory badges not being added to the rankings screen\n" +
+				"_-_ Very rare cases of players getting outside of boss arenas\n" +
+				"_-_ Direction compass not pointing to exit after defeating Tengu\n" +
+				"_-_ Split alchemy guide not updating with inventory state in various cases\n" +
+				"_-_ Settings defaulting to audio tab and not languages tab when user is using a language with an incomplete translation\n" +
+				"_-_ Magic well note entries not being cleared if there are two wells in a level"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.CLOVER), "Trinket Buffs",
+				"I'm handing out buffs to several trinkets that are underperforming:\n" +
+				"\n" +
+				"_- 13 Leaf Clover_ upgrade cost up, but it now only affect the hero's damage rolls. It no longer applies to armor or enemy attacks. This should preserve the intended chaos of the effect without making enemies way more dangerous.\n" +
+				"_- Dimensional Sundial_ upgrade cost up, but it now slightly reduces enemy spawn rates during daytime. 'nighttime' has also been adjusted to be 8pm-8am, from 9pm-7am.\n" +
+				"_- Wondrous Resin_'s bonus cursed wand effects are now always neutral or positive.\n" +
+				"_- Mimic Tooth_ now boosts loot from all mimics."));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), "Duelist Buffs",
+				"The Duelist is doing much better balance-wise since v2.4.0, but there are various specific abilities that are getting boosts this update:\n" +
+				"\n" +
+				"Weapon Abilities:\n" +
+				"_- Lunge, Cleave, Spike, Retribution, and Brawler's Stance_ abilities all now deal more bonus damage\n" +
+				"_- Crossbow's Charge Shot_ ability can now also cause a melee attack to knock back, or an untipped dart attack to deal bonus damage. Tipped dart benefits unchanged.\n" +
+				"\n" +
+				"Talents:\n" +
+				"_- Liquid Evasion_ talent evasion at +1 reduced to 3x from 4x, but the talent now also grants bonus accuracy on the next attack. \n" +
+				"_- Lethal Haste_ talent now grants instant movement, instead of haste.\n" +
+				"_- Swift Equip_ talent's second use at +2 no longer has a 5 turn timer.\n" +
+				"_- Deadly Followup_ talent damage per level up to +10% from +8%.\n" +
+				"_- Precise Assault_ accuracy bonus increased to 2x/5x/inf., up from 2x/4x/8x.\n" +
+				"_- Expose Weakness_ talent now applies weakness as well as vulnerable."));
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 4), "Monk Buffs",
+				"v2.4.0's Duelist buffs were mainly focused on weapon abilities, which mainly benefit the Champion, so it makes sense that the Monk has fallen a little behind. I'm giving out several buffs and mechanics changes to boost the Monk back up, which should improve every ability she has, except meditate.\n" +
+				"\n" +
+				"_-_ Removed ability cooldowns entirely, except for flurry which has a 1 turn cooldown\n" +
+				"_- Flurry_ damage increased by 50%\n" +
+				"_- Focus_ now works on magic attack and has infinite duration\n" +
+				"_- Dash_ range increased by 33%\n" +
+				"_- Dragon Kick_ damage doubled\n" +
+				"\n" +
+				"_- Unencumbered Spirit_ energy gain changed to 50%/75%/100% from 40%/80%/120%\n" +
+				"_- Combined Energy_ is now more permissive and reduces charge use by 1, instead of 50%"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.UNSTABLE_SPELL), "Other Buffs",
+				"_- Wand Preservation_ talent now always succeeds, no longer grants arcane resin on failure, and is limited to 1 use at +1, and 1 use per level at +2. \n" +
+				"_- Rogue's foresight_ talent trigger chance increased to 75% at +1 and 100% at +2, up from 60% and 90%.\n" +
+				"_- Hold Fast_ talent now grants 1-2 armor per level, up from 0-2.\n" +
+				"\n" +
+				"_- Ring of Energy_ charge rate boost up to 17.5% per level, from 15%.\n" +
+				"_- Unstable Brew_ now guarantees an appropriate potion effect when thrown or drank, instead of making it more likely.\n" +
+				"_- Unstable Spell_ now guarantees an appropriate scroll effect based on nearby enemies, instead of making it more likely.\n"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.MOSSY_CLUMP), "Mossy Clump & Grassy Floors",
+				"The Mossy Clump is still far and away the strongest trinket, despite several nerfs since adding it. At this point it's clear the value of that trinket is more reflective of how powerful grassy floors are, rather than the trinket itself.\n" +
+				"\n" +
+				"So, I'm nerfing the drop-rate of dew from grassy floors by 50%, meaning that they will generate 2x as much dew as a regular floor on average, down from 4x. Seed drops from these floor are unaffected.\n" +
+				"\n" +
+				"This reduces the bonus dew granted by the mossy clump by 67%, which should hopefully bring it more in-line with other trinket."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_AGGRESSION), "Stone of Aggression",
+				"_Stones of Aggression_ were meant to have some use during boss fights, but currently they're too strong in that case, especially with many challenges enabled:\n" +
+				"\n" +
+				"_-_ Bosses now take 1/2 damage from their minions when affected by aggression, the final boss specifically takes 1/4 damage.\n" +
+				"_-_ Aggression duration vs. regular enemies up to 20 turns, from 5."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WHIP), "Other Item Nerfs",
+				"_- Whip's Lash Ability_ bonus damage reduced to 0%, from +20%. Ability still guarantees a hit on every target.\n" +
+				"\n" +
+				"_- Ring of Haste_ bonus speed per level reduced to 17.5% from 20%.\n" +
+				"\n" +
+				"_Elixir of Featherfall_ adjusted:\n" +
+				"_-_ Output quantity reduced to 1 from 2\n" +
+				"_-_ Recipe energy cost reduced to 10 from 16\n" +
+				"_-_ Falling into a chasm now reduces effect duration by 10 turns instead of ending it. Total duration unchanged at 50 turns."));
+
+	}
+
+	public static void add_v2_4_Changes( ArrayList<ChangeInfo> changeInfos ) {
+
+		ChangeInfo changes = new ChangeInfo("v2.4", true, "");
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false);
+		changes.hardlight(Window.TITLE_COLOR);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
+				"_-_ Released May 15th, 2024\n" +
+				"_-_ 118 days after Shattered v2.3.0\n\n" +
+				"Dev commentary will be added here in the future."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAT_SKULL), "Trinkets!",
+				"_A new category of item has been added: Trinkets!_\n" +
+				"\n" +
+				"Trinkets are a new item type produced and upgraded via alchemical energy, and are more about tweaking gameplay variables than giving direct power or utility.\n" +
+				"\n" +
+				"Look out for a trinket catalyst in the early stages of the game, which you can use at the first alchemy pot to produce one of three trinket options. There are _11 trinkets in total_."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.STAIRS), "New Rooms",
+				"_New standard rooms have been added to the various regions of the game!_\n" +
+				"\n" +
+				"This includes one totally new room per region, and two new variants of entrance/exit rooms per region. Rooms that are mostly empty rectangles are now much less common, and there's a bunch of variety for which rooms can have entrance/exit stairs in them.\n" +
+				"\n" +
+				"Entrance rooms are now also capable of merging with other rooms in a dungeon floor, but there are some guarantees so that enemies won't ever be near you right after descending to a new floor."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.PUMPKIN_PIE), "More Holiday Items",
+				"_I've added more holiday items for the rest of 2024!_\n" +
+				"\n" +
+				"Expect to see some new temporary holiday overrides for cornish pasties for:\n" +
+				"_-_ Pride in late June\n" +
+				"_-_ Shattered's Birthday in early August\n" +
+				"_-_ Pixel Dungeon's Birthday in early December\n" +
+				"_-_ New Years in late December and early January\n" +
+				"\n" +
+				"This is in addition to the usual pumpkin pie around Halloween and candy cane around the Winter Holidays.\n" +
+				"\n" +
+				"...I may have also added a tiny little surprise for Rat King's birthday, but that won't appear until 2025."));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false);
+		changes.hardlight(CharSprite.WARNING);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 6), "Duelist Weapon Abilities",
+				"I'm making some overarching changes to the Duelist's weapon abilities, to make them stronger and feel more impactful:\n" +
+				"_-_ Weapon ability charge speed down by 33%\n" +
+				"_-_ Weapon ability charge cap reduced to 2-8, from 3-10\n" +
+				"_-_ Weapon abilities buffed across the board\n" +
+				"_-_ Some talents adjusted to account for weapon charges being less frequent\n" +
+				"_-_ Weapon abilities now directly state their damage ranges\n" +
+				"Check the buffs and talent changes section for specific weapon ability and talent changes.\n" +
+				"\n" +
+				"There are also some changes to the Champion subclass to go along with this:\n" +
+				"_-_ Champion's two weapons now share a charge count, but Champion gets boosted max charges and charge speed.\n" +
+				"_-_ Champion's secondary charge talent has been replaced with a new talent that encourages varied ability use."));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ENERGY), "Alchemy Changes",
+				"I've made a bunch of changes to the alchemy system to streamline things and complement the addition of trinkets:\n" +
+				"\n" +
+				"_-_ Catalysts have been removed entirely, recipes that required one now simply cost 8 or 9 more energy.\n" +
+				"_-_ A new unstable brew and spell have been added, which give random potion/scroll effects.\n" +
+				"_-_ Aqua Blast and Featherfall are now a brew and elixir, otherwise unchanged.\n" +
+				"_-_ High value potions/scrolls now grant a little more energy if they are energized.\n" +
+				"_-_ Alchemy pots now always spawn on the 3rd or 4th floor in each region.\n" +
+				"_-_ Various UI improvements have been made to the alchemy screen.\n" +
+				"\n" +
+				"Various specific alchemy items have also received changes to their energy cost, output quantity, or mechanics. Check the buffs and nerfs section for more details on those."));
+
+		changes.addButton( new ChangeButton(Icons.get(Icons.TALENT), "Talent Changes",
+				"Duelist talents have been changed to account for adjustments to weapon charge mechanics:\n" +
+				"_- Aggressive Barrier_ shielding increased to 3/5 from 3, threshold changed to 50% from 40%/60%.\n" +
+				"_- Focused Meal_ charge boost reduced to 0.67/1 from 1/1.5.\n" +
+				"_- Weapon Recharging_ boost reduced to every 15/10 turns from every 10/6 turns.\n" +
+				"_- Counter Ability_ now grants up to 1.5 charges, instead of reducing cost.\n" +
+				"\n" +
+				"I've made some changes meant to improve some of the least popular T1 talents:\n" +
+				"_- Cached Rations_ now awards a smaller number of unique 'supply rations'. These rations grant a little healing and cloak charge.\n" +
+				"_- Test Subject and Tested Hypothesis_ have been replaced with two new talents that grant small combat bonuses.\n" +
+				"\n" +
+				"Plus one change to an unnecessarily complex T1 talent:\n" +
+				"_- Hearty Meal_ has been simplified, now just has one threshold at 30% HP"));
+
+		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
+				"_Highlights:_\n" +
+				"_-_ Potion and Scroll talents can now trigger from elixirs, brews, and spells\n" +
+				"_-_ Ankh resurrection window now warns if two items aren't selected\n" +
+				"_-_ Trying to attack an enemy that has charmed you now shows a warning\n" +
+				"_-_ Enemies seen via mind vision can now be auto-targeted, but the game won't auto-aim as aggressively for performance reasons\n" +
+				"\n" +
+				"_Heroes:_\n" +
+				"_-_ Gladiator and Monk now include brief ability descriptions in their subclass descriptions\n" +
+				"_-_ Ability descriptions for Gladiator and Monk now change if their abilities are empowered",
+
+				"_Items:_\n" +
+				"_-_ Thrown weapons now state when they break in the game log\n" +
+				"_-_ Tipped darts now last forever when reaching 100 uses, like other thrown weapons\n" +
+				"_-_ Dried rose now includes the ghost's strength in its description\n" +
+				"_-_ Plant effects (e.g. fadeleaf) now trigger before traps when time freeze ends\n" +
+				"\n" +
+				"_Misc:_\n" +
+				"_-_ Updated various code dependencies\n" +
+				"_-_ Slight optimizations to memory use\n" +
+				"_-_ Improved the error message on Android when native code is missing\n" +
+				"_-_ Removed the power saver setting on Android 4.4+ devices, if the user hadn't already enabled it.\n" +
+				"(Power saver was always meant for very old Android devices. It gives no real benefit for more modern ones.)"));
+
+		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+				"Fixed the following bugs:\n" +
+				"_Highlights:_\n" +
+				"_-_ Ruins rooms in the last region using incorrect wall shapes since v2.2.0\n" +
+				"_-_ Rare cases where some victory badges would not save if game was immediately closed\n" +
+				"_-_ Rare cases where game actors could continue to process for a moment when hero falls into a chasm\n" +
+				"_-_ Various cases where characters would not play death animations if they died while paralyzed\n" +
+				"_-_ Dwarf King now only clears minions that are still allied with him when transitioning phases\n" +
+				"\n" +
+				"_Heroes:_\n" +
+				"_-_ Duelist's swift equip not working during time freeze\n" +
+				"_-_ Monk's flurry of blows not using projecting enchantment when empowered\n" +
+				"_-_ Various battlemage on-hit effects not showing as magical damage\n" +
+				"_-_ Empowered strike talent not working with blastwave\n" +
+				"_-_ Challenge ability incorrectly working on neutral mobs\n" +
+				"_-_ Seer shot talent not working in blacksmith quest area",
+
+				"_Enemies:_\n" +
+				"_-_ Newborn elemental boss rarely firing its attack through walls\n" +
+				"_-_ Rare cases where the final boss could command minions to attack themselves\n" +
+				"_-_ Gnoll geomancer and sappers potentially dropping boulders next to entrance\n" +
+				"_-_ Gnoll sappers granting armor to corrupted gnoll guards\n" +
+				"_-_ Necromancer skeletons not following necromancer's aggro in some cases\n" +
+				"_-_ Spectral necromancers now only kill wraiths they are aligned with when they die\n" +
+				"_-_ Teleportation effects not accounting for large characters in specific cases\n" +
+				"_-_ DM-300 not becoming supercharged if exactly damaged to the supercharge threshold\n" +
+				"_-_ Specific cases where damaging immune enemies would count towards regen time during boss fights",
+
+				"_Items pt.1:_\n" +
+				"_-_ Armband not working on hiding mimics\n" +
+				"_-_ Chilling enchant reducing chill duration in rare cases\n" +
+				"_-_ Rare cases where lucky enchant wouldn't trigger\n" +
+				"_-_ Runestones affecting terrain when thrown at a character\n" +
+				"_-_ Thrown weapons sticking to downed ghouls in some cases\n" +
+				"_-_ Camouflage glyph not working if hero uses ethereal chains to move into grass\n" +
+				"_-_ Sandals of nature incorrectly interacting with artifact charging\n" +
+				"_-_ Various specific errors with artifact charge boosting\n" +
+				"_-_ Cursed wands can no longer turn important NPCs into sheep\n" +
+				"_-_ King's crown not preserving armor hardening",
+
+				"_Items pt.2:_\n" +
+				"_-_ Brimstone glyph not benefiting from glyph power boosts past +50%\n" +
+				"_-_ Errors when leaving/entering blacksmith's area while a boomerang was circling back\n" +
+				"_-_ Transfusion not benefiting from wand damage bonuses\n" +
+				"_-_ Dwarf King's crown automatically IDing armor\n" +
+				"_-_ Armband allowing more than one steal in specific cases\n" +
+				"_-_ Swiftness glyph ignoring nearby enemies in specific cases\n" +
+				"_-_ Swiftness glyph turning off near neutral characters\n" +
+				"_-_ Stone of fear applying to hero and allies\n" +
+				"_-_ Spike ability overriding elastic enchant in some cases\n" +
+				"_-_ Geyser traps and aqua brew not extinguishing flames",
+
+				"_Misc:_\n" +
+				"_-_ Various minor visual and textual errors\n" +
+				"_-_ Various rare crash bugs\n" +
+				"_-_ Specific cases where unbreakable traps could spawn in halls in the caves\n" +
+				"_-_ Music not properly pausing in background on desktop in some cases\n" +
+				"_-_ Various rare errors when game launches in fullscreen\n" +
+				"_-_ 'taste vengeance' badge not being earnable in a run after unlocking it\n" +
+				"_-_ Ascension hero speed debuff triggering at 7+ amulet curse stacks instead of 6+\n" +
+				"_-_ View distance becoming 0 during final boss in specific cases"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false);
+		changes.hardlight(CharSprite.POSITIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RAPIER), "Weapon Ability Buffs",
+				"_- Lunge_ damage up\n" +
+				"_- Cleave_ damage up, is now instant if it kills, but no longer chains\n" +
+				"_- Heavy Blow_ damage up, non-surprise penalty changed to no bonus damage\n" +
+				"_- Sneak_ charge cost down to 1 from 2, invis duration now scales\n" +
+				"_- Combo Strike_ damage up, combo duration now resets on hit (like gladiator)\n" +
+				"_- Spike_ damage up\n" +
+				"_- Defensive Stance_ charge cost down to 1 from 2, duration now scales\n" +
+				"_- Harvest_ charge cost down to 1 from 2, bleed amount up, is now constant, and deals regular damage to bleed-immune foes\n" +
+				"_- Sword Dance_ charge cost down to 1 from 2, duration now scales, ACC boost up to 50%\n" +
+				"_- Block_ duration now scales, now keeps blocking until you attack\n" +
+				"_- Lash_ now deals bonus damage and is guaranteed to hit all targets\n" +
+				"_- Spin_ charge cost down to 1 from 2, damage up\n" +
+				"_- Runic Strike_ enchant boost now scales\n" +
+				"_- Charge Shot_ AOE up to 7x7 from 5x5, dart durability boost now scales\n" +
+				"_- Retribution_ is now instant if it kills\n" +
+				"_- Brawler's Stance_ now deals bonus damage, reduces recharge speed instead of costing charge per hit"));
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ALCHEMIZE), "Alchemy Buffs",
+				"Firstly, many items have received simple energy cost reductions. Note that all energy costs are after accounting for catalyst removal\n" +
+				"_- Caustic Brew_ cost down to 1 from 2\n" +
+				"_- Blizzard Brew_ cost down to 8 from 11\n" +
+				"_- Shocking Brew_ cost down to 10 from 14\n" +
+				"_- Aqua Brew_ cost down to 8 from 11\n" +
+				"_- Elixir of Dragon's Blood_ cost down to 10 from 14\n" +
+				"_- Telekinetic Grab_ cost down to 10 from 11\n" +
+				"_- Beacon of Returning_ cost down to 12 from 15\n" +
+				"_- Magical Infusion_ cost down to 12 from 13\n" +
+				"_- Recycle_ cost down to 12 from 17",
+
+				"Some alchemy produce has also received bigger buffs:\n" +
+				"_- Elixir of Toxic Essence_ cost down to 8 from 10, spreads gas quicker, and gives 5 turns of lingering gas immunity\n" +
+				"_- Elixir of Icy Touch_ cost down to 6 from 14 and now applies 3 chill each hit, up from 2\n" +
+				"_- Wild Energy_ now requires a regular scroll of recharging, instead of mystical energy\n" +
+				"_- Reclaim Trap_ cost up to 8 from 6, but output quantity increased to 5 from 4\n" +
+				"_- Alchemize_ has a new recipe, it is now much cheaper to make\n" +
+				"_- Summon Elemental_ cost down to 10 from 15 and buffing the spell now persists after use"));
+
+		changes.addButton( new ChangeButton(new Image(new GhostSprite()), "Ghost and Blacksmith Enchantments",
+				"I've given a slight boost to the rewards of the Ghost quest and Blacksmith's smith reward, aimed at making enchantments/glyphs more likely. this should make these rewards a bit more interesting more often.\n" +
+				"\n" +
+				"_-_ Ghost reward enchant rate up to 20% from 10%\n" +
+				"_-_ Blacksmith smith reward enchant rate up to 30% from 0%"));
+
+		changes = new ChangeInfo(Messages.get(ChangesScene.class, "nerfs"), false);
+		changes.hardlight(CharSprite.NEGATIVE);
+		changeInfos.add(changes);
+
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ELIXIR_MIGHT), "Alchemy Nerfs",
+				"_- Elixir of Might_ cost up to 16 from 14 (after account for catalyst removal)\n" +
+				"_- Phase Shift_ cost down to 10 from 13, but output quantity down to 6 from 8"));
 
 	}
 
@@ -79,53 +575,6 @@ public class v2_X_Changes {
 		ChangeInfo changes = new ChangeInfo("v2.3", true, "");
 		changes.hardlight(Window.TITLE_COLOR);
 		changeInfos.add(changes);
-
-		changes = new ChangeInfo("v2.3.2", false);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"_-_ Slightly improved the layout of shop rooms when many items are present\n\n" +
-				"_-_ Updated a link in the game's credits"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.3.1:_\n" +
-				"_-_ Tengu being able to set himself on fire, oops =S\n\n" +
-				"_Existed prior to v2.3.0:_\n" +
-				"_-_ Various minor textual errors\n" +
-				"_-_ Very specific cases where levelgen could vary based on whether the player has a timekeeper's hourglass or not\n" +
-				"_-_ Hero leap vfx not causing the camera to follow them\n" +
-				"_-_ Cases where grass and embers wouldn't appear on top of specific ground visuals"));
-
-		changes = new ChangeInfo("v2.3.1", false);
-		changes.hardlight(Window.TITLE_COLOR);
-		changeInfos.add(changes);
-
-		changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), Messages.get(ChangesScene.class, "misc"),
-				"I've updated to the latest version of Shattered's game library (libGDX), which has a few benefits:\n" +
-				"_-_ Improved vibration on modern iOS devices\n" +
-				"_-_ Improved changing audio device behavior\n" +
-				"_-_ Misc. stability & compatibility improvements\n\n" +
-				"_-_ Magical fire is now cleared by frost next to it, in addition to on top of it\n" +
-				"_-_ Tengu's fire wall attack now ignites items\n\n" +
-				"_-_ Improved music transitions in main menu when game was just won\n\n" +
-				"_-_ Added support for controller vibration\n" +
-				"_-_ Added a vibration toggle in the settings\n\n" +
-				"_-_ Updated translators and translator credits\n\n" +
-				"_-_ Increased the minimum supported iOS version to 11, from 9"));
-
-		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-				"Fixed the following bugs:\n" +
-				"_Caused by v2.3.0:_\n" +
-				"Nothing! v2.3.0 is pretty stable. =)\n\n" +
-				"_Existed prior to v2.3.0:_\n" +
-				"_-_ Game unintentionally spamming new Google Play players with Play Games login requests\n" +
-				"_-_ Events which interrupt the hero not interrupting resting\n" +
-				"_-_ Rare cases where hero could lose a turn when moving between depths\n" +
-				"_-_ Transmutation removing items from quickslots in rare cases\n" +
-				"_-_ Incorrect death messages when player is killed by wards\n" +
-				"_-_ Amoked allies not being affected by aggression debuff"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false);
 		changes.hardlight(Window.TITLE_COLOR);
@@ -201,7 +650,25 @@ public class v2_X_Changes {
 				"_-_ Long-press to assign quickslot now works in the full UI inventory pane, just like the mobile inventory window\n" +
 				"_-_ Added support for themed icons on Android 13+\n" +
 				"_-_ Removed support for saves prior to v1.4.3\n" +
-				"_-_ Added developer commentary for v1.2.0"));
+				"_-_ Added developer commentary for v1.2.0",
+
+				"_v2.3.1_\n" +
+				"I've updated to the latest version of Shattered's game library (libGDX), which has a few benefits:\n" +
+				"_-_ Improved vibration on modern iOS devices\n" +
+				"_-_ Improved changing audio device behavior\n" +
+				"_-_ Misc. stability & compatibility improvements\n" +
+				"\n" +
+				"_-_ Magical fire is now cleared by frost next to it, in addition to on top of it\n" +
+				"_-_ Tengu's fire wall attack now ignites items\n" +
+				"_-_ Improved music transitions in main menu when game was just won\n" +
+				"_-_ Added support for controller vibration\n" +
+				"_-_ Added a vibration toggle in the settings\n" +
+				"_-_ Updated translators and translator credits\n" +
+				"_-_ Increased the minimum supported iOS version to 11, from 9\n" +
+				"\n" +
+				"_v2.3.2_\n" +
+				"_-_ Slightly improved the layout of shop rooms when many items are present\n" +
+				"_-_ Updated a link in the game's credits"));
 
 		changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
 				"Fixed the following bugs:\n" +
@@ -261,7 +728,21 @@ public class v2_X_Changes {
 				"_-_ Tutorial becoming stuck in rare cases\n" +
 				"_-_ Beta updates setting not working as intended\n" +
 				"_-_ Music fading not working in rare cases\n" +
-				"_-_ Scrolling pane in journal window freezing in rare cases"));
+				"_-_ Scrolling pane in journal window freezing in rare cases",
+
+				"_v2.3.1:_\n" +
+				"_-_ Game unintentionally spamming new Google Play players with Play Games login requests\n" +
+				"_-_ Events which interrupt the hero not interrupting resting\n" +
+				"_-_ Rare cases where hero could lose a turn when moving between depths\n" +
+				"_-_ Transmutation removing items from quickslots in rare cases\n" +
+				"_-_ Incorrect death messages when player is killed by wards\n" +
+				"_-_ Amoked allies not being affected by aggression debuff\n" +
+				"\n" +
+				"_v2.3.2:_\n" +
+				"_-_ Various minor textual errors\n" +
+				"_-_ Very specific cases where levelgen could vary based on whether the player has a timekeeper's hourglass or not\n" +
+				"_-_ Hero leap vfx not causing the camera to follow them\n" +
+				"_-_ Cases where grass and embers wouldn't appear on top of specific ground visuals"));
 
 		changes = new ChangeInfo(Messages.get(ChangesScene.class, "buffs"), false);
 		changes.hardlight(CharSprite.POSITIVE);
@@ -328,7 +809,7 @@ public class v2_X_Changes {
 		changes.hardlight(CharSprite.WARNING);
 		changeInfos.add(changes);
 
-		changes.addButton( new ChangeButton(Icons.CHALLENGE_ON.get(), "Hostile Champions",
+		changes.addButton( new ChangeButton(Icons.CHALLENGE_COLOR.get(), "Hostile Champions",
 				"I've decided to make some changes to the hostile champions challenge, to better balance the difficulty of each of the champion types, and address some common feedback about difficulty spikes:\n" +
 				"\n" +
 				"_- Projecting Champions_ now have +3 attack range, instead of infinite range\n" +
@@ -478,7 +959,7 @@ public class v2_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released June 2nd, 2023\n" +
 				"_-_ 83 days after Shattered v2.0.0\n\n" +
-				"Dev commentary will be added here in the future."));
+				"Dev commentary will be added here in the next major update."));
 
 		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WAR_SCYTHE), "New Weapons!",
 				"Three new weapons have been added to the game!\n" +
@@ -705,7 +1186,11 @@ public class v2_X_Changes {
 				"_-_ 160 days after Shattered v1.4.0\n" +
 				"_-_ 413 days after Shattered v1.0.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"v2.0.0 introduced Shattered Pixel Dungeon's first ever new hero: the Duelist!\n" +
+				"\n" +
+				"The Duelist was the first of two new heroes that were focused around active abilities, as opposed to focusing on equipment power (Warrior and Mage), or environment interaction (Rogue and Huntress). I see v2.0 as the beginning of another new era in Shattered's development, as after focusing on new platforms during most of v1.X, game updates instead started focusing on big content expansions.\n" +
+				"\n" +
+				"Unfortunately the Duelist ended up releasing quite weak. I overestimated how well an ability focused hero would perform versus the existing heroes. I erred much more on the side of making the next hero stronger, and so far that seems to be working out quite well."));
 
 		changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.DUELIST, 1), HeroClass.DUELIST.title(),
 				"_Shattered Pixel Dungeon has a new playable character!!_\n" +

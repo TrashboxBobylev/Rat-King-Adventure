@@ -99,7 +99,7 @@ public class ScrollOfTeleportation extends Scroll {
 		PathFinder.buildDistanceMap(pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 		if (PathFinder.distance[ch.pos] == Integer.MAX_VALUE
 				|| (!Dungeon.level.passable[pos] && !Dungeon.level.avoid[pos])
-				|| Actor.findChar(pos) != null){
+				|| (Actor.findChar(pos) != null && Actor.findChar(pos) != ch)){
 			if (ch == Dungeon.hero){
 				GLog.w( Messages.get(ScrollOfTeleportation.class, "cant_reach") );
 			}
@@ -253,7 +253,7 @@ public class ScrollOfTeleportation extends Scroll {
 		boolean[] passable = Dungeon.level.passable;
 
 		if (Char.hasProp(ch, Char.Property.LARGE)){
-			passable = BArray.or(passable, Dungeon.level.openSpace, null);
+			passable = BArray.and(passable, Dungeon.level.openSpace, null);
 		}
 
 		PathFinder.buildDistanceMap(ch.pos, passable);
@@ -330,11 +330,13 @@ public class ScrollOfTeleportation extends Scroll {
 		}
 	}
 
-	//just plays the VFX for teleporting, without any position changes
+	//just plays the VFX for teleporting, without any position changes, does re-press cells though
 	public static void appearVFX( Char ch ){
 		if (Dungeon.level.heroFOV[ch.pos]){
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 		}
+
+		Dungeon.level.occupyCell(ch);
 
 		if (ch.invisible == 0) {
 			ch.sprite.alpha( 0 );

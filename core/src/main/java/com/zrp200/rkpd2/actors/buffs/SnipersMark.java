@@ -41,6 +41,7 @@ import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,12 +54,15 @@ import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
-	protected int object;
+	public int object = 0;
 	public int level = 0;
+	public float percentDmgBonus = 0;
 
-	public void set(int object, int level) {
+	public void set(int object, int level, float percentDmgBonus) {;
 		this.object = object;
 		this.level = level;
+		this.percentDmgBonus = percentDmgBonus;
+		postpone(duration());
 	}
 
 	public static void remove(Char ch) {
@@ -66,24 +70,25 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		SnipersMark mark = findByID( id = ch.id() );
 		if(mark == null) return;
 		mark.detach();
-		FreeTarget.apply(id, mark.level);
+		tryMark(FreeTarget.class, id, mark.level, mark.percentDmgBonus);
 	}
 
-	private static void ensureSpace() {
-		SnipersMark[] marks = hero.buffs(SnipersMark.class)
-				.toArray(new SnipersMark[0]);
-
-		int size = marks.length;
-		// an extra free-target is allowed.
-		if( !hero.buffs(FreeTarget.class).isEmpty() ) size--;
-		if( size < maxObjects() ) return;
-
-		// tries to remove the 'least valuable' mark.
-		Arrays.sort(marks, (a, b) -> a.level != b.level ? Integer.compare(a.level, b.level) // try to preserve higher level stuff.
-				: a instanceof FreeTarget != b instanceof FreeTarget ? a instanceof FreeTarget ? 1 : -1 // free > standard
-				: Float.compare( a.cooldown(), b.cooldown() ) // older < newer
-		);
-		marks[0].detach();
+	private static <T extends SnipersMark> void tryMark(Class<T> cls, int id, int level, float percentDmgBonus) {
+		if (cls == FreeTarget.class && !hero.hasTalent(Talent.MULTISHOT)) return;
+        //noinspection unchecked
+        T[] marks = (T[]) hero.buffs(cls, true).toArray(new SnipersMark[0]);
+		int excess = marks.length - maxObjects();
+		if (excess >= 0) {
+			// tries to remove the 'least valuable' mark.
+			Arrays.sort(marks, (a, b) -> Math.abs(a.percentDmgBonus - b.percentDmgBonus) > 0.01 ? Float.compare(a.percentDmgBonus, b.percentDmgBonus) // try to preserve higher damage.
+					: a.level != b.level ? Integer.compare(a.level, b.level)
+					//: a instanceof FreeTarget != b instanceof FreeTarget ? a instanceof FreeTarget ? 1 : -1 // free > standard
+					: Float.compare( a.cooldown(), b.cooldown() ) // older < newer
+			);
+			do marks[0].detach(); while (--excess >= 0);
+		}
+		// append the new mark
+		append(hero, cls).set(id, level, percentDmgBonus);
 	}
 
 	private static SnipersMark findByID(int id) {
@@ -93,25 +98,29 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		return null;
 	}
 
+	private Char getTarget() {
+		return (Char)Actor.findById(object);
+	}
+
 	// TODO should I just sync all buffs together?!
 
-	public static void add(Char ch, int level) {
+	public static void add(Char ch, int level, float percentDmgBonus) {
 		addTime(level);
 
 		int id; SnipersMark existing = findByID( id = ch.id() );
 		if(existing != null) {
 			existing.level = level = Math.max(existing.level, level);
+			existing.percentDmgBonus = percentDmgBonus = Math.max(existing.percentDmgBonus, percentDmgBonus);
 		}
 		if( !ch.isAlive() ) {
 			if(existing != null) existing.detach();
-			FreeTarget.apply(id, level);
+			tryMark(FreeTarget.class, id, level, percentDmgBonus);
 		}
 		else if(existing != null) {
 			ActionIndicator.setAction(existing);
 		}
 		else {
-			ensureSpace();
-			Buff.append( hero, SnipersMark.class, duration(level) ).set(id, level);
+			tryMark(SnipersMark.class, id, level, percentDmgBonus);
 		}
 	}
 
@@ -119,6 +128,8 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	private static final String OBJECTS	  = "objects";
 	private static final String LEVEL     = "level",
 			LEVELS    = LEVEL+"s";
+	private static final String BONUS    = "bonus",
+		BONUS_ARRAY = BONUS + "array";
 
 	public static final float DURATION = 4f;
 
@@ -126,21 +137,20 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		type = buffType.POSITIVE;
 	}
 
-	// TODO should I allow the free shot to be used at the same time as the standard shot?
 	private static int maxObjects() {
-		return Math.max(1,1+hero.pointsInTalent(Talent.MULTISHOT)-1);
+		// +0 1+0 1 / +1 1+1 / +2 2+2 / +3 4+4
+		return Math.max(1, 1 << hero.pointsInTalent(Talent.MULTISHOT) - 1);
 	}
 
-	public float duration() { return duration(level); }
 	// todo implement extended time again.
-	public static float duration(int level) {
-		return (DURATION + level) * Math.max(hero.pointsInTalent(Talent.MULTISHOT), 1);
+	public float duration() {
+		return DURATION + level;
 	}
 	// FIXME this is really fucked up.
 	protected static void addTime(int level) {
 		float time = DURATION+level;
 		for(SnipersMark buff : hero.buffs(SnipersMark.class)) buff.postpone( Math.min(
-				duration(buff.level),
+				buff.duration(),
 				buff.cooldown() + time
 		));
 	}
@@ -161,7 +171,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( OBJECT, object );
-		bundle.put( LEVEL, level );
+		bundle.put( BONUS, percentDmgBonus );
 	}
 
 	@Override
@@ -169,6 +179,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		super.restoreFromBundle( bundle );
 
 		level = bundle.getInt(LEVEL);
+		percentDmgBonus = bundle.getFloat(BONUS);
 
 		if(this instanceof FreeTarget) return;
 
@@ -191,6 +202,12 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 				level = levels[0];
 			}
 			else Arrays.fill(levels = new int[objects.length], level);
+			float[] bonusArray;
+			if (bundle.contains(BONUS_ARRAY)) {
+				bonusArray = bundle.getFloatArray(BONUS_ARRAY);
+			} else {
+				Arrays.fill(bonusArray = new float[objects.length], percentDmgBonus);
+			}
 
 			object = objects[0];
 
@@ -198,6 +215,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 				SnipersMark mark = Buff.append(Char.restoring, SnipersMark.class, cooldown());
 				mark.object = objects[i];
 				mark.level = levels[i];
+				mark.percentDmgBonus = bonusArray[i];
 			}
 		}
 		else {
@@ -216,7 +234,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	@Override
 	public float iconFadePercent() {
 		float duration = duration();
-		return duration() == 0 ? 0 : Math.max(0, (duration - visualcooldown()) / duration);
+		return duration == 0 ? 0 : Math.max(0, (duration - visualcooldown()) / duration);
 	}
 
 	@Override
@@ -267,15 +285,6 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 		final HashMap<SnipersMark, Char> actionMap = new HashMap();
 		final SpiritBow bow = hero.belongings.getItem(SpiritBow.class);
 
-		/* this will be needed if I try to let multishot pierce marked targets. {
-			for(SnipersMark mark : hero.buffs(SnipersMark.class, true)) {
-				Char ch = (Char)Actor.findById(mark.object);
-				if(isValidTarget(ch)) {
-					actionMap.put(mark, ch);
-				}
-			}
-		}*/
-
 		HashSet<SelectableCell> selected = new HashSet();
 		void select(SnipersMark m, Char ch) {
 			SelectableCell c = new SelectableCell(ch.sprite);
@@ -292,9 +301,18 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 		final LinkedList<SnipersMark> queue = new LinkedList( hero.buffs(SnipersMark.class) );
 		{
-			Collections.sort(queue, (a,b) -> {
+			Collections.sort(queue, (a, b) -> {
+				// fixme does not take percent damage bonus into account
 				// free-targets go after standard marks, since they have to choose their targets
 				if(a instanceof FreeTarget != b instanceof FreeTarget) return a instanceof FreeTarget ? 1 : -1;
+				if(!(a instanceof FreeTarget)) {
+					// process closest one first; this ensures correct auto-targeting for later marks
+					int diff = Integer.compare(
+							Dungeon.level.distance(hero.pos, a.getTarget().pos),
+							Dungeon.level.distance(hero.pos, b.getTarget().pos)
+					);
+					if (diff != 0) return diff;
+				}
 				int level = Integer.compare(a.level, b.level);
 				// sorted by highest to lowest level, then soonest to expire to longest to expire.
 				return level != 0 ? -level : Float.compare( a.cooldown(), b.cooldown() );
@@ -315,7 +333,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 			hero.busy();
 			for (Map.Entry<SnipersMark, Char> mapping : actionMap.entrySet()) {
 				SnipersMark mark = mapping.getKey(); Char ch = mapping.getValue();
-				mark.doSniperSpecial(hero, bow, ch);
+				mark.doSniperSpecial(hero, bow, ch, actionMap.values());
 			}
 		}
 
@@ -332,7 +350,7 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 			return actionMap.containsValue(ch);
 		}
 		boolean isValidTarget(Char ch) {
-			return !isTargeting(ch) && canDoSniperSpecial(bow, ch);
+			return !isTargeting(ch) && canDoSniperSpecial(bow, ch, actionMap.values());
 		}
 	}
 
@@ -358,10 +376,10 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	}
 
 	protected void queueAction() {
-		Char ch = (Char)Actor.findById(object);
+		Char ch = getTarget();
 		if(actionHandler.isValidTarget(ch)) {
 			actionHandler.select(this,ch);
-		} //else actionHandler.actionMap.remove(this);
+		}
 		actionHandler.next();
 	}
 
@@ -373,10 +391,9 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 	public static class FreeTarget extends SnipersMark {
 
-		// converts a standard mark into a free-targeted mark.
-		public static void apply(int id, int level) {
-			if(!hero.hasTalent(Talent.MULTISHOT)) return;
-			Buff.append( hero, FreeTarget.class, duration(level) ).set(id, level);
+		@Override
+		public float duration() {
+			return super.duration() * hero.pointsInTalent(Talent.MULTISHOT);
 		}
 
 		// only difference is we don't care about object at all. it just exists.
@@ -455,19 +472,16 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 	}
 
 	// this should be called before doing the sniper special
-	private static boolean canDoSniperSpecial(SpiritBow bow, Char ch) {
-		SpiritBow.SpiritArrow arrow = bow.knockArrow();
+	private static boolean canDoSniperSpecial(SpiritBow bow, Char ch, Collection<Char> toIgnore) {
+		SpiritBow.SpiritArrow arrow = bow.knockArrow(toIgnore);
 		return ch != null && arrow != null && QuickSlotButton.autoAim(ch, arrow) != -1;
 	}
 	// actual sniper special
-	protected void doSniperSpecial(Hero hero, SpiritBow bow, Char ch) {
-		SpiritBow.SpiritArrow arrow = bow.knockArrow(); // need a unique arrow for every character.
-		arrow.sniperSpecial = true; // :D
+	private void doSniperSpecial(Hero hero, SpiritBow bow, Char ch, Collection<Char> toIgnore) {
+		SpiritBow.SpiritArrow arrow = bow.knockArrow(toIgnore); // need a unique arrow for every character.
 
 		int cell = QuickSlotButton.autoAim(ch, arrow);
-
-		int points = hero.shiftedPoints(Talent.SHARED_UPGRADES, Talent.RK_SNIPER);
-		arrow.sniperSpecialBonusDamage = level*points/10f;
+		arrow.sniperSpecialBonusDamage = percentDmgBonus;
 
 		Buff.detach(hero, Preparation.class); // nope!
 

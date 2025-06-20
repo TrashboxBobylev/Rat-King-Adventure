@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
+import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -40,10 +41,32 @@ public class Adrenaline extends FlavourBuff {
 		return BuffIndicator.RAGE;
 	}
 
+
+	// I wonder if this can be generalized?
+	private float maxSpend = cooldown();
+	@Override
+	protected void spendConstant(float time) {
+		if (time > maxSpend) maxSpend = time;
+		super.spendConstant(time);
+	}
+
 	@Override
 	public float iconFadePercent() {
-		float duration = target instanceof Hero ? 2+2*((Hero)target).pointsInTalent(Talent.INVIGORATING_MEAL) : DURATION;
-		return Math.max(0, (duration - visualcooldown()) / duration);
+		return Math.max(0, 1 - visualcooldown() / (1 + maxSpend));
+	}
+
+	private static final String VISUAL_DURATION = "duration";
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		maxSpend = bundle.contains(VISUAL_DURATION) ? bundle.getFloat(VISUAL_DURATION) : cooldown();
+	}
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		bundle.put(VISUAL_DURATION, maxSpend);
 	}
 	
 }

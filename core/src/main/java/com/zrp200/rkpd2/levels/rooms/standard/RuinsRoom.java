@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.levels.rooms.standard;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.watabou.utils.Point;
 
 public class RuinsRoom extends PatchRoom {
@@ -34,7 +35,7 @@ public class RuinsRoom extends PatchRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		return true;
 	}
 
@@ -50,7 +51,7 @@ public class RuinsRoom extends PatchRoom {
 
 	@Override
 	protected int clustering() {
-		return 9;
+		return 0;
 	}
 
 	@Override

@@ -100,7 +100,7 @@ public class Amulet extends Item {
 			
 			if (!Statistics.amuletObtained) {
 				Statistics.amuletObtained = true;
-				hero.spend(-TIME_TO_PICK_UP);
+				hero.spend(-hero.cooldown());
 
 				//delay with an actor here so pickup behaviour can fully process.
 				Actor.add(new Actor(){
@@ -161,7 +161,7 @@ public class Amulet extends Item {
 	public String desc() {
 		String desc = super.desc();
 
-		if (Dungeon.hero.buff(AscensionChallenge.class) == null){
+		if (Dungeon.hero == null || Dungeon.hero.buff(AscensionChallenge.class) == null){
 			desc += "\n\n" + Messages.get(this, "desc_origins");
 		} else {
 			desc += "\n\n" + Messages.get(this, "desc_ascent");

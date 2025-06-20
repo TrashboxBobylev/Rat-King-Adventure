@@ -27,8 +27,10 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.PotionOfHealing;
 import com.zrp200.rkpd2.items.quest.GooBlob;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -37,6 +39,8 @@ import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 public class ElixirOfAquaticRejuvenation extends Elixir {
 	
@@ -55,12 +59,6 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		HighnessBuff.agreenalineProc();
 	}
 	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (30 + 30);
-	}
-	
 	public static class AquaHealing extends Buff {
 		
 		{
@@ -72,6 +70,10 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 		
 		public void set( int amount ){
 			if (amount > left) left = amount;
+		}
+
+		public void extend( float duration ) {
+			left += duration;
 		}
 		
 		@Override
@@ -161,7 +163,12 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 			output = ElixirOfAquaticRejuvenation.class;
 			outQuantity = 1;
 		}
-		
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			Catalog.countUse(GooBlob.class);
+			return super.brew(ingredients);
+		}
 	}
 	
 }

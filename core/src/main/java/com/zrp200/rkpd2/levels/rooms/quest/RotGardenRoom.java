@@ -22,7 +22,6 @@
 package com.zrp200.rkpd2.levels.rooms.quest;
 
 import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.RotHeart;
 import com.zrp200.rkpd2.actors.mobs.RotLasher;
@@ -37,7 +36,6 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 
 public class RotGardenRoom extends SpecialRoom {
 	
@@ -124,45 +122,12 @@ public class RotGardenRoom extends SpecialRoom {
 			placePlant(level, pos, new RotLasher());
 		}
 
-		//If the only open cells next to the heart are a diagonal, open one additional adjacent cell
+		//look for open diagonals near the hard and create open cardinals near them.
 		//This is important so that the heart can spread gas
-		boolean openCardinal = false;
-		for (int i = 1; i < PathFinder.CIRCLE8.length; i+=2){
-			if (level.map[heartPos + PathFinder.CIRCLE8[i]] != Terrain.WALL) openCardinal = true;
-		}
-		if (!openCardinal){
-			for (int i = 0; i < PathFinder.CIRCLE8.length; i+=2){
-				if (level.map[heartPos + PathFinder.CIRCLE8[i]] != Terrain.WALL){
-					Painter.set(level, heartPos + PathFinder.CIRCLE8[i+1], Terrain.HIGH_GRASS);
-				}
+		for (int i = 0; i < PathFinder.CIRCLE8.length; i+=2){
+			if (level.map[heartPos + PathFinder.CIRCLE8[i]] != Terrain.WALL){
+				Painter.set(level, heartPos + PathFinder.CIRCLE8[i+1], Terrain.HIGH_GRASS);
 			}
-		}
-
-		//if almost every open cell next to the heart has a lasher threatening it, clear one lasher
-		int safeHeartcells = 0;
-		HashSet<Mob> adjacentLashers = new HashSet<>();
-		for (int i : PathFinder.NEIGHBOURS8){
-			if (level.map[heartPos+i] == Terrain.WALL) {
-				continue;
-			}
-			boolean foundLasher = false;
-			for (int j : PathFinder.NEIGHBOURS8){
-				if (heartPos+i+j != heartPos
-						&& level.map[heartPos+i+j] != Terrain.WALL
-						&& level.findMob(heartPos+i+j) != null){
-					foundLasher = true;
-					adjacentLashers.add(level.findMob(heartPos+i+j));
-				}
-			}
-			if (!foundLasher){
-				safeHeartcells++;
-			}
-		}
-
-		if (safeHeartcells < 2 && !adjacentLashers.isEmpty()){
-			Char toRemove = Random.element(adjacentLashers);
-			level.mobs.remove(toRemove);
-			Painter.set(level, toRemove.pos, Terrain.HIGH_GRASS);
 		}
 
 	}
@@ -179,8 +144,18 @@ public class RotGardenRoom extends SpecialRoom {
 		}
 
 		newPassable[pos] = false;
-		for (int i : PathFinder.NEIGHBOURS4){
-			newPassable[pos+i] = false;
+
+		//if lasher isn't near heart, we can just use cardinal directions
+		if (level.distance(pos, heartPos) > 2){
+			for (int i : PathFinder.NEIGHBOURS4){
+				newPassable[pos+i] = false;
+			}
+		//if it is near, has to count as blocking all adjacent
+		// so that we can guarantee a safe tile to stay still in next to the heart
+		} else {
+			for (int i : PathFinder.NEIGHBOURS8){
+				newPassable[pos+i] = false;
+			}
 		}
 
 		PathFinder.buildDistanceMap(heartPos, newPassable);

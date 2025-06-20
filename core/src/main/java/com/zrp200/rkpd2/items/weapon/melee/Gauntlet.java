@@ -43,6 +43,11 @@ public class Gauntlet extends Sai {
 		hitSoundPitch = 1.2f;
 		
 		tier = 5;
+
+		//15 base, down from 30
+		//+3 per level, down from +6
+
+		//+(5+lvl) damage, roughly +50% base damage, +50% scaling
 	}
 
 	@Override

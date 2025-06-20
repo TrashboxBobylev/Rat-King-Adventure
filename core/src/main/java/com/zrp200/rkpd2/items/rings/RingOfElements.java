@@ -41,11 +41,17 @@ public class RingOfElements extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_ELEMENTS;
+		buffClass = Resistance.class;
 	}
 
 	@Override
 	protected float multiplier() {
 		return 0.825f;
+	}
+
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return formatBonus(level + 1) + "%";
 	}
 
 	@Override

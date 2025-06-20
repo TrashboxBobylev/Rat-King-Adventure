@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.levels.traps;
 
+import com.zrp200.rkpd2.Badges;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 
 public class ExplosiveTrap extends Trap {
@@ -33,6 +35,9 @@ public class ExplosiveTrap extends Trap {
 	@Override
 	public void activate() {
 		new Bomb().explode(pos);
+		if (reclaimed && !Dungeon.hero.isAlive()) {
+			Badges.validateDeathFromFriendlyMagic();
+		}
 	}
 
 }

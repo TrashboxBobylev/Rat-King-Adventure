@@ -74,24 +74,21 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 	public static void onMetamorph( Talent oldTalent, Talent newTalent ){
 		if (curItem instanceof ScrollOfMetamorphosis) {
-			((Scroll) curItem).readAnimation();
+			((ScrollOfMetamorphosis) curItem).readAnimation();
 			Sample.INSTANCE.play(Assets.Sounds.READ);
 		}
-		//this variable is stupid
-		if (curUser != null) {
-			curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
-			Transmuting.show(curUser, oldTalent, newTalent);
-		}
+		curUser.sprite.emitter().start(Speck.factory(Speck.CHANGE), 0.2f, 10);
+		Transmuting.show(curUser, oldTalent, newTalent);
 
 		if (Dungeon.hero.hasTalent(newTalent)) {
 			Talent.onTalentUpgraded(Dungeon.hero, newTalent);
 		}
 	}
 
-	private void confirmCancelation( Window chooseWindow ) {
+	private void confirmCancelation( Window chooseWindow, boolean byID ) {
 		GameScene.show( new WndOptions(new ItemSprite(this),
 				Messages.titleCase(name()),
-				Messages.get(InventoryScroll.class, "warning"),
+				byID ? Messages.get(InventoryScroll.class, "warning") : Messages.get(ScrollOfMetamorphosis.class, "cancel_warn"),
 				Messages.get(InventoryScroll.class, "yes"),
 				Messages.get(InventoryScroll.class, "no") ) {
 			@Override
@@ -182,7 +179,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 			if (identifiedByUse){
 				if (curItem instanceof ScrollOfMetamorphosis) {
-					((ScrollOfMetamorphosis) curItem).confirmCancelation(this);
+					((ScrollOfMetamorphosis) curItem).confirmCancelation(this, true);
 				} else {
 					super.onBackPressed();
 				}
@@ -237,6 +234,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 			LinkedHashMap<Talent, Integer> options = new LinkedHashMap<>();
 			Set<Talent> curTalentsAtTier = Dungeon.hero.talents.get(tier-1).keySet();
 			for (HeroClass cls : HeroClass.values()){
+
 				ArrayList<LinkedHashMap<Talent, Integer>> clsTalents = new ArrayList<>();
 				initClassTalents(cls, clsTalents);
 
@@ -318,8 +316,11 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 		@Override
 		public void onBackPressed() {
-			if (curItem instanceof ScrollOfMetamorphosis)
-				((ScrollOfMetamorphosis)curItem).confirmCancelation(this);
+			if (curItem instanceof ScrollOfMetamorphosis) {
+				((ScrollOfMetamorphosis) curItem).confirmCancelation(this, false);
+			} else {
+				super.onBackPressed();
+			}
 		}
 	}
 }

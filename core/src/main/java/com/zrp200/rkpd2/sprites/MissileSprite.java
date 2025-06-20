@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.sprites;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.RobotTransform;
 import com.zrp200.rkpd2.actors.hero.abilities.huntress.SpectralBlades;
+import com.zrp200.rkpd2.actors.hero.spells.HolyLance;
 import com.zrp200.rkpd2.actors.mobs.GnollGeomancer;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.quest.NerfGun;
@@ -119,6 +120,8 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		ANGULAR_SPEEDS.put(ScorpioSprite.ScorpioShot.class,   0);
 		ANGULAR_SPEEDS.put(RatKingBossSprite.ScorpioShot.class, 0);
 		ANGULAR_SPEEDS.put(NerfGun.NerfAmmo.class,          0);
+
+		ANGULAR_SPEEDS.put(HolyLance.HolyLanceVFX.class,      0);
 
 		//720 is default
 

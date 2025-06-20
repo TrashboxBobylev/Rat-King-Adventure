@@ -36,6 +36,8 @@ import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.wands.WandOfRegrowth;
+import com.zrp200.rkpd2.journal.Bestiary;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
@@ -78,6 +80,8 @@ public abstract class Plant implements Bundlable {
 			activate(Dungeon.hero);
 		}
 		HighnessBuff.agreenalineProc();
+		Bestiary.setSeen(getClass());
+		Bestiary.countEncounter(getClass());
 	}
 	
 	public abstract void activate( Char ch );
@@ -85,7 +89,7 @@ public abstract class Plant implements Bundlable {
 		return ch instanceof Hero && ((Hero) ch).subClass.is(HeroSubClass.WARDEN);
 	}
 
-	
+
 	public void wither() {
 		Dungeon.level.uproot( pos );
 
@@ -138,10 +142,12 @@ public abstract class Plant implements Bundlable {
 
 	public String desc() {
 		String desc = Messages.get(this, "desc");
-		HeroSubClass subClass = Dungeon.hero.subClass;
-		if (isSubclassed(HeroSubClass.WARDEN)){
-			desc += "\n\n" + wardenDesc(subClass);
-		}
+        if (Dungeon.hero != null) {
+            HeroSubClass subClass = Dungeon.hero.subClass;
+            if (isSubclassed(HeroSubClass.WARDEN)){
+                desc += "\n\n" + wardenDesc(subClass);
+            }
+        }
 		return desc;
 	}
 
@@ -182,6 +188,7 @@ public abstract class Plant implements Bundlable {
 					|| Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
 				super.onThrow( cell );
 			} else {
+				Catalog.countUse(getClass());
 				Dungeon.level.plant( this, cell );
 				if (Dungeon.hero.subClass.is(HeroSubClass.WARDEN)) {
 					for (int i : PathFinder.NEIGHBOURS8) {
@@ -245,16 +252,18 @@ public abstract class Plant implements Bundlable {
 		@Override
 		public String desc() {
 			String desc = Messages.get(plantClass, "desc");
-			HeroSubClass subClass = Dungeon.hero.subClass;
-			if (isSubclassed(HeroSubClass.WARDEN)){
-				desc += "\n\n" + Reflection.newInstance(plantClass).wardenDesc(subClass);
-			}
+            if (Dungeon.hero != null) {
+                HeroSubClass subClass = Dungeon.hero.subClass;
+                if (isSubclassed(HeroSubClass.WARDEN)){
+                    desc += "\n\n" + Reflection.newInstance(plantClass).wardenDesc(subClass);
+                }
+            }
 			return desc;
 		}
 
 		@Override
 		public String info() {
-			return Messages.get( Seed.class, "info", desc() );
+			return Messages.get( Seed.class, "info", super.info() );
 		}
 		
 		public static class PlaceHolder extends Seed {

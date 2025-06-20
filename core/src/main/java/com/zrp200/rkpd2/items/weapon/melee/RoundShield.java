@@ -35,6 +35,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 
 public class RoundShield extends MeleeWeapon {
 
@@ -54,7 +55,16 @@ public class RoundShield extends MeleeWeapon {
 
 	@Override
 	public int defenseFactor( Char owner ) {
-		return 4+buffedLvl();               //4 extra defence, plus 1 per level
+		return DRMax();
+	}
+
+	public int DRMax(){
+		return DRMax(buffedLvl());
+	}
+
+	//4 extra defence, plus 1 per level
+	public int DRMax(int lvl){
+		return 4 + lvl;
 	}
 	
 	public String statsInfo(){
@@ -99,12 +109,26 @@ public class RoundShield extends MeleeWeapon {
 
 	@Override
 	protected void duelistAbility(Hero hero, Integer target) {
-		RoundShield.guardAbility(hero, 8, this);
+		RoundShield.guardAbility(hero, 5+buffedLvl(), this);
+	}
+
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", 5+buffedLvl());
+		} else {
+			return Messages.get(this, "typical_ability_desc", 5);
+		}
+	}
+
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(5 + level);
 	}
 
 	public static void guardAbility(Hero hero, int duration, MeleeWeapon wep){
 		wep.beforeAbilityUsed(hero, null);
-		Buff.prolong(hero, GuardTracker.class, duration);
+		Buff.prolong(hero, GuardTracker.class, duration).hasBlocked = false;
 		hero.sprite.operate(hero.pos);
 		hero.spendAndNext(Actor.TICK);
 		wep.afterAbilityUsed(hero);
@@ -117,14 +141,39 @@ public class RoundShield extends MeleeWeapon {
 			type = buffType.POSITIVE;
 		}
 
+		public boolean hasBlocked = false;
+
 		@Override
 		public int icon() {
 			return BuffIndicator.DUEL_GUARD;
 		}
 
 		@Override
+		public void tintIcon(Image icon) {
+			if (hasBlocked){
+				icon.tint(0x651f66, 0.5f);
+			} else {
+				icon.resetColor();
+			}
+		}
+
+		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (7 - visualcooldown()) / 7);
+			return Math.max(0, (5 - visualcooldown()) / 5);
+		}
+
+		private static final String BLOCKED = "blocked";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(BLOCKED, hasBlocked);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			hasBlocked = bundle.getBoolean(BLOCKED);
 		}
 	}
 }

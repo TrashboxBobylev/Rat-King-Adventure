@@ -205,6 +205,7 @@ public class OmniAbility extends ArmorAbility {
      **/
     private static final Set<ArmorAbility> abilities = new HashSet(); static {
         for(HeroClass cls : HeroClass.values()) {
+            if (cls == HeroClass.CLERIC) continue;
             //if(cls == HeroClass.RAT_KING) continue;
             abilities.addAll(Arrays.asList(cls.armorAbilities()));
         }

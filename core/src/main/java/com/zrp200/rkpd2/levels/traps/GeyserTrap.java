@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Fire;
+import com.zrp200.rkpd2.actors.buffs.Burning;
 import com.zrp200.rkpd2.effects.Splash;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.mechanics.Ballistica;
@@ -83,6 +84,10 @@ public class GeyserTrap extends Trap {
 				}
 
 				if (ch.isAlive()) {
+					if (ch.buff(Burning.class) != null){
+						ch.buff(Burning.class).detach();
+					}
+
 					//trace a ballistica to our target (which will also extend past them)
 					Ballistica trajectory = new Ballistica(pos, ch.pos, Ballistica.STOP_TARGET);
 					//trim it to just be the part that goes past them
@@ -124,6 +129,9 @@ public class GeyserTrap extends Trap {
 			}
 
 			if (ch.isAlive() && targetpos != -1){
+				if (ch.buff(Burning.class) != null){
+					ch.buff(Burning.class).detach();
+				}
 				//trace a ballistica in the direction of our target
 				Ballistica trajectory = new Ballistica(pos, targetpos, Ballistica.MAGIC_BOLT);
 				//knock them back along that ballistica

@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.buffs.Preparation;
 import com.zrp200.rkpd2.actors.buffs.RevealedArea;
 import com.zrp200.rkpd2.actors.buffs.Roots;
+import com.zrp200.rkpd2.actors.buffs.SnipersMark;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -71,7 +72,9 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -155,7 +158,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	@Override
 	public String info() {
-		String info = desc();
+		String info = super.info();
 		
 		info += "\n\n" + Messages.get( SpiritBow.class, "stats",
 				Math.round(augment.damageFactor(min())),
@@ -277,7 +280,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
 			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
+				damage += Hero.heroDamageIntRange( 0, exStr );
 			}
 		}
 
@@ -316,7 +319,13 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		return this;
 	}
 
-	public SpiritArrow knockArrow(){
+	public SpiritArrow knockArrow(Collection<Char> sniperSpecialTargets){
+		SpiritArrow arrow = knockArrow();
+		arrow.sniperSpecial = true;
+		arrow.sniperSpecialTargets = sniperSpecialTargets;
+		return arrow;
+	}
+	public SpiritArrow knockArrow() {
 		if (superShot){
 			return new SuperShot();
 		}
@@ -350,7 +359,8 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			hitSound = Assets.Sounds.HIT_ARROW;
 		}
 
-		public boolean sniperSpecial = false;
+		private boolean sniperSpecial = false;
+		private Collection<Char> sniperSpecialTargets;
 		public float sniperSpecialBonusDamage = 0f;
 		public boolean doNotDelay = false;
 
@@ -365,6 +375,24 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			} else {
 				return super.emitter();
 			}
+		}
+
+		@Override
+		public int throwPos(Hero user, int dst) {
+			int throwPos = super.throwPos(user, dst);
+			if (sniperSpecial && throwPos != dst) {
+				Char ch = Actor.findChar(throwPos);
+				if (ch != null && sniperSpecialTargets.contains(ch)) {
+					try {
+						// remove character and try again
+						ch.pos = -1;
+						return throwPos(user, dst);
+					} finally {
+						ch.pos = throwPos;
+					}
+				}
+			}
+			return throwPos;
 		}
 
 		@Override
@@ -636,7 +664,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 						&& user.buff(Talent.SeerShotCooldown.class) == null){
 					int shotPos = throwPos(user, dst);
 					if (Actor.findChar(shotPos) == null) {
-						new RevealedArea(shotPos, Dungeon.depth).attachTo(user);
+						new RevealedArea(shotPos).attachTo(user);
 					}
 				}
 				if (!doNotDelay)

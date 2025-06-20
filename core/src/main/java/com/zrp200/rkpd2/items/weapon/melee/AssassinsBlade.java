@@ -38,43 +38,21 @@ public class AssassinsBlade extends Dirk {
 		hitSoundPitch = 0.9f;
 
 		tier = 4;
-
+	}
 		//20 base, down from 25
 		//scaling unchanged
 
-        //deals 50% toward max to max on surprise, instead of min to max.
-        surpriseTowardMax = 0.50f;
+	@Override
+	protected int maxDist() {
+		return 3;
+	}
+
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(Dungeon.hero)){
+            Buff.prolong(enemy, Blindness.class, 4f);
+            Buff.prolong(enemy, Cripple.class, 4f);
+        }
+        return super.warriorAttack(damage, enemy);
     }
-
-	@Override
-	public int damageRoll(Char owner) {
-		if (owner instanceof Hero) {
-			Hero hero = (Hero)owner;
-			Char enemy = hero.enemy();
-			if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
-				//deals 50% toward max to max on surprise, instead of min to max.
-				int diff = max() - min();
-				int damage = augment.damageFactor(Random.NormalIntRange(
-						min() + Math.round(diff*0.50f),
-						max()));
-				int exStr = hero.STR() - STRReq();
-				if (exStr > 0) {
-					damage += Random.IntRange(0, exStr);
-				}
-				return damage;
-			}
-		}
-		return super.damageRoll(owner);
-	}
-
-	@Override
-	public int warriorAttack(int damage, Char enemy) {
-		if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(Dungeon.hero)){
-			Buff.prolong(enemy, Blindness.class, 4f);
-			Buff.prolong(enemy, Cripple.class, 4f);
-		}
-		return super.warriorAttack(damage, enemy);
-	}
-
-    @Override protected int maxDist() { return 4; }
 }

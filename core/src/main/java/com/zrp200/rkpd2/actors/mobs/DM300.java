@@ -50,6 +50,7 @@ import com.zrp200.rkpd2.actors.buffs.Vertigo;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
 import com.zrp200.rkpd2.actors.buffs.WarpedEnemy;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
+import com.zrp200.rkpd2.actors.hero.spells.WallOfLight;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.effects.TargetedCell;
@@ -216,7 +217,7 @@ public class DM300 extends Mob {
 					if (turnsSinceLastAbility >= MIN_COOLDOWN){
 						//use a coneAOE to try and account for trickshotting angles
 						ConeAOE aim = new ConeAOE(new Ballistica(pos, enemy.pos, Ballistica.WONT_STOP), Float.POSITIVE_INFINITY, 30, Ballistica.STOP_SOLID);
-						if (aim.cells.contains(enemy.pos)) {
+						if (aim.cells.contains(enemy.pos) && !Char.hasProp(enemy, Property.INORGANIC)) {
 							lastAbility = GAS;
 							turnsSinceLastAbility = 0;
 
@@ -228,7 +229,7 @@ public class DM300 extends Mob {
 								Sample.INSTANCE.play(Assets.Sounds.GAS);
 								return true;
 							}
-						//if we can't gas, then drop rocks
+						//if we can't gas, or if target is inorganic then drop rocks
 						//unless enemy is already stunned, we don't want to stunlock them
 						} else if (enemy.paralysed <= 0) {
 							lastAbility = ROCKS;
@@ -257,6 +258,10 @@ public class DM300 extends Mob {
 						} else {
 							//more likely to use gas
 							lastAbility = Random.Int(4) != 0 ? GAS : ROCKS;
+						}
+
+						if (Char.hasProp(enemy, Property.INORGANIC)){
+							lastAbility = ROCKS;
 						}
 
 						//doesn't spend a turn if enemy is at a distance
@@ -345,14 +350,14 @@ public class DM300 extends Mob {
 
 		if (travelling) PixelScene.shake( supercharged ? 3 : 1, 0.25f );
 
-		if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && state == HUNTING) {
+		if (!flying && Dungeon.level.map[pos] == Terrain.INACTIVE_TRAP && state == HUNTING) {
 
 			//don't gain energy from cells that are energized
 			if (CavesBossLevel.PylonEnergy.volumeAt(pos, CavesBossLevel.PylonEnergy.class) > 0){
 				return;
 			}
 
-			if (Dungeon.level.heroFOV[step]) {
+			if (Dungeon.level.heroFOV[pos]) {
 				if (buff(Barrier.class) == null) {
 					GLog.w(Messages.get(this, "shield"));
 				}
@@ -515,7 +520,7 @@ public class DM300 extends Mob {
 		int dmgTaken = preHP - HP;
 		if (dmgTaken > 0) {
 			LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
-			if (lock != null && !isImmune(src.getClass())){
+			if (lock != null && !isImmune(src.getClass()) && !isInvulnerable(src.getClass())){
 				if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES))   lock.addTime(dmgTaken/2f);
 				else                                                    lock.addTime(dmgTaken);
 			}
@@ -549,7 +554,7 @@ public class DM300 extends Mob {
 			threshold = HT / 3 * (2 - pylonsActivated);
 		}
 
-		if (HP < threshold){
+		if (HP <= threshold && threshold > 0){
 			HP = threshold;
 			supercharge();
 		}
@@ -593,6 +598,9 @@ public class DM300 extends Mob {
 	public void loseSupercharge(){
 		supercharged = false;
 		((DM300Sprite)sprite).updateChargeState(false);
+
+		//adjust turns since last ability to prevent DM immediately using an ability when charge ends
+		turnsSinceLastAbility = Math.max(turnsSinceLastAbility, MIN_COOLDOWN-3);
 
 		if (pylonsActivated < totalPylonsToActivate()){
 			yell(Messages.get(this, "charge_lost"));
@@ -706,6 +714,9 @@ public class DM300 extends Mob {
 						}
 						Level.set(pos+i, Terrain.EMPTY_DECO);
 						GameScene.updateMap(pos+i);
+					}
+					if (Dungeon.level.blobs.get(WallOfLight.LightWall.class) != null){
+						Dungeon.level.blobs.get(WallOfLight.LightWall.class).clear(pos+i);
 					}
 				}
 				Dungeon.level.cleanWalls();

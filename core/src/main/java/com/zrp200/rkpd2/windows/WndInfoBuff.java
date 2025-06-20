@@ -26,17 +26,19 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.BuffIcon;
 import com.zrp200.rkpd2.ui.RedButton;
+import com.zrp200.rkpd2.utils.SafeCast;
 
 public class WndInfoBuff extends WndTitledMessage {
 
 	public WndInfoBuff(Buff buff){
 		super(new BuffIcon(buff, true), Messages.titleCase(buff.name()), buff.desc(), WIDTH_MIN);
-
-		if(buff instanceof ActionIndicator.Action && ((ActionIndicator.Action)buff).isSelectable()) {
-			addToBottom(new RedButton("Set Active") {
-				@Override protected void onClick() {
+		ActionIndicator.Action action = SafeCast.cast(buff, ActionIndicator.Action.class);
+		if (action != null && action.usable()) {
+			addToBottom(new RedButton(Messages.upperCase(action.actionName())) {
+				@Override
+				protected void onClick() {
 					hide();
-					ActionIndicator.setAction( (ActionIndicator.Action) buff );
+					if (ActionIndicator.setAction(action)) action.doAction();
 				}
 				{
 					setHeight(16);

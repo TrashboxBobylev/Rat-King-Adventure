@@ -41,6 +41,12 @@ public class Glaive extends Spear {
 	//+8 per level, up from +6
 
 	@Override
+	public int abilityStat(int level) {
+		//+(12+2.5*lvl) damage, roughly +55% base damage, +55% scaling
+		return augment.damageFactor(12 + Math.round(2.5f*level));
+	}
+
+	@Override
 	public int warriorAttack(int damage, Char enemy) {
 		Buff.affect(enemy, StoneOfAggression.Aggression.class, StoneOfAggression.Aggression.DURATION / 5);
 		return super.warriorAttack(damage, enemy);

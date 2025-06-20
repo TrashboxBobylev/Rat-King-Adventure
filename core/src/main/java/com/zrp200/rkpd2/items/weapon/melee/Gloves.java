@@ -46,6 +46,8 @@ public class Gloves extends Sai {
 				lvl*Math.round(0.5f*(tier+1));  //+1 per level, down from +2
 	}
 
+	//+(3+0.75*lvl) damage, roughly +100% base damage, +100% scaling
+
 	@Override
 	public int warriorAttack(int damage, Char enemy) {
 		int hits = Random.Int(2, 6);

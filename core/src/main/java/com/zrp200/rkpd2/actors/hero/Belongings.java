@@ -36,11 +36,15 @@ import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRemoveCurse;
+import com.zrp200.rkpd2.items.trinkets.ShardOfOblivion;
 import com.zrp200.rkpd2.items.wands.Wand;
+import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import com.zrp200.rkpd2.utils.GLog;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -104,25 +108,34 @@ public class Belongings implements Iterable<Item> {
 		return weapon();
 	}
 
-	public KindOfWeapon weapon(int slot) {
-		return weapon(slot, false);
+	//we cache whether belongings are lost to avoid lots of calls to hero.buff(LostInventory.class)
+	private boolean lostInvent;
+	public void lostInventory( boolean val ){
+		lostInvent = val;
 	}
-	public KindOfWeapon weapon(int slot, boolean field) {
-		KindOfWeapon weapon;
-		switch (slot) {
-			case 0: weapon = this.weapon; break;
-			case 1: weapon = secondWep; break;
-			case 2: weapon = thirdWep; break;
-			default: throw new IllegalArgumentException();
-		}
-		if (field) return weapon;
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (weapon != null && weapon.keptThroughLostInventory())){
-			return weapon;
-		} else {
-			return null;
-		}
+
+	public boolean lostInventory(){
+		return lostInvent;
 	}
+
+    public KindOfWeapon weapon(int slot) {
+        return weapon(slot, false);
+    }
+    public KindOfWeapon weapon(int slot, boolean field) {
+        KindOfWeapon weapon;
+        switch (slot) {
+            case 0: weapon = this.weapon; break;
+            case 1: weapon = secondWep; break;
+            case 2: weapon = thirdWep; break;
+            default: throw new IllegalArgumentException();
+        }
+        if (field) return weapon;
+        if (!lostInventory() || (weapon != null && weapon.keptThroughLostInventory())){
+            return weapon;
+        } else {
+            return null;
+        }
+    }
 
 	public KindOfWeapon[] weapons() { return weapons(false); }
 	public KindOfWeapon[] weapons(boolean field) {
@@ -147,9 +160,8 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public Armor armor(){
-		if (owner.buff(RobotTransform.class) != null) return null;
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (armor != null && armor.keptThroughLostInventory())){
+        if (owner.buff(RobotTransform.class) != null) return null;
+        if (!lostInventory() || (armor != null && armor.keptThroughLostInventory())){
 			return armor;
 		} else {
 			return null;
@@ -157,8 +169,7 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public Artifact artifact(){
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (artifact != null && artifact.keptThroughLostInventory())){
+		if (!lostInventory() || (artifact != null && artifact.keptThroughLostInventory())){
 			return artifact;
 		} else {
 			return null;
@@ -166,8 +177,7 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public KindofMisc misc(){
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (misc != null && misc.keptThroughLostInventory())){
+		if (!lostInventory() || (misc != null && misc.keptThroughLostInventory())){
 			return misc;
 		} else {
 			return null;
@@ -175,8 +185,7 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public Ring ring(){
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
-		if (!lostInvent || (ring != null && ring.keptThroughLostInventory())){
+		if (!lostInventory() || (ring != null && ring.keptThroughLostInventory())){
 			return ring;
 		} else {
 			return null;
@@ -279,7 +288,7 @@ public class Belongings implements Iterable<Item> {
 	@SuppressWarnings("unchecked")
 	public<T extends Item> T getItem( Class<T> itemClass ) {
 
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		boolean lostInvent = lostInventory();
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
@@ -295,7 +304,7 @@ public class Belongings implements Iterable<Item> {
 	public<T extends Item> ArrayList<T> getAllItems( Class<T> itemClass ) {
 		ArrayList<T> result = new ArrayList<>();
 
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		boolean lostInvent = lostInventory();
 
 		for (Item item : this) {
 			if (itemClass.isInstance( item )) {
@@ -310,7 +319,7 @@ public class Belongings implements Iterable<Item> {
 
 	public boolean contains( Item contains ){
 
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		boolean lostInvent = lostInventory();
 		
 		for (Item item : this) {
 			if (contains == item) {
@@ -325,7 +334,7 @@ public class Belongings implements Iterable<Item> {
 	
 	public <T extends Item> T getSimilar( T similar ){
 
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		boolean lostInvent = lostInventory();
 		
 		for (Item item : this) {
 			if (similar != item && similar.isSimilar(item)) {
@@ -342,7 +351,7 @@ public class Belongings implements Iterable<Item> {
 	public <T extends Item> ArrayList<T> getAllSimilar( T similar ){
 		ArrayList<Item> result = new ArrayList<>();
 
-		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		boolean lostInvent = lostInventory();
 		
 		for (Item item : this) {
 			if (item != similar && similar.isSimilar(item)) {
@@ -363,26 +372,46 @@ public class Belongings implements Iterable<Item> {
 	}
 	
 	public void observe() {
-		for (KindOfWeapon wep : weapons()) {
-			if (wep == null) continue;
-			wep.identify();
-			Badges.validateItemLevelAquired(wep);
-		}
+        for (KindOfWeapon wep : weapons()) {
+            if (wep == null) continue;
+            if (ShardOfOblivion.passiveIDDisabled() && weapon() instanceof Weapon){
+                ((Weapon) weapon()).setIDReady();
+            } else {
+                weapon().identify();
+                Badges.validateItemLevelAquired(weapon());
+            }
+        }
 		if (armor() != null) {
-			armor().identify();
-			Badges.validateItemLevelAquired(armor());
+			if (ShardOfOblivion.passiveIDDisabled()){
+				armor().setIDReady();
+			} else {
+				armor().identify();
+				Badges.validateItemLevelAquired(armor());
+			}
 		}
 		if (artifact() != null) {
+			//oblivion shard does not prevent artifact IDing
 			artifact().identify();
 			Badges.validateItemLevelAquired(artifact());
 		}
 		if (misc() != null) {
-			misc().identify();
-			Badges.validateItemLevelAquired(misc());
+			if (ShardOfOblivion.passiveIDDisabled() && misc() instanceof Ring){
+				((Ring) misc()).setIDReady();
+			} else {
+				misc().identify();
+				Badges.validateItemLevelAquired(misc());
+			}
 		}
 		if (ring() != null) {
-			ring().identify();
-			Badges.validateItemLevelAquired(ring());
+			if (ShardOfOblivion.passiveIDDisabled()){
+				ring().setIDReady();
+			} else {
+				ring().identify();
+				Badges.validateItemLevelAquired(ring());
+			}
+		}
+		if (ShardOfOblivion.passiveIDDisabled()){
+			GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready_worn"));
 		}
 		for (Item item : backpack) {
 			if (item instanceof EquipableItem || item instanceof Wand) {

@@ -32,7 +32,7 @@ import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
-import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.sprites.ItemSpriteSheet;;
 import com.watabou.utils.Random;
 
 public class Mace extends MeleeWeapon {
@@ -72,29 +72,45 @@ public class Mace extends MeleeWeapon {
 	}
 
 	@Override
-	protected DuelistAbility duelistAbility() {
-		// 1.45 at t2, 1.4 at t3, 1.35 at t4, 1.3 at t5
-		return new HeavyBlow(1.5f - 0.05f * tier);
+	public String abilityInfo() {
+		int dmgBoost = abilityStat(levelKnown ? buffedLvl() : 0);
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
+		}
 	}
 
-	public static class HeavyBlow extends MeleeAbility {
+	public int abilityStat(int level) {
+		//+(5+1.5*lvl) damage, roughly +55% base dmg, +60% scaling
+		return (int)Math.floor(3 + tier * 0.7f) + Math.round(1.5f*level);
+	}
 
-		HeavyBlow(float dmgMulti) { super(dmgMulti); }
-		@Override public float accMulti() { return 0.25f; }
+	protected MeleeAbility duelistAbility() {
+		return new HeavyBlow();
+	}
+
+	public class HeavyBlow extends MeleeAbility {
+
+		{
+			dmgBoost = abilityStat(buffedLvl());
+		}
+
+		@Override
+		protected void beforeAbilityUsed(Hero hero, Char enemy) {
+			super.beforeAbilityUsed(hero, enemy);
+			//no bonus damage if attack isn't a surprise
+			if (enemy instanceof Mob && !((Mob) enemy).surprisedBy(hero)){
+				dmgMulti = Math.min(1, dmgMulti);
+				dmgBoost = 0;
+			}
+		}
 
 		@Override
 		public void afterHit(Char enemy, boolean hit) {
 			if (enemy.isAlive()) {
 				Buff.affect(enemy, Daze.class, Daze.DURATION);
 			}
-		}
-	}
-
-	protected int baseChargeUse(Hero hero, Char target){
-		if (target == null || (target instanceof Mob && ((Mob) target).surprisedBy(hero))) {
-			return 1;
-		} else {
-			return 2;
 		}
 	}
 

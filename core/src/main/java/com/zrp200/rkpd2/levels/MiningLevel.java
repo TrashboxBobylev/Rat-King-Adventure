@@ -244,7 +244,7 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	public boolean activateTransition(Hero hero, LevelTransition transition) {
 		if (transition.type == LevelTransition.Type.BRANCH_ENTRANCE
-				&& !Blacksmith.Quest.completed() && Blacksmith.Quest.Type() != Blacksmith.Quest.OLD) {
+				&& !Blacksmith.Quest.completed()) {
 
 			if (hero.belongings.getItem(Pickaxe.class) == null){
 				Game.runOnRenderThread(new Callback() {
@@ -337,6 +337,11 @@ public class MiningLevel extends CavesLevel {
 		super.addWallVisuals();
 		CavesLevel.addCavesVisuals(this, wallVisuals, true);
 		return wallVisuals;
+	}
+
+	@Override
+	public boolean invalidHeroPos(int tile) {
+		return false; //solid tiles are fine for hero to be in here
 	}
 
 	public static class BorderTopDarken extends CustomTilemap {

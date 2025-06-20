@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.actors.buffs.Regeneration;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.BrokenSeal;
 import com.zrp200.rkpd2.items.Item;
@@ -104,9 +105,9 @@ abstract public class ClassArmor extends Armor {
 	}
 
 	public static ClassArmor upgrade (Hero owner, Armor armor ) {
-		
+
 		ClassArmor classArmor = null;
-		
+
 		switch (owner.heroClass) {
 			case WARRIOR:
 				classArmor = new WarriorArmor();
@@ -123,8 +124,12 @@ abstract public class ClassArmor extends Armor {
 			case DUELIST:
 				classArmor = new DuelistArmor();
 				break;
+			case CLERIC:
+				classArmor = new ClericArmor();
+				break;
 			case RAT_KING:
 				classArmor = new RatKingArmor();
+
 		}
 
 		BrokenSeal seal = armor.checkSeal();
@@ -139,13 +144,19 @@ abstract public class ClassArmor extends Armor {
 		if (armor.seal != null) {
 			classArmor.seal = armor.seal;
 		}
+		classArmor.glyphHardened = armor.glyphHardened;
 		classArmor.cursed = armor.cursed;
 		classArmor.curseInfusionBonus = armor.curseInfusionBonus;
 		classArmor.masteryPotionBonus = armor.masteryPotionBonus;
-		classArmor.identify();
+		if (armor.levelKnown && armor.cursedKnown) {
+			classArmor.identify();
+		} else {
+			classArmor.levelKnown = armor.levelKnown;
+			classArmor.cursedKnown = true;
+		}
 
 		classArmor.charge = 50;
-		
+
 		return classArmor;
 	}
 
@@ -165,7 +176,7 @@ abstract public class ClassArmor extends Armor {
 		tier = bundle.getInt( ARMOR_TIER );
 		charge = bundle.getFloat(CHARGE);
 	}
-	
+
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -273,15 +284,10 @@ abstract public class ClassArmor extends Armor {
 								if (armor.checkSeal() != null) {
 									inscribe(armor.glyph);
 									seal = armor.checkSeal();
-									if (seal.level() > 0) {
-										int newLevel = trueLevel() + 1;
-										level(newLevel);
-										Badges.validateItemLevelAquired(ClassArmor.this);
-									}
 								} else if (checkSeal() != null){
-									//automates the process of detaching the glyph manually
+									//automates the process of detaching the seal manually
 									// and re-affixing it to the new armor
-									if (seal.level() > 0 && trueLevel() <= armor.trueLevel()){
+									if (seal.level() > 0){
 										int newLevel = trueLevel() + 1;
 										level(newLevel);
 										Badges.validateItemLevelAquired(ClassArmor.this);
@@ -301,7 +307,12 @@ abstract public class ClassArmor extends Armor {
 									inscribe(armor.glyph);
 								}
 
-								identify();
+								if (armor.levelKnown && armor.cursedKnown) {
+									identify();
+								} else {
+									levelKnown = armor.levelKnown;
+									cursedKnown = true;
+								}
 
 								GLog.p( Messages.get(ClassArmor.class, "transfer_complete") );
 								hero.sprite.operate(hero.pos);
@@ -352,12 +363,15 @@ abstract public class ClassArmor extends Armor {
 	public String desc() {
 		String desc = super.desc();
 
-		if (hero.belongings.contains(this)) {
+		if (hero != null && hero.belongings.contains(this)) {
 			ArmorAbility ability = hero.armorAbility;
 			if (ability != null) {
 				desc += "\n\n" + ability.shortDesc();
-			float chargeUse = ability.chargeUse(hero);
-				desc += " " + Messages.get(this, "charge_use", Messages.decimalFormat("#.##", chargeUse));
+				float chargeUse = ability.chargeUse(hero);
+				//trinity has variable charge cost
+				if (!(ability instanceof Trinity)) {
+					desc += " " + Messages.get(this, "charge_use", Messages.decimalFormat("#.##", chargeUse));
+				}
 			} else {
 				desc += "\n\n" + "_" + Messages.get(this, "no_ability") + "_";
 			}
@@ -365,12 +379,7 @@ abstract public class ClassArmor extends Armor {
 
 		return desc;
 	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
-	
+
 	@Override
 	public int value() {
 		return 0;

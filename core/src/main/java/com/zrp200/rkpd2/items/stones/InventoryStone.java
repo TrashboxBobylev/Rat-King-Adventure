@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.items.stones;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
+import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bags.Bag;
@@ -52,13 +53,17 @@ public abstract class InventoryStone extends Runestone {
 	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
-		if (action.equals(AC_USE)){
+		if (action.equals(AC_USE) && hero.buff(MagicImmune.class) == null){
 			activate(curUser.pos);
 		}
 	}
 	
 	@Override
 	protected void activate(int cell) {
+		GameScene.selectItem( itemSelector );
+	}
+
+	public void directActivate(){
 		GameScene.selectItem( itemSelector );
 	}
 	

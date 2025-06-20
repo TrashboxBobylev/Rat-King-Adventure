@@ -31,6 +31,14 @@ import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.ElementalStrike;
 import com.zrp200.rkpd2.actors.hero.abilities.mage.ElementalBlast;
 import com.zrp200.rkpd2.actors.hero.abilities.mage.WarpBeacon;
+import com.zrp200.rkpd2.actors.hero.spells.AuraOfProtection;
+import com.zrp200.rkpd2.actors.hero.spells.GuidingLight;
+import com.zrp200.rkpd2.actors.hero.spells.HolyLance;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
+import com.zrp200.rkpd2.actors.hero.spells.Judgement;
+import com.zrp200.rkpd2.actors.hero.spells.Smite;
+import com.zrp200.rkpd2.actors.hero.spells.Sunray;
+import com.zrp200.rkpd2.actors.mobs.CrystalWisp;
 import com.zrp200.rkpd2.actors.mobs.DM100;
 import com.zrp200.rkpd2.actors.mobs.Eye;
 import com.zrp200.rkpd2.actors.mobs.Goo;
@@ -39,7 +47,9 @@ import com.zrp200.rkpd2.actors.mobs.SpectreRat;
 import com.zrp200.rkpd2.actors.mobs.Warlock;
 import com.zrp200.rkpd2.actors.mobs.YogFist;
 import com.zrp200.rkpd2.items.armor.Armor;
+import com.zrp200.rkpd2.items.bombs.ArcaneBomb;
 import com.zrp200.rkpd2.items.bombs.Bomb;
+import com.zrp200.rkpd2.items.bombs.HolyBomb;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRetribution;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfPsionicBlast;
@@ -57,6 +67,7 @@ import com.zrp200.rkpd2.items.wands.WandOfWarding;
 import com.zrp200.rkpd2.items.weapon.enchantments.Blazing;
 import com.zrp200.rkpd2.items.weapon.enchantments.Grim;
 import com.zrp200.rkpd2.items.weapon.enchantments.Shocking;
+import com.zrp200.rkpd2.items.weapon.missiles.darts.HolyDart;
 import com.zrp200.rkpd2.levels.traps.DisintegrationTrap;
 import com.zrp200.rkpd2.levels.traps.GrimTrap;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -85,6 +96,14 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( ScrollOfPsionicBlast.class );
 		RESISTS.add( ScrollOfTeleportation.class );
 
+		RESISTS.add( GuidingLight.class );
+		RESISTS.add( HolyWeapon.class );
+		RESISTS.add( Sunray.class );
+		RESISTS.add( HolyLance.class );
+		RESISTS.add( Smite.class );
+		RESISTS.add( Judgement.class );
+		RESISTS.add( AuraOfProtection.class );
+
 		RESISTS.add( ElementalBlast.class );
 		RESISTS.add( CursedWand.class );
 		RESISTS.add( WandOfBlastWave.class );
@@ -100,7 +119,9 @@ public class AntiMagic extends Armor.Glyph {
 
 		RESISTS.add( ElementalStrike.class );
 		RESISTS.add( Blazing.class );
+		RESISTS.add( WandOfFireblast.FireBlastOnHit.class );
 		RESISTS.add( Shocking.class );
+		RESISTS.add( WandOfLightning.LightningOnHit.class );
 		RESISTS.add( Grim.class );
 
 		RESISTS.add( WarpBeacon.class );
@@ -118,19 +139,18 @@ public class AntiMagic extends Armor.Glyph {
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see:
-		// Hero.damage
-		// GhostHero.damage
-		// Shadowclone.damage
-		// ArmoredStatue.damage
-		// PrismaticImage.damage
+		//no proc effect, triggers in Char.damage
 		return damage;
 	}
 	
-	public static int drRoll( Char ch, int level ){
-		return Random.NormalIntRange(
-				Math.round(level * genericProcChanceMultiplier(ch)),
-				Math.round((3 + (level*1.5f)) * genericProcChanceMultiplier(ch)));
+	public static int drRoll( Char owner, int level ){
+		if (level == -1){
+			return 0;
+		} else {
+			return Random.NormalIntRange(
+					Math.round(level * genericProcChanceMultiplier(owner)),
+					Math.round((3 + (level * 1.5f)) * genericProcChanceMultiplier(owner)));
+		}
 	}
 
 	@Override

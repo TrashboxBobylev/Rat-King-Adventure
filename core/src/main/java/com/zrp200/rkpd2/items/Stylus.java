@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.effects.Enchanting;
 import com.zrp200.rkpd2.effects.particles.PurpleParticle;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.bags.Bag;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -85,7 +86,7 @@ public class Stylus extends Item {
 	
 	private void inscribe( Armor armor ) {
 
-		if (!armor.isIdentified() ){
+		if (!armor.cursedKnown){
 			GLog.w( Messages.get(this, "identify"));
 			return;
 		} else if (armor.cursed || armor.hasCurseGlyph()){
@@ -94,6 +95,7 @@ public class Stylus extends Item {
 		}
 		
 		detach(curUser.belongings.backpack);
+		Catalog.countUse(getClass());
 
 		GLog.w( Messages.get(this, "inscribed"));
 

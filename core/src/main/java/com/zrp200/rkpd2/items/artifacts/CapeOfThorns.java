@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.items.artifacts;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -112,6 +113,7 @@ public class CapeOfThorns extends Artifact {
 				if (exp >= (level()+1)*5 && level() < levelCap){
 					exp -= (level()+1)*5;
 					upgrade();
+					Catalog.countUse(CapeOfThorns.class);
 					GLog.p( Messages.get(this, "levelup") );
 				}
 

@@ -35,7 +35,6 @@ import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.particles.ElmoParticle;
-import com.zrp200.rkpd2.items.ArcaneResin;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.bags.MagicalHolster;
@@ -213,7 +212,7 @@ public class MagesStaff extends MeleeWeapon {
 		if (empoweredStrike != null){
 			if (!isPhysical) empoweredStrike.attachTo(hero);
 			else {
-				empoweredStrike.detach();
+				if (!empoweredStrike.delayedDetach) empoweredStrike.detach();
 				if ((!(defender instanceof Mob) || !((Mob) defender).surprisedBy(hero))){
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
 				}
@@ -255,36 +254,23 @@ public class MagesStaff extends MeleeWeapon {
 
 		int oldStaffcharges = this.wand != null ? this.wand.curCharges : 0;
 
-		if (owner == hero) {
-			boolean preserve = false;
-			if(hero.hasTalent(Talent.WAND_PRESERVATION, Talent.POWER_WITHIN)) {
-				int max = hero.pointsInTalent(Talent.WAND_PRESERVATION) < 2 ? 5 : 8;
+		if (owner == hero && hero.canHaveTalent(Talent.WAND_PRESERVATION) || hero.hasTalent(Talent.POWER_WITHIN)) preserving: {
+
+			if (hero.pointsInTalent(Talent.WAND_PRESERVATION) < 2) {
 				Talent.WandPreservationCounter counter = Buff.affect(hero, Talent.WandPreservationCounter.class);
-				if (counter.count() < max && (hero.hasTalent(Talent.WAND_PRESERVATION) || hero.pointsInTalent(Talent.POWER_WITHIN) == 2 || Random.Int(3) > 0)){
-					counter.countUp(1);
-					preserve = true;
-				};
+				if (counter.count() > 0) break preserving;
+				counter.countUp(1);
 			}
-			// mage has an intrinsic 2/3 chance to preserve a wand anyway.
-			if(preserve || hero.heroClass.isExact(HeroClass.MAGE) && Random.Int(3) > 0) {
-				this.wand.level(wastedUpgrades);
-				if (!this.wand.collect()) {
-					level.drop(this.wand, owner.pos);
-				}
-				else {
-					GameScene.pickUp( this, owner.pos );
-					Sample.INSTANCE.play( Assets.Sounds.ITEM );
-				}
-				GLog.newLine();
-				GLog.p(Messages.get(this, "preserved"));
-			} else {
-				ArcaneResin resin = new ArcaneResin();
-				if (!resin.collect()) {
-					level.drop(resin, owner.pos);
-				}
-				GLog.newLine();
-				GLog.p(Messages.get(this, "preserved_resin"));
+			this.wand.level(0);
+			if (!this.wand.collect()) {
+				level.drop(this.wand, owner.pos);
 			}
+			else {
+				GameScene.pickUp( this, owner.pos );
+				Sample.INSTANCE.play( Assets.Sounds.ITEM );
+			}
+			GLog.newLine();
+			GLog.p(Messages.get(this, "preserved"));
 		}
 
 		this.wand = null;
@@ -510,13 +496,9 @@ public class MagesStaff extends MeleeWeapon {
 					}
 
 					String bodyText = Messages.get(MagesStaff.class, "imbue_desc", newLevel);
-					int preservesLeft = hero.pointsInTalent(Talent.WAND_PRESERVATION) == 2 ? 8 : hero.pointsInTalent(Talent.WAND_PRESERVATION) == 1 || hero.hasTalent(Talent.POWER_WITHIN) ? 5 : 0;
-					if (hero.buff(Talent.WandPreservationCounter.class) != null){
-						preservesLeft -= hero.buff(Talent.WandPreservationCounter.class).count();
-					}
-					if (preservesLeft > 0){
-						int preserveChance = hero.pointsInTalent(Talent.POWER_WITHIN) == 1 ? 67 : 100;
-						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_talent", preserveChance, wastedUpgrades, preservesLeft);
+					int points = hero.shiftedPoints(Talent.WAND_PRESERVATION, Talent.POWER_WITHIN);
+					if (points == 3 || points > 0 && hero.buff(Talent.WandPreservationCounter.class) == null){
+						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_talent");
 					} else {
 						bodyText += "\n\n" + Messages.get(MagesStaff.class, "imbue_lost");
 					}

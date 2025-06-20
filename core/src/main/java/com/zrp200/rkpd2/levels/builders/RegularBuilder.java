@@ -26,8 +26,6 @@ import com.zrp200.rkpd2.levels.rooms.connection.ConnectionRoom;
 import com.zrp200.rkpd2.levels.rooms.connection.MazeConnectionRoom;
 import com.zrp200.rkpd2.levels.rooms.secret.SecretRoom;
 import com.zrp200.rkpd2.levels.rooms.special.ShopRoom;
-import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
-import com.zrp200.rkpd2.levels.rooms.standard.ExitRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
 import com.watabou.utils.Random;
 
@@ -98,9 +96,9 @@ public abstract class RegularBuilder extends Builder {
 		singleConnections.clear();
 		multiConnections.clear();
 		for (Room r : rooms){
-			if (r instanceof EntranceRoom){
+			if (r.isEntrance()){
 				entrance = r;
-			} else if (r instanceof ExitRoom) {
+			} else if (r.isExit()) {
 				exit = r;
 			} else if (r instanceof ShopRoom && r.maxConnections(Room.ALL) == 1){
 				shop = r;

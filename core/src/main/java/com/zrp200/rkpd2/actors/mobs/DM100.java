@@ -36,6 +36,8 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
+import com.zrp200.rkpd2.effects.Lightning;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.mechanics.Ballistica;
@@ -106,9 +108,18 @@ public class DM100 extends Mob implements Callback {
 				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );
-			
+
 		} else {
-			
+			boolean visibleZap = sprite != null && (sprite.visible || enemy.sprite.visible);
+			if (ShieldOfLight.DivineShield.tryUse(enemy, null)) {
+				if (visibleZap) enemy.sprite.parent.add(new Lightning(
+						enemy.sprite.center(),
+						this.sprite.destinationCenter(),
+						null
+				));
+				enemy = this;
+			}
+
 			spend( TIME_TO_ZAP );
 
 			Invisibility.dispel(this);
@@ -145,8 +156,7 @@ public class DM100 extends Mob implements Callback {
 			} else {
 				enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
 			}
-			
-			if (sprite != null && (sprite.visible || enemy.sprite.visible)) {
+			if (visibleZap) {
 				sprite.zap( enemy.pos );
 				return false;
 			} else {

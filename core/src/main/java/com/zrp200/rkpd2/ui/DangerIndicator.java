@@ -119,7 +119,7 @@ public class DangerIndicator extends Tag {
 			if (Dungeon.hero.canAttack(target) && !(target instanceof Phantom)) AttackIndicator.target(target);
 
 			if (Dungeon.hero.curAction == null && target.sprite != null) {
-				Camera.main.panTo(target.sprite.center(), 5f);
+				Camera.main.panFollow(target.sprite, 5f);
 			}
 		}
 	}

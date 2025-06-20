@@ -23,6 +23,8 @@ package com.zrp200.rkpd2.levels.rooms.special;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.blobs.Blob;
+import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -70,6 +72,8 @@ public class WeakFloorRoom extends SpecialRoom {
 		CustomTilemap vis = new HiddenWell();
 		vis.pos(well.x, well.y);
 		level.customTiles.add(vis);
+
+		Blob.seed( well.x + level.width() * well.y, 1, WellID.class, level );
 	}
 
 	public static class HiddenWell extends CustomTilemap {
@@ -94,6 +98,31 @@ public class WeakFloorRoom extends SpecialRoom {
 		@Override
 		public String desc(int tileX, int tileY) {
 			return Messages.get(this, "desc");
+		}
+
+	}
+
+	//we use a blob to track visibility of the well, yes this sucks
+	public static class WellID extends Blob {
+
+		@Override
+		public Notes.Landmark landmark() {
+			return Notes.Landmark.DISTANT_WELL;
+		}
+
+		@Override
+		protected void evolve() {
+			int cell;
+			for (int i=area.top-1; i <= area.bottom; i++) {
+				for (int j = area.left-1; j <= area.right; j++) {
+					cell = j + i* Dungeon.level.width();
+					if (Dungeon.level.insideMap(cell)) {
+						off[cell] = cur[cell];
+
+						volume += off[cell];
+					}
+				}
+			}
 		}
 
 	}

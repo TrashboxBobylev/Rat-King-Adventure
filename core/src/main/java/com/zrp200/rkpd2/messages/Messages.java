@@ -81,6 +81,7 @@ public class Messages {
 	};
 
 	static{
+		formatters = new HashMap<>();
 		setup(SPDSettings.language());
 	}
 
@@ -90,15 +91,18 @@ public class Messages {
 
 		//store language and locale info for various string logic
 		Messages.lang = lang;
+		Locale bundleLocal;
 		if (lang == Languages.ENGLISH){
 			locale = Locale.ENGLISH;
+			bundleLocal = Locale.ROOT; //english is source, uses root locale for fetching bundle
 		} else {
 			locale = new Locale(lang.code());
+			bundleLocal = locale;
 		}
+		formatters.clear();
 
 		//strictly match the language code when fetching bundles however
 		bundles = new ArrayList<>();
-		Locale bundleLocal = new Locale(lang.code());
 		for (String file : prop_files) {
 			bundles.add(I18NBundle.createBundle(Gdx.files.internal(file), bundleLocal));
 		}
@@ -176,21 +180,24 @@ public class Messages {
 
 	public static String format( String format, Object...args ) {
 		try {
-			return String.format(Locale.ENGLISH, format, args);
+			return String.format(locale(), format, args);
 		} catch (IllegalFormatException e) {
 			ShatteredPixelDungeon.reportException( new Exception("formatting error for the string: " + format, e) );
 			return format;
 		}
 	}
 
-	private static HashMap<String, DecimalFormat> formatters = new HashMap<>();
+	private static HashMap<String, DecimalFormat> formatters;
 
 	public static String decimalFormat( String format, double number ){
 		if (!formatters.containsKey(format)){
-			formatters.put(format, new DecimalFormat(format, DecimalFormatSymbols.getInstance(Locale.ENGLISH)));
+			formatters.put(format, new DecimalFormat(format, DecimalFormatSymbols.getInstance(locale())));
 		}
 		return formatters.get(format).format(number);
 	}
+
+	/** adds highlight formatting, because it's too easy to forget the delimiters **/
+	public static String h( String str ) { return "_" + str + "_"; }
 
 	public static String capitalize( String str ){
 		if (str.length() == 0)  return str;

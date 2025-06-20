@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.levels.traps;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -90,6 +91,7 @@ public class GnollRockfallTrap extends RockfallTrap {
 				if (!ch.isAlive() && ch == Dungeon.hero){
 					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
+					if (reclaimed) Badges.validateDeathFromFriendlyMagic();
 				}
 			} else if (ch == null
 					&& Dungeon.level instanceof MiningLevel

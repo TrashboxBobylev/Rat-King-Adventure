@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.actors.hero.abilities.mage;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
@@ -288,7 +289,7 @@ public class ElementalBlast extends ArmorAbility {
 
 							//### Deal damage ###
 							Char mob = Actor.findChar(cell);
-							int damage = Math.round(Random.NormalIntRange(finalMinDamage, finalMaxDamage)
+							int damage = Math.round(Hero.heroDamageIntRange(finalMinDamage, finalMaxDamage)
 									* effectMulti
 									* damageFactors.get(finalWandCls[0]));
 
@@ -383,7 +384,7 @@ public class ElementalBlast extends ArmorAbility {
 											charm.ignoreHeroAllies = true;
 											mob.sprite.centerEmitter().start(Speck.factory(Speck.HEART), 0.2f, 3);
 										} else {
-											damage = Math.round(Random.NormalIntRange(finalMinDamage, finalMaxDamage) * effectMulti);
+											damage = Math.round(Hero.heroDamageIntRange(finalMinDamage, finalMaxDamage) * effectMulti);
 											mob.damage(damage, Reflection.newInstance(finalWandCls[0]));
 											mob.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
 										}
@@ -437,7 +438,11 @@ public class ElementalBlast extends ArmorAbility {
 
 						//*** Wand of Prismatic Light ***
 						} else if (finalWandCls[0] == WandOfPrismaticLight.class){
-							Buff.prolong( hero, Light.class, effectMulti*50f);
+							if (Dungeon.isChallenged(Challenges.DARKNESS)){
+								Buff.prolong(hero, Light.class, effectMulti * 10f);
+							} else {
+								Buff.prolong(hero, Light.class, effectMulti * 50f);
+							}
 
 						}
 

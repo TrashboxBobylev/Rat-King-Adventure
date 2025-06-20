@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.rings;
 
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
@@ -30,11 +31,17 @@ public class RingOfAccuracy extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_ACCURACY;
+		buffClass = Accuracy.class;
 	}
 
 	@Override
 	protected float multiplier() {
 		return 1.3f;
+	}
+
+	public String upgradeStat1(int level){
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return formatBonus(level+1) + "%";
 	}
 
 	@Override

@@ -22,7 +22,9 @@
 package com.zrp200.rkpd2.items.stones;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Identification;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.Potion;
@@ -30,6 +32,7 @@ import com.zrp200.rkpd2.items.potions.exotic.ExoticPotion;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.items.scrolls.exotic.ExoticScroll;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -71,10 +74,23 @@ public class StoneOfIntuition extends InventoryStone {
 		
 	}
 
+	@Override
+	public String desc() {
+		String text = super.desc();
+		if (Dungeon.hero != null){
+			if (Dungeon.hero.buff(IntuitionUseTracker.class) == null){
+				text += "\n\n" + Messages.get(this, "break_info");
+			} else {
+				text += "\n\n" + Messages.get(this, "break_warn");
+			}
+		}
+		return text;
+	}
+
 	public static class IntuitionUseTracker extends Buff {{ revivePersists = true; }};
 
 	private static Class curGuess = null;
-	
+
 	public class WndGuess extends Window {
 		
 		private static final int WIDTH = 120;
@@ -107,20 +123,18 @@ public class StoneOfIntuition extends InventoryStone {
 						}
 						GLog.p( Messages.get(WndGuess.class, "correct") );
 						curUser.sprite.parent.add( new Identification( curUser.sprite.center().offset( 0, -16 ) ) );
-
-						if (curUser.buff(IntuitionUseTracker.class) == null){
-							GLog.h( Messages.get(WndGuess.class, "preserved") );
+					} else {
+						GLog.w( Messages.get(WndGuess.class, "incorrect") );
+					}
+					if (!anonymous) {
+						Catalog.countUse(StoneOfIntuition.class);
+						if (curUser.buff(IntuitionUseTracker.class) == null) {
 							Buff.affect(curUser, IntuitionUseTracker.class);
 						} else {
-							curItem.detach( curUser.belongings.backpack );
+							curItem.detach(curUser.belongings.backpack);
 							curUser.buff(IntuitionUseTracker.class).detach();
 						}
-					} else {
-						curItem.detach( curUser.belongings.backpack );
-						if (curUser.buff(IntuitionUseTracker.class) != null) {
-							curUser.buff(IntuitionUseTracker.class).detach();
-						}
-						GLog.n( Messages.get(WndGuess.class, "incorrect") );
+						Talent.onRunestoneUsed(curUser, curUser.pos, StoneOfIntuition.class);
 					}
 					curGuess = null;
 					hide();

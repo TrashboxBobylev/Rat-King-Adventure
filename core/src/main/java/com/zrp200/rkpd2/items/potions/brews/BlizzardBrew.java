@@ -25,7 +25,6 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.blobs.Blizzard;
 import com.zrp200.rkpd2.actors.blobs.Blob;
-import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
 import com.zrp200.rkpd2.items.potions.PotionOfFrost;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -57,20 +56,14 @@ public class BlizzardBrew extends Brew {
 
 		GameScene.add( Blob.seed( cell, centerVolume, Blizzard.class ) );
 	}
-	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (30 + 40);
-	}
-	
+
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfFrost.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfFrost.class};
+			inQuantity = new int[]{1};
 			
-			cost = 3;
+			cost = 8;
 			
 			output = BlizzardBrew.class;
 			outQuantity = 1;

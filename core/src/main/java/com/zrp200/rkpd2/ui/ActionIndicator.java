@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.actors.buffs.SnipersMark;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
+import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -65,7 +66,7 @@ public class ActionIndicator extends Tag {
 	public GameAction keyAction() {
 		return SPDAction.TAG_ACTION;
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();
@@ -199,6 +200,7 @@ public class ActionIndicator extends Tag {
 			MonkEnergy.class,
 			Berserk.class,
 			MeleeWeapon.Charger.class,
+            HolyTome.TomeRecharge.class,
 			RobotBuff.class,
 			HighnessBuff.class,
 			BrawlerBuff.class,

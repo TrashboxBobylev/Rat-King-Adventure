@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.Statistics;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
@@ -31,17 +32,19 @@ import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.KingsCrown;
 import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.remains.CrownShard;
+import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.RankingsScene;
 import com.zrp200.rkpd2.scenes.InterlevelScene;
 import com.zrp200.rkpd2.sprites.RatKingSprite;
 import com.zrp200.rkpd2.utils.Holiday;
 import com.zrp200.rkpd2.windows.WndInfoArmorAbility;
 import com.zrp200.rkpd2.windows.WndOptions;
-import com.zrp200.rkpd2.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
+import com.zrp200.rkpd2.windows.WndQuest;
 
 public class RatKing extends NPC {
 
@@ -93,6 +96,11 @@ public class RatKing extends NPC {
 
 	// this isn't stored currently
 	private boolean discussedShard = false;
+
+	@Override
+	public Notes.Landmark landmark() {
+		return Dungeon.depth == 5 ? Notes.Landmark.RAT_KING : null;
+	}
 
 	@Override
 	protected boolean act() {
@@ -197,8 +205,12 @@ public class RatKing extends NPC {
 	
 	@Override
 	public String description() {
-		if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS){
-			return Messages.get(this, "desc_festive");
+		if (Dungeon.hero != null && Dungeon.hero.armorAbility instanceof Ratmogrify){
+			return Messages.get(this, "desc_crown");
+		} else if (Holiday.getCurrentHoliday() == Holiday.APRIL_FOOLS){
+			return Messages.get(this, "desc_birthday");
+		} else if (Holiday.getCurrentHoliday() == Holiday.WINTER_HOLIDAYS){
+			return Messages.get(this, "desc_winter");
 		} else {
 			return super.description();
 		}

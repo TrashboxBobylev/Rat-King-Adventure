@@ -22,12 +22,9 @@
 package com.zrp200.rkpd2.items.weapon.melee;
 
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.actors.Char;
-import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
-public class WarScythe extends MeleeWeapon {
+public class WarScythe extends Sickle {
 
 	{
 		image = ItemSpriteSheet.WAR_SCYTHE;
@@ -55,18 +52,9 @@ public class WarScythe extends MeleeWeapon {
 	}
 
 	@Override
-	protected int baseChargeUse(Hero hero, Char target){
-		return 2;
-	}
-
-	@Override
-	public String targetingPrompt() {
-		return Messages.get(this, "prompt");
-	}
-
-	@Override
-	protected void duelistAbility(Hero hero, Integer target) {
-		Sickle.harvestAbility(hero, target, 0.9f, this);
+	public int abilityStat(int lvl) {
+		//replaces damage with 30+4.5*lvl bleed, roughly 133% avg base dmg, 129% avg scaling
+		return augment.damageFactor(Math.round(30f + 4.5f*lvl));
 	}
 
 }

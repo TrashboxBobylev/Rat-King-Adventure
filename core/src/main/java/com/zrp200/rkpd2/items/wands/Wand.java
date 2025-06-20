@@ -29,8 +29,10 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
+import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
+import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
@@ -50,6 +52,9 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.mage.WildMagic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.Wraith;
+import com.zrp200.rkpd2.actors.hero.spells.DivineSense;
+import com.zrp200.rkpd2.actors.hero.spells.GuidingLight;
+import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.effects.MagicMissile;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
@@ -59,6 +64,8 @@ import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.bags.MagicalHolster;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
+import com.zrp200.rkpd2.items.trinkets.ShardOfOblivion;
+import com.zrp200.rkpd2.items.trinkets.WondrousResin;
 import com.zrp200.rkpd2.items.spells.CurseInfusion;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.KromerStaff;
@@ -67,7 +74,6 @@ import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.CellSelector;
 import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.ActionIndicator;
@@ -85,6 +91,10 @@ import java.util.ArrayList;
 import static com.zrp200.rkpd2.Dungeon.hero;
 
 public abstract class Wand extends Item {
+
+	{
+		cursedKnown = false;
+	}
 
 	public static final String AC_ZAP	= "ZAP";
 
@@ -139,15 +149,19 @@ public abstract class Wand extends Item {
 
 	@Override
 	public int targetingPos(Hero user, int dst) {
-		if (user.pointsInTalent(Talent.SIXTH_SENSE) == 2 && user.buff(Talent.SixthSenseCooldown.class) == null && dst != user.pos){
-			Mob mob = (Mob) Actor.findChar(dst);
-			if ( mob != null && mob.surprisedBy(Dungeon.hero) &&
-					mob.alignment != Dungeon.hero.alignment && (Dungeon.level.heroFOV[mob.pos] || Dungeon.level.distance(Dungeon.hero.pos, mob.pos) < 4)){
-				Talent.Cooldown.affectHero(Talent.SixthSenseCooldown.class);
-				return dst;
-			}
+        if (user.pointsInTalent(Talent.SIXTH_SENSE) == 2 && user.buff(Talent.SixthSenseCooldown.class) == null && dst != user.pos){
+            Mob mob = (Mob) Actor.findChar(dst);
+            if ( mob != null && mob.surprisedBy(Dungeon.hero) &&
+                    mob.alignment != Dungeon.hero.alignment && (Dungeon.level.heroFOV[mob.pos] || Dungeon.level.distance(Dungeon.hero.pos, mob.pos) < 4)){
+                Talent.Cooldown.affectHero(Talent.SixthSenseCooldown.class);
+                return dst;
+            }
+        }
+        if (cursed && cursedKnown){
+			return new Ballistica(user.pos, dst, Ballistica.MAGIC_BOLT).collisionPos;
+		} else {
+			return new Ballistica(user.pos, dst, collisionProperties).collisionPos;
 		}
-		return new Ballistica( user.pos, dst, collisionProperties ).collisionPos;
 	}
 
 	public abstract void onZap(Ballistica attack);
@@ -282,6 +296,39 @@ public abstract class Wand extends Item {
 		}
 		SoulMark.process(target,wandLevel,chargesUsed,delay);
 		if (Dungeon.hero.hasTalent(Talent.DEADLY_FOLLOWUP)) Buff.prolong(Dungeon.hero, Talent.DeadlyFollowupTracker.class, 5f).object = target.id();
+		GuidingLight.Illuminated.proc(target);
+
+
+		if (target.alignment == Char.Alignment.ENEMY) everythingIsAWeapon: {
+			int points = Dungeon.hero.pointsInTalent(Talent.EVERYTHING_IS_A_WEAPON);
+			if (points == 0) break everythingIsAWeapon;
+			if (Random.Int(Talent.EVERYTHING_IS_A_WEAPON.maxPoints()) < points) {
+				// delayed to catch the target being dead
+				Actor.add(() -> Buff.affect(Dungeon.hero, Combo.class).hit(target));
+			} else {
+				Combo combo = Dungeon.hero.buff(Combo.class);
+				if (combo != null) {
+					combo.resetTime();
+				}
+			}
+		}
+
+		if (target.alignment != Char.Alignment.ALLY
+				&& !Dungeon.hero.heroClass.is(HeroClass.CLERIC)
+				&& Dungeon.hero.canHaveTalent(Talent.SEARING_LIGHT)
+				&& Dungeon.hero.buff(Talent.SearingLightCooldown.class) == null){
+			Buff.affect(target, GuidingLight.Illuminated.class);
+			Buff.affect(Dungeon.hero, Talent.SearingLightCooldown.class, 20f);
+		}
+
+		if (target.alignment != Char.Alignment.ALLY
+				&& Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.SUNRAY)){
+			// 15/25% chance
+			if (Random.Int(20) < 1 + 2*Dungeon.hero.pointsInTalent(Talent.SUNRAY)){
+				Buff.prolong(target, Blindness.class, 4f);
+			}
+		}
 
 		HighnessBuff.agreenalineProc();
 	}
@@ -313,7 +360,15 @@ public abstract class Wand extends Item {
 		
 		return this;
 	}
-	
+
+	public void setIDReady(){
+		usesLeftToID = -1;
+	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
+	}
+
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
 		if (!isIdentified() && availableUsesToID <= USES_TO_ID/2f) {
@@ -324,7 +379,7 @@ public abstract class Wand extends Item {
 
 	@Override
 	public String info() {
-		String desc = desc();
+		String desc = super.info();
 
 		desc += "\n\n" + statsDesc();
 
@@ -340,7 +395,7 @@ public abstract class Wand extends Item {
 			desc += "\n\n" + Messages.get(Wand.class, "not_cursed");
 		}
 
-		if (Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE)){
+		if (Dungeon.hero != null && Dungeon.hero.subClass.is(HeroSubClass.BATTLEMAGE)){
 			desc += "\n\n" + Messages.get(this, "bmage_desc", Messages.titleCase(Dungeon.hero.subClass.title()));
 		}
 
@@ -350,7 +405,19 @@ public abstract class Wand extends Item {
 	public String statsDesc(){
 		return Messages.get(this, "stats_desc");
 	}
-	
+
+	public String upgradeStat1(int level){
+		return null;
+	}
+
+	public String upgradeStat2(int level){
+		return null;
+	}
+
+	public String upgradeStat3(int level){
+		return null;
+	}
+
 	@Override
 	public boolean isIdentified() {
 		return super.isIdentified() && curChargeKnown;
@@ -409,6 +476,9 @@ public abstract class Wand extends Item {
 
 	protected int buffedLvl(boolean magicCharge) {
 		int lvl = super.buffedLvl();
+
+		if (Dungeon.hero == null) return lvl;
+
 		MagesStaff staff = Dungeon.hero.belongings.getItem(MagesStaff.class);
 		if(staff != null && staff.wand() == this && Dungeon.hero.buff(Degrade.class) != null) {
 			int bonus = Dungeon.hero.getBonus(this);
@@ -471,7 +541,7 @@ public abstract class Wand extends Item {
 		curCharges = Math.min( curCharges, maxCharges );
 	}
 	
-	protected int initialCharges() {
+	public int initialCharges() {
 		return 2;
 	}
 
@@ -500,19 +570,29 @@ public abstract class Wand extends Item {
 		return Dungeon.hero.hasTalent(Talent.HEROIC_WIZARDRY) ? -Dungeon.hero.pointsInTalent(Talent.HEROIC_WIZARDRY) : 0;
 	}
 
-	protected void wandUsed() {
+	public void wandUsed() {
 		if (!isIdentified()) {
 			float uses = Math.min(availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this));
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0 || Dungeon.hero.pointsInTalent(Talent.SCHOLARS_INTUITION, Talent.ROYAL_INTUITION) == 2) {
-				identify();
-				GLog.p(Messages.get(Wand.class, "identify"));
-				Badges.validateItemLevelAquired(this);
+				if (ShardOfOblivion.passiveIDDisabled()) {
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					setIDReady();
+				} else {
+					identify();
+					GLog.p(Messages.get(Wand.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
 			} else if (!levelKnown && Dungeon.hero.hasTalent(Talent.SCHOLARS_INTUITION)) {
 				levelKnown = true;
 				updateQuickslot();
 				Badges.validateItemLevelAquired(this);
+			}
+			if (ShardOfOblivion.passiveIDDisabled()) {
+				Buff.prolong(curUser, ShardOfOblivion.WandUseTracker.class, 50f);
 			}
 		}
 
@@ -568,6 +648,32 @@ public abstract class Wand extends Item {
 			charger.energizeTime = 5;
 			charger.fx(true);
 		}
+
+		if (Dungeon.hero.shiftedPoints(Talent.LINGERING_MAGIC, Talent.KINGS_WISDOM) > 0
+				&& charger != null && charger.target == Dungeon.hero){
+
+			Buff.affect(Dungeon.hero, Talent.LingeringMagicTracker.class).reset();
+		}
+
+		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
+			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
+		}
+
+		// 10/20/30%
+		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+				&& Dungeon.hero.hasTalent(Talent.CLEANSE)
+				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE)){
+			boolean removed = false;
+			for (Buff b : Dungeon.hero.buffs()) {
+				if (b.type == Buff.buffType.NEGATIVE) {
+					b.detach();
+					removed = true;
+				}
+			}
+			if (removed) new Flare( 6, 32 ).color(0xFF4CD2, true).show( Dungeon.hero.sprite, 2f );
+		}
+
 		Invisibility.dispel();
 		updateQuickslot();
 
@@ -817,9 +923,23 @@ public abstract class Wand extends Item {
 						curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
-								curWand.wandUsed();
+								if (Random.Float() < WondrousResin.extraCurseEffectChance()){
+									WondrousResin.forcePositive = true;
+									CursedWand.cursedZap(curWand,
+											curUser,
+											new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT), new Callback() {
+												@Override
+												public void call() {
+													WondrousResin.forcePositive = false;
+													curWand.wandUsed();
+												}
+											});
+								} else {
+									curWand.wandUsed();
+								}
 							}
 						});
+
 					}
 					curWand.cursedKnown = true;
 					
@@ -943,17 +1063,17 @@ private int energizeTime = 0;
 
 		public void gainCharge(float charge, boolean overcharge){
 			int maxCharges = Wand.this.maxCharges;
-			if(overcharge) maxCharges += Math.ceil(charge);
-			int cap = Math.max(curCharges,maxCharges); // this allows stacking of overcharging
-			if (curCharges < cap) {
+			if(overcharge) maxCharges += (int) Math.ceil(charge);
+			maxCharges = Math.max(curCharges,maxCharges);  // this allows stacking of overcharging
+			if (curCharges < maxCharges) {
 				partialCharge += charge;
 				while (partialCharge >= 1f) {
 					curCharges++;
 					partialCharge--;
 				}
-				if(curCharges >= cap) {
-					curCharges = cap;
+				if (curCharges >= maxCharges){
 					partialCharge = 0;
+					curCharges = maxCharges;
 				}
 				updateQuickslot();
 			}

@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.items.rings;
 
+import com.watabou.utils.Bundle;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
@@ -33,8 +34,6 @@ import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.AttackIndicator;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
-import com.watabou.noosa.Image;
-import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -42,6 +41,7 @@ public class RingOfForce extends Ring {
 
 	{
 		icon = ItemSpriteSheet.Icons.RING_FORCE;
+		buffClass = Force.class;
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class RingOfForce extends Ring {
 		if (super.doUnequip(hero, collect, single)){
 			if (hero.buff(BrawlersStance.class) != null && hero.buff(Force.class) == null){
 				//clear brawler's stance if no ring of force is equipped
-				hero.buff(BrawlersStance.class).detach();
+				hero.buff(BrawlersStance.class).active = false;
 			}
 			return true;
 		} else {
@@ -82,10 +82,17 @@ public class RingOfForce extends Ring {
 				&& hero.buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null) {
 			int level = getBuffedBonus(hero, Force.class);
 			float tier = tier(hero.STR());
-			return Random.NormalIntRange(min(level, tier), max(level, tier));
+			int dmg = Hero.heroDamageIntRange(min(level, tier), max(level, tier));
+			if (hero.buff(BrawlersStance.class) != null
+				&& hero.buff(BrawlersStance.class).active){
+				// 3+tier base dmg, roughly +60%->45% dmg at T1->5
+				// lvl*((4+2*tier)/8) scaling, +50% dmg
+				dmg += Math.round(3+tier+(level*((4+2*tier)/8f)));
+			}
+			return dmg;
 		} else {
 			//attack without any ring of force influence
-			return Random.NormalIntRange(1, Math.max(hero.STR()-8, 1));
+			return Hero.heroDamageIntRange(1, Math.max(hero.STR()-8, 1));
 		}
 	}
 
@@ -111,7 +118,7 @@ public class RingOfForce extends Ring {
 
 	@Override
 	public String statsInfo() {
-		float tier = tier(Dungeon.hero.STR());
+		float tier = tier(Dungeon.hero != null ? Dungeon.hero.STR() : 10);
 		int level = isIdentified() ? soloBuffedBonus() : 1;
 		String info = Messages.get(this, isIdentified()?"stats":"typical_stats", min(level, tier), max(level, tier), Math.round(level*1.75f));
 		if (isIdentified()) {
@@ -122,6 +129,31 @@ public class RingOfForce extends Ring {
 		}
 
 		return info;
+	}
+
+	@Override
+	public String upgradeStat1(int level) {
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		float tier = tier(Dungeon.hero != null ? Dungeon.hero.STR() : 10);
+		return min(level+1, tier) + "-" + max(level+1, tier);
+	}
+
+	@Override
+	public String upgradeStat2(int level) {
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		return Integer.toString(level+1);
+	}
+
+	@Override
+	public String upgradeStat3(int level) {
+		if (cursed && cursedKnown) level = Math.min(-1, level-3);
+		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST){
+			float tier = tier(Dungeon.hero != null ? Dungeon.hero.STR() : 10);
+			int bonus = Math.round(3+tier+(level*((4+2*tier)/8f)));
+			return (min(level+1, tier) + bonus) + "-" + (max(level+1, tier) + bonus);
+		} else {
+			return null;
+		}
 	}
 
 	public class Force extends RingBuff {
@@ -170,17 +202,18 @@ public class RingOfForce extends Ring {
 	public void execute(Hero hero, String action) {
 		if (action.equals(AC_ABILITY)){
 			if (hero.buff(BrawlersStance.class) != null){
-				hero.buff(BrawlersStance.class).detach();
+				if (!hero.buff(BrawlersStance.class).active){
+					hero.buff(BrawlersStance.class).reset();
+				} else {
+					hero.buff(BrawlersStance.class).active = false;
+				}
+				BuffIndicator.refreshHero();
 				AttackIndicator.updateState();
 			} else if (!isEquipped(hero)) {
 				GLog.w(Messages.get(MeleeWeapon.class, "ability_need_equip"));
 
-			} else if ((Buff.affect(hero, MeleeWeapon.Charger.class).charges[0])
-					< BrawlersStance.HIT_CHARGE_USE){
-				GLog.w(Messages.get(MeleeWeapon.class, "ability_no_charge"));
-
 			} else {
-				Buff.affect(hero, BrawlersStance.class);
+				Buff.affect(hero, BrawlersStance.class).reset();
 				AttackIndicator.updateState();
 			}
 		} else {
@@ -192,9 +225,17 @@ public class RingOfForce extends Ring {
 	public String info() {
 		String info = super.info();
 
-		if (Dungeon.hero.heroClass.is(HeroClass.DUELIST)
+		if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.DUELIST)
 				&& (anonymous || isIdentified() || isEquipped(Dungeon.hero))){
-			info += "\n\n" + Messages.get(this, "ability_desc");
+			//0 if unidentified, solo level if unequipped, combined level if equipped
+			int level = isIdentified() ? (isEquipped(Dungeon.hero) ? getBuffedBonus(Dungeon.hero, Force.class) : soloBuffedBonus()) : 0;
+			float tier = tier(Dungeon.hero.STR());
+			int dmgBoost = Math.round(3+tier+(level*((4+2*tier)/8f)));
+			if (isIdentified()) {
+				info += "\n\n" + Messages.get(this, "ability_desc", min(level, tier)+dmgBoost, max(level, tier)+dmgBoost);
+			} else {
+				info += "\n\n" + Messages.get(this, "typical_ability_desc",  min(level, tier)+dmgBoost, max(level, tier)+dmgBoost);
+			}
 		}
 
 		return info;
@@ -209,10 +250,10 @@ public class RingOfForce extends Ring {
 			return false;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
-		if (stance != null && stance.hitsLeft() > 0){
+		if (stance != null && stance.active){
 			//clear the buff if no ring of force is equipped
 			if (hero.buff(RingOfForce.Force.class) == null){
-				stance.detach();
+				stance.active = false;
 				AttackIndicator.updateState();
 				return false;
 			} else {
@@ -230,7 +271,7 @@ public class RingOfForce extends Ring {
 			return hero.buff(MonkEnergy.MonkAbility.FlurryEmpowerTracker.class) != null;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
-		if (stance != null && stance.hitsLeft() > 0){
+		if (stance != null && stance.active){
 			return true;
 		}
 		return false;
@@ -242,7 +283,7 @@ public class RingOfForce extends Ring {
 			return false;
 		}
 		BrawlersStance stance = hero.buff(BrawlersStance.class);
-		if (stance != null && stance.hitsLeft() > 0){
+		if (stance != null && stance.active){
 			return true;
 		}
 		return false;
@@ -250,47 +291,52 @@ public class RingOfForce extends Ring {
 
 	public static class BrawlersStance extends Buff {
 
-		public static float HIT_CHARGE_USE = 1/6f;
-
 		{
 			announced = true;
 			type = buffType.POSITIVE;
 		}
 
-		public int hitsLeft(){
-			MeleeWeapon.Charger charger = Buff.affect(target, MeleeWeapon.Charger.class);
-			return (int)(charger.charges[0]/HIT_CHARGE_USE);
+		//buff must be active for at least 50 turns, to discourage micro-managing for max charges
+		public boolean active;
+		private int minTurnsLeft;
+
+		public void reset(){
+			active = true;
+			minTurnsLeft = 50;
 		}
 
 		@Override
 		public int icon() {
-			return BuffIndicator.DUEL_BRAWL;
+			return active ? BuffIndicator.DUEL_BRAWL : BuffIndicator.NONE;
 		}
 
 		@Override
-		public void tintIcon(Image icon) {
-			if (hitsLeft() == 0){
-				icon.brightness(0.25f);
-			} else {
-				icon.resetColor();
+		public boolean act() {
+			minTurnsLeft --;
+
+			if (!active && minTurnsLeft <= 0){
+				detach();
 			}
+
+			spend(TICK);
+			return true;
+		}
+
+		public static final String ACTIVE = "active";
+		public static final String MIN_TURNS_LEFT = "min_turns_left";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(ACTIVE, active);
+			bundle.put(MIN_TURNS_LEFT, minTurnsLeft);
 		}
 
 		@Override
-		public float iconFadePercent() {
-			float usableCharges = hitsLeft()*HIT_CHARGE_USE;
-
-			return 1f - (usableCharges /  Buff.affect(target, MeleeWeapon.Charger.class).chargeCap());
-		}
-
-		@Override
-		public String iconTextDisplay() {
-			return Integer.toString(hitsLeft());
-		}
-
-		@Override
-		public String desc() {
-			return Messages.get(this, "desc", hitsLeft());
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			active = bundle.getBoolean(ACTIVE);
+			minTurnsLeft = bundle.getInt(MIN_TURNS_LEFT);
 		}
 	}
 }

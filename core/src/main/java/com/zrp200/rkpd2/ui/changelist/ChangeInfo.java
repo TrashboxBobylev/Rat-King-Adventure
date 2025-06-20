@@ -41,10 +41,13 @@ public class ChangeInfo extends Component {
 
 	public ChangeInfo( String title, boolean majorTitle, String text, ChangeButton... buttons) {
 		this(title, majorTitle, text);
-		for(ChangeButton button : buttons) addButton(button);
+		addButtons(buttons);
+	}
+	public ChangeInfo (String title, int color, ChangeButton... buttons) {
+		this(title, false, color, null, buttons);
 	}
 	public ChangeInfo( String title, boolean majorTitle, ChangeButton... buttons) {
-		this(title, majorTitle, null, buttons);
+		this(title, majorTitle, majorTitle ? Window.TITLE_COLOR : -1, null, buttons);
 	}
 
 	public ChangeInfo( String title, boolean majorTitle, int color, String text, ChangeButton... buttons) {
@@ -83,14 +86,18 @@ public class ChangeInfo extends Component {
 			text.hardlight(color);
 		}
 	}
-	
-	public void addButton( ChangeButton button ){
-		buttons.add(button);
-		add(button);
-		
-		button.setSize(16, 16);
+
+	public void addButton( ChangeButton button ){ addButtons(button); }
+	public void addButtons( ChangeButton... buttonsToAdd ) {
+		for (ChangeButton button : buttonsToAdd) {
+			buttons.add(button);
+			add(button);
+
+			button.setSize(16, 16);
+		}
 		layout();
 	}
+
 	
 	public boolean onClick( float x, float y ){
 		for( ChangeButton button : buttons){

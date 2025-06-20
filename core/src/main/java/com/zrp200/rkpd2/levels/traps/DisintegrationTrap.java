@@ -50,19 +50,26 @@ public class DisintegrationTrap extends Trap {
 	@Override
 	public void activate() {
 		Char target = Actor.findChar(pos);
-		
+
 		//find the closest char that can be aimed at
+		//can't target beyond view distance, with a min of 6 (torch range)
+		int range = Math.max(6, Dungeon.level.viewDistance);
 		if (target == null){
 			float closestDist = Float.MAX_VALUE;
 			for (Char ch : Actor.chars()){
 				if (!ch.isAlive()) continue;
 				float curDist = Dungeon.level.trueDistance(pos, ch.pos);
-				if (ch.invisible > 0) curDist += 1000;
+				//invis targets are considered to be at max range
+				if (ch.invisible > 0) curDist = Math.max(curDist, range);
 				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
-				if (bolt.collisionPos == ch.pos && curDist < closestDist){
+				if (bolt.collisionPos == ch.pos
+						&& ( curDist < closestDist || (curDist == closestDist && target instanceof Hero))){
 					target = ch;
 					closestDist = curDist;
 				}
+			}
+			if (closestDist > range){
+				target = null;
 			}
 		}
 		
@@ -81,6 +88,7 @@ public class DisintegrationTrap extends Trap {
 					Badges.validateDeathFromGrimOrDisintTrap();
 					Dungeon.fail( this );
 					GLog.n( Messages.get(this, "ondeath") );
+					if (reclaimed) Badges.validateDeathFromFriendlyMagic();
 				}
 			}
 		}

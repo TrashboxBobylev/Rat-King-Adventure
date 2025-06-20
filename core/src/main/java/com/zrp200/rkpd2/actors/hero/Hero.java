@@ -33,10 +33,9 @@ import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Electricity;
+import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.SacrificialFire;
 import com.zrp200.rkpd2.actors.buffs.AdrenalineSurge;
-import com.zrp200.rkpd2.actors.buffs.AmnesiaBuff;
-import com.zrp200.rkpd2.actors.buffs.AnkhInvulnerability;
 import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
 import com.zrp200.rkpd2.actors.buffs.Awareness;
@@ -44,41 +43,32 @@ import com.zrp200.rkpd2.actors.buffs.Barkskin;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.Berserk;
 import com.zrp200.rkpd2.actors.buffs.Bless;
-import com.zrp200.rkpd2.actors.buffs.Blindness;
-import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.Burning;
-import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
+import com.zrp200.rkpd2.actors.buffs.Charm;
 import com.zrp200.rkpd2.actors.buffs.Combo;
-import com.zrp200.rkpd2.actors.buffs.DomainOfHell;
+import com.zrp200.rkpd2.actors.buffs.Cooldown;
 import com.zrp200.rkpd2.actors.buffs.Drowsy;
 import com.zrp200.rkpd2.actors.buffs.Foresight;
-import com.zrp200.rkpd2.actors.buffs.GodSlayerBurning;
-import com.zrp200.rkpd2.actors.buffs.HPDebuff;
-import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
+import com.zrp200.rkpd2.actors.buffs.GreaterHaste;
+import com.zrp200.rkpd2.actors.buffs.HeroDisguise;
 import com.zrp200.rkpd2.actors.buffs.HoldFast;
 import com.zrp200.rkpd2.actors.buffs.Hunger;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
+import com.zrp200.rkpd2.actors.buffs.Invulnerability;
 import com.zrp200.rkpd2.actors.buffs.Levitation;
 import com.zrp200.rkpd2.actors.buffs.LostInventory;
 import com.zrp200.rkpd2.actors.buffs.MindVision;
 import com.zrp200.rkpd2.actors.buffs.Momentum;
 import com.zrp200.rkpd2.actors.buffs.MonkEnergy;
-import com.zrp200.rkpd2.actors.buffs.NoDeath;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.PhysicalEmpower;
-import com.zrp200.rkpd2.actors.buffs.RKChampionBuff;
 import com.zrp200.rkpd2.actors.buffs.Recharging;
 import com.zrp200.rkpd2.actors.buffs.Regeneration;
-import com.zrp200.rkpd2.actors.buffs.RobotBuff;
-import com.zrp200.rkpd2.actors.buffs.Slow;
 import com.zrp200.rkpd2.actors.buffs.SnipersMark;
-import com.zrp200.rkpd2.actors.buffs.SpiritBuff;
+import com.zrp200.rkpd2.actors.buffs.TimeStasis;
 import com.zrp200.rkpd2.actors.buffs.Vertigo;
-import com.zrp200.rkpd2.actors.buffs.Vulnerable;
-import com.zrp200.rkpd2.actors.buffs.Warp;
-import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.AscendedForm;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.Challenge;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.ElementalStrike;
 import com.zrp200.rkpd2.actors.hero.abilities.huntress.NaturesPower;
@@ -87,6 +77,12 @@ import com.zrp200.rkpd2.actors.hero.abilities.warrior.Endure;
 import com.zrp200.rkpd2.actors.mobs.AbyssalSpawner;
 import com.zrp200.rkpd2.actors.mobs.Ech;
 import com.zrp200.rkpd2.actors.mobs.Elemental;
+import com.zrp200.rkpd2.actors.hero.spells.BodyForm;
+import com.zrp200.rkpd2.actors.hero.spells.HallowedGround;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWard;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
+import com.zrp200.rkpd2.actors.hero.spells.Smite;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.Monk;
@@ -114,8 +110,7 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
-import com.zrp200.rkpd2.items.armor.glyphs.AntiMagic;
-import com.zrp200.rkpd2.items.armor.glyphs.Brimstone;
+import com.zrp200.rkpd2.items.armor.ClothArmor;
 import com.zrp200.rkpd2.items.armor.glyphs.Viscosity;
 import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
@@ -123,6 +118,7 @@ import com.zrp200.rkpd2.items.artifacts.CapeOfThorns;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.artifacts.EtherealChains;
+import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.artifacts.HornOfPlenty;
 import com.zrp200.rkpd2.items.artifacts.MasterThievesArmband;
 import com.zrp200.rkpd2.items.artifacts.TalismanOfForesight;
@@ -153,6 +149,7 @@ import com.zrp200.rkpd2.items.rings.RingOfTenacity;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfMagicMapping;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfChallenge;
+import com.zrp200.rkpd2.items.trinkets.ThirteenLeafClover;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfDisintegration;
 import com.zrp200.rkpd2.items.wands.WandOfLightning;
@@ -160,6 +157,7 @@ import com.zrp200.rkpd2.items.wands.WandOfLivingEarth;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.enchantments.Kinetic;
+import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
 import com.zrp200.rkpd2.items.weapon.melee.Flail;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
@@ -168,7 +166,9 @@ import com.zrp200.rkpd2.items.weapon.melee.Quarterstaff;
 import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
 import com.zrp200.rkpd2.items.weapon.melee.Sai;
 import com.zrp200.rkpd2.items.weapon.melee.Scimitar;
+import com.zrp200.rkpd2.items.weapon.melee.WornShortsword;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.Level;
@@ -176,7 +176,9 @@ import com.zrp200.rkpd2.levels.MiningLevel;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.features.Chasm;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
+import com.zrp200.rkpd2.levels.rooms.special.WeakFloorRoom;
 import com.zrp200.rkpd2.levels.traps.Trap;
+import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.mechanics.ShadowCaster;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.AlchemyScene;
@@ -444,6 +446,10 @@ public class Hero extends Char {
 		return STR + strBonus;
 	}
 
+	public boolean isNearDeath() {
+		return HP * 10 <= HT * 3;
+	}
+
 	// this affects what items get boosted. if I want a talent to grant boosts I should go here.
 	public int getBonus(Item item) {
 		return heroClass.getBonus(item) + subClass.getBonus(item) + subClass2.getBonus(item);
@@ -498,6 +504,7 @@ public class Hero extends Char {
 		HTBoost = bundle.getInt(HTBOOST);
 
 		super.restoreFromBundle( bundle );
+		restoring = this;
 
 		heroClass = bundle.getEnum( CLASS, HeroClass.class );
 		subClass = bundle.getEnum( SUBCLASS, HeroSubClass.class );
@@ -517,6 +524,8 @@ public class Hero extends Char {
 		STR = bundle.getInt( STRENGTH );
 
 		belongings.restoreFromBundle( bundle );
+
+		restoring = null;
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {
@@ -603,6 +612,16 @@ public class Hero extends Char {
 	public int shiftedPoints( Talent shifted, Talent standard ) {
 		return Math.max(shiftedPoints(shifted), pointsInTalent(standard));
 	}
+
+	/** shifts [shifted[ so that +0 is +1, +1 is +2 +2 is +4, +3 is +6**/
+	public int shiftedPoints2( Talent shifted ) {
+		return hasTalent(shifted) ? 2 * pointsInTalent(shifted) : canHaveTalent(shifted) ? 1 : 0;
+	}
+	/** shifts [shifted[ so that +0 is +1, +1 is +2 +2 is +4, +3 is +6**/
+	public int shiftedPoints2( Talent shifted, Talent standard ) {
+		return Math.max(shiftedPoints2(shifted), pointsInTalent(standard));
+	}
+
 	/** gives a free +1 when the heroclass matches [cls] */
 	public int pointsInTalentWithInnate( HeroClass cls, Talent... talents) {
 		int points = pointsInTalent(talents);
@@ -665,7 +684,11 @@ public class Hero extends Char {
 
 	@Override
 	public String name(){
-		return className();
+		if (buff(HeroDisguise.class) != null) {
+			return buff(HeroDisguise.class).getDisguise().title();
+		} else {
+			return className();
+		}
 	}
 
 	@Override
@@ -766,8 +789,46 @@ public class Hero extends Char {
 
 		if(buff(Talent.WarriorLethalMomentumTracker.Chain.class) != null) accuracy *= 2;
 
+		//precise assault and liquid agility
+		if (!(wep instanceof MissileWeapon)){
+			if ((hasTalent(Talent.PRECISE_ASSAULT) || hasTalent(Talent.LIQUID_AGILITY))
+					//does not trigger on ability attacks
+					&& belongings.abilityWeapon != wep && buff(MonkEnergy.MonkAbility.UnarmedAbilityTracker.class) == null){
+
+				//non-duelist benefit for precise assault, can stack with liquid agility
+				if (heroClass != HeroClass.DUELIST) {
+					//persistent +10%/20%/30% ACC for other heroes
+					accuracy *= 1f + 0.1f * pointsInTalent(Talent.PRECISE_ASSAULT);
+				}
+
+				if (wep instanceof Flail && buff(Flail.SpinAbilityTracker.class) != null){
+					//do nothing, this is not a regular attack so don't consume talent fx
+				} else if (wep instanceof Crossbow && buff(Crossbow.ChargedShot.class) != null){
+					//do nothing, this is not a regular attack so don't consume talent fx
+				} else if (Talent.PreciseAssaultTracker.tryUse(this)) {
+					// 2x/5x/inf. ACC for duelist if she just used a weapon ability
+					switch (pointsInTalent(Talent.PRECISE_ASSAULT)){
+						default: case 1:
+							accuracy *= 2; break;
+						case 2:
+							accuracy *= 5; break;
+						case 3:
+							accuracy *= Float.POSITIVE_INFINITY; break;
+					}
+				} else if (buff(Talent.LiquidAgilACCTracker.class) != null){
+					// 3x/inf. ACC, depending on talent level
+					accuracy *= shiftedPoints(Talent.LIQUID_AGILITY) > 1 ? Float.POSITIVE_INFINITY : 3f;
+					Talent.LiquidAgilACCTracker buff = buff(Talent.LiquidAgilACCTracker.class);
+					buff.uses--;
+					if (buff.uses <= 0) {
+						buff.detach();
+					}
+				}
+			}
+		}
+
 		if (buff(Scimitar.SwordDance.class) != null){
-			accuracy *= 1.25f;
+			accuracy *= 1.50f;
 		}
 
 		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null &&
@@ -810,7 +871,9 @@ public class Hero extends Char {
 			return INFINITE_EVASION;
 		}
 
-		if (buff(RoundShield.GuardTracker.class) != null){
+		if (buff(RoundShield.GuardTracker.class) != null
+				|| ShieldOfLight.DivineShield.tryActivate(this, enemy)
+		){
 			return INFINITE_EVASION;
 		}
 
@@ -818,9 +881,9 @@ public class Hero extends Char {
 		
 		evasion *= RingOfEvasion.evasionMultiplier( this );
 
-		if (buff(Talent.RestoredAgilityTracker.class) != null){
+		if (buff(Talent.LiquidAgilEVATracker.class) != null){
 			if (pointsInTalent(Talent.LIQUID_AGILITY) == 1){
-				evasion *= 4f;
+				evasion *= 3f;
 			} else if (pointsInTalent(Talent.LIQUID_AGILITY) == 2){
 				return INFINITE_EVASION;
 			}
@@ -872,21 +935,26 @@ public class Hero extends Char {
 		Combo.ParryTracker parry = buff(Combo.ParryTracker.class);
 		if (parry != null){
 			parry.parried = true;
-			Combo combo = buff(Combo.class);
-			if (combo != null && combo.getComboCount() < 9 && !hasTalent(Talent.ENHANCED_COMBO) || pointsInTalent(Talent.ENHANCED_COMBO,Talent.RK_GLADIATOR) < 2){
+			int enhancedCombo = pointsInTalent(Talent.ENHANCED_COMBO);
+			int req = pointsInTalent(Talent.RK_GLADIATOR) >= 2 ? 9 :
+					// 12 / 9 / 6
+					enhancedCombo > 0 ? 12 - 3 * (enhancedCombo - 1) :
+							-1;
+			if (req == -1 && buff(Combo.class).getComboCount() < req){
 				parry.detach();
 			}
 			return Messages.get(Monk.class, "parried");
 		}
 
 		if (buff(RoundShield.GuardTracker.class) != null){
-			buff(RoundShield.GuardTracker.class).detach();
+			buff(RoundShield.GuardTracker.class).hasBlocked = true;
+			BuffIndicator.refreshHero();
 			Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 			return Messages.get(RoundShield.GuardTracker.class, "guarded");
 		}
 
-		if (buff(MonkEnergy.MonkAbility.Focus.FocusActivation.class) != null){
-			buff(MonkEnergy.MonkAbility.Focus.FocusActivation.class).detach();
+		if (buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class) != null){
+			buff(MonkEnergy.MonkAbility.Focus.FocusBuff.class).detach();
 			if (sprite != null && sprite.visible) {
 				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
 			}
@@ -990,7 +1058,16 @@ public class Hero extends Char {
 
 		return dmg;
 	}
-	
+
+	//damage rolls that come from the hero can have their RNG influenced by clover
+	public static int heroDamageIntRange(int min, int max ){
+		if (Random.Float() < ThirteenLeafClover.alterHeroDamageChance()){
+			return ThirteenLeafClover.alterDamageRoll(min, max);
+		} else {
+			return Random.NormalIntRange(min, max);
+		}
+	}
+
 	@Override
 	public float speed() {
 
@@ -1052,7 +1129,16 @@ public class Hero extends Char {
 		if (wep != null){
 			return wep.canReach(this, enemy.pos);
 		}
-		else {
+		else if (buff(AscendedForm.AscendBuff.class) != null) {
+			boolean[] passable = BArray.not(Dungeon.level.solid, null);
+			for (Char ch : Actor.chars()) {
+				if (ch != this) passable[ch.pos] = false;
+			}
+
+			PathFinder.buildDistanceMap(enemy.pos, passable, 3);
+
+			return PathFinder.distance[pos] <= 3;
+		} else {
 			MagesStaff staff = belongings.getItem(MagesStaff.class);
 			return distance(enemy) == 2 && staff != null && staff.wandClass() == WandOfDisintegration.class && Random.Int(3) < pointsInTalent(Talent.SORCERY);
 		}
@@ -1576,7 +1662,7 @@ public class Hero extends Char {
 		}
 	}
 
-	public boolean actMine(HeroAction.Mine action){
+	private boolean actMine(HeroAction.Mine action){
 		if (Dungeon.level.adjacent(pos, action.dst)){
 			path = null;
 			if ((Dungeon.level.map[action.dst] == Terrain.WALL
@@ -1726,15 +1812,22 @@ public class Hero extends Char {
 
 		enemy = action.target;
 
-		if (enemy.isAlive() && canAttack( enemy ) && !isCharmedBy( enemy ) && enemy.invisible == 0) {
+		if (isCharmedBy( enemy )){
+			GLog.w( Messages.get(Charm.class, "cant_attack"));
+			ready();
+			return false;
+		}
+
+		if (enemy.isAlive() && canAttack( enemy ) && enemy.invisible == 0) {
 
 			if (!heroClass.is(HeroClass.DUELIST)
-					&& hasTalent(Talent.AGGRESSIVE_BARRIER)
-					&& buff(Talent.AggressiveBarrierCooldown.class) == null
+					&& canHaveTalent(Talent.AGGRESSIVE_BARRIER)
 					&& (HP / (float)HT) < 0.20f*(1+pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
-				Buff.affect(this, Barrier.class).setShield(5);
-				Buff.affect(this, Talent.AggressiveBarrierCooldown.class, 50f);
-
+				Talent.AggressiveBarrierCooldown cd = buff(Talent.AggressiveBarrierCooldown.class);
+				if (cd == null || Random.Float(cd.duration()) > cd.visualcooldown()) {
+					Buff.affect(this, Barrier.class).setShield(8);
+					Cooldown.affectHero(Talent.AggressiveBarrierCooldown.class);
+				}
 			}
 			sprite.attack( enemy.pos );
 
@@ -1791,7 +1884,6 @@ public class Hero extends Char {
 			wep = belongings.attackingWeapon();
 		}
 
-		float mult = Talent.SpiritBladesTracker.getProcModifier();
 
         if (RobotBuff.isVehicle() && Dungeon.hero.belongings.thrownWeapon == null){
             damage = Random.NormalIntRange(Math.max(0, STR()-12), Math.max(0, STR()-7));
@@ -1815,7 +1907,7 @@ public class Hero extends Char {
 			MagesStaff staff = isStaff ? (MagesStaff) wep :
 					hasTalent(Talent.SORCERY) ? belongings.getItem(MagesStaff.class) :
 							null;
-			if (staff != null && Random.Float() < mult) {
+			if (staff != null && Random.Float() < Talent.SpiritBladesTracker.getProcModifier()) {
 				int points = pointsInTalent(Talent.SORCERY);
 				damage = staff.procBM(
 						enemy,
@@ -1826,22 +1918,25 @@ public class Hero extends Char {
 				);
 			}
 		}
-		if (wep != null) damage = wep.proc( this, enemy, damage );
-		RingOfForce.Force forceBuff = buff(RingOfForce.Force.class);
-		if (forceBuff != null && !(wep instanceof MissileWeapon)) {
-			if (wep != null){
-				damage += RingOfForce.armedDamageBonus(this);
-			}
-		}
-
-		Talent.SpiritBladesTracker tracker = buff(Talent.SpiritBladesTracker.class);
-		if ( tracker != null && Random.Float() < 3*pointsInTalent(Talent.SPIRIT_BLADES, Talent.SEA_OF_BLADES) * mult ){
-			SpiritBow bow = belongings.getItem(SpiritBow.class);
-			if (bow != null) damage = bow.proc( this, enemy, damage );
-			tracker.detach();
-		}
 
 		damage = Talent.onAttackProc( this, enemy, damage );
+if (wep != null) {
+			damage = wep.proc( this, enemy, damage );
+		} else {
+			boolean wasEnemy = enemy.alignment == Alignment.ENEMY;
+			if (buff(BodyForm.BodyFormBuff.class) != null
+					&& buff(BodyForm.BodyFormBuff.class).enchant() != null){
+				damage = buff(BodyForm.BodyFormBuff.class).enchant().proc(new WornShortsword(), this, enemy, damage);
+			}
+			if (!wasEnemy || enemy.alignment == Alignment.ENEMY) {
+				HolyWeapon.HolyWepBuff buff = virtualBuff(HolyWeapon.HolyWepBuff.class);
+				if (buff != null) buff.proc(this, enemy);
+				Smite.SmiteTracker smiteTracker = virtualBuff(Smite.SmiteTracker.class);
+				if (smiteTracker != null) {
+					enemy.damage(smiteTracker.bonusDmg(this, enemy), Smite.INSTANCE);
+				}
+			}
+		}
 
 		if (buff(ChampionEnemy.Blessed.class) != null && hasTalent(Talent.RK_BLESSED) && (wep instanceof MeleeWeapon || forceBuff != null)){
 			PathFinder.buildDistanceMap(enemy.pos, BArray.not(Dungeon.level.solid, null), pointsInTalent(Talent.RK_BLESSED));
@@ -1883,8 +1978,15 @@ public class Hero extends Char {
                     @Override
                     protected boolean act() {
                         if (enemy.isAlive() || hasTalent(Talent.MULTISHOT)) {
-                            int level = hasTalent(Talent.RK_SNIPER) || canHaveTalent(Talent.SHARED_UPGRADES) ? wep.buffedLvl() : 0;
-                            SnipersMark .add(enemy, level);
+                            int bonusTurns = hasTalent(Talent.RK_SNIPER) || canHaveTalent(Talent.SHARED_UPGRADES) ? wep.buffedLvl() : 0;
+                            // bonus dmg is 2.5% x talent lvl x weapon level x weapon tier
+							float bonusDmg = wep.buffedLvl() * ((MissileWeapon) wep).tier * Math.max(
+									canHaveTalent(Talent.SHARED_UPGRADES) ? Math.max(
+											1,
+											2*pointsInTalent(Talent.SHARED_UPGRADES)
+									) : 0,
+									pointsInTalent(Talent.RK_SNIPER)
+							) * 0.025f;SnipersMark .add(enemy, bonusTurns, bonusDmg);
                             // handles dead as well.
                         }
                         Actor.remove(this);
@@ -1941,6 +2043,12 @@ public class Hero extends Char {
 
 		if (belongings.armor() != null) {
 			damage = belongings.armor().proc( enemy, this, damage );
+		} else {
+			if (buff(BodyForm.BodyFormBuff.class) != null
+				&& buff(BodyForm.BodyFormBuff.class).glyph() != null){
+				damage = buff(BodyForm.BodyFormBuff.class).glyph().proc(new ClothArmor(), enemy, this, damage);
+			}
+			damage -= HolyWard.proc(this);
 		}
 
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);
@@ -1954,11 +2062,26 @@ public class Hero extends Char {
 
 		return super.defenseProc( enemy, damage );
 	}
-	
+
+	@Override
+	public int glyphLevel(Class<? extends Armor.Glyph> cls) {
+		if (belongings.armor() != null && belongings.armor().hasGlyph(cls, this)){
+			return Math.max(super.glyphLevel(cls), belongings.armor.buffedLvl());
+		} else if (buff(BodyForm.BodyFormBuff.class) != null
+				&& buff(BodyForm.BodyFormBuff.class).glyph() != null
+				&& buff(BodyForm.BodyFormBuff.class).glyph().getClass() == cls){
+			return belongings.armor() != null ? belongings.armor.buffedLvl() : 0;
+		} else {
+			return super.glyphLevel(cls);
+		}
+	}
+
 	@Override
 	public void damage( int dmg, Object src ) {
-		if (buff(TimekeepersHourglass.Stasis.class) != null)
+		if (buff(TimekeepersHourglass.Stasis.class) != null
+				|| buff(TimeStasis.class) != null) {
 			return;
+		}
 
 		//regular damage interrupt, triggers on any damage except specific mild DOT effects
 		// unless the player recently hit 'continue moving', in which case this is ignored
@@ -1971,29 +2094,35 @@ public class Hero extends Char {
 			GLog.w( Messages.get(this, "pain_resist") );
 		}
 
+		//temporarily assign to a float to avoid rounding a bunch
+		float damage = dmg;
+
 		Endure.EndureTracker endure = buff(Endure.EndureTracker.class);
 		if (!(src instanceof Char)){
 			//reduce damage here if it isn't coming from a character (if it is we already reduced it)
 			if (endure != null){
-				dmg = Math.round(endure.adjustDamageTaken(dmg));
+				damage = endure.adjustDamageTaken(dmg);
 			}
 			//the same also applies to challenge scroll damage reduction
 			if (buff(ScrollOfChallenge.ChallengeArena.class) != null){
-				dmg *= 0.67f;
+				damage *= 0.67f;
 			}
 			//and to monk meditate damage reduction
 			if (buff(MonkEnergy.MonkAbility.Meditate.MeditateResistance.class) != null){
-				dmg *= 0.2f;
+				damage *= 0.2f;
 			}
 			if (buff(DuelistGrass.GrassitateResistance.class) != null){
 				dmg *= 0.6f;
 			}
 		}
 
+		//unused, could be removed
 		CapeOfThorns.Thorns thorns = buff( CapeOfThorns.Thorns.class );
 		if (thorns != null) {
-			dmg = thorns.proc(dmg, (src instanceof Char ? (Char)src : null),  this);
+			damage = thorns.proc((int)damage, (src instanceof Char ? (Char)src : null),  this);
 		}
+
+
 		// berserker gets rage from all sources. all hail viscosity!
 		// TODO change for 0.9.2?
 		if (!(src instanceof Char)) {
@@ -2006,20 +2135,21 @@ public class Hero extends Char {
 			dmg /= 2;
 		}
 
+        if (buff(Talent.WarriorFoodImmunity.class) != null){
+			final float[] tempD = {damage};
+			byTalent((talent, points) -> {
+				// it stacks, for what it's worth anyway
+				if (talent == Talent.IRON_STOMACH) points++;
+				if (points == 1) tempD[0] /= 4;
+				if (points == 2) tempD[0] = 0;
+			}, true, Talent.IRON_STOMACH,Talent.ROYAL_MEAL);
+			damage = tempD[0];
+		}
+
+		dmg = Math.round(damage);
+
+		//we ceil this one to avoid letting the player easily take 0 dmg from tenacity early
 		dmg = (int)Math.ceil(dmg * RingOfTenacity.damageMultiplier( this ));
-
-		//TODO improve this when I have proper damage source logic
-		if (belongings.armor() != null && belongings.armor().hasGlyph(AntiMagic.class, this)
-				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(this, belongings.armor(). glyphEffectLevel(this));
-			dmg = Math.max(dmg, 0);
-		}
-
-		if (buff(Talent.WarriorFoodImmunity.class) != null){
-			int points = pointsInTalent(Talent.IRON_STOMACH,Talent.ROYAL_MEAL);
-			if (points == 1)    dmg = Math.round(dmg*0.25f);
-			if (points == 2)  	dmg = Math.round(dmg*0.00f);
-		}
 
 		if (buff(RobotBuff.ResistanceTracker.class) != null){
 			dmg /= 4;
@@ -2091,21 +2221,26 @@ public class Hero extends Char {
 
 		Mob target = null;
 		for (Mob m : Dungeon.level.mobs.toArray(new Mob[0])) {
+			if (fieldOfView[ m.pos ] && m.landmark() != null){
+				Notes.add(m.landmark());
+			}
+
 			if (fieldOfView[m.pos] && m.alignment == Alignment.ENEMY && (!(m instanceof Phantom) || m.enemy == Dungeon.hero)) {
 				visible.add(m);
 				if (!visibleEnemies.contains( m )) {
 					newMob = true;
 				}
 
-				if (!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1){
-					if (target == null){
+				//only do a simple check for mind visioned enemies, better performance
+				if ((!mindVisionEnemies.contains(m) && QuickSlotButton.autoAim(m) != -1)
+						|| (mindVisionEnemies.contains(m) && new Ballistica( pos, m.pos, Ballistica.PROJECTILE ).collisionPos == m.pos)) {
+					if (target == null) {
 						target = m;
 					} else if (distance(target) > distance(m)) {
 						target = m;
 					}
 					if (m instanceof Snake && Dungeon.level.distance(m.pos, pos) <= 4
 							&& !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_EXAMINING)){
-						GLog.p(Messages.get(Guidebook.class, "hint"));
 						GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_EXAMINING);
 						//we set to read here to prevent this message popping up a bunch
 						Document.ADVENTURERS_GUIDE.readPage(Document.GUIDE_EXAMINING);
@@ -2130,6 +2265,32 @@ public class Hero extends Char {
 		}
 
 		visibleEnemies = visible;
+
+		//we also scan for blob landmarks here
+		for (Blob b : Dungeon.level.blobs.values().toArray(new Blob[0])){
+			if (b.volume > 0 && b.landmark() != null && !Notes.contains(b.landmark())){
+				int cell;
+				boolean found = false;
+				//if a single cell within the blob is visible, we add the landmark
+				for (int i=b.area.top; i < b.area.bottom; i++) {
+					for (int j = b.area.left; j < b.area.right; j++) {
+						cell = j + i* Dungeon.level.width();
+						if (fieldOfView[cell] && b.cur[cell] > 0) {
+							Notes.add( b.landmark() );
+							found = true;
+							break;
+						}
+					}
+					if (found) break;
+				}
+
+				//Clear blobs that only exist for landmarks.
+				// Might want to make this a properly if it's used more
+				if (found && b instanceof WeakFloorRoom.WellID){
+					b.fullyClear();
+				}
+			}
+		}
 	}
 	
 	public int visibleEnemies() {
@@ -2179,7 +2340,8 @@ public class Hero extends Char {
 				}
 				if (walkingToVisibleTrapInFog
 						&& Dungeon.level.traps.get(target) != null
-						&& Dungeon.level.traps.get(target).visible){
+						&& Dungeon.level.traps.get(target).visible
+						&& Dungeon.level.traps.get(target).active){
 					return false;
 				}
 			}
@@ -2227,6 +2389,10 @@ public class Hero extends Char {
 
 			float delay = 1 / speed();
 
+			if (buff(GreaterHaste.class) != null){
+				delay = 0;
+			}
+
 			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
 					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay))){
 				if (!Chasm.jumpConfirmed){
@@ -2239,6 +2405,10 @@ public class Hero extends Char {
 				}
 				canSelfTrample = false;
 				return false;
+			}
+
+			if (buff(GreaterHaste.class) != null){
+				buff(GreaterHaste.class).spendMove();
 			}
 
 			if (subClass.is(HeroSubClass.FREERUNNER)){
@@ -2290,7 +2460,16 @@ public class Hero extends Char {
 			fieldOfView = new boolean[Dungeon.level.length()];
 			Dungeon.level.updateFieldOfView( this, fieldOfView );
 		}
-		
+
+		if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]
+				&& Dungeon.level.traps.get(cell) != null
+				&& Dungeon.level.traps.get(cell).visible
+				&& Dungeon.level.traps.get(cell).active) {
+			walkingToVisibleTrapInFog = true;
+		} else {
+			walkingToVisibleTrapInFog = false;
+		}
+
 		Char ch = Actor.findChar( cell );
 		Heap heap = Dungeon.level.heaps.get( cell );
 
@@ -2349,14 +2528,7 @@ public class Hero extends Char {
 			curAction = new HeroAction.LvlTransition( cell );
 
 		}  else {
-			
-			if (!Dungeon.level.visited[cell] && !Dungeon.level.mapped[cell]
-					&& Dungeon.level.traps.get(cell) != null && Dungeon.level.traps.get(cell).visible) {
-				walkingToVisibleTrapInFog = true;
-			} else {
-				walkingToVisibleTrapInFog = false;
-			}
-			
+
 			curAction = new HeroAction.Move( cell );
 			lastAction = null;
 			
@@ -2405,11 +2577,23 @@ public class Hero extends Char {
 					buff(ElementalStrike.ElementalStrikeFurrowCounter.class).detach();
 				}
 			}
+			if (buff(HallowedGround.HallowedFurrowTracker.class) != null){
+				buff(HallowedGround.HallowedFurrowTracker.class).countDown(percent*5f);
+				if (buff(HallowedGround.HallowedFurrowTracker.class).count() <= 0){
+					buff(HallowedGround.HallowedFurrowTracker.class).detach();
+				}
+			}
 		}
 		
 		boolean levelUp = false;
 		while (this.exp >= maxExp()) {
 			this.exp -= maxExp();
+
+			if (buff(Talent.WandPreservationCounter.class) != null
+				&& shiftedPoints(Talent.WAND_PRESERVATION, Talent.POWER_WITHIN) > 1){
+				buff(Talent.WandPreservationCounter.class).detach();
+			}
+
 			if (lvl < MAX_LEVEL) {
 				lvl++;
 				levelUp = true;
@@ -2476,7 +2660,8 @@ public class Hero extends Char {
 	@Override
 	public boolean add( Buff buff ) {
 
-		if (buff(TimekeepersHourglass.Stasis.class) != null) {
+		if (buff(TimekeepersHourglass.Stasis.class) != null
+			|| buff(TimeStasis.class) != null) {
 			return false;
 		}
 
@@ -2507,21 +2692,7 @@ public class Hero extends Char {
 		}
 		return false;
 	}
-	
-	@Override
-	public float stealth() {
-		float stealth = super.stealth();
-		
-		if (belongings.armor() != null){
-			stealth = belongings.armor().stealthFactor(this, stealth);
-		}
-		if (RobotBuff.isVehicle()){
-			stealth += 3;
-		}
 
-		return stealth;
-	}
-	
 	@Override
 	public void die( Object cause ) {
 		
@@ -2543,13 +2714,14 @@ public class Hero extends Char {
 				this.HP = HT / 4;
 
 				PotionOfHealing.cure(this);
-				Buff.prolong(this, AnkhInvulnerability.class, AnkhInvulnerability.DURATION);
+				Buff.prolong(this, Invulnerability.class, Invulnerability.DURATION);
 
 				SpellSprite.show(this, SpellSprite.ANKH);
 				GameScene.flash(0x80FFFF40);
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				GLog.w(Messages.get(this, "revive"));
 				Statistics.ankhsUsed++;
+				Catalog.countUse(Ankh.class);
 
 				ankh.detach(belongings.backpack);
 
@@ -2734,13 +2906,6 @@ public class Hero extends Char {
 			Buff.affect( this, Sai.ComboStrikeTracker.class).addHit();
 		}
 
-		RingOfForce.BrawlersStance brawlStance = buff(RingOfForce.BrawlersStance.class);
-		if (brawlStance != null && brawlStance.hitsLeft() > 0){
-			MeleeWeapon.Charger charger = Buff.affect(this, MeleeWeapon.Charger.class);
-			charger.gainCharge(-RingOfForce.BrawlersStance.HIT_CHARGE_USE);
-			BuffIndicator.refreshHero();
-		}
-
 		curAction = null;
 
 		super.onAttackComplete();
@@ -2810,25 +2975,6 @@ public class Hero extends Char {
 		if (!ready) {
 			super.onOperateComplete();
 		}
-	}
-
-	@Override
-	public boolean isImmune(Class effect) {
-		if (effect == Electricity.class &&
-			hasTalent(Talent.FARADAY_CAGE)){
-			return true;
-		}
-		if (effect == Burning.class
-				&& belongings.armor() != null
-				&& belongings.armor().hasGlyph(Brimstone.class, this)){
-			return true;
-		}
-		return super.isImmune(effect);
-	}
-
-	@Override
-	public boolean isInvulnerable(Class effect) {
-		return super.isInvulnerable(effect) || buff(AnkhInvulnerability.class) != null;
 	}
 
 	public boolean search( boolean intentional ) {
@@ -3005,8 +3151,10 @@ if (talisman != null){
 		for (Item i : belongings){
 			if (i instanceof EquipableItem && i.isEquipped(this)){
 				((EquipableItem) i).activate(this);
-			} else if (i instanceof CloakOfShadows && i.keptThroughLostInventory() && hasTalent(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER)){
+			} else if (i instanceof CloakOfShadows && i.keptThroughLostInventory() && shiftedPoints(Talent.LIGHT_CLOAK, Talent.RK_FREERUNNER) > 0) {
 				((CloakOfShadows) i).activate(this);
+			} else if (i instanceof HolyTome && i.keptThroughLostInventory() && canHaveTalent(Talent.LIGHT_READING)) {
+				((HolyTome) i).activate(this);
 			} else if (i instanceof Wand && i.keptThroughLostInventory()){
 				if (holster != null && holster.contains(i)){
 					((Wand) i).charge(this, MagicalHolster.HOLSTER_SCALE_FACTOR);

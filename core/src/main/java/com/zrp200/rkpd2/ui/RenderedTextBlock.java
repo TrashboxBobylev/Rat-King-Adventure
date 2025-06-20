@@ -121,8 +121,10 @@ public class RenderedTextBlock extends Component {
 		boolean highlighting = false;
 		boolean warpHighlighting = false;
 		for (String str : tokens){
-			
-			if (str.equals("_") && highlightingEnabled){
+
+			//if highlighting is enabled, '_' or '**' is used to toggle highlighting on or off
+			// the actual symbols are not rendered
+			if ((str.equals("_") || str.equals("**")) && highlightingEnabled){
 				highlighting = !highlighting;
 			} else if (str.equals("#")){
 				warpHighlighting = !warpHighlighting;

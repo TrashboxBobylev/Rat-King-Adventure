@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.EnhancedRings;
@@ -32,11 +33,14 @@ import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.SpiritForm;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.ItemStatusHandler;
 import com.zrp200.rkpd2.items.KindofMisc;
+import com.zrp200.rkpd2.items.trinkets.ShardOfOblivion;
 import com.zrp200.rkpd2.journal.Catalog;
+import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.utils.DungeonSeed;
@@ -51,6 +55,7 @@ import java.util.LinkedHashMap;
 public class Ring extends KindofMisc {
 	
 	protected Buff buff;
+	protected Class<? extends RingBuff> buffClass;
 
 	private static final LinkedHashMap<String, Integer> gems = new LinkedHashMap<String, Integer>() {
 		{
@@ -80,7 +85,11 @@ public class Ring extends KindofMisc {
 	public static void initGems() {
 		handler = new ItemStatusHandler<>( (Class<? extends Ring>[])Generator.Category.RING.classes, gems );
 	}
-	
+
+	public static void clearGems(){
+		handler = null;
+	}
+
 	public static void save( Bundle bundle ) {
 		handler.save( bundle );
 	}
@@ -114,6 +123,9 @@ public class Ring extends KindofMisc {
 		if (handler != null && handler.contains(this)){
 			image = handler.image(this);
 			gem = handler.label(this);
+		} else {
+			image = ItemSpriteSheet.RING_GARNET;
+			gem = "garnet";
 		}
 	}
 	
@@ -156,6 +168,7 @@ public class Ring extends KindofMisc {
 
 			if (Dungeon.hero.isAlive()) {
 				Catalog.setSeen(getClass());
+				Statistics.itemTypesDiscovered.add(getClass());
 			}
 		}
 	}
@@ -168,12 +181,33 @@ public class Ring extends KindofMisc {
 		}
 		return name;
 	}
-	
+
+	@Override
+	public String desc() {
+		return isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
+	}
+
 	@Override
 	public String info(){
-		
-		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
-		
+
+		//skip custom notes if anonymized and un-Ided
+		String desc;
+		if (anonymous && (handler == null || !handler.isKnown( this ))){
+			desc = desc();
+
+		//otherwise, check for item type note, rings can have either but not both
+		} else if (Notes.findCustomRecord(customNoteID) == null) {
+			Notes.CustomRecord note = Notes.findCustomRecord(getClass());
+			if (note != null){
+				//we swap underscore(0x5F) with low macron(0x2CD) here to avoid highlighting in the item window
+				desc = Messages.get(this, "custom_note", note.title().replace('_', 'ˍ')) + "\n\n" + super.info();
+			} else {
+				desc = super.info();
+			}
+		} else {
+			desc = super.info();
+		}
+
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
 			
@@ -219,6 +253,18 @@ public class Ring extends KindofMisc {
 	}
 	protected float cap() { return Float.MAX_VALUE; }
 
+	public String upgradeStat1(int level){
+		return null;
+	}
+
+	public String upgradeStat2(int level){
+		return null;
+	}
+
+	public String upgradeStat3(int level){
+		return null;
+	}
+
 	@Override
 	public Item upgrade() {
 		super.upgrade();
@@ -241,7 +287,15 @@ public class Ring extends KindofMisc {
 		levelsToID = 0;
 		return super.identify(byHero);
 	}
-	
+
+	public void setIDReady(){
+		levelsToID = -1;
+	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && levelsToID <= 0;
+	}
+
 	@Override
 	public Item random() {
 		//+0: 66.67% (2/3)
@@ -274,7 +328,7 @@ public class Ring extends KindofMisc {
 	}
 	
 	public static boolean allKnown() {
-		return handler.known().size() == Generator.Category.RING.classes.length;
+		return handler != null && handler.known().size() == Generator.Category.RING.classes.length;
 	}
 	
 	@Override
@@ -320,14 +374,22 @@ public class Ring extends KindofMisc {
 		//becomes IDed after 1 level
 		levelsToID -= levelPercent;
 		if (levelsToID <= 0){
-			identify();
-			GLog.p( Messages.get(Ring.class, "identify") );
-			Badges.validateItemLevelAquired( this );
+			if (ShardOfOblivion.passiveIDDisabled()){
+				if (levelsToID > -1){
+					GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+				}
+				setIDReady();
+			} else {
+				identify();
+				GLog.p(Messages.get(Ring.class, "identify"));
+				Badges.validateItemLevelAquired(this);
+			}
 		}
 	}
 
 	private int applyEnhancedRings() {
-		return Dungeon.hero.buff(EnhancedRings.class) != null
+		return Dungeon.hero == null ? 0 :
+				Dungeon.hero.buff(EnhancedRings.class) != null
 				? Dungeon.hero.hasTalent(Talent.ENHANCED_RINGS) ? 2 : 1
 				: 0;
 	}
@@ -350,6 +412,13 @@ public class Ring extends KindofMisc {
 		for (RingBuff buff : target.buffs(type)) {
 			bonus += buff.level();
 		}
+		SpiritForm.SpiritFormBuff spiritForm = target.buff(SpiritForm.SpiritFormBuff.class);
+		if (bonus == 0
+				&& spiritForm != null
+				&& spiritForm.ring() != null
+				&& spiritForm.ring().buffClass == type){
+			bonus += spiritForm.ring().soloBonus();
+		}
 		return bonus;
 	}
 
@@ -358,6 +427,12 @@ public class Ring extends KindofMisc {
 		int bonus = 0;
 		for (RingBuff buff : target.buffs(type)) {
 			bonus += buff.buffedLvl();
+		}
+		if (bonus == 0
+				&& target.buff(SpiritForm.SpiritFormBuff.class) != null
+				&& target.buff(SpiritForm.SpiritFormBuff.class).ring() != null
+				&& target.buff(SpiritForm.SpiritFormBuff.class).ring().buffClass == type){
+			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBuffedBonus();
 		}
 		return bonus;
 	}
@@ -374,7 +449,7 @@ public class Ring extends KindofMisc {
 	// for getting numbers...
 	private int computeBonus(boolean buffed, boolean trueEffect) {
 		int level;
-		int bonus = Dungeon.hero.getBonus(this);
+		int bonus = Dungeon.hero != null ? Dungeon.hero.getBonus(this) : 0;
 		if ( trueEffect ) {
 			level = buffed ? buffedLvl() - bonus : level();
 		}

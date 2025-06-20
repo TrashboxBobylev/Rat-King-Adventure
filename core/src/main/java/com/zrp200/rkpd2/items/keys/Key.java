@@ -22,8 +22,10 @@
 package com.zrp200.rkpd2.items.keys;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.windows.WndJournal;
@@ -49,8 +51,10 @@ public abstract class Key extends Item {
 
 	@Override
 	public boolean doPickUp(Hero hero, int pos) {
+		Catalog.setSeen(getClass());
+		Statistics.itemTypesDiscovered.add(getClass());
 		GameScene.pickUpJournal(this, pos);
-		WndJournal.last_index = 2;
+		WndJournal.last_index = 0;
 		Notes.add(this);
 		Sample.INSTANCE.play( Assets.Sounds.ITEM );
 		hero.spendAndNext( TIME_TO_PICK_UP );

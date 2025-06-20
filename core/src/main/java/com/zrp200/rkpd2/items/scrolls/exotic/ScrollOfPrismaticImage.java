@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.PrismaticGuard;
+import com.zrp200.rkpd2.actors.hero.spells.Stasis;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.npcs.PrismaticImage;
 import com.zrp200.rkpd2.effects.FloatingText;
@@ -48,6 +49,13 @@ public class ScrollOfPrismaticImage extends ExoticScroll {
 				found = true;
 				m.HP = m.HT;
 				m.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(m.HT), FloatingText.HEALING );
+			}
+		}
+
+		if (!found){
+			if (Stasis.getStasisAlly() instanceof PrismaticImage){
+				found = true;
+				Stasis.getStasisAlly().HP = Stasis.getStasisAlly().HT;
 			}
 		}
 		

@@ -91,12 +91,6 @@ public class Assets {
 
 		public static final String SURFACE  = "interfaces/surface.png";
 
-		public static final String LOADING_SEWERS   = "interfaces/loading_sewers.png";
-		public static final String LOADING_PRISON   = "interfaces/loading_prison.png";
-		public static final String LOADING_CAVES    = "interfaces/loading_caves.png";
-		public static final String LOADING_CITY     = "interfaces/loading_city.png";
-		public static final String LOADING_HALLS    = "interfaces/loading_halls.png";
-
 		public static final String BUFFS_SMALL	= "interfaces/buffs.png";
 		public static final String BUFFS_LARGE	= "interfaces/large_buffs.png";
 		public static final String CONS_ICONS   = "interfaces/consumable_icons.png";
@@ -260,8 +254,13 @@ public class Assets {
 		public static final String ROGUE    = "splashes/rogue.jpg";
 		public static final String HUNTRESS = "splashes/huntress.jpg";
 		public static final String DUELIST  = "splashes/duelist.jpg";
-		public static final String CONJURER = "splashes/conjurer.png";
-		public static final String ADVENTURER = "splashes/adventurer.jpg";
+		public static final String CLERIC   = "splashes/cleric.jpg";
+
+		public static final String SEWERS   = "splashes/sewers.jpg";
+		public static final String PRISON   = "splashes/prison.jpg";
+		public static final String CAVES    = "splashes/caves.jpg";
+		public static final String CITY     = "splashes/city.jpg";
+		public static final String HALLS    = "splashes/halls.jpg";
 	}
 
 	public static class Sprites {
@@ -274,6 +273,7 @@ public class Assets {
 		public static final String HUNTRESS = "sprites/huntress.png";
 		public static final String ADVENTURER = "sprites/adventurer.png";
 		public static final String DUELIST  = "sprites/duelist.png";
+		public static final String CLERIC   = "sprites/cleric.png";
 		public static final String RAT_KING_HERO = "sprites/ratkinghero.png";
 		public static final String AVATARS  = "sprites/avatars.png";
 		public static final String PET      = "sprites/pet.png";

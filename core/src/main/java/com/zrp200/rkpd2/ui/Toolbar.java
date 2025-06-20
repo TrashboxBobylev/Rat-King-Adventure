@@ -28,7 +28,6 @@ import com.zrp200.rkpd2.SPDAction;
 import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.HoldFast;
-import com.zrp200.rkpd2.actors.buffs.LostInventory;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.items.Item;
@@ -128,7 +127,7 @@ public class Toolbar extends Component {
 						Item item = Dungeon.quickslot.getItem(i);
 
 						if (item != null && !Dungeon.quickslot.isPlaceholder(i) &&
-								(Dungeon.hero.buff(LostInventory.class) == null || item.keptThroughLostInventory())){
+								(!Dungeon.hero.belongings.lostInventory() || item.keptThroughLostInventory())){
 							slotNames[i] = Messages.titleCase(item.name());
 							slotIcons[i] = new ItemSprite(item);
 						} else {
@@ -154,7 +153,7 @@ public class Toolbar extends Component {
 							Item item = Dungeon.quickslot.getItem(idx);
 
 							if (item == null || Dungeon.quickslot.isPlaceholder(idx)
-									|| (Dungeon.hero.buff(LostInventory.class) != null && !item.keptThroughLostInventory())
+									|| (Dungeon.hero.belongings.lostInventory() && !item.keptThroughLostInventory())
 									|| alt){
 								//TODO would be nice to use a radial menu for this too
 								// Also a bunch of code could be moved out of here into subclasses of RadialMenu
@@ -420,7 +419,7 @@ public class Toolbar extends Component {
 
 							for(Item i : bag.items){
 								if (i instanceof Bag) items.remove(i);
-								if (Dungeon.hero.buff(LostInventory.class) != null && !i.keptThroughLostInventory()) items.remove(i);
+								if (Dungeon.hero.belongings.lostInventory() && !i.keptThroughLostInventory()) items.remove(i);
 							}
 
 							if (idx == 0){
@@ -557,7 +556,14 @@ public class Toolbar extends Component {
 		}
 
 		float shift = 0;
-		switch(Mode.valueOf(SPDSettings.toolbarMode())){
+		Toolbar.Mode mode;
+		try {
+			mode = Mode.valueOf(SPDSettings.toolbarMode());
+		} catch (Exception e){
+			Game.reportException(e);
+			mode = PixelScene.landscape() ? Mode.GROUP : Mode.SPLIT;
+		}
+		switch(mode){
 			case SPLIT:
 				btnWait.setPos(x, y);
 				btnSearch.setPos(btnWait.right(), y);

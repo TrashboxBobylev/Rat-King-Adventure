@@ -23,11 +23,15 @@ package com.zrp200.rkpd2.items.weapon.melee;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.DummyBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.KindOfWeapon;
+import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
+import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
+import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -46,7 +50,7 @@ public class Crossbow extends MeleeWeapon {
 	}
 
 	public static Crossbow find(Hero hero) {
-		for (KindOfWeapon weapon : hero.belongings.weapons()) {
+		if (hero != null) for (KindOfWeapon weapon : hero.belongings.weapons()) {
 			if (weapon instanceof Crossbow) return (Crossbow) weapon;
 		}
 		return null;
@@ -66,6 +70,48 @@ public class Crossbow extends MeleeWeapon {
 		}
 	}
 
+
+	@Override
+	public float accuracyFactor(Char owner, Char target) {
+		if (owner.buff(Crossbow.ChargedShot.class) != null){
+			Actor.add(new Actor() {
+				{ actPriority = VFX_PRIO; }
+				@Override
+				protected boolean act() {
+					if (owner instanceof Hero && !target.isAlive()){
+						onAbilityKill((Hero)owner, target);
+					}
+					Actor.remove(this);
+					return true;
+				}
+			});
+			return Float.POSITIVE_INFINITY;
+		} else {
+			return super.accuracyFactor(owner, target);
+		}
+	}
+
+	@Override
+	public int proc(Char attacker, Char defender, int damage) {
+		int dmg = super.proc(attacker, defender, damage);
+
+		//stronger elastic effect
+		if (attacker.buff(ChargedShot.class) != null && !(curItem instanceof Dart)){
+			//trace a ballistica to our target (which will also extend past them
+			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
+			//trim it to just be the part that goes past them
+			trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size()-1), Ballistica.PROJECTILE);
+			//knock them back along that ballistica
+			WandOfBlastWave.throwChar(defender,
+					trajectory,
+					4,
+					true,
+					true,
+					this);
+			attacker.buff(Crossbow.ChargedShot.class).detach();
+		}
+		return dmg;
+	}
 	@Override
 	public int max(int lvl) {
 		return  4*(tier+1) +    //20 base, down from 25
@@ -102,6 +148,20 @@ public class Crossbow extends MeleeWeapon {
 		hero.sprite.operate(hero.pos);
 		hero.next();
 		afterAbilityUsed(hero);
+	}
+
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", 3+buffedLvl(), 3+buffedLvl());
+		} else {
+			return Messages.get(this, "typical_ability_desc", 3, 3);
+		}
+	}
+
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(3 + level);
 	}
 
 	public static class ChargedShot extends Buff{

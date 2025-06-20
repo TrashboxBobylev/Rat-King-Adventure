@@ -25,7 +25,10 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
+import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.keys.IronKey;
+import com.zrp200.rkpd2.items.trinkets.MimicTooth;
+import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -44,17 +47,21 @@ public class TreasuryRoom extends SpecialRoom {
 		Heap.Type heapType = Random.Int( 2 ) == 0 ? Heap.Type.CHEST : Heap.Type.HEAP;
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
 			heapType = Heap.Type.CHEST;
-		
+
 		int n = Random.IntRange( 2, 3 );
+		float mimicChance = 1/5f * MimicTooth.mimicChanceMultiplier();
 		for (int i=0; i < n; i++) {
+			Item item = level.findPrizeItem(TrinketCatalyst.class);
+			if (item == null) item = new Gold().random();
+
 			int pos;
 			do {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null || level.findMob(pos) != null);
-			if (heapType == Heap.Type.CHEST && Dungeon.scalingDepth() > 1 && Random.Int( 5 ) == 0){
-				level.mobs.add(Mimic.spawnAt(pos, new Gold().random()));
+			if (heapType == Heap.Type.CHEST && Dungeon.scalingDepth() > 1 && Random.Float() < mimicChance){
+				level.mobs.add(Mimic.spawnAt(pos, item));
 			} else {
-				level.drop( new Gold().random(), pos ).type = heapType;
+				level.drop( item, pos ).type = heapType;
 			}
 		}
 		

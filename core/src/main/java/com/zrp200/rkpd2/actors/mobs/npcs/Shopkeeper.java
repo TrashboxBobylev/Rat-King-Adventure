@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.actors.mobs.npcs;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.Statistics;
+import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
@@ -39,6 +40,7 @@ import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ShopkeeperSprite;
 import com.zrp200.rkpd2.utils.GLog;
@@ -71,12 +73,13 @@ public class Shopkeeper extends NPC {
 
 	private int turnsSinceHarmed = -1;
 
+    @Override
+	public Notes.Landmark landmark() {
+		return Notes.Landmark.SHOP;
+	}
+
 	@Override
 	protected boolean act() {
-
-		if (Dungeon.level.visited[pos]){
-			Notes.add(Notes.Landmark.SHOP);
-		}
 
 		if (turnsSinceHarmed >= 0){
 			turnsSinceHarmed ++;
@@ -111,34 +114,46 @@ public class Shopkeeper extends NPC {
 			turnsSinceHarmed = 0;
 			yell(Messages.get(this, "warn"));
 
-			//cleanses all harmful blobs in the shop
-			ArrayList<Blob> blobs = new ArrayList<>();
-			for (Class c : new BlobImmunity().immunities()){
-				Blob b = Dungeon.level.blobs.get(c);
-				if (b != null && b.volume > 0){
-					blobs.add(b);
+			//use a new actor as we can't clear the gas while we're in the middle of processing it
+			Actor.add(new Actor() {
+				{
+					actPriority = VFX_PRIO;
 				}
-			}
 
-			PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 4 );
-
-			for (int i=0; i < Dungeon.level.length(); i++) {
-				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
-
-					boolean affected = false;
-					for (Blob blob : blobs) {
-						if (blob.cur[i] > 0) {
-							blob.clear(i);
-							affected = true;
+				@Override
+				protected boolean act() {
+					//cleanses all harmful blobs in the shop
+					ArrayList<Blob> blobs = new ArrayList<>();
+					for (Class c : new BlobImmunity().immunities()){
+						Blob b = Dungeon.level.blobs.get(c);
+						if (b != null && b.volume > 0){
+							blobs.add(b);
 						}
 					}
 
-					if (affected && Dungeon.level.heroFOV[i]) {
-						CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 2 );
-					}
+					PathFinder.buildDistanceMap( pos, BArray.not( Dungeon.level.solid, null ), 4 );
 
+					for (int i=0; i < Dungeon.level.length(); i++) {
+						if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+
+							boolean affected = false;
+							for (Blob blob : blobs) {
+								if (blob.cur[i] > 0) {
+									blob.clear(i);
+									affected = true;
+								}
+							}
+
+							if (affected && Dungeon.level.heroFOV[i]) {
+								CellEmitter.get( i ).burst( Speck.factory( Speck.DISCOVER ), 2 );
+							}
+
+						}
+					}
+					Actor.remove(this);
+					return true;
 				}
-			}
+			});
 
 		//There is a 1 turn buffer before more damage/debuffs make the shopkeeper flee
 		//This is mainly to prevent stacked effects from causing an instant flee
@@ -150,7 +165,9 @@ public class Shopkeeper extends NPC {
 	public void flee() {
 		destroy();
 
-		Notes.remove(Notes.Landmark.SHOP);
+		Notes.remove( landmark() );
+		GLog.newLine();
+		GLog.n(Messages.get(this, "flee"));
 
 		if (sprite != null) {
 			sprite.killAndErase();
@@ -233,12 +250,13 @@ public class Shopkeeper extends NPC {
 			@Override
 			public void call() {
 				String[] options = new String[2+ buybackItems.size()];
+				int maxLen = PixelScene.landscape() ? 30 : 25;
 				int i = 0;
 				options[i++] = Messages.get(Shopkeeper.this, "sell");
 				options[i++] = Messages.get(Shopkeeper.this, "talk");
 				for (Item item : buybackItems){
 					options[i] = Messages.get(Heap.class, "for_sale", (int)(item.value() * WndTradeItem.MULT), Messages.titleCase(item.title()));
-					if (options[i].length() > 26) options[i] = options[i].substring(0, 23) + "...";
+					if (options[i].length() > maxLen) options[i] = options[i].substring(0, maxLen-3) + "...";
 					i++;
 				}
 				GameScene.show(new WndOptions(sprite(), Messages.titleCase(name()), description(), options){

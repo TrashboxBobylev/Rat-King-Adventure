@@ -21,14 +21,17 @@
 
 package com.zrp200.rkpd2.items.weapon.melee;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.Dungeon.level;
+
 import com.zrp200.rkpd2.Assets;
-import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.ArtifactRecharge;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.GreaterHaste;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
@@ -40,11 +43,14 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.particles.LeafParticle;
 import com.zrp200.rkpd2.items.DuelistGrass;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.KindOfWeapon;
+import com.zrp200.rkpd2.items.rings.RingOfForce;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.levels.Level;
@@ -143,15 +149,9 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 				//do nothing
 			} else if (STRReq() > hero.STR()){
 				GLog.w(Messages.get(this, "ability_low_str"));
-				usesTargeting = false;
-				// fixme fix +3 effect of elite dexterity, current charges is undefined behavior
+			} else if ((Buff.affect(hero, Charger.class).charges + Buff.affect(hero, Charger.class).partialCharge) < abilityChargeUse(hero, null)) {
+				GLog.w(Messages.get(this, "ability_no_charge"));
 			} else {
-				int slot = hero.belongings.findWeapon(this);
-				Charger charger = Buff.affect(hero, Charger.class);
-				if (slot != -1 && charger.charges[slot] < abilityChargeUse(hero, null)) {
-					GLog.w(Messages.get(this, "ability_no_charge"));
-					usesTargeting = false;
-				} else {
 
 					if (targetingPrompt() == null){
 						duelistAbility(hero, hero.pos);
@@ -208,7 +208,6 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 				}
 			}
 		}
-	}
 
 	@Override
 	public boolean doEquip(Hero hero, int slot) {
@@ -264,13 +263,15 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	/** This removes basically all the duplication. anything implementing this will work with Elite Dexterity **/
 	public static class MeleeAbility implements DuelistAbility {
 
+		protected float delayMulti;
+
 		@Override
 		public boolean execute(Hero hero, Integer target, MeleeWeapon wep) {
 			if (target == null) return false;
 
 			Char enemy = Actor.findChar(target);
 
-			if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+			if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !level.heroFOV[target]) {
 				GLog.w(Messages.get(wep, "ability_no_target"));
 				return false;
 			}
@@ -281,7 +282,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 				MissileWeapon thrown = SafeCast.cast(hero.belongings.thirdWep(), MissileWeapon.class);
 				if (thrown != null) {
 					// check charges of third slot, it should use the same amount of charges as the main slot
-					if (Buff.affect(hero, Charger.class).charges[2] >= wep.abilityChargeUse(hero, enemy)
+					if (Buff.affect(hero, Charger.class).charges >= 2 * wep.abilityChargeUse(hero, enemy)
 							&& enemy.pos == QuickSlotButton.autoAim(enemy, hero.belongings.thirdWep)) {
 						// fake throw = cool
 						beforeAbilityUsed(hero, enemy);
@@ -300,24 +301,29 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			hero.sprite.attack(enemy.pos, () -> {
 				beforeAbilityUsed(hero, enemy);
 				AttackIndicator.target(enemy);
-				boolean hit = hero.attack(enemy, dmgMulti(enemy), 0, accMulti());
+				boolean hit = hero.attack(enemy, dmgMulti(enemy), dmgBoost, accMulti());
 				if (hit) {
 					onHit(hero, enemy);
 				}
 				afterHit(enemy, hit);
 				afterAbilityUsed();
 				Invisibility.dispel();
-				hero.spendAndNext(hero.attackDelay());
+				if (delayMulti == 0) {
+					hero.next();
+				} else hero.spendAndNext(hero.attackDelay() * delayMulti);
 			});
 			return true;
 		}
 
-		private final float dmgMulti;
-		public MeleeAbility(float dmgMulti) {
-			this.dmgMulti = dmgMulti;
+		public int dmgBoost;
+		protected float dmgMulti = 1f;
+
+		public MeleeAbility(int dmgBoost) {
+			this.dmgBoost = dmgBoost;
 		}
+
 		public MeleeAbility() {
-			this(1f);
+			this(0);
 		}
 
 		/** damage multiplier passed to Hero.attack **/
@@ -369,28 +375,19 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	protected void beforeAbilityUsed(Hero hero, Char target){
 		hero.belongings.abilityWeapon = this;
 		Charger charger = Buff.affect(hero, Charger.class);
-		float charge = -abilityChargeUse(hero, target);
-		charger.gainCharge(
-				charge,
-				hero.belongings.findWeapon(this)
-		);
-		if (activeAbility != null) {
-			// use charge from thrown weapon as well
-			charger.gainCharge(charge, 2);
+
+		charger.partialCharge -= abilityChargeUse(hero, target);
+		while (charger.partialCharge < 0 && charger.charges > 0) {
+			charger.charges--;
+			charger.partialCharge++;
 		}
-		if (charge == 0)
-			grass -= DuelistGrass.getAbilityGrassCost();
 
 		if (hero.heroClass.is(HeroClass.DUELIST)
-				&& hero.hasTalent(Talent.AGGRESSIVE_BARRIER)
-				&& (hero.HP / (float)hero.HT) < 0.20f*(1+hero.pointsInTalent(Talent.AGGRESSIVE_BARRIER))){
-			Buff.affect(hero, Barrier.class).setShield(5);
-		}
-
-		if (hero.buff(Talent.CombinedLethalityAbilityTracker.class) != null
-				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != null
-				&& hero.buff(Talent.CombinedLethalityAbilityTracker.class).weapon != this){
-			Buff.affect(hero, Talent.CombinedLethalityTriggerTracker.class, 5f);
+				&& hero.canHaveTalent(Talent.AGGRESSIVE_BARRIER)
+				&& (hero.HP / (float)hero.HT) <= 0.5f){
+			// 2 / 5 / 8
+			int shieldAmt = 3 * hero.shiftedPoints(Talent.AGGRESSIVE_BARRIER) - 1;
+			Buff.affect(hero, Barrier.class).setShield(shieldAmt);
 		}
 
 		updateQuickslot();
@@ -400,6 +397,17 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		hero.belongings.abilityWeapon = null;
 		if (hero.hasTalent(Talent.PRECISE_ASSAULT)){
 			Buff.prolong(hero, Talent.PreciseAssaultTracker.class, hero.cooldown()+4f);
+		}
+		if (hero.hasTalent(Talent.VARIED_CHARGE)){
+			Talent.VariedChargeTracker tracker = hero.buff(Talent.VariedChargeTracker.class);
+			if (tracker == null || tracker.weapon == getClass() || tracker.weapon == null){
+				Buff.affect(hero, Talent.VariedChargeTracker.class).weapon = getClass();
+			} else {
+				tracker.detach();
+				Charger charger = Buff.affect(hero, Charger.class);
+				charger.gainCharge(hero.pointsInTalent(Talent.VARIED_CHARGE) / 6f);
+				ScrollOfRecharging.charge(hero);
+			}
 		}
 		if (hero.hasTalent(Talent.COMBINED_LETHALITY)) {
 			Talent.CombinedLethalityAbilityTracker tracker = hero.buff(Talent.CombinedLethalityAbilityTracker.class);
@@ -412,26 +420,30 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		}
 		if (hero.hasTalent(Talent.COMBINED_ENERGY)){
 			Talent.CombinedEnergyAbilityTracker tracker = hero.buff(Talent.CombinedEnergyAbilityTracker.class);
-			if (tracker == null || tracker.energySpent == -1){
-				Buff.prolong(hero, Talent.CombinedEnergyAbilityTracker.class, hero.cooldown()).wepAbilUsed = true;
+			if (tracker == null || !tracker.monkAbilused){
+				Buff.prolong(hero, Talent.CombinedEnergyAbilityTracker.class, 5f).wepAbilUsed = true;
 			} else {
 				tracker.wepAbilUsed = true;
 				Buff.affect(hero, MonkEnergy.class).processCombinedEnergy(tracker);
 			}
 		}
 		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
+			Charger charger = Buff.affect(hero, Charger.class);
+			charger.gainCharge(hero.pointsInTalent(Talent.COUNTER_ABILITY)*0.375f);
 			hero.buff(Talent.CounterAbilityTacker.class).detach();
 		}
 		HighnessBuff.agreenalineProc();
 	}
 
 	public static void onAbilityKill( Hero hero, Char killed ){
-		if(killed.alignment == Char.Alignment.ENEMY) {
-			Talent.LethalHasteCooldown.applyLethalHaste(hero, true);
-			if (HighnessBuff.isEnergized() && hero.pointsInTalent(Talent.SLASH_RUNNER) > 2){
-				HighnessBuff beingHigh = hero.buff(HighnessBuff.class);
-				beingHigh.currentPower = Math.min(beingHigh.grassValue(), beingHigh.currentPower + 2);
-			}
+		if (killed.alignment == Char.Alignment.ENEMY){
+//			//effectively 3/5 turns of greater haste
+//			Buff.affect(hero, GreaterHaste.class).set(2 + 2*hero.pointsInTalent(Talent.LETHAL_HASTE));
+            Talent.LethalHasteCooldown.applyLethalHaste(hero, true);
+            if (HighnessBuff.isEnergized() && hero.pointsInTalent(Talent.SLASH_RUNNER) > 2){
+                HighnessBuff beingHigh = hero.buff(HighnessBuff.class);
+                beingHigh.currentPower = Math.min(beingHigh.grassValue(), beingHigh.currentPower + 2);
+            }
 		}
 	}
 
@@ -440,15 +452,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	}
 
 	public final float abilityChargeUse(Hero hero, Char target){
-		float chargeUse = baseChargeUse(hero, target);
-		if (cutGrass)
-			chargeUse = 1;
-		if (hero.buff(Talent.CounterAbilityTacker.class) != null){
-			chargeUse = Math.max(0, chargeUse-0.5f*hero.pointsInTalent(Talent.COUNTER_ABILITY));
-		}
-		if (grass > DuelistGrass.getAbilityGrassCost())
-			chargeUse = 0;
-		return chargeUse;
+		return baseChargeUse(hero, target) * (activeAbility == null ? 1 : 2);
 	}
 
 	@Override
@@ -478,30 +482,11 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	}
 
 	public int STRReq(int lvl){
-		return STRReq(tier, lvl);
-	}
-
-	@Override
-	public float accuracyFactor(Char owner, Char target) {
-		float ACC = super.accuracyFactor(owner, target);
-
-		if (owner instanceof Hero
-				&& ((Hero) owner).hasTalent(Talent.PRECISE_ASSAULT)
-				//does not trigger on ability attacks
-				&& ((Hero) owner).belongings.abilityWeapon != this) {
-			if (!((Hero) owner).heroClass.isExact(HeroClass.DUELIST)) {
-				//persistent +10%/20%/30% ACC for other heroes
-				ACC *= 1f + 0.1f * ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT);
-			} else if (this instanceof Flail && owner.buff(Flail.SpinAbilityTracker.class) != null){
-				//do nothing, this is not a regular attack so don't consume preciase assault
-			} else if (owner.buff(Talent.PreciseAssaultTracker.class) != null) {
-				// 2x/4x/8x ACC for duelist if she just used a weapon ability
-				ACC *= Math.pow(2, ((Hero) owner).pointsInTalent(Talent.PRECISE_ASSAULT));
-				owner.buff(Talent.PreciseAssaultTracker.class).detach();
-			}
+		int req = STRReq(tier, lvl);
+		if (masteryPotionBonus){
+			req -= 2;
 		}
-
-		return ACC;
+		return req;
 	}
 
 	@Override
@@ -511,10 +496,9 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		if (owner instanceof Hero) {
 			int exStr = ((Hero)owner).STR() - STRReq();
 			if (exStr > 0) {
-				damage += Random.IntRange( 0, exStr );
+				damage += Hero.heroDamageIntRange( 0, exStr );
 			}
 		}
-		
 		return damage;
 	}
 
@@ -607,18 +591,21 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	@Override
 	public String info() {
 
-		String info = desc();
+		String info = super.info();
 
 		if (levelKnown) {
 			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_known", tier, augment.damageFactor(min()), augment.damageFactor(max()), STRReq());
-			if (STRReq() > hero.STR()) {
-				info += " " + Messages.get(Weapon.class, "too_heavy");
-			} else if (hero.STR() > STRReq()){
-				info += " " + Messages.get(Weapon.class, "excess_str", hero.STR() - STRReq());
+			if (hero != null) {
+				if (STRReq() > hero.STR()) {
+					info += " " + Messages.get(Weapon.class, "too_heavy");
+				} else if (hero.STR() > STRReq()) {
+					info += " " + Messages.get(Weapon.class, "excess_str", hero.STR() - STRReq());
+				}
 			}
 		} else {
-			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(hero.getBonus(this)), max(hero.getBonus(this)), STRReq(0));
-			if (STRReq(0) > hero.STR()) {
+			int lvl = hero != null ? hero.getBonus(this) : 0;
+			info += "\n\n" + Messages.get(MeleeWeapon.class, "stats_unknown", tier, min(lvl), max(lvl), STRReq(0));
+			if (hero != null && STRReq(0) > hero.STR()) {
 				info += " " + Messages.get(MeleeWeapon.class, "probably_too_heavy");
 			}
 		}
@@ -636,7 +623,12 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			case NONE:
 		}
 
-		if (enchantment != null && (cursedKnown || !enchantment.curse())){
+		if (isEquipped(hero) && !hasCurseEnchant() && (
+				enchantment == null ? hero.virtualBuff(HolyWeapon.HolyWepBuff.class) != null
+						: hero.buff(HolyWeapon.HolyWepBuff.class) != null && hero.subClass != HeroSubClass.PALADIN)){
+			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", Messages.get(HolyWeapon.class, "ench_name", Messages.get(Enchantment.class, "enchant"))));
+			info += " " + Messages.get(HolyWeapon.class, "ench_desc");
+		} else if (enchantment != null && (cursedKnown || !enchantment.curse())){
 			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", enchantment.name()));
 			if (enchantHardened) info += " " + Messages.get(Weapon.class, "enchant_hardened");
 			info += " " + enchantment.desc();
@@ -664,23 +656,8 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 
 		//the mage's staff has no ability as it can only be gained by the mage
-		if (hero.heroClass.is(HeroClass.DUELIST) && !(this instanceof MagesStaff)){
-			if (this instanceof RoyalBrand){
-				info += "\n\n" + Messages.get(this, "ability_desc",
-						Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.swordDanceDuration(hero)),
-						Messages.decimalFormat("#", RoyalBrand.DuelistInfo.powerModifier(hero)),
-						RoyalBrand.DuelistInfo.sneakDistance(hero),
-						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.spearBoost(hero)),
-						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.greataxeBoost(hero)),
-						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.maceBoost(hero)),
-						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.pickaxeBoost(hero)),
-						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.comboStrikeBoost(hero)),
-						Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.dazeDuration(hero)),
-						Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.bleedDamage(hero))
-				);
-			} else {
-				info += "\n\n" + Messages.get(this, "ability_desc");
-			}
+		if (hero != null && hero.heroClass.is(HeroClass.DUELIST) && !(this instanceof MagesStaff)){
+			info += "\n\n" + abilityInfo();
 		}
 
 		if (grass > 0){
@@ -694,16 +671,23 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		return Messages.get(this, "stats_desc");
 	}
 
+	public String abilityInfo() {
+		return Messages.get(this, "ability_desc");
+	}
+
+	public String upgradeAbilityStat(int level){
+		return null;
+	}
+
 	@Override
 	public String status() {
-		Charger buff = hero.buff(Charger.class);
-		if (buff != null) {
-			int slot = hero.belongings.findWeapon(this);
-			if (slot >= 0) {
-				return (int) buff.charges[slot] + "/" + buff.chargeCap(slot);
-			}
+		if (isEquipped(hero)
+				&& hero.buff(Charger.class) != null) {
+			Charger buff = hero.buff(Charger.class);
+			return buff.charges + "/" + buff.chargeCap();
+		} else {
+			return super.status();
 		}
-		return super.status();
 	}
 
 	@Override
@@ -726,27 +710,46 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	public static class Charger extends Buff implements ActionIndicator.Action {
 
-		public float[] charges = {3,3,3};
+		public int charges = 2;
+		public float partialCharge;
 
 		@Override
 		public boolean act() {
-			if (Regeneration.regenOn()) for (int i = 0; i < nSlots(); i++) {
-				gainCharge(chargeMultiplier(i) / (getBaseRecharge(i) - (chargeCap(i) - charges[i])), i); // 40 to 30 turns per charge
-				// secondary: 80 to 60 turns per charge without talent
-				// up to 53.333 to 40 turns per charge at max talent level
+			if (charges < chargeCap()){
+				if (Regeneration.regenOn()){
+					//60 to 45 turns per charge
+					float chargeToGain = 1/(60f-1.5f*(chargeCap()-charges));
+
+					//40 to 30 turns per charge for champion
+					if (hero.subClass == HeroSubClass.CHAMPION){
+						chargeToGain *= 1.5f;
+					}
+
+					//50% slower charge gain with brawler's stance enabled, even if buff is inactive
+					if (hero.buff(RingOfForce.BrawlersStance.class) != null){
+						chargeToGain *= 0.50f;
+					}
+
+					partialCharge += chargeToGain;
+				}
+
+				int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING);
+				if (points > 0 && target.buff(Recharging.class) != null || target.buff(ArtifactRecharge.class) != null){
+					//shpd: 1 every 10 turns at +1, 6 turns at +2
+                    //rkpd2: 1 every 5 turns at +1, 3 turns at +2
+                    partialCharge += 1/(7f - 2f*points);
+                }
+
+                // resolve charges
+				gainCharge(0);
+			} else {
+				partialCharge = 0;
 			}
 
-			int points = ((Hero)target).pointsInTalent(Talent.WEAPON_RECHARGING);
-			if (points > 0 && target.buff(Recharging.class) != null || target.buff(ArtifactRecharge.class) != null){
-				//shpd: 1 every 10 turns at +1, 6 turns at +2
-				//rkpd2: 1 every 5 turns at +1, 3 turns at +2
-				gainCharge(1/(7f - 2f*points));
-			}
-
-			// todo might have to check if I need to remove this check.
+            // todo might have to check if I need to remove this check.
 			if (ActionIndicator.action != this && hero.subClass.is(HeroSubClass.CHAMPION)) {
-				ActionIndicator.setAction(this);
-			}
+                ActionIndicator.setAction(this);
+            }
 
 			spend(TICK);
 			return true;
@@ -773,45 +776,56 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		}
 
 		public int chargeCap(){
-			return Math.min(10, 3 + (hero.lvl-1)/3)
-					* (hero.heroClass.isExact(HeroClass.DUELIST) ? 2 : 1);
+            int chargeCap;
+			//caps at level 19 with 8 or 10 charges
+			if (hero.subClass == HeroSubClass.CHAMPION){
+				chargeCap = Math.min(10, 4 + (hero.lvl - 1) / 3);
+			} else {
+				chargeCap = Math.min(8, 2 + (hero.lvl - 1) / 3);
+			}
+            if (hero.heroClass == HeroClass.DUELIST) chargeCap *= 2;
+            return chargeCap;
 		}
 
-		public static int nSlots() {
-			int slots = 1;
-			if (hero.subClass.is(HeroSubClass.CHAMPION)) slots++;
-			if (hero.hasTalent(Talent.ELITE_DEXTERITY)) slots++;
-			return slots;
+		public void gainCharge( float charge ){
+			if (charges < chargeCap()) {
+				partialCharge += charge;
+				while (partialCharge >= 1f) {
+					charges++;
+					partialCharge--;
+				}
+				if (charges >= chargeCap()){
+					partialCharge = 0;
+					charges = chargeCap();
+				}
+				updateQuickslot();
+			}
 		}
 
-		public int chargeCap(int n) {
-			return Math.round(chargeCap() * chargeMultiplier(n));
-		}
+        public static final String CHARGES          = "charges";
+        private static final String PARTIALCHARGE   = "partialCharge";
 
-		public float chargeMultiplier(int i) {
-			//50% - 75%, depending on talent
-			return (float)Math.pow(0.5f + 0.0834f* hero.pointsInTalent(Talent.SECONDARY_CHARGE), i);
-		}
+        @Override
+        public void storeInBundle(Bundle bundle) {
+            super.storeInBundle(bundle);
+            bundle.put(CHARGES, charges);
+            bundle.put(PARTIALCHARGE, partialCharge);
+        }
 
-		public final void gainCharge( float charge ) { gainCharge(charge, 0); }
-		public void gainCharge( float charge, int slot ){
-			charges[slot] = Math.max(Math.min(charges[slot] + charge, chargeCap(slot)), 0);
-			updateQuickslot();
-		}
-
-		public static final String CHARGES          = "charges";
-
-		@Override
-		public void storeInBundle(Bundle bundle) {
-			super.storeInBundle(bundle);
-			bundle.put(CHARGES, charges);
-		}
-
-		@Override
-		public void restoreFromBundle(Bundle bundle) {
-			super.restoreFromBundle(bundle);
-			charges = bundle.getFloatArray(CHARGES);
-		}
+        @Override
+        public void restoreFromBundle(Bundle bundle) {
+            super.restoreFromBundle(bundle);
+            // fixme replace with version check
+            try {
+                charges = bundle.getInt(CHARGES);
+                partialCharge = bundle.getFloat(PARTIALCHARGE);
+            } catch (Exception e) {
+                // fixme scale to current
+                float totalCharge = 0;
+				for (float c : bundle.getFloatArray(CHARGES)) totalCharge += c;
+				gainCharge(totalCharge);
+            }
+        }
 
 		@Override
 		public String actionName() {
@@ -829,7 +843,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			if (hero.belongings.weapon == null){
 				ico = new HeroIcon(this);
  			} else {
-				ico = new ItemSprite(Dungeon.hero.belongings.weapon);
+				ico = new ItemSprite(hero.belongings.weapon);
 			}
 			ico.width += 4; //shift slightly to the left to separate from smaller icon
 			return ico;
@@ -838,7 +852,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		@Override
 		public Visual secondaryVisual() {
 			Image ico;
-			if (Dungeon.hero.belongings.secondWep == null){
+			if (hero.belongings.secondWep == null){
 				ico = new HeroIcon(this);
 			} else {
 				ico = new ItemSprite(hero.belongings.secondWep);

@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.quest.DarkGold;
 import com.zrp200.rkpd2.items.quest.Pickaxe;
 import com.zrp200.rkpd2.items.stones.StoneOfClairvoyance;
+import com.zrp200.rkpd2.items.trinkets.ParchmentScrap;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.rooms.Room;
@@ -57,16 +58,20 @@ public class Blacksmith extends NPC {
 
 		properties.add(Property.IMMOVABLE);
 	}
-	
+
+	@Override
+	public Notes.Landmark landmark() {
+		return (!Quest.completed() || Quest.rewardsAvailable()) ? Notes.Landmark.TROLL : null;
+	}
+
 	@Override
 	protected boolean act() {
 		if (Dungeon.hero.buff(AscensionChallenge.class) != null){
 			die(null);
-			Notes.remove( Notes.Landmark.TROLL );
+			Notes.remove( landmark() );
 			return true;
-		}
-		if (Dungeon.level.visited[pos] && !Quest.started()){
-			Notes.add( Notes.Landmark.TROLL );
+		} else if (!Quest.rewardsAvailable() && Quest.completed()){
+			Notes.remove( landmark() );
 		}
 		return super.act();
 	}
@@ -91,22 +96,16 @@ public class Blacksmith extends NPC {
 			String msg1 = "";
 			String msg2 = "";
 
-			if (Quest.type == Quest.OLD){
-				//pre-v2.2.0 saves
-				msg1 = Quest.alternative ? Messages.get(Blacksmith.this, "blood_1") : Messages.get(Blacksmith.this, "gold_1");
-			} else {
-				msg1 += msg("intro_quest")
-						+ "\n\n" + msg("intro_quest_start");
+            msg1 += msg("intro_quest")
+                    + "\n\n" + msg("intro_quest_start");
 
-				msg2 += msg("intro_quest_common");
+			msg2 += msg("intro_quest_common");
 				switch (Quest.type){
 					case Quest.CRYSTAL: msg2 += Messages.get(Blacksmith.this, "intro_quest_crystal"); break;
 					case Quest.GNOLL:   msg2 += Messages.get(Blacksmith.this, "intro_quest_gnoll"); break;
 					case Quest.FUNGI:   msg2 += Messages.get(Blacksmith.this, "intro_quest_fungi"); break;
 				}
 				msg2 += "\n\n" + msg("bonus_item");
-
-			}
 
 			final String msg1Final = msg1;
 			final String msg2Final = msg2;
@@ -120,11 +119,10 @@ public class Blacksmith extends NPC {
 						Quest.given = true;
 						Quest.completed = false;
 						Quest.favor += 2000; // yeah I'll let you skip it if you want.
-						Notes.add(Notes.Landmark.TROLL);
 						Item stones = new StoneOfClairvoyance().quantity(2); // I'm not evil.
 						Item pick = Quest.pickaxe != null ? Quest.pickaxe : new Pickaxe();
 						for (Item item : new Item[]{pick, stones}) {
-							if (item.doPickUp(Dungeon.hero)) {
+							if (item.doPickUp( Dungeon.hero )) {
 								GLog.i(Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", item.name())));
 							} else {
 								Dungeon.level.drop(item, Dungeon.hero.pos).sprite.drop();
@@ -142,71 +140,14 @@ public class Blacksmith extends NPC {
 			);
 
 		} else if (!Quest.completed) {
-
-			if (Quest.type == Quest.OLD) {
-				// this is impossible but it's here for the sake of mergeablity
-				if (Quest.alternative) {
-
-					Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
-					if (pick == null) {
-						tell(Messages.get(this, "lost_pick"));
-					} else if (!pick.bloodStained) {
-						tell(Messages.get(this, "blood_2"));
-					} else {
-						if (pick.isEquipped(Dungeon.hero)) {
-							boolean wasCursed = pick.cursed;
-							pick.cursed = false; //so that it can always be removed
-							pick.doUnequip(Dungeon.hero, false);
-							pick.cursed = wasCursed;
-						}
-						pick.detach(Dungeon.hero.belongings.backpack);
-						Quest.pickaxe = pick;
-						tell(Messages.get(this, "completed"));
-
-						Quest.completed = true;
-						Statistics.questScores[2] = 3000;
-					}
-
-				} else {
-
-					Pickaxe pick = Dungeon.hero.belongings.getItem(Pickaxe.class);
-					DarkGold gold = Dungeon.hero.belongings.getItem(DarkGold.class);
-					if (pick == null) {
-						tell(Messages.get(this, "lost_pick"));
-					} else if (gold == null || gold.quantity() < 15) {
-						tell(Messages.get(this, "gold_2"));
-					} else {
-						if (pick.isEquipped(Dungeon.hero)) {
-							boolean wasCursed = pick.cursed;
-							pick.cursed = false; //so that it can always be removed
-							pick.doUnequip(Dungeon.hero, false);
-							pick.cursed = wasCursed;
-						}
-						pick.detach(Dungeon.hero.belongings.backpack);
-						Quest.pickaxe = pick;
-						gold.detachAll(Dungeon.hero.belongings.backpack);
-						tell(Messages.get(this, "completed"));
-
-						Quest.completed = true;
-						Statistics.questScores[2] = 3000;
-					}
-
-				}
-			} else {
-
-				String msg = Messages.get(this, "reminder") + "\n\n";
-				switch (Quest.type){
-					case Quest.CRYSTAL: msg += Messages.get(Blacksmith.this, "reminder_crystal"); break;
-					case Quest.GNOLL:   msg += Messages.get(Blacksmith.this, "reminder_gnoll"); break;
-					case Quest.FUNGI:   msg += Messages.get(Blacksmith.this, "reminder_fungi"); break;
-				}
-				tell(msg);
-				handleRewards(); // you can still do stuff since I front-loaded some favor
-
-			}
-		} else if (Quest.type == Quest.OLD && Quest.reforges == 0) {
-
-			Game.runOnRenderThread(() -> GameScene.show( new WndBlacksmith.WndReforge( Blacksmith.this, null ) ));
+            String msg = Messages.get(this, "reminder") + "\n\n";
+            switch (Quest.type){
+                case Quest.CRYSTAL: msg += Messages.get(Blacksmith.this, "reminder_crystal"); break;
+                case Quest.GNOLL:   msg += Messages.get(Blacksmith.this, "reminder_gnoll"); break;
+                case Quest.FUNGI:   msg += Messages.get(Blacksmith.this, "reminder_fungi"); break;
+            }
+            tell(msg);
+            handleRewards(); // you can still do stuff since I front-loaded some favor
 
 		} else if (!handleRewards()){
 
@@ -260,15 +201,11 @@ public class Blacksmith extends NPC {
 	public static class Quest {
 
 		private static int type = 0;
-		public static final int OLD = 0;
 		public static final int CRYSTAL = 1;
 		public static final int GNOLL = 2;
 		public static final int FUNGI = 3; //The fungi quest is not implemented, only exists partially in code
 
 		public final static int MAX_GOLD = 30;
-
-		//pre-v2.2.0
-		private static boolean alternative; //false for mining gold, true for bat blood
 
 		//quest state information
 		private static boolean spawned;
@@ -280,17 +217,18 @@ public class Blacksmith extends NPC {
 		//reward tracking. Stores remaining favor, the pickaxe, and how many of each reward has been chosen
 		public static int favor;
 		public static Item pickaxe;
-		public static int reforges; //also used by the pre-v2.2.0 version of the quest
+		public static int reforges;
 		public static int hardens;
 		public static int upgrades;
 		public static int smiths;
 
 		//pre-generate these so they are consistent between seeds
 		public static ArrayList<Item> smithRewards;
-		
+		public static Weapon.Enchantment smithEnchant;
+		public static Armor.Glyph smithGlyph;
+
 		public static void reset() {
 			type        = 0;
-			alternative = false;
 
 			spawned		= false;
 			given		= false;
@@ -306,6 +244,8 @@ public class Blacksmith extends NPC {
 			smiths      = 0;
 
 			smithRewards = null;
+			smithEnchant = null;
+			smithGlyph = null;
 		}
 		
 		private static final String NODE	= "blacksmith";
@@ -326,7 +266,9 @@ public class Blacksmith extends NPC {
 		private static final String UPGRADES	= "upgrades";
 		private static final String SMITHS	    = "smiths";
 		private static final String SMITH_REWARDS = "smith_rewards";
-		
+		private static final String ENCHANT		= "enchant";
+		private static final String GLYPH		= "glyph";
+
 		public static void storeInBundle( Bundle bundle ) {
 			
 			Bundle node = new Bundle();
@@ -335,7 +277,6 @@ public class Blacksmith extends NPC {
 			
 			if (spawned) {
 				node.put( TYPE, type );
-				node.put( ALTERNATIVE, alternative );
 
 				node.put( GIVEN, given );
 				node.put( STARTED, started );
@@ -349,7 +290,13 @@ public class Blacksmith extends NPC {
 				node.put( UPGRADES, upgrades );
 				node.put( SMITHS, smiths );
 
-				if (smithRewards != null) node.put( SMITH_REWARDS, smithRewards );
+				if (smithRewards != null) {
+					node.put( SMITH_REWARDS, smithRewards );
+					if (smithEnchant != null) {
+						node.put(ENCHANT, smithEnchant);
+						node.put(GLYPH, smithGlyph);
+					}
+				}
 			}
 			
 			bundle.put( NODE, node );
@@ -361,7 +308,6 @@ public class Blacksmith extends NPC {
 			
 			if (!node.isNull() && (spawned = node.getBoolean( SPAWNED ))) {
 				type = node.getInt(TYPE);
-				alternative	=  node.getBoolean( ALTERNATIVE );
 
 				given = node.getBoolean( GIVEN );
 				started = node.getBoolean( STARTED );
@@ -374,18 +320,17 @@ public class Blacksmith extends NPC {
 				} else {
 					pickaxe = null;
 				}
-				if (node.contains("reforged")){
-					//pre-v2.2.0 saves
-					reforges = node.getBoolean( "reforged" ) ? 1 : 0;
-				} else {
-					reforges = node.getInt( REFORGES );
-				}
+				reforges = node.getInt( REFORGES );
 				hardens = node.getInt( HARDENS );
 				upgrades = node.getInt( UPGRADES );
 				smiths = node.getInt( SMITHS );
 
 				if (node.contains( SMITH_REWARDS )){
 					smithRewards = new ArrayList<>((Collection<Item>) ((Collection<?>) node.getCollection( SMITH_REWARDS )));
+					if (node.contains(ENCHANT)) {
+						smithEnchant = (Weapon.Enchantment) node.get(ENCHANT);
+						smithGlyph   = (Armor.Glyph) node.get(GLYPH);
+					}
 				}
 
 			} else {
@@ -401,7 +346,6 @@ public class Blacksmith extends NPC {
 
 				//Currently cannot roll the fungi quest, as it is not fully implemented
 				type = Random.IntRange(1, 2);
-				alternative = false;
 				
 				given = false;
 				generateRewards( true );
@@ -447,6 +391,18 @@ public class Blacksmith extends NPC {
 				}
 				i.cursed = false;
 			}
+
+			// 30% base chance to be enchanted, stored separately so status isn't revealed early
+			//we generate first so that the outcome doesn't affect the number of RNG rolls
+			smithEnchant = Weapon.Enchantment.random();
+			smithGlyph = Armor.Glyph.random();
+
+			float enchantRoll = Random.Float();
+			if (enchantRoll > 0.3f * ParchmentScrap.enchantChanceMultiplier()){
+				smithEnchant = null;
+				smithGlyph = null;
+			}
+
 		}
 
 		public static int Type(){
@@ -511,17 +467,5 @@ public class Blacksmith extends NPC {
 					|| (pickaxe != null && Statistics.questScores[2] >= 2500);
 		}
 
-		//if the blacksmith is generated pre-v2.2.0, and the player never spawned a mining test floor
-		public static boolean oldQuestMineBlocked(){
-			return type == OLD && !Dungeon.levelHasBeenGenerated(Dungeon.depth, 1);
-		}
-
-		public static boolean oldBloodQuest(){
-			return type == OLD && alternative;
-		}
-
-		public static boolean oldMiningQuest(){
-			return type == OLD && !alternative;
-		}
 	}
 }

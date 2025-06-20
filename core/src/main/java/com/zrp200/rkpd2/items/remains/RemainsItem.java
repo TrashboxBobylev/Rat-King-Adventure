@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.journal.Catalog;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,7 @@ public abstract class RemainsItem extends Item {
 		if (action.equals(AC_USE)){
 			hero.sprite.operate(hero.pos);
 
+			Catalog.countUse(getClass());
 			doEffect(hero);
 
 			hero.spendAndNext(Actor.TICK);
@@ -88,6 +90,8 @@ public abstract class RemainsItem extends Item {
 				return new BowFragment();
 			case DUELIST:
 				return new BrokenHilt();
+			case CLERIC:
+				return new TornPage();
 			case RAT_KING:
 				return new CrownShard();
 		}

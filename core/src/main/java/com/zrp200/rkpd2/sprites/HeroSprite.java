@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
 import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.buffs.RobotTransform;
+import com.zrp200.rkpd2.actors.buffs.HeroDisguise;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
@@ -43,8 +44,8 @@ import com.watabou.utils.RectF;
 
 public class HeroSprite extends CharSprite {
 	
-	private static final int FRAME_WIDTH	= 12;
-	private static final int FRAME_HEIGHT	= 15;
+	public static final int FRAME_WIDTH	= 12;
+	public static final int FRAME_HEIGHT	= 15;
 
 	public int frameWidth() { return FRAME_WIDTH; }
 	public int frameHeight() { return FRAME_HEIGHT; }
@@ -70,7 +71,12 @@ public class HeroSprite extends CharSprite {
 		else
 			die();
 	}
-	
+
+	public void disguise(HeroClass cls){
+		texture( cls.spritesheet() );
+		updateArmor();
+	}
+
 	public void updateArmor() {
 
 		TextureFilm film = new TextureFilm( tiers(), Dungeon.hero.tier(), FRAME_WIDTH, FRAME_HEIGHT );
@@ -211,17 +217,32 @@ public class HeroSprite extends CharSprite {
 	public void sprint( float speed ) {
 		run.delay = 1f / speed / runFramerate;
 	}
-	
+
+	public static TextureFilm defaultTiers() {
+		return tiers(Assets.Sprites.ROGUE, FRAME_HEIGHT);
+	}
+
 	public TextureFilm tiers() {
 		if (tiers == null) {
-			tiers = tiers(Assets.Sprites.ROGUE, FRAME_HEIGHT);
+			tiers = defaultTiers();
 		}
 		
 		return tiers;
 	}
+
 	public static TextureFilm tiers(String spritesheet, int frameHeight) {
 		SmartTexture texture = TextureCache.get( spritesheet );
 		return new TextureFilm( texture, texture.width, frameHeight );
+	}
+
+
+
+	public static Image avatar( Hero hero ){
+		if (hero.buff(HeroDisguise.class) != null){
+			return avatar(hero.buff(HeroDisguise.class).getDisguise(), hero.tier());
+		} else {
+			return avatar(hero.heroClass, hero.tier());
+		}
 	}
 
 	public static Image avatar( HeroClass cl, int armorTier ) {

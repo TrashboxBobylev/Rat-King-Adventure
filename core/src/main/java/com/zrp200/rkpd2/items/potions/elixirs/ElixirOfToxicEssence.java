@@ -26,8 +26,7 @@ import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.ToxicImbue;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.particles.PoisonParticle;
-import com.zrp200.rkpd2.items.potions.AlchemicalCatalyst;
-import com.zrp200.rkpd2.items.potions.PotionOfToxicGas;
+import com.zrp200.rkpd2.items.potions.exotic.PotionOfCorrosiveGas;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 
 public class ElixirOfToxicEssence extends Elixir {
@@ -44,24 +43,13 @@ public class ElixirOfToxicEssence extends Elixir {
 		HighnessBuff.agreenalineProc();
 	}
 	
-	@Override
-	protected int splashColor() {
-		return 0xFF00B34A;
-	}
-	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (30 + 40);
-	}
-	
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfToxicGas.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfCorrosiveGas.class};
+			inQuantity = new int[]{1};
 			
-			cost = 6;
+			cost = 8;
 			
 			output = ElixirOfToxicEssence.class;
 			outQuantity = 1;

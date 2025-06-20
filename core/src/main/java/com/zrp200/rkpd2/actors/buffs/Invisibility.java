@@ -31,6 +31,8 @@ import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
+import com.zrp200.rkpd2.items.weapon.melee.RoundShield;
+import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.SafeCast;
@@ -172,6 +174,11 @@ public class Invisibility extends FlavourBuff {
 		public void fx(boolean on) {
 			if (on) target.sprite.add(CharSprite.State.SPIRIT);
 			else target.sprite.remove(CharSprite.State.SPIRIT);
+		}
+
+		RoundShield.GuardTracker guard = ch.buff(RoundShield.GuardTracker.class);
+		if (guard != null && guard.hasBlocked){
+			guard.detach();
 		}
 	}
 }

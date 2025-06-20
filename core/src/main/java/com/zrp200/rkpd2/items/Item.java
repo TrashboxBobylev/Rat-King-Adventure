@@ -21,14 +21,18 @@
 
 package com.zrp200.rkpd2.items;
 
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.Combo;
+import com.zrp200.rkpd2.actors.buffs.Cooldown;
 import com.zrp200.rkpd2.actors.buffs.Degrade;
 import com.zrp200.rkpd2.actors.buffs.PowerfulDegrade;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -40,6 +44,7 @@ import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.TippedDart;
 import com.zrp200.rkpd2.journal.Catalog;
+import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.CellSelector;
@@ -59,7 +64,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Item implements Bundlable {
+public class Item implements Bundlable, QuickSlotButton.Aimable {
 
 	protected static final String TXT_TO_STRING_LVL		= "%s %+d";
 	protected static final String TXT_TO_STRING_X		= "%s x%d";
@@ -87,7 +92,7 @@ public class Item implements Bundlable {
 	public boolean levelKnown = false;
 	
 	public boolean cursed;
-	public boolean cursedKnown;
+	public boolean cursedKnown = true;
 
 	public boolean collected; // if on-collect talents have already been checked; prevents exploits
 
@@ -271,7 +276,7 @@ public class Item implements Bundlable {
 
 	}
 	
-	public boolean collect() {
+	public final boolean collect() {
 		return collect( Dungeon.hero.belongings.backpack );
 	}
 	
@@ -293,7 +298,18 @@ public class Item implements Bundlable {
 			return split;
 		}
 	}
-	
+
+	public Item duplicate(){
+		Item dupe = Reflection.newInstance(getClass());
+		if (dupe == null){
+			return null;
+		}
+		Bundle copy = new Bundle();
+		this.storeInBundle(copy);
+		dupe.restoreFromBundle(copy);
+		return dupe;
+	}
+
 	public final Item detach( Bag container ) {
 		
 		if (quantity <= 0) {
@@ -343,7 +359,7 @@ public class Item implements Bundlable {
 	}
 	
 	public boolean isSimilar( Item item ) {
-		return level == item.level && getClass() == item.getClass();
+		return getClass() == item.getClass();
 	}
 
 	protected void onDetach(){}
@@ -363,11 +379,12 @@ public class Item implements Bundlable {
 	public int buffedLvl(){
 		int lvl = level();
 		//only the hero can be affected by Degradation
-		if (Dungeon.hero.buff(Degrade.class) != null && (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this ))) {
+		if (Dungeon.hero != null && Dungeon.hero.buff(Degrade.class) != null && (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this ))) {
 			lvl = Degrade.reduceLevel(lvl);
 			if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
 		}
-		return lvl + Dungeon.hero.getBonus(this);
+		if (Dungeon.hero != null) lvl += Dungeon.hero.getBonus(this);
+		return lvl;
 	}
 
 	public void level( int value ){
@@ -413,7 +430,7 @@ public class Item implements Bundlable {
 	}
 
 	public int buffedVisiblyUpgraded() {
-		return levelKnown ? buffedLvl()-Dungeon.hero.getBonus(this) : 0;
+		return levelKnown ? buffedLvl()-(Dungeon.hero != null ? Dungeon.hero.getBonus(this) : 0) : 0;
 	}
 	
 	public boolean visiblyCursed() {
@@ -440,7 +457,7 @@ public class Item implements Bundlable {
 
 		if (byHero && Dungeon.hero != null && Dungeon.hero.isAlive()){
 			Catalog.setSeen(getClass());
-			if (!isIdentified()) Talent.onItemIdentified(Dungeon.hero, this);
+			Statistics.itemTypesDiscovered.add(getClass());
 		}
 
 		levelKnown = true;
@@ -503,6 +520,20 @@ public class Item implements Bundlable {
 	public Emitter emitter() { return null; }
 	
 	public String info() {
+
+		if (Dungeon.hero != null) {
+			Notes.CustomRecord note;
+			if (this instanceof EquipableItem) {
+				note = Notes.findCustomRecord(((EquipableItem) this).customNoteID);
+			} else {
+				note = Notes.findCustomRecord(getClass());
+			}
+			if (note != null){
+				//we swap underscore(0x5F) with low macron(0x2CD) here to avoid highlighting in the item window
+				return Messages.get(this, "custom_note", note.title().replace('_', 'ˍ')) + "\n\n" + desc();
+			}
+		}
+
 		return desc();
 	}
 	
@@ -656,7 +687,7 @@ public class Item implements Bundlable {
 											Talent.IMPROVISED_PROJECTILES, 1.5f,
 											Talent.KINGS_VISION, 1.0f);
 									Buff.affect(ch, Blindness.class, Math.round(duration));
-									Talent.Cooldown.affectHero(Talent.ImprovisedProjectileCooldown.class);
+									Cooldown.affectHero(Talent.ImprovisedProjectileCooldown.class);
 								}
 							}
 							if(!forceSkipDelay) {
@@ -679,16 +710,36 @@ public class Item implements Bundlable {
 							curUser = user;
 							Item.this.detach(user.belongings.backpack).onThrow(cell);
 							user.spend(delay);
-							if (curUser.hasTalent(Talent.IMPROVISED_PROJECTILES,Talent.KINGS_VISION)
-									&& !(Item.this instanceof MissileWeapon)
-									&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null){
-								Char ch = Actor.findChar(cell);
-								if (ch != null && ch.alignment != curUser.alignment){
-									Sample.INSTANCE.play(Assets.Sounds.HIT);
-									Buff.affect(ch, Blindness.class, 1f + curUser.pointsInTalent(Talent.IMPROVISED_PROJECTILES,Talent.KINGS_VISION));
-									Talent.Cooldown.affectHero(Talent.ImprovisedProjectileCooldown.class);
+							Char ch = Actor.findChar(cell);
+							if (ch != null) {
+								float playHitIntensity = 0;
+								int improvisedProjectiles = curUser.shiftedPoints2(Talent.IMPROVISED_PROJECTILES, Talent.KINGS_VISION);
+								if (ch.alignment != curUser.alignment && improvisedProjectiles > 0
+										&& !(Item.this instanceof MissileWeapon)
+										&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null) {
+									playHitIntensity = 1;
+									Buff.affect(ch, Blindness.class, 1f + improvisedProjectiles);
+									Cooldown.affectHero(Talent.ImprovisedProjectileCooldown.class);
+								}
+								if (ch.alignment == Char.Alignment.ENEMY) everythingIsAWeapon: {
+									int points = curUser.pointsInTalent(Talent.EVERYTHING_IS_A_WEAPON);
+									if (points == 0) break everythingIsAWeapon;
+									if (Random.Int(3) < points) {
+										playHitIntensity = 1;
+										Buff.affect(curUser, Combo.class).hit(ch);
+									} else {
+										Combo combo = curUser.buff(Combo.class);
+										if (combo != null) {
+											combo.resetTime();
+											playHitIntensity = 0.5f;
+										}
+									}
+								}
+								if (playHitIntensity > 0) {
+									Sample.INSTANCE.play(Assets.Sounds.HIT, playHitIntensity);
 								}
 							}
+
 							if(!forceSkipDelay) user.next();
 						}
 					});
@@ -701,6 +752,11 @@ public class Item implements Bundlable {
 	
 	protected static Hero curUser = null;
 	protected static Item curItem = null;
+	public void setCurrent( Hero hero ){
+		curUser = hero;
+		curItem = this;
+	}
+
 	protected static CellSelector.Listener thrower = new CellSelector.Listener() {
 		@Override
 		public void onSelect( Integer target ) {

@@ -54,4 +54,9 @@ public class WndInfoArmorAbility extends WndTitledMessage {
 		ArrayList<LinkedHashMap<Talent, Integer>> talentList = Talent.initArmorTalents(ability);
 		return talentList.size() < 4 ? new LinkedHashMap<>() : talentList.get(3);
 	}
+
+	@Override
+	protected float targetHeight() {
+		return super.targetHeight()-40;
+	}
 }

@@ -107,17 +107,18 @@ public abstract class ElementalSprite extends MobSprite {
 	
 	public void zap( int cell ) {
 		super.zap( cell );
-		
+
+		doZap(this, cell, ((Elemental)ch)::onZapComplete);
+
+	}
+
+	public void doZap(CharSprite sprite, int cell, Callback onZapComplete) {
 		MagicMissile.boltFromChar( parent,
 				boltType,
-				this,
+				sprite,
 				cell,
-				new Callback() {
-					@Override
-					public void call() {
-						((Elemental)ch).onZapComplete();
-					}
-				} );
+				onZapComplete
+		);
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	
@@ -205,13 +206,11 @@ public abstract class ElementalSprite extends MobSprite {
 		
 		//different bolt, so overrides zap
 		@Override
-		public void zap( int cell ) {
-			super.zap( cell );
-			
-			((Elemental)ch).onZapComplete();
-			parent.add( new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
+		public void doZap(CharSprite sprite, int cell, Callback onZapComplete) {
+			onZapComplete.call();
+			parent.add( new Beam.LightRay(sprite.center(), DungeonTilemap.raisedTileCenterToWorld(cell)));
 		}
-		
+
 		@Override
 		protected int texOffset() {
 			return 42;
@@ -232,10 +231,13 @@ public abstract class ElementalSprite extends MobSprite {
 	
 	public static class Chaos extends ElementalSprite {
 
-		{
-			boltType = MagicMissile.RAINBOW;
+		@Override
+		public void zap(int cell) {
+			zap( cell, null ); //effectively super.super.zap
+			//relies on cursed wand for effects
+			((Elemental)ch).onZapComplete();
 		}
-		
+
 		@Override
 		protected int texOffset() {
 			return 56;

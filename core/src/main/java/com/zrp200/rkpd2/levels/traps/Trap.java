@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.levels.traps;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.utils.DungeonSeed;
@@ -57,6 +58,7 @@ public abstract class Trap implements Bundlable {
 	public int shape;
 
 	public int pos;
+	public boolean reclaimed = false; //if this trap was spawned by reclaim trap
 
 	public boolean visible;
 	public boolean active = true;
@@ -95,6 +97,8 @@ public abstract class Trap implements Bundlable {
 			}
 			if (disarmedByActivation) disarm();
 			Dungeon.level.discover(pos);
+			Bestiary.setSeen(getClass());
+			Bestiary.countEncounter(getClass());
 			activate();
 		}
 	}
@@ -110,7 +114,7 @@ public abstract class Trap implements Bundlable {
 	//If the trap is part of the level, it should use the true depth
 	//If it's not part of the level (e.g. effect from reclaim trap), use scaling depth
 	protected int scalingDepth(){
-		return Dungeon.level.traps.get(pos) == this ? Dungeon.depth : Dungeon.scalingDepth();
+		return (reclaimed || Dungeon.level.traps.get(pos) != this) ? Dungeon.scalingDepth() : Dungeon.depth;
 	}
 
 	public String name(){

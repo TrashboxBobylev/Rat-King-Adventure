@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.ui;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
@@ -163,13 +164,18 @@ public class ItemSlot extends Button {
 		}
 
 		if (itemIcon != null){
-			itemIcon.x = x + width - (ItemSpriteSheet.Icons.SIZE + itemIcon.width())/2f - margin.right;
-			if(item instanceof ClassArmor) {
+            if(item instanceof ClassArmor) {
+                // fixme might need to realign this after merging
 				// bottom right, with a 1 pixel offset from the corners.
-				if(level != null) itemIcon.x = x + 1; else itemIcon.x--;
-				itemIcon.y = y + height - itemIcon.height() - 1;
+                if(level != null) itemIcon.x = x + 1; else itemIcon.x--;
+                itemIcon.y = y + height - itemIcon.height() - 1;
+            //center the icon slightly if there is enough room
+            } else if (width >= 24 || height >= 24) {
+				itemIcon.x = x + width - (ItemSpriteSheet.Icons.SIZE + itemIcon.width()) / 2f - margin.right;
+				itemIcon.y = y + (ItemSpriteSheet.Icons.SIZE - itemIcon.height) / 2f + margin.top;
 			} else {
-				itemIcon.y = y + (ItemSpriteSheet.Icons.SIZE - itemIcon.height())/2f + margin.top;
+				itemIcon.x = x + width - itemIcon.width() - margin.right;
+				itemIcon.y = y + margin.top;
 			}
 			PixelScene.align(itemIcon);
 		}
@@ -251,7 +257,7 @@ public class ItemSlot extends Button {
 		} else {
 			status.resetColor();
 		}
-		
+
 		if(item instanceof ClassArmor) {
 			OmniAbility ability = SafeCast.cast(hero.armorAbility, OmniAbility.class);
 			if(ability != null && ability.activeAbility() != null) {
@@ -276,7 +282,7 @@ public class ItemSlot extends Button {
 			if (item.levelKnown){
 				int str = item instanceof Weapon ? ((Weapon)item).STRReq() : ((Armor)item).STRReq();
 				extra.text( Messages.format( TXT_STRENGTH, str ) );
-				if (str > hero.STR()) {
+				if (Dungeon.hero != null && str > hero.STR()) {
 					extra.hardlight( DEGRADED );
 				} else if (item instanceof Weapon && ((Weapon) item).masteryPotionBonus){
 					extra.hardlight( MASTERED );
@@ -329,7 +335,14 @@ public class ItemSlot extends Button {
 	public void enable( boolean value ) {
 		
 		active = value;
-		
+		//reset properties if was pressed
+		if (!active && pressedButton == this){
+			hotArea.reset();
+			pressedButton = null;
+			clickReady = false;
+			onPointerUp();
+		}
+
 		float alpha = value ? ENABLED : DISABLED;
 		sprite.alpha( alpha );
 		status.alpha( alpha );
@@ -346,6 +359,18 @@ public class ItemSlot extends Button {
 			remove(extra);
 		}
 
+	}
+
+	public void textVisible( boolean visible ){
+		if (visible){
+			add(status);
+			add(extra);
+			add(level);
+		} else {
+			remove(status);
+			remove(extra);
+			remove(level);
+		}
 	}
 
 	public void setMargins( int left, int top, int right, int bottom){

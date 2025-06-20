@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.actors.buffs.PinCushion;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.abilities.Ratmogrify;
 import com.zrp200.rkpd2.actors.mobs.DwarfKing;
+import com.zrp200.rkpd2.actors.mobs.Ghoul;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.Statue;
@@ -91,9 +92,11 @@ public class Multiplicity extends Armor.Glyph {
 							m.HP = m.HT;
 
 							//don't duplicate stuck projectiles
-							m.remove(m.buff(PinCushion.class));
+							m.remove(PinCushion.class);
 							//don't duplicate pending damage to dwarf king
 							m.remove(DwarfKing.KingDamager.class);
+							//don't duplicate downed ghouls
+							m.remove(Ghoul.GhoulLifeLink.class);
 							
 							//If a thief has stolen an item, that item is not duplicated.
 							if (m instanceof Thief) {

@@ -49,21 +49,16 @@ public class Corrupting extends Weapon.Enchantment {
 				&& Random.Float() < procChance
 				&& defender instanceof Mob
 				&& defender.isAlive()){
-			
+
 			Mob enemy = (Mob) defender;
-			Hero hero = (attacker instanceof Hero) ? (Hero) attacker : Dungeon.hero;
-
-			Corruption.corruptionHeal(enemy);
-
-			AllyBuff.affectAndLoot(enemy, hero, Corruption.class);
-
-			float powerMulti = Math.max(1f, procChance);
-			if (powerMulti > 1.1f){
-				//1 turn of adrenaline for each 20% above 100% proc rate
-				Buff.affect(enemy, Adrenaline.class, Math.round(5*(powerMulti-1f)));
+			if (Corruption.corrupt(enemy)) {
+				float powerMulti = Math.max(1f, procChance);
+				if (powerMulti > 1.1f){
+					//1 turn of adrenaline for each 20% above 100% proc rate
+					Buff.affect(enemy, Adrenaline.class, Math.round(5*(powerMulti-1f)));
+				}
+				return 0;
 			}
-			
-			return 0;
 		}
 		
 		return damage;

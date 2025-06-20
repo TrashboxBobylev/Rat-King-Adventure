@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.scenes;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.GamesInProgress;
@@ -83,6 +84,7 @@ public class AmuletScene extends PixelScene {
 				}
 				Dungeon.win(clazz);
 				Dungeon.deleteGame( GamesInProgress.curSlot, true );
+				Badges.saveGlobal();
 				btnExit.enable(false);
 				btnStay.enable(false);
 

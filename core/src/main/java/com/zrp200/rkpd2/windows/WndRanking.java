@@ -33,6 +33,7 @@ import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.trinkets.Trinket;
 import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -109,7 +110,7 @@ public class WndRanking extends WndTabbed {
 
 		if (Dungeon.hero != null) {
 			Icons[] icons =
-					{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_ON};
+					{Icons.RANKINGS, Icons.TALENT, Icons.BACKPACK_LRG, Icons.BADGES, Icons.CHALLENGE_COLOR};
 			Group[] pages =
 					{new StatsTab(), new TalentsTab(), new ItemsTab(), new BadgesTab(), null};
 
@@ -192,7 +193,7 @@ public class WndRanking extends WndTabbed {
 
 			pos = date.bottom()+5;
 
-			NumberFormat num = NumberFormat.getInstance(Locale.US);
+			NumberFormat num = NumberFormat.getInstance(Messages.locale());
 
 			if (Dungeon.hero == null){
 				pos = statSlot( this, Messages.get(this, "score"), num.format( record.score ), pos );
@@ -372,11 +373,22 @@ public class WndRanking extends WndTabbed {
 				}
 			}
 
+			Trinket trinket = stuff.getItem(Trinket.class);
+			if (trinket != null){
+				slotsActive++;
+			}
+
 			float slotWidth = Math.min(28, ((WIDTH - slotsActive + 1) / (float)slotsActive));
 
-			for (int i = 0; i < QuickSlot.SIZE; i++){
-				if (Dungeon.quickslot.isNonePlaceholder(i)){
-					QuickSlotButton slot = new QuickSlotButton(Dungeon.quickslot.getItem(i));
+			for (int i = -1; i < QuickSlot.SIZE; i++){
+				Item item = null;
+				if (i == -1){
+					item = trinket;
+				} else if (Dungeon.quickslot.isNonePlaceholder(i)) {
+					item = Dungeon.quickslot.getItem(i);
+				}
+				if (item != null){
+					QuickSlotButton slot = new QuickSlotButton(item);
 
 					slot.setRect( pos, 120, slotWidth, 23 );
 					PixelScene.align(slot);

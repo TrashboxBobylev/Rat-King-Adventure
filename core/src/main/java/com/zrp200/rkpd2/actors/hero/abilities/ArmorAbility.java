@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.actors.hero.abilities;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -72,17 +74,15 @@ public abstract class ArmorAbility implements Bundlable {
 		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
 	}
 
-	// shpd reduced charge use by 12%/23%/32%/40%
-	// rkpd2 reduced charge use by 16/30/40/50%
-	private static final double HEROIC_ENERGY_REDUCTION = 0.839;
-
 	public float chargeUse( Hero hero ){
 		float chargeUse = baseChargeUse;
 		if (hero.hasTalent(Talent.EMPOWERED_STRIKE_II)){
 			chargeUse = 85 - hero.pointsInTalent(Talent.EMPOWERED_STRIKE_II)*5;
 		}
 		if (hasTalent(Talent.HEROIC_ENERGY) && hero.hasTalent(Talent.HEROIC_ENERGY)){
-			chargeUse *= Math.pow( HEROIC_ENERGY_REDUCTION, hero.pointsInTalent(Talent.HEROIC_ENERGY));
+			// roughly double as effective as shattered heroic energy
+			// 20/35/48/58/66%
+			chargeUse *= Math.round(Math.pow(.8036, hero.shiftedPoints(Talent.HEROIC_ENERGY)) * 100)/100f;
 		}
 		return chargeUse;
 	}

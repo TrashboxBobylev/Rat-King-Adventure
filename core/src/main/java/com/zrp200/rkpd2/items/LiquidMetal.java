@@ -33,6 +33,7 @@ import com.zrp200.rkpd2.items.potions.Potion;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.items.weapon.missiles.StarPieces;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -149,21 +150,33 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 
 		float durabilityPerMetal = 100 / (float)maxToUse;
 
-		//we remove a tiny amount here to account for rounding errors
-		float percentDurabilityLost = 0.999f - (item.durabilityLeft()/100f);
-		maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
-		if (maxToUse == 0 || percentDurabilityLost < item.durabilityPerUse()/100f){
-			GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
-		} else if (maxToUse < quantity()) {
-			item.repair(maxToUse*durabilityPerMetal);
-			quantity(quantity()-maxToUse);
-			GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
-		} else {
-			item.repair(quantity()*durabilityPerMetal);
-			GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
-			detachAll(Dungeon.hero.belongings.backpack);
+				//we remove a tiny amount here to account for rounding errors
+				float percentDurabilityLost = 0.999f - (m.durabilityLeft()/100f);
+				maxToUse = (int)Math.ceil(maxToUse*percentDurabilityLost);
+				float durPerUse = m.durabilityPerUse()/100f;
+				if (maxToUse == 0 ||
+						Math.ceil(m.durabilityLeft()/ m.durabilityPerUse()) >= Math.ceil(m.MAX_DURABILITY/ m.durabilityPerUse()) ){
+					GLog.w(Messages.get(LiquidMetal.class, "already_fixed"));
+					return;
+				} else if (maxToUse < quantity()) {
+					Catalog.countUses(LiquidMetal.class, maxToUse);
+					m.repair(maxToUse*durabilityPerMetal);
+					quantity(quantity()-maxToUse);
+					GLog.i(Messages.get(LiquidMetal.class, "apply", maxToUse));
+
+				} else {
+					Catalog.countUses(LiquidMetal.class, quantity());
+					m.repair(quantity()*durabilityPerMetal);
+					GLog.i(Messages.get(LiquidMetal.class, "apply", quantity()));
+					detachAll(Dungeon.hero.belongings.backpack);
+				}
+
+				curUser.sprite.operate(curUser.pos);
+				Sample.INSTANCE.play(Assets.Sounds.DRINK);
+				updateQuickslot();
+				curUser.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.1f, 10);
+			}
 		}
-	}
 
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe {
 
@@ -214,5 +227,3 @@ public class LiquidMetal extends Item implements Recipe.AllQuantityIngredient {
 			return new LiquidMetal().quantity(metalQuantity);
 		}
 	}
-
-}

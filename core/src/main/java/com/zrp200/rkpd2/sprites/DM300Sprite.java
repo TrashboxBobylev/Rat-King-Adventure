@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.WarpedEnemy;
 import com.zrp200.rkpd2.actors.mobs.DM300;
 import com.zrp200.rkpd2.effects.MagicMissile;
+import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.BlastParticle;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
 import com.zrp200.rkpd2.scenes.PixelScene;
@@ -90,7 +91,7 @@ public class DM300Sprite extends MobSprite {
 		int type = ch.buff(WarpedEnemy.BossEffect.class) != null ? MagicMissile.CORROSION_CONE : MagicMissile.TOXIC_VENT;
 
 		MagicMissile.boltFromChar( parent,
-				type,
+				MagicMissile.SPECK + Speck.TOXIC,
 				this,
 				cell,
 				new Callback() {

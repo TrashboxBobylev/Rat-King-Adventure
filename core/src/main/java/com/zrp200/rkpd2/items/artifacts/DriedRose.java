@@ -24,6 +24,7 @@ package com.zrp200.rkpd2.items.artifacts;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.CorrosiveGas;
@@ -36,6 +37,7 @@ import com.zrp200.rkpd2.actors.buffs.Regeneration;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.Stasis;
 import com.zrp200.rkpd2.actors.mobs.Wraith;
 import com.zrp200.rkpd2.actors.mobs.npcs.DirectableAlly;
 import com.zrp200.rkpd2.actors.mobs.npcs.Ghost;
@@ -45,8 +47,6 @@ import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.ShaftParticle;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
-import com.zrp200.rkpd2.items.armor.glyphs.AntiMagic;
-import com.zrp200.rkpd2.items.armor.glyphs.Brimstone;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRetribution;
@@ -54,6 +54,7 @@ import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfPsionicBlast;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.levels.AbyssLevel;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.AlchemyScene;
 import com.zrp200.rkpd2.scenes.CellSelector;
@@ -205,17 +206,28 @@ public class DriedRose extends Artifact {
 
 		} else if (action.equals(AC_DIRECT)){
 			if (ghost == null && ghostID != 0){
-				Actor a = Actor.findById(ghostID);
-				if (a != null){
-					ghost = (GhostHero)a;
-				} else {
-					ghostID = 0;
-				}
+				findGhost();
 			}
-			if (ghost != null) GameScene.selectCell(ghostDirector);
-			
+			if (ghost != null && ghost != Stasis.getStasisAlly()){
+				GameScene.selectCell(ghostDirector);
+			}
+
 		} else if (action.equals(AC_OUTFIT)){
 			GameScene.show( new WndGhostHero(this) );
+		}
+	}
+
+	private void findGhost(){
+		Actor a = Actor.findById(ghostID);
+		if (a != null){
+			ghost = (GhostHero)a;
+		} else {
+			if (Stasis.getStasisAlly() instanceof GhostHero){
+				ghost = (GhostHero) Stasis.getStasisAlly();
+				ghostID = ghost.id();
+			} else {
+				ghostID = 0;
+			}
 		}
 	}
 	
@@ -247,12 +259,15 @@ public class DriedRose extends Artifact {
 			desc += "\n";
 
 			if (weapon != null) {
-				desc += "\n" + Messages.get(this, "desc_weapon", weapon.title());
+				desc += "\n" + Messages.get(this, "desc_weapon", Messages.titleCase(weapon.title()));
 			}
 
 			if (armor != null) {
-				desc += "\n" + Messages.get(this, "desc_armor", armor.title());
+				desc += "\n" + Messages.get(this, "desc_armor", Messages.titleCase(armor.title()));
 			}
+
+			desc += "\n" + Messages.get(this, "desc_strength", ghostStrength());
+
 		}
 		
 		return desc;
@@ -273,12 +288,7 @@ public class DriedRose extends Artifact {
 	public String status() {
 		if (ghost == null && ghostID != 0){
 			try {
-				Actor a = Actor.findById(ghostID);
-				if (a != null) {
-					ghost = (GhostHero) a;
-				} else {
-					ghostID = 0;
-				}
+				findGhost();
 			} catch ( ClassCastException e ){
 				ShatteredPixelDungeon.reportException(e);
 				ghostID = 0;
@@ -302,7 +312,11 @@ public class DriedRose extends Artifact {
 
 		if (ghost == null){
 			if (charge < chargeCap) {
-				charge += Math.round(4*amount);
+				partialCharge += 4*amount;
+				while (partialCharge >= 1f){
+					charge++;
+					partialCharge--;
+				}
 				if (charge >= chargeCap) {
 					charge = chargeCap;
 					partialCharge = 0;
@@ -313,7 +327,9 @@ public class DriedRose extends Artifact {
 		} else if (ghost.HP < ghost.HT) {
 			int heal = Math.round((1 + level()/3f)*amount);
 			ghost.HP = Math.min( ghost.HT, ghost.HP + heal);
-			ghost.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
+			if (ghost.sprite != null) {
+				ghost.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
+			}
 			updateQuickslot();
 		}
 	}
@@ -385,12 +401,7 @@ public class DriedRose extends Artifact {
 			spend( TICK );
 			
 			if (ghost == null && ghostID != 0){
-				Actor a = Actor.findById(ghostID);
-				if (a != null){
-					ghost = (GhostHero)a;
-				} else {
-					ghostID = 0;
-				}
+				findGhost();
 			}
 
 			if (ghost != null && !ghost.isAlive()){
@@ -405,7 +416,7 @@ public class DriedRose extends Artifact {
 					partialCharge += (ghost.HT / 400f) * RingOfEnergy.artifactChargeMultiplier(target);
 					updateQuickslot();
 					
-					if (partialCharge > 1) {
+					while (partialCharge > 1) {
 						ghost.HP++;
 						partialCharge--;
 					}
@@ -422,7 +433,7 @@ public class DriedRose extends Artifact {
 					&& Regeneration.regenOn()) {
 				//500 turns to a full charge
 				partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
-				if (partialCharge > 1){
+				while (partialCharge > 1){
 					charge++;
 					partialCharge--;
 					if (charge == chargeCap){
@@ -483,6 +494,8 @@ public class DriedRose extends Artifact {
 
 		@Override
 		public boolean doPickUp(Hero hero, int pos) {
+			Catalog.setSeen(getClass());
+			Statistics.itemTypesDiscovered.add(getClass());
 			DriedRose rose = hero.belongings.getItem( DriedRose.class );
 
 			if (rose == null){
@@ -495,6 +508,7 @@ public class DriedRose extends Artifact {
 			} else {
 
 				rose.upgrade();
+				Catalog.countUse(rose.getClass());
 				if (rose.level() == rose.levelCap) {
 					GLog.p( Messages.get(this, "maxlevel") );
 				} else
@@ -634,13 +648,16 @@ public class DriedRose extends Artifact {
 		@Override
 		public int attackProc(Char enemy, int damage) {
 			damage = super.attackProc(enemy, damage);
-			if (rose != null && rose.weapon != null) {
-				damage = rose.weapon.proc( this, enemy, damage );
-				if (!enemy.isAlive() && enemy == Dungeon.hero){
-					Dungeon.fail(this);
-					GLog.n( Messages.capitalize(Messages.get(Char.class, "kill", name())) );
+			if (rose != null) {
+				if (rose.weapon != null) {
+					damage = rose.weapon.proc(this, enemy, damage);
+					if (!enemy.isAlive() && enemy == Dungeon.hero) {
+						Dungeon.fail(this);
+						GLog.n(Messages.capitalize(Messages.get(Char.class, "kill", name())));
+					}
 				}
 			}
+
 			return damage;
 		}
 		
@@ -654,13 +671,6 @@ public class DriedRose extends Artifact {
 		
 		@Override
 		public void damage(int dmg, Object src) {
-			//TODO improve this when I have proper damage source logic
-			if (rose != null && rose.armor != null && rose.armor.hasGlyph(AntiMagic.class, this)
-					&& AntiMagic.RESISTS.contains(src.getClass())){
-				dmg -= AntiMagic.drRoll(this, rose.armor.buffedLvl());
-				dmg = Math.max(dmg, 0);
-			}
-			
 			super.damage( dmg, src );
 			
 			//for the rose status indicator
@@ -670,10 +680,6 @@ public class DriedRose extends Artifact {
 		@Override
 		public float speed() {
 			float speed = super.speed();
-			
-			if (rose != null && rose.armor != null){
-				speed = rose.armor.speedFactor(this, speed);
-			}
 
 			//moves 2 tiles at a time when returning to the hero
 			if (state == WANDERING
@@ -695,18 +701,7 @@ public class DriedRose extends Artifact {
 			
 			return defense;
 		}
-		
-		@Override
-		public float stealth() {
-			float stealth = super.stealth();
-			
-			if (rose != null && rose.armor != null){
-				stealth = rose.armor.stealthFactor(this, stealth);
-			}
-			
-			return stealth;
-		}
-		
+
 		@Override
 		public int drRoll() {
 			int dr = super.drRoll();
@@ -719,24 +714,13 @@ public class DriedRose extends Artifact {
 			return dr;
 		}
 
-		//used in some glyph calculations
-		public Armor armor(){
-			if (rose != null){
-				return rose.armor;
-			} else {
-				return null;
-			}
-		}
-
 		@Override
-		public boolean isImmune(Class effect) {
-			if (effect == Burning.class
-					&& rose != null
-					&& rose.armor != null
-					&& rose.armor.hasGlyph(Brimstone.class, this)){
-				return true;
+		public int glyphLevel(Class<? extends Armor.Glyph> cls) {
+			if (rose != null && rose.armor != null && rose.armor.hasGlyph(cls, this)){
+				return Math.max(super.glyphLevel(cls), rose.armor.buffedLvl());
+			} else {
+				return super.glyphLevel(cls);
 			}
-			return super.isImmune(effect);
 		}
 
 		@Override
@@ -765,6 +749,7 @@ public class DriedRose extends Artifact {
 		@Override
 		public void destroy() {
 			updateRose();
+			//TODO stasis?
 			if (rose != null) {
 				rose.ghost = null;
 				rose.charge = 0;
@@ -1024,6 +1009,15 @@ public class DriedRose extends Artifact {
 							}
 						});
 					}
+				}
+
+				@Override
+				protected boolean onLongClick() {
+					if (item() != null && item().name() != null){
+						GameScene.show(new WndInfoItem(item()));
+						return true;
+					}
+					return false;
 				}
 			};
 			btnArmor.setRect( btnWeapon.right() + BTN_GAP, btnWeapon.top(), BTN_SIZE, BTN_SIZE );

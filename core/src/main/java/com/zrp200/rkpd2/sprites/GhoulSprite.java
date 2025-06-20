@@ -55,6 +55,7 @@ public class GhoulSprite extends MobSprite {
 
 	public void crumple(){
 		hideEmo();
+		processStateRemoval(State.PARALYSED);
 		play(crumple);
 	}
 

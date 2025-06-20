@@ -21,6 +21,7 @@
 
 package com.zrp200.rkpd2.journal;
 
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfIdentify;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -67,6 +68,7 @@ public enum Document {
 		if (pagesStates.containsKey(page) && pagesStates.get(page) == NOT_FOUND){
 			pagesStates.put(page, FOUND);
 			Journal.saveNeeded = true;
+			Badges.validateCatalogBadges();
 			return true;
 		}
 		return false;
@@ -86,6 +88,23 @@ public enum Document {
 	}
 
 	public boolean deletePage( int pageIdx ) {
+		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
+	public boolean unreadPage( String page ){
+		if (pagesStates.containsKey(page) && pagesStates.get(page) == READ){
+			pagesStates.put(page, FOUND);
+			Journal.saveNeeded = true;
+			return true;
+		}
+		return false;
+	}
+
+	public void unreadAllPages() {
+		for (String p : pagesStates.keySet().toArray(new String[0])) unreadPage(p);
+	}
+
+	public boolean unreadPage( int pageIdx ) {
 		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
@@ -119,6 +138,7 @@ public enum Document {
 		if (pagesStates.containsKey(page)){
 			pagesStates.put(page, READ);
 			Journal.saveNeeded = true;
+			Badges.validateCatalogBadges();
 			return true;
 		}
 		return false;
@@ -177,6 +197,8 @@ public enum Document {
 					return new ItemSprite( new ScrollOfIdentify() );
 				case "Food":
 					return new ItemSprite( ItemSpriteSheet.PASTY );
+				case "Alchemy":
+					return new ItemSprite( ItemSpriteSheet.TRINKET_CATA );
 				case "Dieing":
 					return new ItemSprite( ItemSpriteSheet.TOMB );
 				case Document.GUIDE_SEARCHING:
@@ -227,9 +249,12 @@ public enum Document {
 	public static final String GUIDE_SURPRISE_ATKS  = "Surprise_Attacks";
 	public static final String GUIDE_IDING          = "Identifying";
 	public static final String GUIDE_FOOD           = "Food";
+	public static final String GUIDE_ALCHEMY        = "Alchemy";
 	public static final String GUIDE_DIEING         = "Dieing";
 
 	public static final String GUIDE_SEARCHING      = "Searching";
+
+	public static final String KING_ATTRITION       = "attrition";
 
 	//pages and default states
 	static {
@@ -240,6 +265,7 @@ public enum Document {
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SURPRISE_ATKS,  debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_IDING,          debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_FOOD,           debug ? READ : NOT_FOUND);
+		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_ALCHEMY,        debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_DIEING,         debug ? READ : NOT_FOUND);
 		//given in sewers
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_SEARCHING,      debug ? READ : NOT_FOUND);
@@ -259,7 +285,6 @@ public enum Document {
 		//given in prison
 		ALCHEMY_GUIDE.pagesStates.put("Bombs",                  debug ? READ : NOT_FOUND);
 		ALCHEMY_GUIDE.pagesStates.put("Weapons",                debug ? READ : NOT_FOUND);
-		ALCHEMY_GUIDE.pagesStates.put("Catalysts",              debug ? READ : NOT_FOUND);
 		ALCHEMY_GUIDE.pagesStates.put("Brews_Elixirs",          debug ? READ : NOT_FOUND);
 		ALCHEMY_GUIDE.pagesStates.put("Spells",                 debug ? READ : NOT_FOUND);
 
@@ -274,8 +299,7 @@ public enum Document {
 		SEWERS_GUARD.pagesStates.put("new_position",            debug ? READ : NOT_FOUND);
 		SEWERS_GUARD.pagesStates.put("dangerous",               debug ? READ : NOT_FOUND);
 		SEWERS_GUARD.pagesStates.put("crabs",                   debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("guild",                   debug ? READ : NOT_FOUND);
-		SEWERS_GUARD.pagesStates.put("lost",                    debug ? READ : NOT_FOUND);
+		SEWERS_GUARD.pagesStates.put("nothing",                 debug ? READ : NOT_FOUND);
 		SEWERS_GUARD.pagesStates.put("not_worth",               debug ? READ : NOT_FOUND);
 
 		PRISON_WARDEN.pagesStates.put("journal",                debug ? READ : NOT_FOUND);
@@ -292,8 +316,8 @@ public enum Document {
 		CAVES_EXPLORER.pagesStates.put("alive",                 debug ? READ : NOT_FOUND);
 		CAVES_EXPLORER.pagesStates.put("report",                debug ? READ : NOT_FOUND);
 
+		CITY_WARLOCK.pagesStates.put("treason",					debug ? READ : NOT_FOUND);
 		CITY_WARLOCK.pagesStates.put("old_king",                debug ? READ : NOT_FOUND);
-		CITY_WARLOCK.pagesStates.put("resistance",              debug ? READ : NOT_FOUND);
 		CITY_WARLOCK.pagesStates.put("failure",                 debug ? READ : NOT_FOUND);
 		CITY_WARLOCK.pagesStates.put("more_powerful",           debug ? READ : NOT_FOUND);
 		CITY_WARLOCK.pagesStates.put("new_power",               debug ? READ : NOT_FOUND);
@@ -304,7 +328,7 @@ public enum Document {
 		HALLS_KING.pagesStates.put("ritual",                    debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("new_king",                  debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("attrition",                 debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put(KING_ATTRITION,              debug ? NOT_FOUND : NOT_FOUND);
 
 		TERMINUS.pagesStates.put("no_food",                     debug ? READ : NOT_FOUND);
 		TERMINUS.pagesStates.put("no_armor",                    debug ? READ : NOT_FOUND);

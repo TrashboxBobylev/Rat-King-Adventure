@@ -21,8 +21,10 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -71,6 +73,12 @@ public class LifeLink extends FlavourBuff {
 	@Override
 	public void tintIcon(Image icon) {
 		icon.hardlight(1, 0, 1);
+	}
+
+	@Override
+	public float iconFadePercent() {
+		int duration = 4 + 2*Dungeon.hero.pointsInTalent(Talent.LIFE_LINK);
+		return Math.max(0, (duration - visualcooldown()) / duration);
 	}
 
 }

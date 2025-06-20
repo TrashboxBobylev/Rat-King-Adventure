@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.buffs.Haste;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.Vulnerable;
+import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
@@ -62,6 +63,10 @@ public class Feint extends ArmorAbility {
 	@Override
 	public int icon() {
 		return HeroIcon.FEINT;
+	}
+
+	public boolean useTargeting(){
+		return false;
 	}
 
 	@Override
@@ -212,6 +217,7 @@ public class Feint extends ArmorAbility {
 				}
 				if (Dungeon.hero.hasTalent(Talent.EXPOSE_WEAKNESS)) {
 					Buff.prolong(enemy, Vulnerable.class, 2f * Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS) + Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION));
+					Buff.prolong(enemy, Weakness.class, 2f * Dungeon.hero.pointsInTalent(Talent.EXPOSE_WEAKNESS));
 				}
 				if (Dungeon.hero.hasTalent(Talent.COUNTER_ABILITY)) {
 					Buff.prolong(Dungeon.hero, Talent.CounterAbilityTacker.class, 3f + Dungeon.hero.pointsInTalent(Talent.WARPED_AGGRESSION));

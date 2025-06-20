@@ -29,5 +29,9 @@ public class WndChanges extends WndTitledMessage {
 	public WndChanges( Image icon, String title, String message ) {
 		super( icon, title, message);
 	}
-	
+
+	@Override
+	protected void onClick(float x, float y) {
+		onBackPressed();
+	}
 }

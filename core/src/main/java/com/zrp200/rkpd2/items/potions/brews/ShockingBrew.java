@@ -54,20 +54,14 @@ public class ShockingBrew extends Brew {
 			}
 		}
 	}
-	
-	@Override
-	public int value() {
-		//prices of ingredients
-		return quantity * (40 + 40);
-	}
-	
+
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
 		
 		{
-			inputs =  new Class[]{PotionOfParalyticGas.class, AlchemicalCatalyst.class};
-			inQuantity = new int[]{1, 1};
+			inputs =  new Class[]{PotionOfParalyticGas.class};
+			inQuantity = new int[]{1};
 			
-			cost = 6;
+			cost = 10;
 			
 			output = ShockingBrew.class;
 			outQuantity = 1;

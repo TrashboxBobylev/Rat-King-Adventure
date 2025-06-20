@@ -36,18 +36,18 @@ public class BattleAxe extends Mace {
 
 		tier = 4;
 		ACC = 1.24f; //24% boost to accuracy
+
+		//20 base, down from 25
+		//scaling unchanged
+
+		//+(5+1.5*lvl) damage, roughly +40% base dmg, +50% scaling
 	}
 
-	@Override
-	public int max(int lvl) {
-		return  4*(tier+1) +    //20 base, down from 25
-				lvl*(tier+1);   //scaling unchanged
-	}
+    @Override
+    public int warriorAttack(int damage, Char enemy) {
+        Buff.affect(enemy, Bleeding.class).set(Buff.affect(enemy, Bleeding.class).level()+damage/4f);
+        return damage*4/3;
+    }
 
-	@Override
-	public int warriorAttack(int damage, Char enemy) {
-		Buff.affect(enemy, Bleeding.class).set(Buff.affect(enemy, Bleeding.class).level()+damage/4f);
-		return damage*4/3;
-	}
 
 }

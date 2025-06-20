@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.mobs.Bee;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.effects.Splash;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
@@ -68,6 +69,7 @@ public class Honeypot extends Item {
 			hero.sprite.zap( hero.pos );
 			
 			detach( hero.belongings.backpack );
+			Catalog.countUse(getClass());
 
 			Item item = shatter( hero, hero.pos );
 			if (!item.collect()){
@@ -87,6 +89,7 @@ public class Honeypot extends Item {
 		if (Dungeon.level.pit[cell]) {
 			super.onThrow( cell );
 		} else {
+			Catalog.countUse(getClass());
 			Dungeon.level.drop(shatter( null, cell ), cell);
 		}
 	}

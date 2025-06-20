@@ -122,7 +122,8 @@ public class Whip extends MeleeWeapon {
 			public void call() {
 				beforeAbilityUsed(hero, finalClosest);
 				for (Char ch : targets) {
-					hero.attack(ch, 1, 0, ch == finalClosest ? Char.INFINITE_ACCURACY : 1);
+					//ability does no extra damage
+					hero.attack(ch, 1, 0, Char.INFINITE_ACCURACY);
 					if (!ch.isAlive()){
 						onAbilityKill(hero, ch);
 					}
@@ -134,4 +135,16 @@ public class Whip extends MeleeWeapon {
 		});
 	}
 
+	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()), augment.damageFactor(max()));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0), max(0));
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		return augment.damageFactor(min(level)) + "-" + augment.damageFactor(max(level));
+	}
 }

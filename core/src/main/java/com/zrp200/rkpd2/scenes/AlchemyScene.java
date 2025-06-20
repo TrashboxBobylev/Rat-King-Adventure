@@ -21,30 +21,45 @@
 
 package com.zrp200.rkpd2.scenes;
 
+import com.watabou.input.ControllerHandler;
+import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Chrome;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.SPDAction;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
+import com.zrp200.rkpd2.items.EnergyCrystal;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.Recipe;
+import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
+import com.zrp200.rkpd2.items.bags.Bag;
+import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.journal.Journal;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.ui.Button;
 import com.zrp200.rkpd2.ui.ExitButton;
 import com.zrp200.rkpd2.ui.IconButton;
 import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.ItemSlot;
+import com.zrp200.rkpd2.ui.RadialMenu;
 import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
+import com.zrp200.rkpd2.ui.StatusPane;
+import com.zrp200.rkpd2.ui.StyledButton;
+import com.zrp200.rkpd2.ui.Toolbar;
 import com.zrp200.rkpd2.ui.Window;
+import com.zrp200.rkpd2.windows.IconTitle;
 import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndEnergizeItem;
 import com.zrp200.rkpd2.windows.WndInfoItem;
@@ -61,6 +76,8 @@ import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
+import com.zrp200.rkpd2.windows.WndKeyBindings;
+import com.zrp200.rkpd2.windows.WndMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +88,12 @@ public class AlchemyScene extends PixelScene {
 	private static final InputButton[] inputs = new InputButton[3];
 	private static final CombineButton[] combines = new CombineButton[3];
 	private static final OutputSlot[] outputs = new OutputSlot[3];
-	
+
+	private IconButton cancel;
+	private IconButton repeat;
+	private static ArrayList<Item> lastIngredients = new ArrayList<>();
+	private static Recipe lastRecipe = null;
+
 	private Emitter smokeEmitter;
 	private Emitter bubbleEmitter;
 	private Emitter sparkEmitter;
@@ -82,6 +104,11 @@ public class AlchemyScene extends PixelScene {
 	private Image energyIcon;
 	private RenderedTextBlock energyLeft;
 	private IconButton energyAdd;
+	private boolean energyAddBlinking = false;
+
+	private static boolean splitAlchGuide = false;
+	private WndJournal.AlchemyTab alchGuide = null;
+	private static int centerW;
 
 	private static final int BTN_SIZE	= 28;
 
@@ -120,27 +147,60 @@ public class AlchemyScene extends PixelScene {
 		im.scale.y = Camera.main.width;
 		add(im);
 
+		ExitButton btnExit = new ExitButton(){
+			@Override
+			protected void onClick() {
+				Game.switchScene(GameScene.class);
+			}
+		};
+		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		add( btnExit );
+
 		bubbleEmitter = new Emitter();
-		bubbleEmitter.pos(0, 0, Camera.main.width, Camera.main.height);
-		bubbleEmitter.autoKill = false;
 		add(bubbleEmitter);
 
 		lowerBubbles = new Emitter();
 		add(lowerBubbles);
 
-		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
-		title.hardlight(Window.TITLE_COLOR);
+		IconTitle title = new IconTitle(Icons.ALCHEMY.get(), Messages.get(this, "title") );
+		title.setSize(200, 0);
 		title.setPos(
-				(Camera.main.width - title.width()) / 2f,
+				(Camera.main.width - title.reqWidth()) / 2f,
 				(20 - title.height()) / 2f
 		);
 		align(title);
 		add(title);
 		
-		int w = 50 + Camera.main.width/2;
+		int w = Math.min(50 + Camera.main.width/2, 150);
 		int left = (Camera.main.width - w)/2;
-		
-		int pos = (Camera.main.height - 100)/2;
+
+		centerW = left + w/2;
+
+		int pos = (Camera.main.height - 120)/2;
+
+		if (splitAlchGuide &&
+				Camera.main.width >= 300 &&
+				Camera.main.height >= PixelScene.MIN_HEIGHT_FULL){
+			w = Math.min(150, Camera.main.width/2);
+			left = (Camera.main.width/2 - w);
+			centerW = left + w/2;
+
+			NinePatch guideBG = Chrome.get(Chrome.Type.TOAST);
+			guideBG.size(126 + guideBG.marginHor(), Math.min(Camera.main.height - 18, 191 + guideBG.marginVer()));
+			guideBG.y = Math.max(17, (Camera.main.height - guideBG.height())/2f);
+			guideBG.x = Camera.main.width - left - guideBG.width();
+			add(guideBG);
+
+			alchGuide = new WndJournal.AlchemyTab();
+			add(alchGuide);
+			alchGuide.setRect(guideBG.x + guideBG.marginLeft(),
+					guideBG.y + guideBG.marginTop(),
+					guideBG.width() - guideBG.marginHor(),
+					guideBG.height() - guideBG.marginVer());
+
+		} else {
+			splitAlchGuide = false;
+		}
 		
 		RenderedTextBlock desc = PixelScene.renderTextBlock(6);
 		desc.maxWidth(w);
@@ -160,12 +220,158 @@ public class AlchemyScene extends PixelScene {
 
 		synchronized (inputs) {
 			for (int i = 0; i < inputs.length; i++) {
-				inputs[i] = new InputButton();
+				if (inputs[i] == null) {
+					inputs[i] = new InputButton();
+				} else {
+					//in case the scene was reset without calling destroy() for some reason
+					Item item = inputs[i].item();
+					inputs[i] = new InputButton();
+					if (item != null){
+						inputs[i].item(item);
+					}
+				}
 				inputs[i].setRect(left + 10, pos, BTN_SIZE, BTN_SIZE);
 				add(inputs[i]);
 				pos += BTN_SIZE + 2;
 			}
 		}
+
+		Button invSelector = new Button(){
+			@Override
+			protected void onClick() {
+						if (Dungeon.hero != null) {
+							ArrayList<Bag> bags = Dungeon.hero.belongings.getBags();
+
+							String[] names = new String[bags.size()];
+							Image[] images = new Image[bags.size()];
+							for (int i = 0; i < bags.size(); i++){
+								names[i] = Messages.titleCase(bags.get(i).name());
+								images[i] = new ItemSprite(bags.get(i));
+							}
+							String info = "";
+							if (ControllerHandler.controllerActive){
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "container_cancel");
+							} else {
+								info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
+								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "container_cancel");
+							}
+
+							Game.scene().addToFront(new RadialMenu(Messages.get(Toolbar.class, "container_prompt"), info, names, images){
+								@Override
+								public void onSelect(int idx, boolean alt) {
+									super.onSelect(idx, alt);
+									Bag bag = bags.get(idx);
+									ArrayList<Item> items = (ArrayList<Item>) bag.items.clone();
+
+									for(Item i : bag.items){
+										if (Dungeon.hero.belongings.lostInventory() && !i.keptThroughLostInventory()) items.remove(i);
+										if (!Recipe.usableInRecipe(i)) items.remove(i);
+									}
+
+									if (items.size() == 0){
+										ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(AlchemyScene.class, "no_items")));
+										return;
+									}
+
+									String[] itemNames = new String[items.size()];
+									Image[] itemIcons = new Image[items.size()];
+									for (int i = 0; i < items.size(); i++){
+										itemNames[i] = Messages.titleCase(items.get(i).name());
+										itemIcons[i] = new ItemSprite(items.get(i));
+									}
+
+									String info = "";
+									if (ControllerHandler.controllerActive){
+										info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
+										info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "item_cancel");
+									} else {
+										info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
+										info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "item_cancel");
+									}
+
+									Game.scene().addToFront(new RadialMenu(Messages.get(Toolbar.class, "item_prompt"), info, itemNames, itemIcons){
+										@Override
+										public void onSelect(int idx, boolean alt) {
+											super.onSelect(idx, alt);
+											Item item = items.get(idx);
+											synchronized (inputs) {
+												if (item != null && inputs[0] != null) {
+													for (int i = 0; i < inputs.length; i++) {
+														if (inputs[i].item() == null) {
+															if (item instanceof LiquidMetal){
+																inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
+															} else {
+																inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
+															}
+															break;
+														}
+													}
+													updateState();
+												}
+											}
+
+										}
+									});
+								}
+							});
+						}
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.INVENTORY_SELECTOR;
+			}
+		};
+		add(invSelector);
+
+		cancel = new IconButton(Icons.CLOSE.get()){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				clearSlots();
+				updateState();
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.BACK;
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.get(AlchemyScene.class, "cancel");
+			}
+		};
+		cancel.setRect(left + 8, pos + 2, 16, 16);
+		cancel.enable(false);
+		add(cancel);
+
+		repeat = new IconButton(Icons.REPEAT.get()){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				if (lastRecipe != null){
+					populate(lastIngredients, Dungeon.hero.belongings);
+				}
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.TAG_RESUME;
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.get(AlchemyScene.class, "repeat");
+			}
+		};
+		repeat.setRect(left + 24, pos + 2, 16, 16);
+		repeat.enable(false);
+		add(repeat);
+
+		lastIngredients.clear();
+		lastRecipe = null;
 
 		for (int i = 0; i < inputs.length; i++){
 			combines[i] = new CombineButton(i);
@@ -194,49 +400,22 @@ public class AlchemyScene extends PixelScene {
 		
 		pos += 10;
 
-		lowerBubbles.pos(0, pos, Camera.main.width, Math.max(0, Camera.main.height-pos));
-		lowerBubbles.pour(Speck.factory( Speck.BUBBLE ), 0.1f );
-		
-		ExitButton btnExit = new ExitButton(){
-			@Override
-			protected void onClick() {
-				Game.switchScene(GameScene.class);
-			}
-		};
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
-		
-		IconButton btnGuide = new IconButton( new ItemSprite(ItemSpriteSheet.ALCH_PAGE, null)){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				clearSlots();
-				updateState();
-				AlchemyScene.this.addToFront(new Window(){
-				
-					{
-						WndJournal.AlchemyTab t = new WndJournal.AlchemyTab();
-						int w, h;
-						if (landscape()) {
-							w = WndJournal.WIDTH_L; h = WndJournal.HEIGHT_L;
-						} else {
-							w = WndJournal.WIDTH_P; h = WndJournal.HEIGHT_P;
-						}
-						resize(w, h);
-						add(t);
-						t.setRect(0, 0, w, h);
-					}
-				
-				});
-			}
+		if (Camera.main.height >= 280){
+			//last elements get centered even with a split alch guide UI, as long as there's enough height
+			centerW = Camera.main.width/2;
+		}
 
-			@Override
-			protected String hoverText() {
-				return Messages.titleCase(Document.ALCHEMY_GUIDE.title());
-			}
-		};
-		btnGuide.setRect(0, 0, 20, 20);
-		add(btnGuide);
+		bubbleEmitter.pos(0,
+				0,
+				2*centerW,
+				Camera.main.height);
+		bubbleEmitter.autoKill = false;
+
+		lowerBubbles.pos(0,
+				pos,
+				2*centerW,
+				Math.max(0, Camera.main.height-pos));
+		lowerBubbles.pour(Speck.factory( Speck.BUBBLE ), 0.1f );
 
 		String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
 		if (toolkit != null){
@@ -245,7 +424,7 @@ public class AlchemyScene extends PixelScene {
 
 		energyLeft = PixelScene.renderTextBlock(energyText, 9);
 		energyLeft.setPos(
-				(Camera.main.width - energyLeft.width())/2,
+				centerW - energyLeft.width()/2,
 				Camera.main.height - 8 - energyLeft.height()
 		);
 		energyLeft.hardlight(0x44CCFF);
@@ -259,23 +438,97 @@ public class AlchemyScene extends PixelScene {
 
 		if (!Dungeon.isChallenged(Challenges.NO_ALCHEMY)) {
 			energyAdd = new IconButton(Icons.get(Icons.PLUS)) {
-				@Override
+	private float time = 0;
+
+			@Override
+			public void update() {
+				super.update();
+				if (energyAddBlinking){
+					icon.brightness( 0.5f + (float)Math.abs(Math.cos( StatusPane.FLASH_RATE * (time += Game.elapsed) )));
+				} else {
+					if (time > 0){
+						icon.resetColor();
+					}
+					time = 0;
+				}
+			}			@Override
 				protected void onClick() {
-					WndEnergizeItem.openItemSelector();
+					WndEnergizeItem.openItemSelector();}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.TAG_ACTION;
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.get(AlchemyScene.class, "energize");
 				}
 			};
 			energyAdd.setRect(energyLeft.right(), energyLeft.top() - (16 - energyLeft.height()) / 2, 16, 16);
 			align(energyAdd);
 			add(energyAdd);
 
-			sparkEmitter = new Emitter();
-			sparkEmitter.pos(energyLeft.left(), energyLeft.top(), energyLeft.width(), energyLeft.height());
-			sparkEmitter.autoKill = false;
-			add(sparkEmitter);
+		sparkEmitter = new Emitter();
+		sparkEmitter.pos(energyLeft.left(), energyLeft.top(), energyLeft.width(), energyLeft.height());
+		sparkEmitter.autoKill = false;
+		add(sparkEmitter);
+
+		StyledButton btnGuide = new StyledButton( Chrome.Type.TOAST_TR, Messages.get(AlchemyScene.class, "guide")){
+			@Override
+			protected void onClick() {
+				super.onClick();
+				if (Camera.main.width >= 300 && Camera.main.height >= PixelScene.MIN_HEIGHT_FULL){
+					splitAlchGuide = !splitAlchGuide;
+					ShatteredPixelDungeon.seamlessResetScene();
+				} else {
+					clearSlots();
+					updateState();
+					AlchemyScene.this.addToFront(new Window() {
+
+						{
+							WndJournal.AlchemyTab t = new WndJournal.AlchemyTab();
+							int w, h;
+							if (landscape()) {
+								w = WndJournal.WIDTH_L;
+								h = WndJournal.HEIGHT_L+8;
+							} else {
+								w = WndJournal.WIDTH_P;
+								h = WndJournal.HEIGHT_P+10;
+							}
+							resize(w, h);
+							add(t);
+							t.setRect(0, 0, w, h);
+						}
+
+					});
+				}
+			}
+
+			@Override
+			public GameAction keyAction() {
+				return SPDAction.JOURNAL;
+			}
+
+			@Override
+			protected String hoverText() {
+				return Messages.titleCase(Document.ALCHEMY_GUIDE.title());
+			}
+		};
+		btnGuide.icon(new ItemSprite(ItemSpriteSheet.ALCH_PAGE));
+		btnGuide.setSize(btnGuide.reqWidth()+4, 18);
+		btnGuide.setPos(centerW - btnGuide.width()/2f, energyAdd.top()- btnGuide.height()-2);
+		align(btnGuide);
+		add(btnGuide);
+
+		TrinketCatalyst cata = Dungeon.hero.belongings.getItem(TrinketCatalyst.class);
+		if (cata != null && cata.hasRolledTrinkets()){
+			addToFront(new TrinketCatalyst.WndTrinket(cata));
 		}
-		
+
 		fadeIn();
-		
+
+		saveNeeded = false;
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
@@ -284,6 +537,7 @@ public class AlchemyScene extends PixelScene {
 			ShatteredPixelDungeon.reportException(e);
 		}
 	}
+    }
 	
 	@Override
 	public void update() {
@@ -340,7 +594,9 @@ public class AlchemyScene extends PixelScene {
 	}
 	
 	private void updateState(){
-		
+
+		repeat.enable(false);
+
 		ArrayList<Item> ingredients = filterInput(Item.class);
 		ArrayList<Recipe> recipes = Recipe.findRecipes(ingredients);
 
@@ -355,9 +611,12 @@ public class AlchemyScene extends PixelScene {
 			}
 		}
 
+		cancel.enable(!ingredients.isEmpty());
+
 		if (recipes.isEmpty()){
 			combines[0].setPos(combines[0].left(), inputs[1].top()+5);
 			outputs[0].setPos(outputs[0].left(), inputs[1].top());
+			energyAddBlinking = false;
 			return;
 		}
 
@@ -369,6 +628,7 @@ public class AlchemyScene extends PixelScene {
 		float top = inputs[0].top() + height/2;
 
 		//positions and enables active buttons
+		boolean promptToAddEnergy = false;
 		for (int i = 0; i < recipes.size(); i++){
 
 			Recipe recipe = recipes.get(i);
@@ -389,6 +649,16 @@ public class AlchemyScene extends PixelScene {
 			combines[i].setRect(combines[0].left(), outputs[i].top()+5, 30, 20);
 			combines[i].enable(cost <= availableEnergy, cost);
 
+			if (cost > availableEnergy && recipe instanceof TrinketCatalyst.Recipe){
+				promptToAddEnergy = true;
+			}
+
+		}
+
+		energyAddBlinking = promptToAddEnergy;
+
+		if (alchGuide != null){
+			alchGuide.updateList();
 		}
 
 	}
@@ -397,6 +667,11 @@ public class AlchemyScene extends PixelScene {
 		
 		ArrayList<Item> ingredients = filterInput(Item.class);
 		if (ingredients.isEmpty()) return;
+
+		lastIngredients.clear();
+		for (Item i : ingredients){
+			lastIngredients.add(i.duplicate());
+		}
 
 		ArrayList<Recipe> recipes = Recipe.findRecipes(ingredients);
 		if (recipes.size() <= slot) return;
@@ -410,6 +685,7 @@ public class AlchemyScene extends PixelScene {
 			if (toolkit != null){
 				cost = toolkit.consumeEnergy(cost);
 			}
+			Catalog.countUses(EnergyCrystal.class, cost);
 			Dungeon.energy -= cost;
 
 			String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
@@ -418,7 +694,7 @@ public class AlchemyScene extends PixelScene {
 			}
 			energyLeft.text(energyText);
 			energyLeft.setPos(
-					(Camera.main.width - energyLeft.width())/2,
+					centerW - energyLeft.width()/2,
 					Camera.main.height - 8 - energyLeft.height()
 			);
 
@@ -434,43 +710,77 @@ public class AlchemyScene extends PixelScene {
 		}
 		
 		if (result != null){
-			bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
-			smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
-			Sample.INSTANCE.play( Assets.Sounds.PUFF );
 
-			int resultQuantity = result.quantity();
-			if (!result.collect()){
-				Dungeon.level.drop(result, Dungeon.hero.pos);
+			craftItem(ingredients, result);
+
+		}
+
+		boolean foundItems = true;
+		for (Item i : lastIngredients){
+			Item found = Dungeon.hero.belongings.getSimilar(i);
+			if (found == null){ //atm no quantity check as items are always loaded individually
+				//currently found can be true if we need, say, 3x of an item but only have 2x of it
+				foundItems = false;
 			}
+		}
 
-			Statistics.itemsCrafted++;
-			Badges.validateItemsCrafted();
+		lastRecipe = recipe;
+		repeat.enable(foundItems);
 
-			try {
-				Dungeon.saveAll();
-			} catch (IOException e) {
-				ShatteredPixelDungeon.reportException(e);
+		cancel.enable(false);
+		synchronized (inputs) {
+			for (int i = 0; i < inputs.length; i++) {
+				if (inputs[i] != null && inputs[i].item() != null) {
+					cancel.enable(true);
+					break;
+				}
 			}
-			
-			synchronized (inputs) {
-				for (int i = 0; i < inputs.length; i++) {
-					if (inputs[i] != null && inputs[i].item() != null) {
-						Item item = inputs[i].item();
-						if (item.quantity() <= 0) {
-							inputs[i].item(null);
-						} else {
-							inputs[i].slot.updateText();
-						}
+		}
+
+		if (alchGuide != null){
+			alchGuide.updateList();
+		}
+	}
+
+	public void craftItem( ArrayList<Item> ingredients, Item result ){
+		bubbleEmitter.start(Speck.factory( Speck.BUBBLE ), 0.01f, 100 );
+		smokeEmitter.burst(Speck.factory( Speck.WOOL ), 10 );
+		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
+		int resultQuantity = result.quantity();
+		if (!result.collect()){
+			Dungeon.level.drop(result, Dungeon.hero.pos);
+		}
+
+		Statistics.itemsCrafted++;
+		Badges.validateItemsCrafted();
+
+		saveNeeded = false;
+		try {
+			Dungeon.saveAll();
+			Badges.saveGlobal();
+			Journal.saveGlobal();
+		} catch (IOException e) {
+			ShatteredPixelDungeon.reportException(e);
+		}
+
+		synchronized (inputs) {
+			for (int i = 0; i < inputs.length; i++) {
+				if (inputs[i] != null && inputs[i].item() != null) {
+					Item item = inputs[i].item();
+					if (item.quantity() <= 0) {
+						inputs[i].item(null);
+					} else {
+						inputs[i].slot.updateText();
 					}
 				}
 			}
-			
-			updateState();
-			//we reset the quantity in case the result was merged into another stack in the backpack
-			result.quantity(resultQuantity);
-			outputs[0].item(result);
 		}
-		
+
+		updateState();
+		//we reset the quantity in case the result was merged into another stack in the backpack
+		result.quantity(resultQuantity);
+		outputs[0].item(result);
 	}
 	
 	public void populate(ArrayList<Item> toFind, Belongings inventory){
@@ -497,7 +807,24 @@ public class AlchemyScene extends PixelScene {
 		}
 		updateState();
 	}
-	
+
+	private boolean saveNeeded = false;
+
+	@Override
+	public void onPause() {
+		if (saveNeeded) {
+			saveNeeded = false;
+			clearSlots();
+			try {
+				Dungeon.saveAll();
+				Badges.saveGlobal();
+				Journal.saveGlobal();
+			} catch (IOException e) {
+				ShatteredPixelDungeon.reportException(e);
+			}
+		}
+	}
+
 	@Override
 	public void destroy() {
 		synchronized ( inputs ) {
@@ -506,7 +833,8 @@ public class AlchemyScene extends PixelScene {
 				inputs[i] = null;
 			}
 		}
-		
+
+		saveNeeded = false;
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
@@ -529,6 +857,11 @@ public class AlchemyScene extends PixelScene {
 				}
 			}
 		}
+		cancel.enable(false);
+		repeat.enable(lastRecipe != null);
+		if (alchGuide != null){
+			alchGuide.updateList();
+		}
 	}
 
 	public void createEnergy(){
@@ -538,7 +871,7 @@ public class AlchemyScene extends PixelScene {
 		}
 		energyLeft.text(energyText);
 		energyLeft.setPos(
-				(Camera.main.width - energyLeft.width())/2,
+				centerW - energyLeft.width()/2,
 				Camera.main.height - 8 - energyLeft.height()
 		);
 
@@ -552,7 +885,78 @@ public class AlchemyScene extends PixelScene {
 		sparkEmitter.burst(SparkParticle.FACTORY, 20);
 		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 
+		//queue a save here, as items may be in the input windows and we don't want to clear them
+		// but if the game becomes paused we do this to prevent exploits
+		saveNeeded = true;
 		updateState();
+	}
+public void showIdentify(Item item){
+		if (item.isIdentified()) return;
+
+		NinePatch BG = Chrome.get(Chrome.Type.TOAST);
+
+		IconTitle oldName = new IconTitle(item){
+			@Override
+			public synchronized void update() {
+				super.update();
+				alpha(this.alpha()-Game.elapsed);
+				if (this.alpha() <= 0){
+					killAndErase();
+				}
+			}
+		};
+		item.identify();
+		IconTitle newName = new IconTitle(item){
+
+			boolean fading;
+
+			@Override
+			public synchronized void update() {
+				super.update();
+				if (!fading) {
+					alpha(this.alpha() + Game.elapsed);
+					if (this.alpha() >= 1) {
+						fading = true;
+					}
+				} else {
+					alpha(this.alpha() - Game.elapsed);
+					BG.alpha(this.alpha());
+					if (this.alpha() <= 0){
+						killAndErase();
+						BG.killAndErase();
+					}
+				}
+			}
+		};
+		newName.alpha(-0.5f);
+
+		oldName.setSize(200, oldName.height());
+		newName.setSize(200, newName.height());
+
+		int w = (int)Math.ceil(Math.max(oldName.reqWidth(), newName.reqWidth())+5);
+
+		oldName.setSize(w, oldName.height());
+		oldName.setPos(
+				centerW - oldName.width()/2,
+				energyAdd.top()
+		);
+		align(oldName);
+
+		newName.setSize(w, oldName.height());
+		newName.setPos(
+				centerW - newName.width()/2,
+				energyAdd.top()
+		);
+		align(newName);
+
+		BG.x = oldName.left()-2;
+		BG.y = oldName.top()-2;
+		BG.size(oldName.width()+4, oldName.height()+4);
+
+		add(BG);
+		add(oldName);
+		add(newName);
+
 	}
 
 	private class InputButton extends Component {
@@ -601,6 +1005,34 @@ public class AlchemyScene extends PixelScene {
 						return true;
 					}
 					return false;
+				}
+
+				@Override
+				//only the first empty button accepts key input
+				public GameAction keyAction() {
+					for (InputButton i : inputs){
+						if (i.item == null || i.item instanceof WndBag.Placeholder) {
+							if (i == InputButton.this) {
+								return SPDAction.INVENTORY;
+							} else {
+								return super.keyAction();
+							}
+						}
+					}
+					return super.keyAction();
+				}
+
+				@Override
+				protected String hoverText() {
+					if (item == null || item instanceof WndBag.Placeholder){
+						return Messages.get(AlchemyScene.class, "add");
+					}
+					return super.hoverText();
+				}
+
+				@Override
+				public GameAction secondaryTooltipAction() {
+					return SPDAction.INVENTORY_SELECTOR;
 				}
 			};
 			slot.enable(true);
@@ -655,6 +1087,19 @@ public class AlchemyScene extends PixelScene {
 					super.onClick();
 					combine(slot);
 				}
+
+				@Override
+				protected String hoverText() {
+					return Messages.get(AlchemyScene.class, "craft");
+				}
+
+				@Override
+				public GameAction keyAction() {
+					if (slot == 0 && !combines[1].active && !combines[2].active){
+						return SPDAction.TAG_LOOT;
+					}
+					return super.keyAction();
+				}
 			};
 			button.icon(Icons.get(Icons.ARROW));
 			add(button);
@@ -699,6 +1144,7 @@ public class AlchemyScene extends PixelScene {
 			}
 
 			layout();
+			active = enabled;
 		}
 
 	}

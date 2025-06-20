@@ -23,7 +23,6 @@ package com.zrp200.rkpd2.ui;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
-import com.zrp200.rkpd2.actors.buffs.LostInventory;
 import com.zrp200.rkpd2.items.EquipableItem;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Item;
@@ -102,7 +101,7 @@ public class InventorySlot extends ItemSlot {
 
 			if (item.name() == null) {
 				enable( false );
-			} else if (Dungeon.hero.buff(LostInventory.class) != null
+			} else if (Dungeon.hero.belongings.lostInventory()
 					&& !item.keptThroughLostInventory()){
 				enable(false);
 			}

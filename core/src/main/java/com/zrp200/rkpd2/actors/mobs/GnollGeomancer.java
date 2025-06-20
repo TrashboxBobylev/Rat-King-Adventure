@@ -136,6 +136,16 @@ public class GnollGeomancer extends Mob {
 	}
 
 	@Override
+	public boolean add(Buff buff) {
+		//immune to buffs and debuff (except its own buffs) while sleeping
+		if (state == SLEEPING && !(buff instanceof RockArmor || buff instanceof DelayedRockFall)){
+			return false;
+		} else {
+			return super.add(buff);
+		}
+	}
+
+	@Override
 	public int damageRoll() {
 		return Random.NormalIntRange( 3, 6 );
 	}
@@ -191,6 +201,11 @@ public class GnollGeomancer extends Mob {
 			Dungeon.hero.sprite.attack(pos, new Callback() {
 				@Override
 				public void call() {
+					if (buff(RockArmor.class) == null) {
+						// fixme this is caused by a weird synchronization error I haven't figured out yet
+						return;
+					}
+
 					//does its own special damage calculation that's only influenced by pickaxe level and augment
 					//we pretend the geomancer is the owner here so that properties like hero str or or other equipment do not factor in
 					int dmg = p.damageRoll(GnollGeomancer.this);
@@ -811,7 +826,9 @@ public class GnollGeomancer extends Mob {
 
 		@Override
 		public void affectCell(int cell) {
-			if (Dungeon.level.map[cell] != Terrain.EMPTY_SP && Random.Int(3) == 0) {
+			if (Dungeon.level.map[cell] != Terrain.EMPTY_SP
+					&& !Dungeon.level.adjacent(cell, Dungeon.level.entrance())
+					&& Random.Int(3) == 0) {
 				Level.set(cell, Terrain.MINE_BOULDER);
 				GameScene.updateMap(cell);
 			}

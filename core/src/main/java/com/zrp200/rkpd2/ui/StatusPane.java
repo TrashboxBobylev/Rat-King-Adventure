@@ -76,12 +76,12 @@ public class StatusPane extends Component {
 	private BusyIndicator busy;
 	private CircleArc counter;
 
-	private static String asset = Assets.Interfaces.STATUS;
-
 	private boolean large;
 
 	public StatusPane( boolean large ){
 		super();
+
+		String asset = Assets.Interfaces.STATUS;
 
 		this.large = large;
 
@@ -108,7 +108,7 @@ public class StatusPane extends Component {
 		};
 		add(heroInfo);
 
-		avatar = HeroSprite.avatar( Dungeon.hero.heroClass, lastTier );
+		avatar = HeroSprite.avatar( Dungeon.hero );
 		add( avatar );
 
 		talentBlink = 0;
@@ -235,6 +235,10 @@ public class StatusPane extends Component {
 	
 	private static final int[] warningColors = new int[]{0x660000, 0xCC0000, 0x660000};
 
+	private int oldHP = 0;
+	private int oldShield = 0;
+	private int oldMax = 0;
+
 	@Override
 	public void update() {
 		super.update();
@@ -245,7 +249,7 @@ public class StatusPane extends Component {
 
 		if (!Dungeon.hero.isAlive()) {
 			avatar.tint(0x000000, 0.5f);
-		} else if ((health/(float)max) < 0.3f) {
+		} else if ((health/(float)max) <= 0.3f) {
 			warning += Game.elapsed * 5f *(0.4f - (health/(float)max));
 			warning %= 1f;
 			avatar.tint(ColorMath.interpolate(warning, warningColors), 0.5f );
@@ -265,10 +269,15 @@ public class StatusPane extends Component {
 			rawShielding.scale.x = 0;
 		}
 
-		if (shield <= 0){
-			hpText.text(health + "/" + max);
-		} else {
-			hpText.text(health + "+" + shield +  "/" + max);
+		if (oldHP != health || oldShield != shield || oldMax != max){
+			if (shield <= 0) {
+				hpText.text(health + "/" + max);
+			} else {
+				hpText.text(health + "+" + shield + "/" + max);
+			}
+			oldHP = health;
+			oldShield = shield;
+			oldMax = max;
 		}
 
 		if (large) {
@@ -310,10 +319,14 @@ public class StatusPane extends Component {
 		int tier = Dungeon.hero.tier();
 		if (tier != lastTier) {
 			lastTier = tier;
-			avatar.copy( HeroSprite.avatar( Dungeon.hero.heroClass, tier ) );
+			avatar.copy( HeroSprite.avatar( Dungeon.hero ) );
 		}
 
 		counter.setSweep((1f - Actor.now()%1f)%1f);
+	}
+
+	public void updateAvatar(){
+		avatar.copy( HeroSprite.avatar( Dungeon.hero ) );
 	}
 
 	public void alpha( float value ){

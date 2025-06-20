@@ -29,7 +29,6 @@ import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
-import com.zrp200.rkpd2.levels.rooms.standard.EntranceRoom;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
 import com.watabou.noosa.Tilemap;
 import com.watabou.utils.Point;
@@ -61,8 +60,8 @@ public class DemonSpawnerRoom extends SpecialRoom {
 	@Override
 	public boolean connect(Room room) {
 		//cannot connect to entrance, otherwise works normally
-		if (room instanceof EntranceRoom) return false;
-		else                              return super.connect(room);
+		if (room.isExit())  return false;
+		else                return super.connect(room);
 	}
 
 	@Override

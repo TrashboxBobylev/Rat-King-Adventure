@@ -79,6 +79,9 @@ public enum HeroSubClass {
     MONK(HeroIcon.MONK),
 	HIGHNESS(HeroIcon.HIGHNESS),
 
+	PRIEST(HeroIcon.PRIEST),
+	PALADIN(HeroIcon.PALADIN),
+
 	KING(HeroIcon.KING),
 	RK_CHAMPION(HeroIcon.CHAMP);
 
@@ -106,7 +109,7 @@ public enum HeroSubClass {
 	}
 	public boolean is(HeroSubClass sub, Hero hero) {
 		return hero.isSubclassedLoosely(sub);
-//		return this == sub || this == KING && sub != CHAMPION && sub != MONK;
+//		return this == sub || this == KING && sub.ordinal() < CHAMPION.ordinal();
 	}
 
 	public boolean isExact(HeroSubClass sub) {

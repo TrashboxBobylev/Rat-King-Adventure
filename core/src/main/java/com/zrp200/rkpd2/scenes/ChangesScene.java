@@ -38,8 +38,18 @@ import com.zrp200.rkpd2.ui.changelist.ChangeInfo;
 import com.zrp200.rkpd2.ui.changelist.RKPD2Changes;
 import com.zrp200.rkpd2.ui.changelist.WndChanges;
 import com.zrp200.rkpd2.ui.changelist.WndChangesTabbed;
+import com.zrp200.rkpd2.ui.changelist.v0_1_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_2_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_3_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_4_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_5_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_6_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_7_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_8_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v0_9_X_Changes;
 import com.zrp200.rkpd2.ui.changelist.v1_X_Changes;
 import com.zrp200.rkpd2.ui.changelist.v2_X_Changes;
+import com.zrp200.rkpd2.ui.changelist.v3_X_Changes;
 import com.zrp200.rkpd2.windows.IconTitle;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
@@ -58,7 +68,6 @@ public class ChangesScene extends PixelScene {
 	private ScrollPane rightScroll;
 	private IconTitle changeTitle;
 	private RenderedTextBlock changeBody;
-final static int TOTAL_BUTTONS = 4;
 	@Override
 	public void create() {
 		super.create();
@@ -71,10 +80,10 @@ final static int TOTAL_BUTTONS = 4;
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 
-		RenderedTextBlock title = PixelScene.renderTextBlock( Messages.get(this, "title"), 9 );
-		title.hardlight(Window.TITLE_COLOR);
+		IconTitle title = new IconTitle(Icons.CHANGES.get(), Messages.get(this, "title"));
+		title.setSize(200, 0);
 		title.setPos(
-				(w - title.width()) / 2f,
+				(w - title.reqWidth()) / 2f,
 				(20 - title.height()) / 2f
 		);
 		align(title);
@@ -89,48 +98,46 @@ final static int TOTAL_BUTTONS = 4;
 		int pw = 135 + panel.marginLeft() + panel.marginRight() - 2;
 		int ph = h - 36;
 
-		if (h >= PixelScene.MIN_HEIGHT_FULL && w >= PixelScene.MIN_WIDTH_FULL) {
+		if (h >= PixelScene.MIN_HEIGHT_FULL && w >= 300) {
 			panel.size( pw, ph );
 			panel.x = (w - pw) / 2f - pw/2 - 1;
-			panel.y = title.bottom() + 5;
+			panel.y = 20;
 
 			rightPanel = Chrome.get(Chrome.Type.TOAST);
 			rightPanel.size( pw, ph );
 			rightPanel.x = (w - pw) / 2f + pw/2 + 1;
-			rightPanel.y = title.bottom() + 5;
+			rightPanel.y = 20;
 			add(rightPanel);
-// todo why doesn't this work?!
-//			rightScroll = new ScrollPane(new Component());
-//			add(rightScroll);
-//			rightScroll.setRect(
-//					rightPanel.x + rightPanel.marginLeft(),
-//					rightPanel.y + rightPanel.marginTop()-1,
-//					rightPanel.innerWidth() + 2,
-//					rightPanel.innerHeight() + 2);
-//			rightScroll.scrollTo(0, 0);
+
+			rightScroll = new ScrollPane(new Component());
+			add(rightScroll);
+			rightScroll.setRect(
+					rightPanel.x + rightPanel.marginLeft(),
+					rightPanel.y + rightPanel.marginTop()-1,
+					rightPanel.innerWidth() + 2,
+					rightPanel.innerHeight() + 2);
+			rightScroll.scrollTo(0, 0);
 
 			changeTitle = new IconTitle(Icons.get(Icons.CHANGES), Messages.get(this, "right_title"));
-			changeTitle.setPos(/*0*/rightPanel.x + rightPanel.marginLeft(), /*1*/rightPanel.y + rightPanel.marginTop());
+			changeTitle.setPos(0, 1);
 			changeTitle.setSize(pw, 20);
-//			rightScroll.content().add(changeTitle);
-
-			add(changeTitle);
+			rightScroll.content().add(changeTitle);
 
 			String body = Messages.get(this, "right_body");
 
 			changeBody = PixelScene.renderTextBlock(body, 6);
 			changeBody.maxWidth(pw - panel.marginHor());
-			changeBody.setPos(/*0*/rightPanel.x + rightPanel.marginLeft(), changeTitle.bottom()+2);
-			/*rightScroll.content().*/add(changeBody);
+			changeBody.setPos(0, changeTitle.bottom()+2);
+			rightScroll.content().add(changeBody);
 
 		} else {
 			panel.size( pw, ph );
 			panel.x = (w - pw) / 2f;
-			panel.y = title.bottom() + 5;
+			panel.y = 20;
 		}
 		align( panel );
 		add( panel );
-		
+
 		final ArrayList<ChangeInfo> changeInfos = new ArrayList<>();
 
 		if (Messages.lang() != Languages.ENGLISH){
@@ -139,17 +146,18 @@ final static int TOTAL_BUTTONS = 4;
 			changeInfos.add(langWarn);
 		}
 
-		switch (changesSelected){
-			case 0: case 1: default:
-				RKPD2Changes.values()[changesSelected].addAllChanges(changeInfos);
-				break;
-			case 2:
-				v2_X_Changes.addAllChanges(changeInfos);
-				break;
-			case 3:
-				v1_X_Changes.addAllChanges(changeInfos);
-				break;
+		if (changesSelected < RKPD2Changes.values().length) {
+			RKPD2Changes.values()[changesSelected].addAllChanges(changeInfos);
 		}
+//		switch (changesSelected){
+//			case 2:
+//                v3_X_Changes.addAllChanges(changeInfos);
+//				v2_X_Changes.addAllChanges(changeInfos);
+//				break;
+//			case 3:
+//				v1_X_Changes.addAllChanges(changeInfos);
+//				break;
+//		}
 
 		ScrollPane list = new ScrollPane( new Component() ){
 
@@ -203,7 +211,8 @@ final static int TOTAL_BUTTONS = 4;
 				panel.innerHeight() + 2);
 		list.scrollTo(0, 0);
 
-		String[] labels = {"1-2.X", "0.X"/*, "SHPD 2.X", "SHPD 1.X"*/};
+		String[] labels = new String[RKPD2Changes.values().length];
+		for (int i = 0; i < labels.length; i++) labels[i] = RKPD2Changes.values()[i].toString();
 		float bx = list.left()-4f;
 		for (int n=0; n < labels.length; n++) {
 			final int N = n;
@@ -229,8 +238,8 @@ final static int TOTAL_BUTTONS = 4;
 		fadeIn();
 	}
 
-	private void updateChangesText(Image icon, String title, String... messages) {
-		if (changeTitle != null) {
+	private void updateChangesText(Image icon, String title, String... messages){
+		if (changeTitle != null){
 			changeTitle.icon(icon);
 			changeTitle.label(title);
 			changeTitle.setPos(changeTitle.left(), changeTitle.top());
@@ -242,16 +251,9 @@ final static int TOTAL_BUTTONS = 4;
 					message += "\n\n";
 				}
 			}
-			int pw = 135 + rightPanel.marginHor() - 2;
-			changeBody.text(message, pw - rightPanel.marginHor());
-			if(rightScroll == null) add(rightScroll = new ScrollPane(changeBody));
-			//rightScroll.content().setSize(rightScroll.width(), changeBody.bottom() + 2);
-			//rightScroll.setSize(rightScroll.width(), rightScroll.height());
-			rightScroll.setRect(
-					rightPanel.x + rightPanel.marginLeft(),
-					changeTitle.bottom() + 2,
-					rightPanel.innerWidth() + 2,
-					rightPanel.innerHeight() - changeTitle.height() - 1);
+			changeBody.text(message);
+			rightScroll.content().setSize(rightScroll.width(), changeBody.bottom()+2);
+			rightScroll.setSize(rightScroll.width(), rightScroll.height());
 			rightScroll.scrollTo(0, 0);
 
 		} else {

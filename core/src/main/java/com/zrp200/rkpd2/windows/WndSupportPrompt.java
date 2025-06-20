@@ -21,9 +21,10 @@
 
 package com.zrp200.rkpd2.windows;
 
+import com.watabou.noosa.Image;
+import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
-import com.zrp200.rkpd2.messages.Languages;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.scenes.SupporterScene;
@@ -41,16 +42,12 @@ public class WndSupportPrompt extends Window {
 
 		int width = PixelScene.landscape() ? WIDTH_L : WIDTH_P;
 
-		IconTitle title = new IconTitle(Icons.get(Icons.SHPX), Messages.get(WndSupportPrompt.class, "title"));
+		IconTitle title = new IconTitle(new Image(Assets.Interfaces.ZRP200), Messages.get(WndSupportPrompt.class, "title"));
 		title.setRect( 0, 0, width, 0 );
 		add(title);
 
 		String message = Messages.get(WndSupportPrompt.class, "intro");
-		message += "\n\n" + Messages.get(SupporterScene.class, "patreon_msg");
-		if (Messages.lang() != Languages.ENGLISH) {
-			message += "\n" + Messages.get(SupporterScene.class, "patreon_english");
-		}
-		message += "\n- Evan";
+		message += "\n\n" + Messages.get(SupporterScene.class, "support_msg");
 
 		RenderedTextBlock text = PixelScene.renderTextBlock( 6 );
 		text.text( message, width );
@@ -61,9 +58,9 @@ public class WndSupportPrompt extends Window {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				String link = "https://www.patreon.com/ShatteredPixel";
+				String link = "https://www.buymeacoffee.com/zrp200";
 				//tracking codes, so that the website knows where this pageview came from
-				link += "?utm_source=shatteredpd";
+				link += "?utm_source=rkpd2";
 				link += "&utm_medium=supporter_prompt";
 				link += "&utm_campaign=ingame_link";
 				ShatteredPixelDungeon.platform.openURI(link);

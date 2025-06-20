@@ -104,12 +104,6 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public ItemSprite(Image other) { copy(other); }
-	@Override
-	public void copy(Image other) {
-		super.copy(other);
-		if(other instanceof ItemSprite) glow(((ItemSprite) other).glowing);
-		// TODO is it needed to copy the emitter?
-	}
 
 	public void originToCenter() {
 		origin.set(width / 2, height / 2);
@@ -140,6 +134,16 @@ public class ItemSprite extends MovieClip {
 			emitter.killAndErase();
 			emitter = null;
 		}
+	}
+
+	@Override
+	public void copy(Image other) {
+		super.copy(other);
+
+		if (other instanceof ItemSprite && ((ItemSprite) other).glowing != null){
+			glow(((ItemSprite) other).glowing);
+		}
+
 	}
 
 	public void visible(boolean value){

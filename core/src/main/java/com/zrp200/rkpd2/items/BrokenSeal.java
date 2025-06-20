@@ -128,6 +128,21 @@ public class BrokenSeal extends Item {
 	}
 
 	@Override
+	public String name() {
+		return glyph != null ? glyph.name( super.name() ) : super.name();
+	}
+
+	@Override
+	public String info() {
+		String info = super.info();
+		if (glyph != null){
+			info += "\n\n" + Messages.get(this, "inscribed", glyph.name());
+			info += " " + glyph.desc();
+		}
+		return info;
+	}
+
+	@Override
 	//scroll of upgrade can be used directly once, same as upgrading armor the seal is affixed to then removing it.
 	public boolean isUpgradable() {
 		return level() == 0;
@@ -194,9 +209,9 @@ public class BrokenSeal extends Item {
 
 	@Override
 	public String desc() {
-		HeroClass heroClass = hero.heroClass;
+		HeroClass heroClass = hero == null ? HeroClass.WARRIOR : hero.heroClass;
 		return Messages.get(this, "desc",
-				heroClass.is(HeroClass.WARRIOR) ? " from the glorious king of rats" : "",
+				hero != null && heroClass.is(HeroClass.WARRIOR) ? " from the glorious king of rats" : "",
 				heroClass.title());
 	}
 
@@ -215,6 +230,10 @@ public class BrokenSeal extends Item {
 	}
 
 	public static class WarriorShield extends ShieldBuff {
+
+		{
+			detachesAtZero = false;
+		}
 
 		private Armor armor;
 		private float partialShield;
@@ -272,21 +291,6 @@ public class BrokenSeal extends Item {
 			} else {
 				return maxShieldFromTalents(false);
 			}
-		}
-		
-		@Override
-		//logic edited slightly as buff should not detach
-		public int absorbDamage(int dmg) {
-			if (shielding() <= 0) return dmg;
-
-			if (shielding() >= dmg){
-				decShield(dmg);
-				dmg = 0;
-			} else {
-				dmg -= shielding();
-				decShield(shielding());
-			}
-			return dmg;
 		}
 	}
 }

@@ -58,8 +58,7 @@ public class WarlockSprite extends MobSprite {
 
 		super.zap( cell );
 
-		MagicMissile.boltFromChar( parent,
-				MagicMissile.SHADOW,
+		zap(
 				this,
 				cell,
 				new Callback() {
@@ -67,7 +66,11 @@ public class WarlockSprite extends MobSprite {
 					public void call() {
 						((Warlock)ch).onZapComplete();
 					}
-				} );
+				}
+		);
+	}
+	public static void zap(CharSprite sprite, int cell, Callback onZapComplete) {
+		MagicMissile.boltFromChar( sprite.parent, MagicMissile.SHADOW, sprite, cell, onZapComplete);
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
 	

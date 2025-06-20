@@ -23,10 +23,14 @@ package com.zrp200.rkpd2.items.spells;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.quest.MetalShard;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfMagicMapping;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
+import com.zrp200.rkpd2.journal.Bestiary;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
@@ -43,14 +47,20 @@ public class ReclaimTrap extends TargetedSpell {
 	
 	{
 		image = ItemSpriteSheet.RECLAIM_TRAP;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
-	
+
+	//This class has a variety of code for compat with pre-v3.0.0 saves
+	//Stored traps used to be a property of the item itself, but in 3.0.0 this was changed to be
+	//a buff attached to the hero, which is much more resistant to exploits
+
 	public Class<?extends Trap> storedTrap = null;
 	
 	@Override
 	public ArrayList<String> actions(Hero hero) {
 		ArrayList<String> actions = super.actions(hero);
-		//prevents exploits
+		//prevents exploits, pre-v3.0.0
 		if (storedTrap != null){
 			actions.remove(AC_DROP);
 			actions.remove(AC_THROW);
@@ -60,6 +70,17 @@ public class ReclaimTrap extends TargetedSpell {
 
 	@Override
 	protected void affectTarget(Ballistica bolt, Hero hero) {
+		Class<?extends Trap> storedTrap = null;
+		//pre-v3.0.0
+		if (this.storedTrap != null){
+			storedTrap = this.storedTrap;
+			this.storedTrap = null;
+		} else {
+			if (hero.buff(ReclaimedTrap.class) != null){
+				storedTrap = hero.buff(ReclaimedTrap.class).trap;
+				hero.buff(ReclaimedTrap.class).detach();
+			}
+		}
 		if (storedTrap == null) {
 			quantity++; //storing a trap doesn't consume the spell
 			Trap t = Dungeon.level.traps.get(bolt.collisionPos);
@@ -68,7 +89,8 @@ public class ReclaimTrap extends TargetedSpell {
 				
 				Sample.INSTANCE.play(Assets.Sounds.LIGHTNING);
 				ScrollOfRecharging.charge(hero);
-				storedTrap = t.getClass();
+				Buff.affect(hero, ReclaimedTrap.class).trap = t.getClass();
+				Bestiary.setSeen(t.getClass());
 				
 			} else {
 				GLog.w(Messages.get(this, "no_trap"));
@@ -76,9 +98,10 @@ public class ReclaimTrap extends TargetedSpell {
 		} else {
 			
 			Trap t = Reflection.newInstance(storedTrap);
-			storedTrap = null;
 			
 			t.pos = bolt.collisionPos;
+			t.reclaimed = true;
+			Bestiary.countEncounter(t.getClass());
 			t.activate();
 			
 		}
@@ -89,6 +112,8 @@ public class ReclaimTrap extends TargetedSpell {
 		String desc = super.desc();
 		if (storedTrap != null){
 			desc += "\n\n" + Messages.get(this, "desc_trap", Messages.get(storedTrap, "name"));
+		} else if (Dungeon.hero != null && Dungeon.hero.belongings.contains(this) && Dungeon.hero.buff(ReclaimedTrap.class) != null){
+			desc += "\n\n" + Messages.get(this, "desc_trap", Messages.get(Dungeon.hero.buff(ReclaimedTrap.class).trap, "name"));
 		}
 		return desc;
 	}
@@ -109,14 +134,20 @@ public class ReclaimTrap extends TargetedSpell {
 	public ItemSprite.Glowing glowing() {
 		if (storedTrap != null){
 			return COLORS[Reflection.newInstance(storedTrap).color];
+		} else if (Dungeon.hero != null && Dungeon.hero.belongings.contains(this) && Dungeon.hero.buff(ReclaimedTrap.class) != null){
+			return COLORS[Reflection.newInstance(Dungeon.hero.buff(ReclaimedTrap.class).trap).color];
 		}
 		return null;
 	}
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity, rounds down
-		return (int)((40 + 50) * (quantity/4f));
+		return (int)(60 * (quantity/(float)Recipe.OUT_QUANTITY));
+	}
+
+	@Override
+	public int energyVal() {
+		return (int)(12 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 	
 	private static final String STORED_TRAP = "stored_trap";
@@ -134,17 +165,47 @@ public class ReclaimTrap extends TargetedSpell {
 	}
 	
 	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
-		
+
+		private static final int OUT_QUANTITY = 5;
+
 		{
 			inputs =  new Class[]{ScrollOfMagicMapping.class, MetalShard.class};
 			inQuantity = new int[]{1, 1};
 			
-			cost = 6;
+			cost = 8;
 			
 			output = ReclaimTrap.class;
-			outQuantity = 4;
+			outQuantity = OUT_QUANTITY;
 		}
-		
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			Catalog.countUse(MetalShard.class);
+			return super.brew(ingredients);
+		}
+	}
+
+	public static class ReclaimedTrap extends Buff {
+
+		{
+			revivePersists = true;
+		}
+
+		private Class<?extends Trap> trap;
+
+		private static final String TRAP = "trap";
+
+		@Override
+		public void storeInBundle(Bundle bundle) {
+			super.storeInBundle(bundle);
+			bundle.put(TRAP, trap);
+		}
+
+		@Override
+		public void restoreFromBundle(Bundle bundle) {
+			super.restoreFromBundle(bundle);
+			trap = bundle.getClass(TRAP);
+		}
 	}
 	
 }

@@ -85,7 +85,7 @@ public class Viscosity extends Glyph {
 
 			if (amount > 0){
 				DeferedDamage deferred = Buff.affect( target, DeferedDamage.class );
-				deferred.prolong( amount );
+				deferred.extend( amount );
 
 				target.sprite.showStatus( CharSprite.WARNING, Messages.get(Viscosity.class, "deferred", amount) );
 			}
@@ -123,17 +123,11 @@ public class Viscosity extends Glyph {
 			damage = bundle.getInt( DAMAGE );
 		}
 		
-		@Override
-		public boolean attachTo( Char target ) {
-			if (super.attachTo( target )) {
-				postpone( TICK );
-				return true;
-			} else {
-				return false;
+		public void extend( float damage ) {
+			if (this.damage == 0){
+				//wait 1 turn before damaging if this is freshly applied
+				postpone(TICK);
 			}
-		}
-		
-		public void prolong( int damage ) {
 			this.damage += damage;
 		}
 		

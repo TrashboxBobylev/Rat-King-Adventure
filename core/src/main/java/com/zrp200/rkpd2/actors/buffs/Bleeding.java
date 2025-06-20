@@ -33,6 +33,7 @@ import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
+import com.watabou.utils.Random;
 
 import static com.watabou.utils.Random.NormalFloat;
 
@@ -79,6 +80,10 @@ public class Bleeding extends Buff implements DamageOverTimeEffect {
 			this.source = source;
 		}
 	}
+
+	public void extend( float amount ) {
+		level += amount;
+	}
 	
 	@Override
 	public int icon() {
@@ -94,7 +99,7 @@ public class Bleeding extends Buff implements DamageOverTimeEffect {
 	public boolean act() {
 		if (target.isAlive()) {
 			
-			level = NormalFloat(level / 2f, level);
+			level = Random.NormalFloat(level / 2f, level);
 			int dmg = Math.round(level);
 			
 			if (dmg > 0) {

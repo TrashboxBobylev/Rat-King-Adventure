@@ -34,6 +34,7 @@ import com.zrp200.rkpd2.actors.buffs.Cripple;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.MagicMissile;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.mechanics.Ballistica;
@@ -47,6 +48,7 @@ import com.zrp200.rkpd2.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -198,8 +200,11 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 
 										curUser.spendAndNext(1f);
 
-										if (!anonymous){
-											Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+										if (!anonymous) {
+											Catalog.countUse(PotionOfDragonsBreath.class);
+											if (Random.Float() < talentChance) {
+												Talent.onPotionUsed(curUser, curUser.pos, talentFactor);
+											}
 										}
 									}
 								});

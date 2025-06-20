@@ -48,15 +48,28 @@ public class Bag extends Item implements Iterable<Item> {
 	}
 	
 	public Char owner;
-	
+
 	public ArrayList<Item> items = new ArrayList<>();
 
 	public int capacity(){
 		return 20; // default container size
 	}
-	
+
+	//if an item is being quick-used from the bag, the bag should take on its targeting properties
+	public Item quickUseItem;
+
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		if (quickUseItem != null){
+			return quickUseItem.targetingPos(user, dst);
+		} else {
+			return super.targetingPos(user, dst);
+		}
+	}
+
 	@Override
 	public void execute( Hero hero, String action ) {
+		quickUseItem = null;
 
 		super.execute( hero, action );
 
@@ -156,9 +169,12 @@ public class Bag extends Item implements Iterable<Item> {
 
 		loading = true;
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
-			if (item != null) {
-				((Item)item).collected = true;
-				((Item)item).collect( this );
+			if (item != null){
+                ((Item)item).collected = true;
+                if (!((Item)item).collect( this )){
+					//force-add the item if necessary, such as if its item category changed after an update
+					items.add((Item) item);
+				}
 			}
 		}
 		loading = false;

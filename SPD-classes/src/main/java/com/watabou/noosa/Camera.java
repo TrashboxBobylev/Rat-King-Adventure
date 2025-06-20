@@ -138,8 +138,8 @@ public class Camera extends Gizmo {
 	
 	public void zoom( float value ) {
 		zoom( value,
-			scroll.x + width / 2,
-			scroll.y + height / 2 );
+			scroll.x + width / 2f,
+			scroll.y + height / 2f );
 	}
 	
 	public void zoom( float value, float fx, float fy ) {
@@ -162,7 +162,7 @@ public class Camera extends Gizmo {
 	}
 	
 	Visual followTarget = null;
-	PointF panTarget;
+	PointF panTarget = new PointF();
 	//camera moves at a speed such that it will pan to its current target in 1/intensity seconds
 	//keep in mind though that this speed is constantly decreasing, so actual pan time is higher
 	float panIntensity = 0f;
@@ -178,36 +178,39 @@ public class Camera extends Gizmo {
 		float deadX = 0;
 		float deadY = 0;
 		if (followTarget != null){
-			panTarget = followTarget.center().offset(centerOffset);
+			//manually assign here to avoid an allocation from sprite.center()
+			panTarget.x = followTarget.x + followTarget.width()/2;
+			panTarget.y = followTarget.y + followTarget.height()/2;
+			panTarget.offset(centerOffset);
 			deadX = width * followDeadzone /2f;
 			deadY = height * followDeadzone /2f;
 		}
 		
 		if (panIntensity > 0f){
 
-			PointF panMove = new PointF();
-			panMove.x = panTarget.x - (scroll.x + width/2f);
-			panMove.y = panTarget.y - (scroll.y + height/2f);
+			float panX = panTarget.x - (scroll.x + width/2f);
+			float panY = panTarget.y - (scroll.y + height/2f);
 
-			if (panMove.x > deadX){
-				panMove.x -= deadX;
-			} else if (panMove.x < -deadX){
-				panMove.x += deadX;
+			if (panX > deadX){
+				panX -= deadX;
+			} else if (panX < -deadX){
+				panX += deadX;
 			} else {
-				panMove.x = 0;
+				panX = 0;
 			}
 
-			if (panMove.y > deadY){
-				panMove.y -= deadY;
-			} else if (panMove.y < -deadY){
-				panMove.y += deadY;
+			if (panY > deadY){
+				panY -= deadY;
+			} else if (panY < -deadY){
+				panY += deadY;
 			} else {
-				panMove.y = 0;
+				panY = 0;
 			}
 
-			panMove.scale(Math.min(1f, Game.elapsed * panIntensity));
+			panX *= Math.min(1f, Game.elapsed * panIntensity);
+			panY *= Math.min(1f, Game.elapsed * panIntensity);
 
-			scroll.offset(panMove);
+			scroll.offset(panX, panY);
 		}
 		
 		if ((shakeTime -= Game.elapsed) > 0) {
@@ -246,7 +249,7 @@ public class Camera extends Gizmo {
 	}
 	
 	public void snapTo(float x, float y ) {
-		scroll.set( x - width / 2, y - height / 2 ).offset(centerOffset);
+		scroll.set( x - width / 2f, y - height / 2f ).offset(centerOffset);
 		panIntensity = 0f;
 		followTarget = null;
 	}

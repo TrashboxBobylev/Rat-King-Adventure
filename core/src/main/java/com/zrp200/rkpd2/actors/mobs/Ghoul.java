@@ -25,9 +25,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.SacrificialFire;
-import com.zrp200.rkpd2.actors.buffs.AllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Buff;
-import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.hero.abilities.duelist.Challenge;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Pushing;
@@ -136,8 +134,11 @@ public class Ghoul extends Mob {
 					Actor.add( new Pushing( child, pos, child.pos ) );
 				}
 
-				for (Buff b : buffs(ChampionEnemy.class)){
-					Buff.affect( child, b.getClass());
+				//champion buff, mainly
+				for (Buff b : buffs()){
+					if (b.revivePersists) {
+						Buff.affect(child, b.getClass());
+					}
 				}
 
 			}
@@ -188,9 +189,7 @@ public class Ghoul extends Mob {
 				if (buff instanceof SacrificialFire.Marked){
 					//don't remove and postpone so marked stays on
 					Buff.prolong(this, SacrificialFire.Marked.class, timesDowned*5);
-				} else if (buff instanceof AllyBuff
-						|| buff instanceof ChampionEnemy
-						|| buff instanceof DwarfKing.KingDamager) {
+				} else if (buff.revivePersists) {
 					//don't remove
 				} else {
 					buff.detach();

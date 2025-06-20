@@ -74,7 +74,11 @@ public class v1_X_Changes {
 				"_-_ Released October 4th, 2022\n" +
 				"_-_ 90 days after Shattered v1.3.0\n" +
 				"\n" +
-				"Dev commentary will be added here in the future."));
+				"I called v1.4.0 'the big patch' while it was in development, as the goal of the update was to try and clear through a backlog of smaller fixes and improvements that was starting to get very long.\n" +
+				"\n" +
+				"I've kept getting so many reports that future updates have been pretty fix-heavy too though. Some of Shattered's players are very, very dedicated to pushing the game to its limits, and so it sometimes feels like every fix I make just prompts these people to go find problems elsewhere.\n" +
+				"\n" +
+				"There was new content in v1.4.0 as well, most notably the addition of in-game lore! I've had lots of loose ideas for a proper backstory to Shattered for a long time, and v1.4.0 was the first update that started to put some of that into the actual game! Future lore has had to wait until after the addition of new heroes though."));
 
 		changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.GUIDE_PAGE), "Lore Additions",
 				"_30 pages of lore text have been added to the game, scattered around the regions of the dungeon!_\n\n" +
@@ -294,7 +298,11 @@ public class v1_X_Changes {
 		changes.addButton( new ChangeButton(Icons.get(Icons.SHPX), "Developer Commentary",
 				"_-_ Released July 6th, 2022\n" +
 				"_-_ 105 days after Shattered v1.2.0\n\n" +
-				"Dev commentary will be added here in the next major update."));
+				"v1.3.0 was largely a followup update to v1.2, with an emphasis on adding features that better fleshed out the game for all the new players on desktop platforms.\n" +
+				"\n" +
+				"The headline feature for this update was the addition of custom seeds, daily runs, and a new scoring system for them to make use of. Prior to this update the scoring system was totally based on depth reached and treasure collected, rather than actual performance during the run. A better score system gave players a better way to measure their performance, against themselves or other players.\n" +
+				"\n" +
+				"v1.3.0 also introduced a new much harder ascension challenge. Prior to this ascending was mostly a chore with no real increase to difficulty. With more challenge and a score bonus for doing it, players finally had a reason to try to ascend instead of ending the game on floor 26."));
 
 		Image ic;
 		ic = Icons.get(Icons.SEED);
@@ -473,10 +481,10 @@ public class v1_X_Changes {
 				"_-_ Released March 23rd, 2022\n" +
 				"_-_ 103 days after Shattered v1.1.0\n\n" +
 				"v1.2.0 focused on a number of improvements to try and make Shattered play just as well for desktop users as it does for phone users. While these changes weren't perfect right at launch, they played a major role in making Shattered feel like more than a mobile port and helped it have a successful launch on Steam.\n" +
-						"\n" +
-						"One big change for desktop users that's external to the game itself was native executables. Previously Shattered's desktop version required a separate installation of Java to run. After v1.2.0, I started making versions of Shattered with built-in Java instead. This meant that most users could just download the game and run it, much nicer.\n" +
-						"\n" +
-						"v1.2.0 also included a variety of little additions and tweaks. Most of them are self-explanatory, but the badge additions in particular were timed with the game's release on Steam so they could tie into steamworks achievements and give newer players a little more to do."));
+				"\n" +
+				"One big change for desktop users that's external to the game itself was native executables. Previously Shattered's desktop version required a separate installation of Java to run. After v1.2.0, I started making versions of Shattered with built-in Java instead. This meant that most users could just download the game and run it, much nicer.\n" +
+				"\n" +
+				"v1.2.0 also included a variety of little additions and tweaks. Most of them are self-explanatory, but the badge additions in particular were timed with the game's release on Steam so they could tie into steamworks achievements and give newer players a little more to do."));
 
 		changes.addButton( new ChangeButton(Icons.get(Icons.DISPLAY_LAND), "Desktop Enhancements and Steam Release!",
 				"_Shattered Pixel Dungeon has received a bunch of new features in preparation for its release on Steam!_\n\n" +
@@ -583,7 +591,7 @@ public class v1_X_Changes {
 				"_- Summon Elemental_ energy cost down to 6 from 8\n" +
 				"_- Alchemize_ energy cost down to 2 from 3"));
 
-		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.AQUA_BLAST), "Alchemy Buffs",
+		changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ENERGY), "Alchemy Buffs",
 				"Several recipes have also been buffed, in addition to the cost reductions:\n\n" +
 				"_- Scroll of Foresight_ duration up to 400 from 250\n" +
 				"_- Scroll of Dread_ now grants 1/2 exp for defeated enemies\n" +
@@ -837,7 +845,7 @@ public class v1_X_Changes {
 				"_-_ 316 days after Shattered v0.9.0\n" +
 				"_-_ A bit more than 7 years after v0.1.0!\n" +
 				"\n" +
-				"_That's right, the big v1.0.0!_ In this update Shattered switched to the industry standard _major.minor.patch_ version naming scheme. Prior to this update Shattered's updates were versioned with _0.major.minor[patch]_, where patch was a letter. Rather than jumping all the way from v0.9.3 to v10.0.0, I opted to reset Shattered back to v1.0.0 for this update.\n" +
+				"_That's right, the big v1.0.0!_ In this update Shattered switched to the industry standard _major.minor.patch_ version naming scheme. Prior to this Shattered's first version number was always 0, and patches were appended as letters. Rather than jumping all the way from v0.9.3 to v10.0.0, I opted to reset Shattered back to v1.0.0 for this update. This was done both for tidiness, and to signal another new era in Shattered's development.\n" +
 				"\n" +
 				"I actually originally intended for this update to be v0.9.4, but a requirement by Apple forced me to change the versioning scheme just before the full release. In retrospect, I'm extremely glad that this update became v1.0.0. While it wasn't the largest update content-wise, I can think of no better time for v1.0 than the update where Shattered first released as a paid product."));
 

@@ -36,6 +36,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.GameMath;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,6 +120,21 @@ public class BuffIndicator extends Component {
 	public static final int MONK_ENERGY = 68;
 	public static final int DUEL_COMBO  = 69;
 	public static final int DAZE        = 70;
+	public static final int DISGUISE    = 71;
+	public static final int WAND        = 72;
+	public static final int HOLY_WEAPON = 73;
+	public static final int HOLY_ARMOR  = 74;
+	public static final int SPELL_FOOD  = 75;
+	public static final int LIGHT_SHIELD= 76;
+	public static final int HOLY_SIGHT  = 77;
+	public static final int GLYPH_RECALL= 78;
+	public static final int ASCEND      = 79;
+	public static final int PROT_AURA   = 80;
+	public static final int ILLUMINATED = 81;
+	public static final int TRINITY_FORM= 82;
+	public static final int MANY_POWER  = 83;
+	public static final int LIMIT_BREAK = 84;
+	public static final int DIVINE_ADVENT=85;
 
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
@@ -267,6 +283,8 @@ public class BuffIndicator extends Component {
 		public Image grey; //only for small
 		public BitmapText text; //only for large
 
+		private Image outline;
+
 		public BuffButton( Buff buff, boolean large ){
 			super( new BuffIcon(buff, large));
 			this.buff = buff;
@@ -292,7 +310,7 @@ public class BuffIndicator extends Component {
 			if (!large || buff.iconTextDisplay().isEmpty()) {
 				text.visible = false;
 				grey.visible = true;
-				float fadeHeight = buff.iconFadePercent() * icon.height();
+				float fadeHeight = GameMath.gate(0, buff.iconFadePercent(), 1) * icon.height();
 				float zoom = (camera() != null) ? camera().zoom : 1;
 				if (fadeHeight < icon.height() / 2f) {
 					grey.scale.set(icon.width(), (float) Math.ceil(zoom * fadeHeight) / zoom);
@@ -309,6 +327,19 @@ public class BuffIndicator extends Component {
 				text.text(buff.iconTextDisplay());
 				text.measure();
 			}
+			if (buff instanceof ActionIndicator.Action && ((ActionIndicator.Action) buff).usable()) {
+				// fixme for large icons, this ends up with an extra pixel at each end.
+				//  do I need to upload a whole image for this?
+				//  if I do, can I use it for spells as well?
+				if (outline == null) {
+					outline = new Image(TextureCache.createSolid(0x54FFD400));
+				}
+				outline.scale.set(icon.width() + 1, icon.height() + 1);
+				outline.visible = true;
+				addToBack(outline);
+			} else if (outline != null) {
+				outline.visible = false;
+			}
 		}
 
 		@Override
@@ -316,6 +347,11 @@ public class BuffIndicator extends Component {
 			super.layout();
 			grey.x = icon.x = this.x + (large ? 0 : 1);
 			grey.y = icon.y = this.y + (large ? 0 : 2);
+
+			if (outline != null) {
+				outline.x = icon.x - 0.5f;
+				outline.y = icon.y - 0.5f;
+			}
 
 			if (text.width > width()){
 				text.scale.set(PixelScene.align(0.5f));
@@ -332,6 +368,20 @@ public class BuffIndicator extends Component {
 		}
 
 		@Override
+		protected boolean onLongClick() {
+			if (outline != null && outline.isVisible()
+					&& Dungeon.hero.ready
+					&& ActionIndicator.setAction((ActionIndicator.Action) buff)) {
+				((ActionIndicator.Action) buff).doAction();
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		protected void onRightClick() { onLongClick(); }
+
+		@Override
 		protected void onPointerDown() {
 			//don't affect buff color
 			Sample.INSTANCE.play( Assets.Sounds.CLICK );
@@ -344,7 +394,13 @@ public class BuffIndicator extends Component {
 
 		@Override
 		protected String hoverText() {
-			return Messages.titleCase(buff.name());
+			String hoverText = Messages.titleCase(buff.name());
+			if (outline != null && outline.isVisible()) {
+				hoverText += "\n\n"
+						+ " _(Right/Long Click)_: \n"
+						+ Messages.titleCase(((ActionIndicator.Action) buff).actionName());
+			}
+			return hoverText;
 		}
 	}
 	

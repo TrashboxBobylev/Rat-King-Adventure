@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.bags;
 
 import com.zrp200.rkpd2.items.ArcaneResin;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.Stylus;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.items.spells.BeaconOfReturning;
 import com.zrp200.rkpd2.items.spells.Spell;
@@ -36,7 +37,8 @@ public class ScrollHolder extends Bag {
 
 	@Override
 	public boolean canHold( Item item ) {
-		if (item instanceof Scroll || item instanceof Spell || item instanceof ArcaneResin){
+		if (item instanceof Scroll || item instanceof Spell
+				|| item instanceof ArcaneResin || item instanceof Stylus){
 			return super.canHold(item);
 		} else {
 			return false;

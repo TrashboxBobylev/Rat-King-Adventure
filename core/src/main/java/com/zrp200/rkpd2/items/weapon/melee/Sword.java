@@ -65,16 +65,44 @@ public class Sword extends MeleeWeapon implements Talent.SpellbladeForgeryWeapon
 	}
 
 	@Override
-	protected DuelistAbility duelistAbility() {
-		// cleave ability
-		// 1.33 at t1, 1.3 at t2, 1.27 at t3, 1.23 at t4, 1.2 at t5
-		float dmgMulti = 1 + .03f*(11 - tier);
-		if (tier > 3) dmgMulti -= .1f;
-		return new MeleeAbility(dmgMulti) {
+	protected MeleeAbility duelistAbility() {
+		//+(5+lvl) damage, roughly +45% base dmg, +40% scaling
+		int dmgBoost = augment.damageFactor(abilityStat(buffedLvl()));
+		return cleaveAbility(dmgBoost);
+	}
 
+	public int abilityStat(int level) {
+		//+(5+lvl) damage, roughly +45% base dmg, +40% scaling
+		return tier + 2 + level;
+	}
+
+	@Override
+	public String abilityInfo() {
+		int dmgBoost = abilityStat(levelKnown ? buffedLvl() : 0);
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)+dmgBoost, max(0)+dmgBoost);
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		return augment.damageFactor(min(level)+ abilityStat(level)) + "-" + augment.damageFactor(max(level)+ abilityStat(level));
+	}
+
+	public static MeleeAbility cleaveAbility(int boost){
+		return new MeleeAbility() {
+			{
+				this.dmgBoost = boost;
+			}
 			@Override
 			public void onKill(Hero hero) {
-				Buff.prolong(hero, CleaveTracker.class, 5f);
+				delayMulti = 0;
+				if (hero.buff(CleaveTracker.class) != null) {
+					hero.buff(CleaveTracker.class).detach();
+				} else {
+					Buff.prolong(hero, CleaveTracker.class, 4f); //1 less as attack was instant
+				}
 			} @Override
 			protected void proc(Hero hero, Char enemy) {
 				if (hero.buff(CleaveTracker.class) != null) {

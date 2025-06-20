@@ -26,11 +26,13 @@ import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.items.Ankh;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bags.Bag;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.InterlevelScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.ItemButton;
 import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.RenderedTextBlock;
@@ -96,27 +98,47 @@ public class WndResurrect extends Window {
 		btnContinue = new RedButton( Messages.get(this, "confirm") ) {
 			@Override
 			protected void onClick() {
-				hide();
-				
-				Statistics.ankhsUsed++;
-
-				ankh.detach(Dungeon.hero.belongings.backpack);
-
-				if (btnItem1.item() != null){
-					btnItem1.item().keptThoughLostInvent = true;
+				if (btnItem1.item() == null || btnItem2.item() == null){
+					GameScene.show(new WndOptions(Icons.WARNING.get(),
+							Messages.get(WndResurrect.class, "warn_title"),
+							Messages.get(WndResurrect.class, "warn_body"),
+							Messages.get(WndResurrect.class, "warn_yes"),
+							Messages.get(WndResurrect.class, "warn_no")){
+						@Override
+						protected void onSelect(int index) {
+							if (index == 0){
+								resurrect(ankh);
+							}
+						}
+					});
+				} else {
+					resurrect( ankh );
 				}
-				if (btnItem2.item() != null){
-					btnItem2.item().keptThoughLostInvent = true;
-				}
-
-				InterlevelScene.mode = InterlevelScene.Mode.RESURRECT;
-				Game.switchScene( InterlevelScene.class );
 			}
 		};
 		btnContinue.setRect( 0, btnItem1.bottom() + BTN_GAP, WIDTH, BTN_HEIGHT );
 		add( btnContinue );
 
 		resize( WIDTH, (int)btnContinue.bottom() );
+	}
+
+	private void resurrect( final Ankh ankh ){
+		hide();
+
+		Statistics.ankhsUsed++;
+		Catalog.countUse(Ankh.class);
+
+		ankh.detach(Dungeon.hero.belongings.backpack);
+
+		if (btnItem1.item() != null){
+			btnItem1.item().keptThoughLostInvent = true;
+		}
+		if (btnItem2.item() != null){
+			btnItem2.item().keptThoughLostInvent = true;
+		}
+
+		InterlevelScene.mode = InterlevelScene.Mode.RESURRECT;
+		Game.switchScene( InterlevelScene.class );
 	}
 
 	protected WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {

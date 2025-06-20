@@ -32,6 +32,7 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
+import com.zrp200.rkpd2.items.trinkets.WondrousResin;
 import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.mechanics.Ballistica;
@@ -158,18 +159,48 @@ public class WildMagic extends ArmorAbility {
 					@Override
 					public void call() {
 						cur.onZap(aim);
+						boolean alsoCursedZap = Random.Float() < WondrousResin.extraCurseEffectChance();
 						if (Game.timeTotal - startTime < 0.33f) {
 							hero.sprite.parent.add(new Delayer(0.33f - (Game.timeTotal - startTime)) {
 								@Override
 								protected void onComplete() {
-									afterZap(cur, wands, hero, cell);
+									if (alsoCursedZap){
+										WondrousResin.forcePositive = true;
+										CursedWand.cursedZap(cur,
+												hero,
+												new Ballistica(hero.pos, cell, Ballistica.MAGIC_BOLT),
+												new Callback() {
+													@Override
+													public void call() {
+														WondrousResin.forcePositive = false;
+														afterZap(cur, wands, hero, cell);
+													}
+												});
+									} else {
+										afterZap(cur, wands, hero, cell);
+									}
 								}
 							});
 						} else {
-							afterZap(cur, wands, hero, cell);
+							if (alsoCursedZap){
+								WondrousResin.forcePositive = true;
+								CursedWand.cursedZap(cur,
+										hero,
+										new Ballistica(hero.pos, cell, Ballistica.MAGIC_BOLT),
+										new Callback() {
+											@Override
+											public void call() {
+												WondrousResin.forcePositive = false;
+												afterZap(cur, wands, hero, cell);
+											}
+										});
+							} else {
+								afterZap(cur, wands, hero, cell);
+							}
 						}
 					}
 				});
+
 			} else {
 				CursedWand.cursedZap(cur,
 						hero,

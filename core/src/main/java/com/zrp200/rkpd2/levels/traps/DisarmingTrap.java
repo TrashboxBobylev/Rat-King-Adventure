@@ -34,7 +34,6 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
-import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
@@ -85,7 +84,7 @@ public class DisarmingTrap extends Trap{
 			if (weapon != null && !weapon.cursed) {
 
 				int cell;
-				int tries = 20;
+				int tries = 50;
 				do {
 					cell = Dungeon.level.randomRespawnCell( null );
 					if (tries-- < 0 && cell != -1) break;
@@ -93,14 +92,18 @@ public class DisarmingTrap extends Trap{
 					PathFinder.buildDistanceMap(pos, Dungeon.level.passable);
 				} while (cell == -1 || PathFinder.distance[cell] < 10 || PathFinder.distance[cell] > 20);
 
+				if (tries < 0){
+					return;
+				}
+
 				hero.belongings.weapon = null;
 				Dungeon.quickslot.clearItem(weapon);
-				ActionIndicator.refresh();
 				weapon.updateQuickslot();
 
 				Dungeon.level.drop(weapon, cell).seen = true;
-				for (int i : PathFinder.NEIGHBOURS9)
-					Dungeon.level.mapped[cell+i] = true;
+				for (int i : PathFinder.NEIGHBOURS9) {
+					Dungeon.level.mapped[cell + i] = true;
+				}
 				GameScene.updateFog(cell, 1);
 
 				GLog.w( Messages.get(this, "disarm") );

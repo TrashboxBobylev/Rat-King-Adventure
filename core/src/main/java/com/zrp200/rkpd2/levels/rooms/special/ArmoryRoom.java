@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.keys.IronKey;
+import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -67,6 +68,15 @@ public class ArmoryRoom extends SpecialRoom {
 				pos = level.pointToCell(random());
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos ).type = type;
+		}
+
+		Item cata = level.findPrizeItem(TrinketCatalyst.class);
+		if (cata != null){
+			int pos;
+			do {
+				pos = level.pointToCell(random());
+			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
+			level.drop( cata, pos );
 		}
 		
 		entrance.set( Door.Type.LOCKED );

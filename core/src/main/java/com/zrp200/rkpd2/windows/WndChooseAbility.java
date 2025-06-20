@@ -21,7 +21,11 @@
 
 package com.zrp200.rkpd2.windows;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.Dungeon.initialVersion;
+
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.items.KingsCrown;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.messages.Messages;
@@ -128,9 +132,15 @@ public class WndChooseAbility extends Window {
 	}
 
 	protected void selectAbility(ArmorAbility ability) {
+		String warn;
+		if (initialVersion < 821 && ability instanceof Trinity){
+			warn = "_WARNING, code to track which items you have found for use in trinity was added prior to 3.0.0. This run was started before that, and so some items you have encountered may not be usable with Trinity. Any items you currently hold can be made selectable by dropping and picking them back up._\n\n";
+		} else {
+			warn = "";
+		}
 		GameScene.show(new WndOptions( new HeroIcon( ability ),
 				Messages.titleCase(ability.name()),
-				Messages.get(WndChooseAbility.this, "are_you_sure"),
+				warn + Messages.get(WndChooseAbility.this, "are_you_sure"),
 				Messages.get(WndChooseAbility.this, "yes"),
 				Messages.get(WndChooseAbility.this, "no")){
 

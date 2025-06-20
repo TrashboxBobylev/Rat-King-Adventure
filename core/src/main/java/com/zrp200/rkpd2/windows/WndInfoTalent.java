@@ -21,6 +21,8 @@
 
 package com.zrp200.rkpd2.windows;
 
+import static com.zrp200.rkpd2.Dungeon.hero;
+
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.Icons;
@@ -28,7 +30,7 @@ import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.TalentIcon;
 import com.watabou.utils.Callback;
 
-import static com.zrp200.rkpd2.Dungeon.hero;
+import com.watabou.utils.Callback;
 
 public class WndInfoTalent extends WndTitledMessage {
 
@@ -39,8 +41,7 @@ public class WndInfoTalent extends WndTitledMessage {
 		    talent.desc((buttonCallback != null && buttonCallback.metamorphDesc()) ||
 					hero != null && (hero.metamorphedTalents.containsValue(talent)
 									&& !hero.heroClass.is(talent.getHeroClass())
-					)),
-            WIDTH_MIN );
+					)));
 
 		if (buttonCallback != null) {
 			addToBottom(new RedButton( buttonCallback.prompt() ) {

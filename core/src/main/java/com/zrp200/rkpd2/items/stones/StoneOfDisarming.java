@@ -35,22 +35,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+//for pre-v2.5.3 saves, add a conversion in v3.0 and remove entirely later
 public class StoneOfDisarming extends Runestone {
 	
 	private static final int DIST = 8;
 	
 	{
-		image = ItemSpriteSheet.STONE_DISARM;
-
-		//so traps do not activate before the effect
-		pressesCell = false;
+		image = ItemSpriteSheet.STONE_DETECT;
 	}
 
 	@Override
 	protected void activate(final int cell) {
 		boolean[] FOV = new boolean[Dungeon.level.length()];
 		Point c = Dungeon.level.cellToPoint(cell);
-		ShadowCaster.castShadow(c.x, c.y, FOV, Dungeon.level.losBlocking, DIST);
+		ShadowCaster.castShadow(c.x, c.y, Dungeon.level.width(), FOV, Dungeon.level.losBlocking, DIST);
 		
 		int sX = Math.max(0, c.x - DIST);
 		int eX = Math.min(Dungeon.level.width()-1, c.x + DIST);

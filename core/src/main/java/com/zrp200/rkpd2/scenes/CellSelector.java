@@ -167,7 +167,7 @@ public class CellSelector extends ScrollArea {
 					listener.onRightClick( cell );
 					break;
 			}
-			if( !( listener instanceof TargetedListener && !((TargetedListener) listener ).readyOnSelect) ) GameScene.ready();
+			if(listener.readyOnSelect) GameScene.ready();
 			
 		} else {
 			
@@ -362,12 +362,16 @@ public class CellSelector extends ScrollArea {
 	public void update() {
 		super.update();
 
-		if (GameScene.interfaceBlockingHero()){
-			return;
-		}
-
 		GameAction newLeftStick = actionFromStick(ControllerHandler.leftStickPosition.x,
 				ControllerHandler.leftStickPosition.y);
+
+		//skip logic here if there's no input, or if input is blocked
+		if ((newLeftStick == leftStickAction
+				&& leftStickAction == GameAction.NONE
+					&& heldAction1 == SPDAction.NONE)
+					|| GameScene.interfaceBlockingHero()){
+			return;
+		}
 
 		if (newLeftStick != leftStickAction){
 			if (leftStickAction == SPDAction.NONE){
@@ -523,6 +527,8 @@ public class CellSelector extends ScrollArea {
 		public void onRightClick( Integer cell ){} //do nothing by default
 
 		public abstract String prompt();
+
+		protected boolean readyOnSelect = true;
 	}
 
 	public static abstract class TargetedListener extends Listener {
@@ -531,7 +537,6 @@ public class CellSelector extends ScrollArea {
 		// stuff that allows this to work with Multishot
 		protected int conflictTolerance = 0;
 		protected boolean promptIfNoTargets = true;
-		protected boolean readyOnSelect = true;
 
 		private final List<SelectableCell> selectableCells = new ArrayList();
 		public final void highlightCells() {

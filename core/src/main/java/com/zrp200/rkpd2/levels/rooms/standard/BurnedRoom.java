@@ -21,9 +21,11 @@
 
 package com.zrp200.rkpd2.levels.rooms.standard;
 
+import com.zrp200.rkpd2.items.trinkets.TrapMechanism;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.traps.BurningTrap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -36,7 +38,7 @@ public class BurnedRoom extends PatchRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		int cell = l.pointToCell(pointInside(p, 1));
 		return l.map[cell] == Terrain.EMPTY;
 	}
@@ -72,7 +74,9 @@ public class BurnedRoom extends PatchRoom {
 		}
 		
 		setupPatch(level);
-		
+
+		float revealedChance = TrapMechanism.revealHiddenTrapChance();
+		float revealInc = 0;
 		for (int i=top + 1; i < bottom; i++) {
 			for (int j=left + 1; j < right; j++) {
 				if (!patch[xyToPatchCoords(j, i)])
@@ -91,8 +95,15 @@ public class BurnedRoom extends PatchRoom {
 						level.setTrap(new BurningTrap().reveal(), cell);
 						break;
 					case 3:
-						t = Terrain.SECRET_TRAP;
-						level.setTrap(new BurningTrap().hide(), cell);
+						revealInc += revealedChance;
+						if (revealInc >= 1){
+							t = Terrain.TRAP;
+							level.setTrap(new BurningTrap().reveal(), cell);
+							revealInc--;
+						} else {
+							t = Terrain.SECRET_TRAP;
+							level.setTrap(new BurningTrap().hide(), cell);
+						}
 						break;
 					case 4:
 						t = Terrain.INACTIVE_TRAP;

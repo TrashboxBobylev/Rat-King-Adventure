@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.items.keys.IronKey;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfIdentify;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRemoveCurse;
+import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -72,9 +73,13 @@ public class LibraryRoom extends SpecialRoom {
 	
 	private static Item prize( Level level ) {
 		
-		Item prize = level.findPrizeItem( Scroll.class );
-		if (prize == null)
-			prize = Generator.random( Generator.Category.SCROLL );
+		Item prize = level.findPrizeItem( TrinketCatalyst.class );
+		if (prize == null){
+			prize = level.findPrizeItem( Scroll.class );
+			if (prize == null) {
+				prize = Generator.random( Generator.Category.SCROLL );
+			}
+		}
 		
 		return prize;
 	}

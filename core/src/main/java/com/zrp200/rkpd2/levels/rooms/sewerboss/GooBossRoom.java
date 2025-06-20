@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.levels.rooms.sewerboss;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.levels.Level;
+import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
 import com.zrp200.rkpd2.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
@@ -38,7 +39,7 @@ public abstract class GooBossRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		return false;
 	}
 

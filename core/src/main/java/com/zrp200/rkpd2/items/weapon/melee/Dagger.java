@@ -28,7 +28,6 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.hero.Hero;
-import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.Speck;
@@ -40,7 +39,6 @@ import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
-import com.watabou.utils.Random;
 
 public class Dagger extends MeleeWeapon {
 	
@@ -70,12 +68,12 @@ public class Dagger extends MeleeWeapon {
 			if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)) {
 				//deals 75% toward max to max on surprise, instead of min to max.
 				int diff = max() - min();
-				int damage = augment.damageFactor(Random.NormalIntRange(
+				int damage = augment.damageFactor(Hero.heroDamageIntRange(
 						min() + Math.round(diff* surpriseTowardMax),
 						max()));
 				int exStr = hero.STR() - STRReq();
 				if (exStr > 0) {
-					damage += Random.IntRange(0, exStr);
+					damage += Hero.heroDamageIntRange(0, exStr);
 				}
 				return damage;
 			}
@@ -94,62 +92,70 @@ public class Dagger extends MeleeWeapon {
 	}
 	@Override
 	public String targetingPrompt() {
-		return Dungeon.hero.heroClass.is(HeroClass.DUELIST) ? Messages.get(this, "prompt") :
-				null;
+		return Messages.get(this, "prompt");
 	}
 
 	public boolean useTargeting(){
 		return false;
 	}
 
-	@Override
-	protected int baseChargeUse(Hero hero, Char target){
-		return 2;
+	protected int maxDist() {
+		return 5;
 	}
 
-	// 6 dagger / 5 dirk
-	// this is also the maximum invisibility time
-	protected int maxDist() { return 6; }
+	protected int invisTurns(int level) {
+		return 1 + tier + level;
+	}
+	protected int invisTurns() {
+		return invisTurns(buffedLvl());
+	}
 
 	@Override
-	protected void duelistAbility(Hero hero, Integer target) {
-		if (target == null) {
-			target = hero.pos;
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", invisTurns());
+		} else {
+			return Messages.get(this, "typical_ability_desc", invisTurns(0));
 		}
+	}
 
-		Char ch = Actor.findChar(target);
+	@Override
+	public String upgradeAbilityStat(int level) {
+		return Integer.toString(invisTurns(level));
+	}
 
-		if (ch != hero && (ch != null || !Dungeon.level.heroFOV[target] || hero.rooted)) {
-			GLog.w(Messages.get(this, "ability_bad_position"));
-			if (Dungeon.hero.rooted) PixelScene.shake(1, 1f);
+	public void duelistAbility(Hero hero, Integer target){
+		if (target == null) {
 			return;
 		}
 
 		PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), maxDist());
-		int distance = PathFinder.distance[target];
-		if (distance == Integer.MAX_VALUE) {
-			GLog.w(Messages.get(this, "ability_bad_position"));
+		if (PathFinder.distance[target] == Integer.MAX_VALUE || !Dungeon.level.heroFOV[target] || hero.rooted) {
+			GLog.w(Messages.get(this, "ability_target_range"));
+			if (Dungeon.hero.rooted) PixelScene.shake( 1, 1f );
+			return;
+		}
+
+		if (Actor.findChar(target) != null) {
+			GLog.w(Messages.get(this, "ability_occupied"));
 			return;
 		}
 
 		beforeAbilityUsed(hero, null);
-		// you can trade distance for longer invis if you want.
-		Buff.affect(hero, Invisibility.class, Math.max(Actor.TICK, maxDist() - distance));
+		Buff.affect(hero, Invisibility.class, invisTurns()-1); //1 fewer turns as ability is instant
+
+		Dungeon.hero.sprite.turnTo( Dungeon.hero.pos, target);
+		Dungeon.hero.pos = target;
+		Dungeon.level.occupyCell(Dungeon.hero);
+		Dungeon.observe();
+		GameScene.updateFog();
+		Dungeon.hero.checkVisibleMobs();
+
+		Dungeon.hero.sprite.place( Dungeon.hero.pos );
+		CellEmitter.get( Dungeon.hero.pos ).burst( Speck.factory( Speck.WOOL ), 6 );
+		Sample.INSTANCE.play( Assets.Sounds.PUFF );
+
 		hero.next();
-
-		if (ch == null) {
-			Dungeon.hero.sprite.turnTo(Dungeon.hero.pos, target);
-			Dungeon.hero.pos = target;
-			Dungeon.level.occupyCell(Dungeon.hero);
-			Dungeon.observe();
-			GameScene.updateFog();
-			Dungeon.hero.checkVisibleMobs();
-
-			Dungeon.hero.sprite.place(Dungeon.hero.pos);
-		}
-		CellEmitter.get(Dungeon.hero.pos).burst(Speck.factory(Speck.WOOL), 6);
-		Sample.INSTANCE.play(Assets.Sounds.PUFF);
 		afterAbilityUsed(hero);
 	}
-
 }

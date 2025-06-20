@@ -85,7 +85,12 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	public static boolean vibrationSupported(){
-		return isControllerConnected() && Controllers.getCurrent().canVibrate();
+		try {
+			//library can throw a NPE here is controller was disconnected during sleep
+			return isControllerConnected() && Controllers.getCurrent().canVibrate();
+		} catch (Exception e){
+			return false;
+		}
 	}
 
 	public static void vibrate( int millis ){
@@ -241,6 +246,10 @@ public class ControllerHandler implements ControllerListener {
 	}
 
 	public static boolean icControllerKey(int keyCode){
+		if (keyCode == 0){
+			return true;
+		}
+
 		if (keyCode >= Input.Keys.BUTTON_A
 				&& keyCode <= Input.Keys.BUTTON_MODE){
 			return true;

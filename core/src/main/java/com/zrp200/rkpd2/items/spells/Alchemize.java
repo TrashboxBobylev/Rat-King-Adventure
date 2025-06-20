@@ -21,13 +21,19 @@
 
 package com.zrp200.rkpd2.items.spells;
 
+import com.watabou.noosa.ui.Component;
+import com.watabou.utils.Random;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.npcs.Shopkeeper;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.stones.Runestone;
+import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.plants.Plant;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -45,6 +51,8 @@ public class Alchemize extends Spell {
 	
 	{
 		image = ItemSpriteSheet.ALCHEMIZE;
+
+		talentChance = 1/(float)Recipe.OUT_QUANTITY;
 	}
 
 	private static WndBag parentWnd;
@@ -56,23 +64,50 @@ public class Alchemize extends Spell {
 	
 	@Override
 	public int value() {
-		//prices of ingredients, divided by output quantity, rounds down
-		return (int)(40 * (quantity/8f));
+		//lower value, as it's very cheap to make (and also sold at shops)
+		return (int)(20 * (quantity/(float)Recipe.OUT_QUANTITY));
 	}
 
-	//TODO also allow alchemical catalyst? Or save that for an elixir/brew?
-	public static class Recipe extends com.zrp200.rkpd2.items.Recipe.SimpleRecipe {
+	@Override
+	public int energyVal() {
+		return (int)(4 * (quantity/(float)Recipe.OUT_QUANTITY));
+	}
 
-		{
-			inputs =  new Class[]{ArcaneCatalyst.class};
-			inQuantity = new int[]{1};
-			
-			cost = 2;
-			
-			output = Alchemize.class;
-			outQuantity = 8;
+	public static class Recipe extends com.zrp200.rkpd2.items.Recipe {
+
+		private static final int OUT_QUANTITY = 8;
+
+		@Override
+		public boolean testIngredients(ArrayList<Item> ingredients) {
+			if (ingredients.size() != 2) return false;
+
+			if (ingredients.get(0) instanceof Plant.Seed && ingredients.get(1) instanceof Runestone){
+				return true;
+			}
+
+			if (ingredients.get(0) instanceof Runestone && ingredients.get(1) instanceof Plant.Seed){
+				return true;
+			}
+
+			return false;
 		}
 
+		@Override
+		public int cost(ArrayList<Item> ingredients) {
+			return 2;
+		}
+
+		@Override
+		public Item brew(ArrayList<Item> ingredients) {
+			ingredients.get(0).quantity(ingredients.get(0).quantity()-1);
+			ingredients.get(1).quantity(ingredients.get(1).quantity()-1);
+			return sampleOutput(null);
+		}
+
+		@Override
+		public Item sampleOutput(ArrayList<Item> ingredients) {
+			return new Alchemize().quantity(OUT_QUANTITY);
+}
 	}
 
 	private static WndBag.ItemSelector itemSelector = new WndBag.ItemSelector() {
@@ -164,10 +199,10 @@ public class Alchemize extends Spell {
 			if (item.energyVal() > 0 && (!Dungeon.isChallenged(Challenges.NO_ALCHEMY))) {
 				if (item.quantity() == 1) {
 
-					RedButton btnEnergize = new RedButton(Messages.get(this, "energize", item.energyVal())) {
+					RedButton btnEnergize = new RedButton(Messages.get(this, "energize", WndEnergizeItem.energyVal(item))) {
 						@Override
 						protected void onClick() {
-							WndEnergizeItem.energize(item);
+							WndEnergizeItem.energizeAll(item);
 							hide();
 							consumeAlchemize();
 						}
@@ -180,7 +215,7 @@ public class Alchemize extends Spell {
 
 				} else {
 
-					int energyAll = item.energyVal();
+					int energyAll = WndEnergizeItem.energyVal(item);
 					RedButton btnEnergize1 = new RedButton(Messages.get(this, "energize_1", energyAll / item.quantity())) {
 						@Override
 						protected void onClick() {
@@ -195,7 +230,7 @@ public class Alchemize extends Spell {
 					RedButton btnEnergizeAll = new RedButton(Messages.get(this, "energize_all", energyAll)) {
 						@Override
 						protected void onClick() {
-							WndEnergizeItem.energize(item);
+							WndEnergizeItem.energizeAll(item);
 							hide();
 							consumeAlchemize();
 						}
@@ -226,6 +261,10 @@ public class Alchemize extends Spell {
 					owner.hide();
 				}
 				GameScene.selectItem(itemSelector);
+			}
+			Catalog.countUse(getClass());
+			if (curItem instanceof Alchemize && Random.Float() < ((Alchemize)curItem).talentChance){
+				Talent.onScrollUsed(curUser, curUser.pos, ((Alchemize) curItem).talentFactor, curItem.getClass());
 			}
 		}
 

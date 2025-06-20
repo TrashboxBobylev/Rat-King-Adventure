@@ -21,12 +21,13 @@
 
 package com.zrp200.rkpd2.levels.rooms.special;
 
-import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.potions.PotionOfLevitation;
+import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -45,6 +46,15 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 public class TrapsRoom extends SpecialRoom {
+
+	//size is a bit limited to prevent too many or too few traps
+	@Override
+	public int minWidth() { return 6; }
+	public int maxWidth() { return 8; }
+
+	@Override
+	public int minHeight() { return 6; }
+	public int maxHeight() { return 8; }
 
 	public void paint( Level level ) {
 		 
@@ -127,13 +137,18 @@ public class TrapsRoom extends SpecialRoom {
 		}
 		
 		//1 floor set higher in probability, never cursed
-		do {
-			if (Random.Int(2) == 0) {
-				prize = Generator.randomWeapon((Dungeon.scalingDepth() / 5) + 1);
-			} else {
-				prize = Generator.randomArmor((Dungeon.scalingDepth() / 5) + 1);
+		if (Random.Int(2) == 0) {
+			prize = Generator.randomWeapon((Dungeon.scalingDepth() / 5) + 1);
+			if (((Weapon)prize).hasCurseEnchant()){
+				((Weapon) prize).enchant(null);
 			}
-		} while (prize.cursed || Challenges.isItemBlocked(prize));
+		} else {
+			prize = Generator.randomArmor((Dungeon.scalingDepth() / 5) + 1);
+			if (((Armor)prize).hasCurseGlyph()){
+				((Armor) prize).inscribe(null);
+			}
+		}
+		prize.cursed = false;
 		prize.cursedKnown = true;
 
 		//33% chance for an extra update.
