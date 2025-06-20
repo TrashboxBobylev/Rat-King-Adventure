@@ -21,9 +21,6 @@
 
 package com.zrp200.rkpd2.scenes;
 
-import com.watabou.input.ControllerHandler;
-import com.watabou.input.GameAction;
-import com.watabou.input.KeyBindings;
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Challenges;
@@ -37,8 +34,8 @@ import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
 import com.zrp200.rkpd2.items.EnergyCrystal;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.LiquidMetal;
 import com.zrp200.rkpd2.items.Recipe;
-import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
 import com.zrp200.rkpd2.items.bags.Bag;
 import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.journal.Catalog;
@@ -64,8 +61,13 @@ import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndEnergizeItem;
 import com.zrp200.rkpd2.windows.WndInfoItem;
 import com.zrp200.rkpd2.windows.WndJournal;
+import com.zrp200.rkpd2.windows.WndKeyBindings;
+import com.zrp200.rkpd2.windows.WndMessage;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
+import com.watabou.input.ControllerHandler;
+import com.watabou.input.GameAction;
+import com.watabou.input.KeyBindings;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -76,8 +78,6 @@ import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.ui.Component;
-import com.zrp200.rkpd2.windows.WndKeyBindings;
-import com.zrp200.rkpd2.windows.WndMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,428 +118,432 @@ public class AlchemyScene extends PixelScene {
 	
 	@Override
 	public void create() {
-		super.create();
-		
-		water = new SkinnedBlock(
-				Camera.main.width, Camera.main.height,
-				Dungeon.level.waterTex() ){
-			
-			@Override
-			protected NoosaScript script() {
-				return NoosaScriptNoLighting.get();
-			}
-			
-			@Override
-			public void draw() {
-				//water has no alpha component, this improves performance
-				Blending.disable();
-				super.draw();
-				Blending.enable();
-			}
-		};
-		water.autoAdjust = true;
-		add(water);
-		
-		Image im = new Image(TextureCache.createGradient(0x66000000, 0x88000000, 0xAA000000, 0xCC000000, 0xFF000000));
-		im.angle = 90;
-		im.x = Camera.main.width;
-		im.scale.x = Camera.main.height/5f;
-		im.scale.y = Camera.main.width;
-		add(im);
+        super.create();
 
-		ExitButton btnExit = new ExitButton(){
-			@Override
-			protected void onClick() {
-				Game.switchScene(GameScene.class);
-			}
-		};
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
-		add( btnExit );
+        water = new SkinnedBlock(
+                Camera.main.width, Camera.main.height,
+                Dungeon.level.waterTex()) {
 
-		bubbleEmitter = new Emitter();
-		add(bubbleEmitter);
+            @Override
+            protected NoosaScript script() {
+                return NoosaScriptNoLighting.get();
+            }
 
-		lowerBubbles = new Emitter();
-		add(lowerBubbles);
+            @Override
+            public void draw() {
+                //water has no alpha component, this improves performance
+                Blending.disable();
+                super.draw();
+                Blending.enable();
+            }
+        };
+        water.autoAdjust = true;
+        add(water);
 
-		IconTitle title = new IconTitle(Icons.ALCHEMY.get(), Messages.get(this, "title") );
-		title.setSize(200, 0);
-		title.setPos(
-				(Camera.main.width - title.reqWidth()) / 2f,
-				(20 - title.height()) / 2f
-		);
-		align(title);
-		add(title);
-		
-		int w = Math.min(50 + Camera.main.width/2, 150);
-		int left = (Camera.main.width - w)/2;
+        Image im = new Image(TextureCache.createGradient(0x66000000, 0x88000000, 0xAA000000, 0xCC000000, 0xFF000000));
+        im.angle = 90;
+        im.x = Camera.main.width;
+        im.scale.x = Camera.main.height / 5f;
+        im.scale.y = Camera.main.width;
+        add(im);
 
-		centerW = left + w/2;
+        ExitButton btnExit = new ExitButton() {
+            @Override
+            protected void onClick() {
+                Game.switchScene(GameScene.class);
+            }
+        };
+        btnExit.setPos(Camera.main.width - btnExit.width(), 0);
+        add(btnExit);
 
-		int pos = (Camera.main.height - 120)/2;
+        bubbleEmitter = new Emitter();
+        add(bubbleEmitter);
 
-		if (splitAlchGuide &&
-				Camera.main.width >= 300 &&
-				Camera.main.height >= PixelScene.MIN_HEIGHT_FULL){
-			w = Math.min(150, Camera.main.width/2);
-			left = (Camera.main.width/2 - w);
-			centerW = left + w/2;
+        lowerBubbles = new Emitter();
+        add(lowerBubbles);
 
-			NinePatch guideBG = Chrome.get(Chrome.Type.TOAST);
-			guideBG.size(126 + guideBG.marginHor(), Math.min(Camera.main.height - 18, 191 + guideBG.marginVer()));
-			guideBG.y = Math.max(17, (Camera.main.height - guideBG.height())/2f);
-			guideBG.x = Camera.main.width - left - guideBG.width();
-			add(guideBG);
+        IconTitle title = new IconTitle(Icons.ALCHEMY.get(), Messages.get(this, "title"));
+        title.setSize(200, 0);
+        title.setPos(
+                (Camera.main.width - title.reqWidth()) / 2f,
+                (20 - title.height()) / 2f
+        );
+        align(title);
+        add(title);
 
-			alchGuide = new WndJournal.AlchemyTab();
-			add(alchGuide);
-			alchGuide.setRect(guideBG.x + guideBG.marginLeft(),
-					guideBG.y + guideBG.marginTop(),
-					guideBG.width() - guideBG.marginHor(),
-					guideBG.height() - guideBG.marginVer());
+        int w = Math.min(50 + Camera.main.width / 2, 150);
+        int left = (Camera.main.width - w) / 2;
 
-		} else {
-			splitAlchGuide = false;
-		}
-		
-		RenderedTextBlock desc = PixelScene.renderTextBlock(6);
-		desc.maxWidth(w);
-		desc.text( Messages.get(AlchemyScene.class, "text") );
-		desc.setPos(left + (w - desc.width())/2, pos);
-		add(desc);
-		
-		pos += desc.height() + 6;
+        centerW = left + w / 2;
 
-		NinePatch inputBG = Chrome.get(Chrome.Type.TOAST_TR);
-		inputBG.x = left + 6;
-		inputBG.y = pos;
-		inputBG.size(BTN_SIZE+8, 3*BTN_SIZE + 4 + 8);
-		add(inputBG);
+        int pos = (Camera.main.height - 120) / 2;
 
-		pos += 4;
+        if (splitAlchGuide &&
+                Camera.main.width >= 300 &&
+                Camera.main.height >= PixelScene.MIN_HEIGHT_FULL) {
+            w = Math.min(150, Camera.main.width / 2);
+            left = (Camera.main.width / 2 - w);
+            centerW = left + w / 2;
 
-		synchronized (inputs) {
-			for (int i = 0; i < inputs.length; i++) {
-				if (inputs[i] == null) {
-					inputs[i] = new InputButton();
-				} else {
-					//in case the scene was reset without calling destroy() for some reason
-					Item item = inputs[i].item();
-					inputs[i] = new InputButton();
-					if (item != null){
-						inputs[i].item(item);
-					}
-				}
-				inputs[i].setRect(left + 10, pos, BTN_SIZE, BTN_SIZE);
-				add(inputs[i]);
-				pos += BTN_SIZE + 2;
-			}
-		}
+            NinePatch guideBG = Chrome.get(Chrome.Type.TOAST);
+            guideBG.size(126 + guideBG.marginHor(), Math.min(Camera.main.height - 18, 191 + guideBG.marginVer()));
+            guideBG.y = Math.max(17, (Camera.main.height - guideBG.height()) / 2f);
+            guideBG.x = Camera.main.width - left - guideBG.width();
+            add(guideBG);
 
-		Button invSelector = new Button(){
-			@Override
-			protected void onClick() {
-						if (Dungeon.hero != null) {
-							ArrayList<Bag> bags = Dungeon.hero.belongings.getBags();
+            alchGuide = new WndJournal.AlchemyTab();
+            add(alchGuide);
+            alchGuide.setRect(guideBG.x + guideBG.marginLeft(),
+                    guideBG.y + guideBG.marginTop(),
+                    guideBG.width() - guideBG.marginHor(),
+                    guideBG.height() - guideBG.marginVer());
 
-							String[] names = new String[bags.size()];
-							Image[] images = new Image[bags.size()];
-							for (int i = 0; i < bags.size(); i++){
-								names[i] = Messages.titleCase(bags.get(i).name());
-								images[i] = new ItemSprite(bags.get(i));
-							}
-							String info = "";
-							if (ControllerHandler.controllerActive){
-								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
-								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "container_cancel");
-							} else {
-								info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
-								info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "container_cancel");
-							}
+        } else {
+            splitAlchGuide = false;
+        }
 
-							Game.scene().addToFront(new RadialMenu(Messages.get(Toolbar.class, "container_prompt"), info, names, images){
-								@Override
-								public void onSelect(int idx, boolean alt) {
-									super.onSelect(idx, alt);
-									Bag bag = bags.get(idx);
-									ArrayList<Item> items = (ArrayList<Item>) bag.items.clone();
+        RenderedTextBlock desc = PixelScene.renderTextBlock(6);
+        desc.maxWidth(w);
+        desc.text(Messages.get(AlchemyScene.class, "text"));
+        desc.setPos(left + (w - desc.width()) / 2, pos);
+        add(desc);
 
-									for(Item i : bag.items){
-										if (Dungeon.hero.belongings.lostInventory() && !i.keptThroughLostInventory()) items.remove(i);
-										if (!Recipe.usableInRecipe(i)) items.remove(i);
-									}
+        pos += desc.height() + 6;
 
-									if (items.size() == 0){
-										ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(AlchemyScene.class, "no_items")));
-										return;
-									}
+        NinePatch inputBG = Chrome.get(Chrome.Type.TOAST_TR);
+        inputBG.x = left + 6;
+        inputBG.y = pos;
+        inputBG.size(BTN_SIZE + 8, 3 * BTN_SIZE + 4 + 8);
+        add(inputBG);
 
-									String[] itemNames = new String[items.size()];
-									Image[] itemIcons = new Image[items.size()];
-									for (int i = 0; i < items.size(); i++){
-										itemNames[i] = Messages.titleCase(items.get(i).name());
-										itemIcons[i] = new ItemSprite(items.get(i));
-									}
+        pos += 4;
 
-									String info = "";
-									if (ControllerHandler.controllerActive){
-										info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
-										info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "item_cancel");
-									} else {
-										info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
-										info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "item_cancel");
-									}
+        synchronized (inputs) {
+            for (int i = 0; i < inputs.length; i++) {
+                if (inputs[i] == null) {
+                    inputs[i] = new InputButton();
+                } else {
+                    //in case the scene was reset without calling destroy() for some reason
+                    Item item = inputs[i].item();
+                    inputs[i] = new InputButton();
+                    if (item != null) {
+                        inputs[i].item(item);
+                    }
+                }
+                inputs[i].setRect(left + 10, pos, BTN_SIZE, BTN_SIZE);
+                add(inputs[i]);
+                pos += BTN_SIZE + 2;
+            }
+        }
 
-									Game.scene().addToFront(new RadialMenu(Messages.get(Toolbar.class, "item_prompt"), info, itemNames, itemIcons){
-										@Override
-										public void onSelect(int idx, boolean alt) {
-											super.onSelect(idx, alt);
-											Item item = items.get(idx);
-											synchronized (inputs) {
-												if (item != null && inputs[0] != null) {
-													for (int i = 0; i < inputs.length; i++) {
-														if (inputs[i].item() == null) {
-															if (item instanceof LiquidMetal){
-																inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
-															} else {
-																inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
-															}
-															break;
-														}
-													}
-													updateState();
-												}
-											}
+        Button invSelector = new Button() {
+            @Override
+            protected void onClick() {
+                if (Dungeon.hero != null) {
+                    ArrayList<Bag> bags = Dungeon.hero.belongings.getBags();
 
-										}
-									});
-								}
-							});
-						}
-			}
+                    String[] names = new String[bags.size()];
+                    Image[] images = new Image[bags.size()];
+                    for (int i = 0; i < bags.size(); i++) {
+                        names[i] = Messages.titleCase(bags.get(i).name());
+                        images[i] = new ItemSprite(bags.get(i));
+                    }
+                    String info = "";
+                    if (ControllerHandler.controllerActive) {
+                        info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
+                        info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "container_cancel");
+                    } else {
+                        info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "container_select") + "\n";
+                        info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "container_cancel");
+                    }
 
-			@Override
-			public GameAction keyAction() {
-				return SPDAction.INVENTORY_SELECTOR;
-			}
-		};
-		add(invSelector);
+                    Game.scene().addToFront(new RadialMenu(Messages.get(Toolbar.class, "container_prompt"), info, names, images) {
+                        @Override
+                        public void onSelect(int idx, boolean alt) {
+                            super.onSelect(idx, alt);
+                            Bag bag = bags.get(idx);
+                            ArrayList<Item> items = (ArrayList<Item>) bag.items.clone();
 
-		cancel = new IconButton(Icons.CLOSE.get()){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				clearSlots();
-				updateState();
-			}
+                            for (Item i : bag.items) {
+                                if (Dungeon.hero.belongings.lostInventory() && !i.keptThroughLostInventory())
+                                    items.remove(i);
+                                if (!Recipe.usableInRecipe(i)) items.remove(i);
+                            }
 
-			@Override
-			public GameAction keyAction() {
-				return SPDAction.BACK;
-			}
+                            if (items.size() == 0) {
+                                ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(AlchemyScene.class, "no_items")));
+                                return;
+                            }
 
-			@Override
-			protected String hoverText() {
-				return Messages.get(AlchemyScene.class, "cancel");
-			}
-		};
-		cancel.setRect(left + 8, pos + 2, 16, 16);
-		cancel.enable(false);
-		add(cancel);
+                            String[] itemNames = new String[items.size()];
+                            Image[] itemIcons = new Image[items.size()];
+                            for (int i = 0; i < items.size(); i++) {
+                                itemNames[i] = Messages.titleCase(items.get(i).name());
+                                itemIcons[i] = new ItemSprite(items.get(i));
+                            }
 
-		repeat = new IconButton(Icons.REPEAT.get()){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				if (lastRecipe != null){
-					populate(lastIngredients, Dungeon.hero.belongings);
-				}
-			}
+                            String info = "";
+                            if (ControllerHandler.controllerActive) {
+                                info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.LEFT_CLICK, true)) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
+                                info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, true)) + ": " + Messages.get(Toolbar.class, "item_cancel");
+                            } else {
+                                info += Messages.get(WndKeyBindings.class, SPDAction.LEFT_CLICK.name()) + ": " + Messages.get(Toolbar.class, "item_select") + "\n";
+                                info += KeyBindings.getKeyName(KeyBindings.getFirstKeyForAction(GameAction.BACK, false)) + ": " + Messages.get(Toolbar.class, "item_cancel");
+                            }
 
-			@Override
-			public GameAction keyAction() {
-				return SPDAction.TAG_RESUME;
-			}
+                            Game.scene().addToFront(new RadialMenu(Messages.get(Toolbar.class, "item_prompt"), info, itemNames, itemIcons) {
+                                @Override
+                                public void onSelect(int idx, boolean alt) {
+                                    super.onSelect(idx, alt);
+                                    Item item = items.get(idx);
+                                    synchronized (inputs) {
+                                        if (item != null && inputs[0] != null) {
+                                            for (int i = 0; i < inputs.length; i++) {
+                                                if (inputs[i].item() == null) {
+                                                    if (item instanceof LiquidMetal) {
+                                                        inputs[i].item(item.detachAll(Dungeon.hero.belongings.backpack));
+                                                    } else {
+                                                        inputs[i].item(item.detach(Dungeon.hero.belongings.backpack));
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                            updateState();
+                                        }
+                                    }
 
-			@Override
-			protected String hoverText() {
-				return Messages.get(AlchemyScene.class, "repeat");
-			}
-		};
-		repeat.setRect(left + 24, pos + 2, 16, 16);
-		repeat.enable(false);
-		add(repeat);
+                                }
+                            });
+                        }
+                    });
+                }
+            }
 
-		lastIngredients.clear();
-		lastRecipe = null;
+            @Override
+            public GameAction keyAction() {
+                return SPDAction.INVENTORY_SELECTOR;
+            }
+        };
+        add(invSelector);
 
-		for (int i = 0; i < inputs.length; i++){
-			combines[i] = new CombineButton(i);
-			combines[i].enable(false);
+        cancel = new IconButton(Icons.CLOSE.get()) {
+            @Override
+            protected void onClick() {
+                super.onClick();
+                clearSlots();
+                updateState();
+            }
 
-			outputs[i] = new OutputSlot();
-			outputs[i].item(null);
+            @Override
+            public GameAction keyAction() {
+                return SPDAction.BACK;
+            }
 
-			if (i == 0){
-				//first ones are always visible
-				combines[i].setRect(left + (w-30)/2f, inputs[1].top()+5, 30, inputs[1].height()-10);
-				outputs[i].setRect(left + w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
-			} else {
-				combines[i].visible = false;
-				outputs[i].visible = false;
-			}
+            @Override
+            protected String hoverText() {
+                return Messages.get(AlchemyScene.class, "cancel");
+            }
+        };
+        cancel.setRect(left + 8, pos + 2, 16, 16);
+        cancel.enable(false);
+        add(cancel);
 
-			add(combines[i]);
-			add(outputs[i]);
-		}
+        repeat = new IconButton(Icons.REPEAT.get()) {
+            @Override
+            protected void onClick() {
+                super.onClick();
+                if (lastRecipe != null) {
+                    populate(lastIngredients, Dungeon.hero.belongings);
+                }
+            }
 
-		smokeEmitter = new Emitter();
-		smokeEmitter.pos(outputs[0].left() + (BTN_SIZE-16)/2f, outputs[0].top() + (BTN_SIZE-16)/2f, 16, 16);
-		smokeEmitter.autoKill = false;
-		add(smokeEmitter);
-		
-		pos += 10;
+            @Override
+            public GameAction keyAction() {
+                return SPDAction.TAG_RESUME;
+            }
 
-		if (Camera.main.height >= 280){
-			//last elements get centered even with a split alch guide UI, as long as there's enough height
-			centerW = Camera.main.width/2;
-		}
+            @Override
+            protected String hoverText() {
+                return Messages.get(AlchemyScene.class, "repeat");
+            }
+        };
+        repeat.setRect(left + 24, pos + 2, 16, 16);
+        repeat.enable(false);
+        add(repeat);
 
-		bubbleEmitter.pos(0,
-				0,
-				2*centerW,
-				Camera.main.height);
-		bubbleEmitter.autoKill = false;
+        lastIngredients.clear();
+        lastRecipe = null;
 
-		lowerBubbles.pos(0,
-				pos,
-				2*centerW,
-				Math.max(0, Camera.main.height-pos));
-		lowerBubbles.pour(Speck.factory( Speck.BUBBLE ), 0.1f );
+        for (int i = 0; i < inputs.length; i++) {
+            combines[i] = new CombineButton(i);
+            combines[i].enable(false);
 
-		String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
-		if (toolkit != null){
-			energyText += "+" + toolkit.availableEnergy();
-		}
+            outputs[i] = new OutputSlot();
+            outputs[i].item(null);
 
-		energyLeft = PixelScene.renderTextBlock(energyText, 9);
-		energyLeft.setPos(
-				centerW - energyLeft.width()/2,
-				Camera.main.height - 8 - energyLeft.height()
-		);
-		energyLeft.hardlight(0x44CCFF);
-		add(energyLeft);
+            if (i == 0) {
+                //first ones are always visible
+                combines[i].setRect(left + (w - 30) / 2f, inputs[1].top() + 5, 30, inputs[1].height() - 10);
+                outputs[i].setRect(left + w - BTN_SIZE - 10, inputs[1].top(), BTN_SIZE, BTN_SIZE);
+            } else {
+                combines[i].visible = false;
+                outputs[i].visible = false;
+            }
 
-		energyIcon = new ItemSprite( toolkit != null ? ItemSpriteSheet.ARTIFACT_TOOLKIT : ItemSpriteSheet.ENERGY);
-		energyIcon.x = energyLeft.left() - energyIcon.width();
-		energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height())/2;
-		align(energyIcon);
-		add(energyIcon);
+            add(combines[i]);
+            add(outputs[i]);
+        }
 
-		if (!Dungeon.isChallenged(Challenges.NO_ALCHEMY)) {
-			energyAdd = new IconButton(Icons.get(Icons.PLUS)) {
-	private float time = 0;
+        smokeEmitter = new Emitter();
+        smokeEmitter.pos(outputs[0].left() + (BTN_SIZE - 16) / 2f, outputs[0].top() + (BTN_SIZE - 16) / 2f, 16, 16);
+        smokeEmitter.autoKill = false;
+        add(smokeEmitter);
 
-			@Override
-			public void update() {
-				super.update();
-				if (energyAddBlinking){
-					icon.brightness( 0.5f + (float)Math.abs(Math.cos( StatusPane.FLASH_RATE * (time += Game.elapsed) )));
-				} else {
-					if (time > 0){
-						icon.resetColor();
-					}
-					time = 0;
-				}
-			}			@Override
-				protected void onClick() {
-					WndEnergizeItem.openItemSelector();}
+        pos += 10;
 
-			@Override
-			public GameAction keyAction() {
-				return SPDAction.TAG_ACTION;
-			}
+        if (Camera.main.height >= 280) {
+            //last elements get centered even with a split alch guide UI, as long as there's enough height
+            centerW = Camera.main.width / 2;
+        }
 
-			@Override
-			protected String hoverText() {
-				return Messages.get(AlchemyScene.class, "energize");
-				}
-			};
-			energyAdd.setRect(energyLeft.right(), energyLeft.top() - (16 - energyLeft.height()) / 2, 16, 16);
-			align(energyAdd);
-			add(energyAdd);
+        bubbleEmitter.pos(0,
+                0,
+                2 * centerW,
+                Camera.main.height);
+        bubbleEmitter.autoKill = false;
 
-		sparkEmitter = new Emitter();
-		sparkEmitter.pos(energyLeft.left(), energyLeft.top(), energyLeft.width(), energyLeft.height());
-		sparkEmitter.autoKill = false;
-		add(sparkEmitter);
+        lowerBubbles.pos(0,
+                pos,
+                2 * centerW,
+                Math.max(0, Camera.main.height - pos));
+        lowerBubbles.pour(Speck.factory(Speck.BUBBLE), 0.1f);
 
-		StyledButton btnGuide = new StyledButton( Chrome.Type.TOAST_TR, Messages.get(AlchemyScene.class, "guide")){
-			@Override
-			protected void onClick() {
-				super.onClick();
-				if (Camera.main.width >= 300 && Camera.main.height >= PixelScene.MIN_HEIGHT_FULL){
-					splitAlchGuide = !splitAlchGuide;
-					ShatteredPixelDungeon.seamlessResetScene();
-				} else {
-					clearSlots();
-					updateState();
-					AlchemyScene.this.addToFront(new Window() {
+        String energyText = Messages.get(AlchemyScene.class, "energy") + " " + Dungeon.energy;
+        if (toolkit != null) {
+            energyText += "+" + toolkit.availableEnergy();
+        }
 
-						{
-							WndJournal.AlchemyTab t = new WndJournal.AlchemyTab();
-							int w, h;
-							if (landscape()) {
-								w = WndJournal.WIDTH_L;
-								h = WndJournal.HEIGHT_L+8;
-							} else {
-								w = WndJournal.WIDTH_P;
-								h = WndJournal.HEIGHT_P+10;
-							}
-							resize(w, h);
-							add(t);
-							t.setRect(0, 0, w, h);
-						}
+        energyLeft = PixelScene.renderTextBlock(energyText, 9);
+        energyLeft.setPos(
+                centerW - energyLeft.width() / 2,
+                Camera.main.height - 8 - energyLeft.height()
+        );
+        energyLeft.hardlight(0x44CCFF);
+        add(energyLeft);
 
-					});
-				}
-			}
+        energyIcon = new ItemSprite(toolkit != null ? ItemSpriteSheet.ARTIFACT_TOOLKIT : ItemSpriteSheet.ENERGY);
+        energyIcon.x = energyLeft.left() - energyIcon.width();
+        energyIcon.y = energyLeft.top() - (energyIcon.height() - energyLeft.height()) / 2;
+        align(energyIcon);
+        add(energyIcon);
 
-			@Override
-			public GameAction keyAction() {
-				return SPDAction.JOURNAL;
-			}
+        if (!Dungeon.isChallenged(Challenges.NO_ALCHEMY)) {
+            energyAdd = new IconButton(Icons.get(Icons.PLUS)) {
+                private float time = 0;
 
-			@Override
-			protected String hoverText() {
-				return Messages.titleCase(Document.ALCHEMY_GUIDE.title());
-			}
-		};
-		btnGuide.icon(new ItemSprite(ItemSpriteSheet.ALCH_PAGE));
-		btnGuide.setSize(btnGuide.reqWidth()+4, 18);
-		btnGuide.setPos(centerW - btnGuide.width()/2f, energyAdd.top()- btnGuide.height()-2);
-		align(btnGuide);
-		add(btnGuide);
+                @Override
+                public void update() {
+                    super.update();
+                    if (energyAddBlinking) {
+                        icon.brightness(0.5f + (float) Math.abs(Math.cos(StatusPane.FLASH_RATE * (time += Game.elapsed))));
+                    } else {
+                        if (time > 0) {
+                            icon.resetColor();
+                        }
+                        time = 0;
+                    }
+                }
 
-		TrinketCatalyst cata = Dungeon.hero.belongings.getItem(TrinketCatalyst.class);
-		if (cata != null && cata.hasRolledTrinkets()){
-			addToFront(new TrinketCatalyst.WndTrinket(cata));
-		}
+                @Override
+                protected void onClick() {
+                    WndEnergizeItem.openItemSelector();
+                }
 
-		fadeIn();
+                @Override
+                public GameAction keyAction() {
+                    return SPDAction.TAG_ACTION;
+                }
 
-		saveNeeded = false;
-		try {
-			Dungeon.saveAll();
-			Badges.saveGlobal();
-			Journal.saveGlobal();
-		} catch (IOException e) {
-			ShatteredPixelDungeon.reportException(e);
-		}
-	}
+                @Override
+                protected String hoverText() {
+                    return Messages.get(AlchemyScene.class, "energize");
+                }
+            };
+            energyAdd.setRect(energyLeft.right(), energyLeft.top() - (16 - energyLeft.height()) / 2, 16, 16);
+            align(energyAdd);
+            add(energyAdd);
+
+            sparkEmitter = new Emitter();
+            sparkEmitter.pos(energyLeft.left(), energyLeft.top(), energyLeft.width(), energyLeft.height());
+            sparkEmitter.autoKill = false;
+            add(sparkEmitter);
+
+            StyledButton btnGuide = new StyledButton(Chrome.Type.TOAST_TR, Messages.get(AlchemyScene.class, "guide")) {
+                @Override
+                protected void onClick() {
+                    super.onClick();
+                    if (Camera.main.width >= 300 && Camera.main.height >= PixelScene.MIN_HEIGHT_FULL) {
+                        splitAlchGuide = !splitAlchGuide;
+                        ShatteredPixelDungeon.seamlessResetScene();
+                    } else {
+                        clearSlots();
+                        updateState();
+                        AlchemyScene.this.addToFront(new Window() {
+
+                            {
+                                WndJournal.AlchemyTab t = new WndJournal.AlchemyTab();
+                                int w, h;
+                                if (landscape()) {
+                                    w = WndJournal.WIDTH_L;
+                                    h = WndJournal.HEIGHT_L + 8;
+                                } else {
+                                    w = WndJournal.WIDTH_P;
+                                    h = WndJournal.HEIGHT_P + 10;
+                                }
+                                resize(w, h);
+                                add(t);
+                                t.setRect(0, 0, w, h);
+                            }
+
+                        });
+                    }
+                }
+
+                @Override
+                public GameAction keyAction() {
+                    return SPDAction.JOURNAL;
+                }
+
+                @Override
+                protected String hoverText() {
+                    return Messages.titleCase(Document.ALCHEMY_GUIDE.title());
+                }
+            };
+            btnGuide.icon(new ItemSprite(ItemSpriteSheet.ALCH_PAGE));
+            btnGuide.setSize(btnGuide.reqWidth() + 4, 18);
+            btnGuide.setPos(centerW - btnGuide.width() / 2f, energyAdd.top() - btnGuide.height() - 2);
+            align(btnGuide);
+            add(btnGuide);
+
+            TrinketCatalyst cata = Dungeon.hero.belongings.getItem(TrinketCatalyst.class);
+            if (cata != null && cata.hasRolledTrinkets()) {
+                addToFront(new TrinketCatalyst.WndTrinket(cata));
+            }
+
+            fadeIn();
+
+            saveNeeded = false;
+            try {
+                Dungeon.saveAll();
+                Badges.saveGlobal();
+                Journal.saveGlobal();
+            } catch (IOException e) {
+                ShatteredPixelDungeon.reportException(e);
+            }
+        }
     }
-	
-	@Override
+
+    @Override
 	public void update() {
 		super.update();
 		water.offset( 0, -5 * Game.elapsed );

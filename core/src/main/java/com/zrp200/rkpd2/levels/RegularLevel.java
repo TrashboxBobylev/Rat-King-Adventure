@@ -21,8 +21,6 @@
 
 package com.zrp200.rkpd2.levels;
 
-import com.watabou.utils.BArray;
-import com.watabou.utils.PathFinder;
 import com.zrp200.rkpd2.Bones;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
@@ -47,9 +45,6 @@ import com.zrp200.rkpd2.items.Stylus;
 import com.zrp200.rkpd2.items.Torch;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
-import com.zrp200.rkpd2.items.food.Food;
-import com.zrp200.rkpd2.items.food.MysteryMeat;
-import com.zrp200.rkpd2.items.food.SmallRation;
 import com.zrp200.rkpd2.items.food.SupplyRation;
 import com.zrp200.rkpd2.items.journal.DocumentPage;
 import com.zrp200.rkpd2.items.journal.GuidePage;
@@ -58,9 +53,9 @@ import com.zrp200.rkpd2.items.keys.GoldenKey;
 import com.zrp200.rkpd2.items.keys.Key;
 import com.zrp200.rkpd2.items.potions.PotionOfStrength;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
-import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.trinkets.MimicTooth;
 import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
+import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.levels.builders.Builder;
@@ -84,11 +79,13 @@ import com.zrp200.rkpd2.levels.traps.FrostTrap;
 import com.zrp200.rkpd2.levels.traps.PitfallTrap;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.levels.traps.WornDartTrap;
+import com.zrp200.rkpd2.mechanics.ShadowCaster;
 import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
-import com.zrp200.rkpd2.mechanics.ShadowCaster;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -329,35 +326,35 @@ public abstract class RegularLevel extends Level {
 						|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
 
 				if (tries >= 0) {
-					mobsToSpawn--;
-					mobs.add(mob);
-				mob = null;
+                    mobsToSpawn--;
+                    mobs.add(mob);
+                    mob = null;
 
-					//chance to add a second mob to this room, except on floor 1
-					if (Dungeon.scalingDepth() > 1 && mobsToSpawn > 0 && Random.Int(4) == 0) {
-						mob = createMob();
+                    //chance to add a second mob to this room, except on floor 1
+                    if (Dungeon.scalingDepth() > 1 && mobsToSpawn > 0 && Random.Int(4) == 0) {
+                        mob = createMob();
 
-						tries = 30;
-						do {
-							mob.pos = pointToCell(roomToSpawn.random());
-							tries--;
-						} while (tries >= 0 && (findMob(mob.pos) != null
-							|| entranceFOV[mob.pos] || PathFinder.distance[mob.pos] != Integer.MAX_VALUE
-							|| !passable[mob.pos]
-							|| solid[mob.pos]
-							|| !roomToSpawn.canPlaceCharacter(cellToPoint(mob.pos), this)
-							|| mob.pos == exit()
-							|| traps.get(mob.pos) != null || plants.get(mob.pos) != null
-								|| (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
+                        tries = 30;
+                        do {
+                            mob.pos = pointToCell(roomToSpawn.random());
+                            tries--;
+                        } while (tries >= 0 && (findMob(mob.pos) != null
+                                || entranceFOV[mob.pos] || PathFinder.distance[mob.pos] != Integer.MAX_VALUE
+                                || !passable[mob.pos]
+                                || solid[mob.pos]
+                                || !roomToSpawn.canPlaceCharacter(cellToPoint(mob.pos), this)
+                                || mob.pos == exit()
+                                || traps.get(mob.pos) != null || plants.get(mob.pos) != null
+                                || (!openSpace[mob.pos] && mob.properties().contains(Char.Property.LARGE))));
 
-					if (tries >= 0) {
-						mobsToSpawn--;
-						mobs.add(mob);
-						mob = null;
-					}
-				}
+                        if (tries >= 0) {
+                            mobsToSpawn--;
+                            mobs.add(mob);
+                            mob = null;
+                        }
+                    }
                 }
-			}
+        }
 		}
 
 		for (Mob m : mobs){
