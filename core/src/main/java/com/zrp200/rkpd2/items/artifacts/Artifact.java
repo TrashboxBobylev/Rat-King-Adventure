@@ -132,7 +132,7 @@ public class Artifact extends KindofMisc {
 	@Override
 	public int buffedLvl() {
 		//level isn't affected by buffs/debuffs
-		if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
+		if (Dungeon.hero != null && Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
 		return level();
 	}
 

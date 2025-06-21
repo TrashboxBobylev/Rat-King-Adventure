@@ -445,11 +445,13 @@ public class QuickRecipe extends Component {
 				if (Dungeon.branch == AbyssLevel.BRANCH) {
 					result.add(new QuickRecipe(new SoulOfYendor.Recipe()));
 				}
-				if (Dungeon.hero.belongings.getSimilar(new KingsCrown()) != null){
-					result.add(new QuickRecipe(new KromerCrown.Recipe()));
-				}
-				if (Dungeon.hero.belongings.getSimilar(new TengusMask()) != null){
-					result.add(new QuickRecipe(new KromerMask.Recipe()));
+				if (Dungeon.hero != null) {
+					if (Dungeon.hero.belongings.getSimilar(new KingsCrown()) != null) {
+						result.add(new QuickRecipe(new KromerCrown.Recipe()));
+					}
+					if (Dungeon.hero.belongings.getSimilar(new TengusMask()) != null) {
+						result.add(new QuickRecipe(new KromerMask.Recipe()));
+					}
 				}
 				if (Dungeon.branch == AbyssLevel.BRANCH){
 					result.add(new QuickRecipe(new RedCrystal.StrengthRecipe()));

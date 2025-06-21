@@ -148,7 +148,7 @@ abstract public class MissileWeapon extends Weapon {
 			lvl += (int) Math.ceil(cells);
 		}
 		return lvl +
-				(Dungeon.hero.buff(Talent.AutoReloadBuff.class) != null && !(this instanceof SpiritBow.SpiritArrow) ? 1 : 0);
+				(Dungeon.hero != null && Dungeon.hero.buff(Talent.AutoReloadBuff.class) != null && !(this instanceof SpiritBow.SpiritArrow) ? 1 : 0);
 	}
 
 	@Override
@@ -418,7 +418,7 @@ public boolean isSimilar( Item item ) {
 		//show quantity even when it is 1
 		String status = Integer.toString( quantity );
 
-		if(Dungeon.hero.belongings.thirdWep() == this) {
+		if(Dungeon.hero != null && Dungeon.hero.belongings.thirdWep() == this) {
 			// show charges since it matters for the talent interactions
 			MeleeWeapon.Charger charger = Buff.affect(Dungeon.hero, MeleeWeapon.Charger.class);
 			status += " (" + charger.charges + "/" + charger.chargeCap() + ")";

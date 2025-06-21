@@ -40,7 +40,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public int STRReq() {
-        return Dungeon.hero.STR();
+        return Dungeon.hero != null ? Dungeon.hero.STR() : 10;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Slingshot extends Weapon {
 
     @Override
     public int level() {
-        if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
+        if (Dungeon.hero != null && Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
         int i = (Dungeon.hero != null ) ? Dungeon.hero.STR() - 10 : 0;
         return i;
     }

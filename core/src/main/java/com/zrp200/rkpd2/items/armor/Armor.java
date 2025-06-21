@@ -337,7 +337,7 @@ public class Armor extends EquipableItem {
 
 	@Override
 	public int buffedLvl() {
-		if (Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
+		if (Dungeon.hero != null && Dungeon.hero.buff(PowerfulDegrade.class) != null) return 0;
 		return super.buffedLvl();
 	}
 

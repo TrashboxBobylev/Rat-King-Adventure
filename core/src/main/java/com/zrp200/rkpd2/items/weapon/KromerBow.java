@@ -20,7 +20,7 @@ public class KromerBow extends SpiritBow {
 
     @Override
     public int STRReq(int lvl) {
-        return Dungeon.hero.STR;
+        return Dungeon.hero != null ? Dungeon.hero.STR : 10;
     }
 
     @Override

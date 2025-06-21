@@ -485,7 +485,7 @@ public abstract class Wand extends Item {
 		if(staff != null && staff.wand() == this && Dungeon.hero.buff(Degrade.class) != null) {
 			int bonus = Dungeon.hero.getBonus(this);
 			lvl = Degrade.reduceLevel(lvl-bonus)+bonus;
-			if (Dungeon.hero.buff(PowerfulDegrade.class) != null) lvl = 0;
+			if (Dungeon.hero != null && Dungeon.hero.buff(PowerfulDegrade.class) != null) lvl = 0;
 		}
 
 		if (charger != null && charger.target != null) {

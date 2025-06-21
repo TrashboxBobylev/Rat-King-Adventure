@@ -757,7 +757,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 	}
 
 	public static boolean isFeelingEmpowered(Level.Feeling feeling){
-		if (!hero.hasTalent(Talent.ATTUNEXPLORATION))
+		if (hero == null || !hero.hasTalent(Talent.ATTUNEXPLORATION))
 			return false;
 
 		return Dungeon.level != null && Dungeon.level.feeling == feeling;
