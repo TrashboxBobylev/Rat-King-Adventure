@@ -22,6 +22,8 @@
 package com.zrp200.rkpd2.levels.rooms.standard.exit;
 
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.mobs.FinalFroggit;
+import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
@@ -58,6 +60,17 @@ public class ExitRoom extends StandardRoom {
 		
 		for (Room.Door door : connected.values()) {
 			door.set( Room.Door.Type.REGULAR );
+		}
+
+		if (Dungeon.branch == AbyssLevel.BRANCH) {
+			for (int i = 0; i < Random.IntRange(1, 5); i++) {
+				FinalFroggit npc = new FinalFroggit();
+				do {
+					npc.pos = level.pointToCell(random());
+				} while (level.map[npc.pos] != Terrain.EMPTY || level.findMob(npc.pos) != null || npc.pos == level.exit);
+				npc.state = npc.SLEEPING;
+				level.mobs.add(npc);
+			}
 		}
 		
 		int exit = level.pointToCell(random( 2 ));
