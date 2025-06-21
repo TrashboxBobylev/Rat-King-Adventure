@@ -228,6 +228,7 @@ public class Dungeon {
 
 	//we initialize the seed separately so that things like interlevelscene can access it early
 	public static void initSeed(){
+		specialSeeds = new HashSet<>();
 		if (daily) {
 			//Ensures that daily seeds are not in the range of user-enterable seeds
 			seed = SPDSettings.lastDaily() + DungeonSeed.TOTAL_SEEDS;
