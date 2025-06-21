@@ -64,7 +64,7 @@ public class HolyTome extends Artifact {
 		{
 			Hero hero = Dungeon.hero;
 			if (hero == null) hero = SafeCast.cast(Char.restoring, Hero.class);
-			if (hero != null && hero.heroClass == HeroClass.CLERIC) {
+			if (hero != null && hero.heroClass.isExact(HeroClass.CLERIC)) {
 				charge *= 2;
 				chargeCap *= 2;
 				partialCharge *= 2;
@@ -242,7 +242,7 @@ public class HolyTome extends Artifact {
 		chargeCap = Math.min(level() + 3, 10);
 		Hero hero = Dungeon.hero;
 		if (hero == null) hero = SafeCast.cast(Char.restoring, Hero.class);
-		if (hero != null && hero.heroClass == HeroClass.CLERIC) chargeCap *= 2;
+		if (hero != null && hero.heroClass.isExact(HeroClass.CLERIC)) chargeCap *= 2;
 		return this;
 	}
 

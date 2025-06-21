@@ -1469,7 +1469,7 @@ public abstract class Level implements Bundlable {
 				int mindVisRange = 0;
                 int points = hero.pointsInTalent(Talent.HEIGHTENED_SENSES,Talent.KINGS_VISION);
                 // todo should this transfer the innate?
-                if(hero.heroClass == HeroClass.HUNTRESS || hero.hasTalent(Talent.HEIGHTENED_SENSES)) points++; // free point for huntress
+                if(hero.heroClass.isExact(HeroClass.HUNTRESS) || hero.hasTalent(Talent.HEIGHTENED_SENSES)) points++; // free point for huntress
                 if (points > 0) {
                     mindVisRange = 1+((Hero) c).pointsInTalent(Talent.HEIGHTENED_SENSES);
                 }

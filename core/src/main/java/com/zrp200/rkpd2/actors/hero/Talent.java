@@ -998,7 +998,7 @@ public enum Talent {
 				}
 		}
 
-		if (talent == LIGHT_READING && hero.heroClass == HeroClass.CLERIC){
+		if (talent == LIGHT_READING && hero.heroClass.is(HeroClass.CLERIC)){
 			for (Item item : Dungeon.hero.belongings.backpack){
 				if (item instanceof HolyTome){
 					if (!hero.belongings.lostInventory() || item.keptThroughLostInventory()) {
@@ -1288,7 +1288,7 @@ public enum Talent {
 			Sample.INSTANCE.play( Assets.Sounds.MELD );
 		}
         if (RecallInscription.canTrack(hero) && Scroll.class.isAssignableFrom(cls) && cls != ScrollOfUpgrade.class){
-            if (hero.heroClass == HeroClass.CLERIC){
+            if (hero.heroClass.is(HeroClass.CLERIC)){
                 RecallInscription.UsedItemTracker.track(hero, cls);
             } else {
                 // 20/30% (double shattered)
@@ -1303,7 +1303,7 @@ public enum Talent {
 
     public static void onRunestoneUsed( Hero hero, int pos, Class<?extends Item> cls ){
         if (RecallInscription.canTrack(hero) && Runestone.class.isAssignableFrom(cls)){
-            if (hero.heroClass == HeroClass.CLERIC){
+            if (hero.heroClass.is(HeroClass.CLERIC)){
                 RecallInscription.UsedItemTracker.track(hero, cls);
             } else {
 
@@ -1327,13 +1327,13 @@ public enum Talent {
 			else Buff.prolong(hero, EnhancedRings.class, duration);
 		}
 
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
 
 		// 10/20/30%
-		if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.CLEANSE)
 				&& Random.Int(10) < Dungeon.hero.pointsInTalent(Talent.CLEANSE)){
 			boolean removed = false;

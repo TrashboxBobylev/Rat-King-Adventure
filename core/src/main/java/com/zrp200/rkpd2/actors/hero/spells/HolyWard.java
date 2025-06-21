@@ -139,7 +139,7 @@ public class HolyWard extends ClericSpell {
 		return hero.subClass.is(HeroSubClass.PALADIN) ?
 				empowered ? 4.5f : 3 :
 				empowered ? 3 :
-				hero.heroClass == HeroClass.CLERIC ? 1.5f :
+				hero.heroClass.isExact(HeroClass.CLERIC) ? 1.5f :
 						1;
 	}
 

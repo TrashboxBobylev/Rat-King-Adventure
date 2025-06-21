@@ -202,7 +202,7 @@ public class WndUpgrade extends Window {
 					bottom);
 		}
 
-		if (Dungeon.hero != null && Dungeon.hero.heroClass == HeroClass.DUELIST
+		if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.DUELIST)
 				&& toUpgrade instanceof MeleeWeapon && ((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelFrom) != null){
 			bottom = fillFields(Messages.get(toUpgrade, "upgrade_ability_stat_name"),
 					((MeleeWeapon) toUpgrade).upgradeAbilityStat(levelFrom),

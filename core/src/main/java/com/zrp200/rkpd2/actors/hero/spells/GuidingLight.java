@@ -188,9 +188,9 @@ public class GuidingLight extends MultiTargetSpell {
 		public String desc() {
 			String desc = super.desc();
 
-			if (Dungeon.hero.subClass == HeroSubClass.PRIEST){
+			if (Dungeon.hero.subClass.isExact(HeroSubClass.PRIEST)){
 				desc += "\n\n" + Messages.get(this, "desc_priest");
-			} else if (Dungeon.hero.heroClass != HeroClass.CLERIC){
+			} else if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)){
 				desc += "\n\n" + Messages.get(this, "desc_generic");
 			}
 

@@ -91,7 +91,7 @@ public class HolyWeapon extends ClericSpell {
 		protected float getEffectiveness() {
 			float effectiveness = Weapon.Enchantment.genericProcChanceMultiplier(hero);
 			if (hero.subClass.is(HeroSubClass.PALADIN)) return effectiveness * 3; // 6
-			else if (hero.heroClass == HeroClass.CLERIC) return effectiveness * 1.5f; // 3
+			else if (hero.heroClass.isExact(HeroClass.CLERIC)) return effectiveness * 1.5f; // 3
 			else return effectiveness;
 		}
 

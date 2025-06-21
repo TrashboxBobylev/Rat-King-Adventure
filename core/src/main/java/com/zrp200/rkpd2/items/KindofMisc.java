@@ -136,7 +136,7 @@ public abstract class KindofMisc extends EquipableItem {
 		} else {
 
 			// 10/30/50% chance
-			if (hero.heroClass != HeroClass.CLERIC && hero.canHaveTalent(Talent.HOLY_INTUITION)
+			if (!hero.heroClass.is(HeroClass.CLERIC) && hero.canHaveTalent(Talent.HOLY_INTUITION)
 					&& cursed
 					&& Random.Int(10) < 1 + 2*hero.pointsInTalent(Talent.HOLY_INTUITION)){
 				ScrollOfRemoveCurse.doEffect(hero, this);

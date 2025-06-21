@@ -776,12 +776,12 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		public int chargeCap(){
             int chargeCap;
 			//caps at level 19 with 8 or 10 charges
-			if (hero.subClass == HeroSubClass.CHAMPION){
+			if (hero.subClass.isExact(HeroSubClass.CHAMPION)){
 				chargeCap = Math.min(10, 4 + (hero.lvl - 1) / 3);
 			} else {
 				chargeCap = Math.min(8, 2 + (hero.lvl - 1) / 3);
 			}
-            if (hero.heroClass == HeroClass.DUELIST) chargeCap *= 2;
+            if (hero.heroClass.isExact(HeroClass.DUELIST)) chargeCap *= 2;
             return chargeCap;
 		}
 
