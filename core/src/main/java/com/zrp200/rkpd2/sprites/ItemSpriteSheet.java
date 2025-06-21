@@ -439,8 +439,8 @@ public class ItemSpriteSheet {
 	public static final int ARMOR_DUELIST   = ARMOR+9;
 	public static final int ARMOR_CLERIC    = ARMOR+10;
     public static final int ARMOR_RAT_KING	= ARMOR+11;
-	public static final int ARMOR_SCOUT     = ARMOR+11;
-	public static final int SR_RANGED       = ARMOR+12;
+	public static final int ARMOR_SCOUT     = ARMOR+12;
+	public static final int SR_RANGED       = ARMOR+13;
 	static{
 		assignItemRect(ARMOR_CLOTH,     15, 12);
 		assignItemRect(ARMOR_LEATHER,   14, 13);
