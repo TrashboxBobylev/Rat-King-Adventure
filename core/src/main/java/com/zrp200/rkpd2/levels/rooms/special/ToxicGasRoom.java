@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.potions.PotionOfPurity;
+import com.zrp200.rkpd2.items.quest.FlexTape;
 import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -35,6 +36,7 @@ import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.watabou.utils.Point;
+import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
@@ -99,7 +101,13 @@ public class ToxicGasRoom extends SpecialRoom {
 
 		for (int i = 0; i < 2; i++){
 			Item item = level.findPrizeItem(TrinketCatalyst.class);
-			if (item == null) item = new Gold().random();
+			if (item == null) {
+				if (Random.Int(2) == 0){
+					item = new FlexTape().random();
+				} else {
+					item = new Gold().random();
+				}
+			}
 			level.drop(item, goldPositions.remove(0)).type = Heap.Type.CHEST;
 		}
 
