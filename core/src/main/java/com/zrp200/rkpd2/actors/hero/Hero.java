@@ -346,7 +346,7 @@ public class Hero extends Char {
 
 	public boolean matchClass(HeroClass class1, HeroClass class2){
 		if (class1 == HeroClass.RAT_KING){
-			return class2 != HeroClass.DUELIST;
+			return class2 != HeroClass.DUELIST && class2 != HeroClass.CLERIC;
 		} else {
 			return class1 == class2;
 		}
