@@ -118,7 +118,7 @@ public class GuidingLight extends MultiTargetSpell {
 
 	@Override
 	public float chargeUse(Hero hero) {
-		if (hero.subClass == HeroSubClass.PRIEST
+		if (hero.subClass.is(HeroSubClass.PRIEST)
 			&& hero.buff(GuidingLightPriestCooldown.class) == null){
 			return 0;
 		} else {
@@ -128,7 +128,7 @@ public class GuidingLight extends MultiTargetSpell {
 
 	public String desc(){
 		String desc = checkEmpowerMsg("desc");
-		if (Dungeon.hero.subClass == HeroSubClass.PRIEST){
+		if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 			desc += "\n\n" + Messages.get(this, "desc_priest");
 		}
 		return desc + "\n\n" + chargeUseDesc();
@@ -148,7 +148,7 @@ public class GuidingLight extends MultiTargetSpell {
 
 		@Override
 		public float duration() {
-			return Dungeon.hero != null && Dungeon.hero.subClass == HeroSubClass.PRIEST ? 50 : 100;
+			return Dungeon.hero != null && Dungeon.hero.subClass.isExact(HeroSubClass.PRIEST) ? 50 : 100;
 		}
 	}
 
@@ -159,7 +159,7 @@ public class GuidingLight extends MultiTargetSpell {
 		}
 
 		public static void proc(Char target) {
-			if (Dungeon.hero.subClass == HeroSubClass.PRIEST && target.buff(Illuminated.class) != null) {
+			if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST) && target.buff(Illuminated.class) != null) {
 				target.buff(Illuminated.class).detach();
 				target.damage(Dungeon.hero.lvl, INSTANCE);
 			}

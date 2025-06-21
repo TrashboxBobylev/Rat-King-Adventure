@@ -81,7 +81,7 @@ public class HolyWeapon extends ClericSpell {
 		String desc = checkEmpowerMsg("desc", (
 				SpellEmpower.isActive() ? new HolyWepBuff.Empowered() : new HolyWepBuff()
 		).getDamage(), new HolyWepBuff.Empowered());
-		if (hero.subClass == HeroSubClass.PALADIN){
+		if (hero.subClass.is(HeroSubClass.PALADIN)){
 			desc += "\n\n" + checkEmpowerMsg("desc_paladin");
 		}
 		return desc + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(hero));

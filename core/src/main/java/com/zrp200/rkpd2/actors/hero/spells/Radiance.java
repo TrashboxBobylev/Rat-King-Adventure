@@ -60,7 +60,7 @@ public class Radiance extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.subClass == HeroSubClass.PRIEST;
+		return super.canCast(hero) && hero.subClass.is(HeroSubClass.PRIEST);
 	}
 
 	@Override

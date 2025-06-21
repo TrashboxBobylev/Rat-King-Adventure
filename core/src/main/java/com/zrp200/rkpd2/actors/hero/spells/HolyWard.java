@@ -73,7 +73,7 @@ public class HolyWard extends ClericSpell {
 	@Override
 	public String desc(){
 		String desc = checkEmpowerMsg("desc");
-		if (hero.subClass == HeroSubClass.PALADIN){
+		if (hero.subClass.is(HeroSubClass.PALADIN)){
 			desc += "\n\n" + Messages.get(this, "desc_paladin");
 		}
 		return desc + "\n\n" + Messages.get(this, "charge_cost", (int)chargeUse(hero));
@@ -98,7 +98,7 @@ public class HolyWard extends ClericSpell {
 		@Override
 		public String desc() {
 			String desc;
-			if (hero.subClass == HeroSubClass.PALADIN) {
+			if (hero.subClass.is(HeroSubClass.PALADIN)) {
 				desc = Messages.get(this, "desc_paladin") + "\n\n" + getExtendableMessage();
 			} else {
 				desc = Messages.get(this, "desc");

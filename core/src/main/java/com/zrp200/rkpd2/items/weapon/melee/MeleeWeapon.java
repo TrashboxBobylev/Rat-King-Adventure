@@ -623,7 +623,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 		if (isEquipped(hero) && !hasCurseEnchant() && (
 				enchantment == null ? hero.virtualBuff(HolyWeapon.HolyWepBuff.class) != null
-						: hero.buff(HolyWeapon.HolyWepBuff.class) != null && hero.subClass != HeroSubClass.PALADIN)){
+						: hero.buff(HolyWeapon.HolyWepBuff.class) != null && !hero.subClass.is(HeroSubClass.PALADIN))){
 			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", Messages.get(HolyWeapon.class, "ench_name", Messages.get(Enchantment.class, "enchant"))));
 			info += " " + Messages.get(HolyWeapon.class, "ench_desc");
 		} else if (enchantment != null && (cursedKnown || !enchantment.curse())){
