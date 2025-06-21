@@ -117,7 +117,10 @@ public class Combo extends Buff implements ActionIndicator.Action {
 
 		if (!enemy.isAlive() || (enemy.buff(Corruption.class) != null && enemy.HP == enemy.HT)){
 			Hero hero = (Hero)target;
-			resetTime(15 * hero.shiftedPoints(Talent.CLEAVE,Talent.RK_GLADIATOR), false);
+			int time = 15 * hero.shiftedPoints(Talent.CLEAVE, Talent.RK_GLADIATOR);
+			if (hero.canHaveTalent(Talent.BATTLE_TENDENCY))
+				time = 25;
+			resetTime(time, false);
 		} else {
 			resetTime(hero.subClass != HeroSubClass.GLADIATOR);
 		}
