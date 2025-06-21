@@ -381,7 +381,7 @@ public class SpiritHawk extends ArmorAbility {
 			super();
 
 			texture( Assets.Sprites.SPIRIT_HAWK );
-			if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
+			if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
 				texture(Assets.Sprites.ROYAL_OWL);
 			}
 

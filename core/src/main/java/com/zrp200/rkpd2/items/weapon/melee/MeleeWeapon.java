@@ -634,7 +634,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			info += "\n\n" + Messages.get(Weapon.class, "hardened_no_enchant");
 		}
 
-		if ((Dungeon.hero.subClass.is(HeroSubClass.BRAWLER)) && !Messages.get(this, "warrior_spec").equals("")) info += "\n\n" + Messages.get(MeleeWeapon.class, "warrior") + Messages.get(this, "warrior_spec");
+		if ((hero != null && hero.subClass.is(HeroSubClass.BRAWLER)) && !Messages.get(this, "warrior_spec").equals("")) info += "\n\n" + Messages.get(MeleeWeapon.class, "warrior") + Messages.get(this, "warrior_spec");
 
 
 		if (cursed && isEquipped( hero )) {
