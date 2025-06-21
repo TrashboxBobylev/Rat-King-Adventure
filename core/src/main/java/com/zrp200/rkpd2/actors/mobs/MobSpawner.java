@@ -258,7 +258,10 @@ public class MobSpawner extends Actor {
 
 	//switches out regular mobs for their alt versions when appropriate
 	private static void swapMobAlts(ArrayList<Class<?extends Mob>> rotation) {
-		float altChance = 1 / 50f * RatSkull.exoticChanceMultiplier();
+		float altChance = 1 / 50f;
+		if (Dungeon.branch == AbyssLevel.BRANCH && Dungeon.depth % 5 == 0)
+			altChance *= 20f;
+		altChance *= RatSkull.exoticChanceMultiplier();
 		for (int i = 0; i < rotation.size(); i++) {
 			if (Random.Float() < altChance) {
 				Class<? extends Mob> cl = rotation.get(i);
