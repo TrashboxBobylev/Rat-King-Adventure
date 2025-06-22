@@ -15,6 +15,7 @@ import com.zrp200.rkpd2.actors.mobs.Piranha;
 import com.zrp200.rkpd2.items.artifacts.CloakOfShadows;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
 import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
+import com.zrp200.rkpd2.items.weapon.missiles.darts.CrossbowAmmo;
 import com.zrp200.rkpd2.levels.traps.TenguDartTrap;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -29,7 +30,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class SteelAxe extends MissileWeapon {
+public class SteelAxe extends MissileWeapon implements CrossbowAmmo {
     {
         image = ItemSpriteSheet.STEEL_AXE;
 
@@ -95,7 +96,7 @@ public class SteelAxe extends MissileWeapon {
 
     private static Crossbow bow;
 
-    private void updateCrossbow(){
+    public void updateCrossbow(){
         if (Dungeon.hero.belongings.weapon instanceof Crossbow){
             bow = (Crossbow) Dungeon.hero.belongings.weapon;
         } else {
@@ -159,6 +160,12 @@ public class SteelAxe extends MissileWeapon {
 
         cloakBoost = false;
         WandOfBlastWave.BlastWave.blast(cell);
+    }
+
+    @Override
+    public int throwPos(Hero user, int dst) {
+        updateCrossbow();
+        return super.throwPos(user, dst);
     }
 
     @Override

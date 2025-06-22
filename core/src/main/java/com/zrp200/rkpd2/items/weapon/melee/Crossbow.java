@@ -30,7 +30,7 @@ import com.zrp200.rkpd2.actors.buffs.DummyBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.items.KindOfWeapon;
 import com.zrp200.rkpd2.items.wands.WandOfBlastWave;
-import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
+import com.zrp200.rkpd2.items.weapon.missiles.darts.CrossbowAmmo;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -96,7 +96,7 @@ public class Crossbow extends MeleeWeapon {
 		int dmg = super.proc(attacker, defender, damage);
 
 		//stronger elastic effect
-		if (attacker.buff(ChargedShot.class) != null && !(curItem instanceof Dart)){
+		if (attacker.buff(ChargedShot.class) != null && !(curItem instanceof CrossbowAmmo)){
 			//trace a ballistica to our target (which will also extend past them
 			Ballistica trajectory = new Ballistica(attacker.pos, defender.pos, Ballistica.STOP_TARGET);
 			//trim it to just be the part that goes past them

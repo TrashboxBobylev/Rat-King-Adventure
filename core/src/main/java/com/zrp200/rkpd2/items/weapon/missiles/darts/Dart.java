@@ -46,7 +46,7 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-public class Dart extends MissileWeapon {
+public class Dart extends MissileWeapon implements CrossbowAmmo {
 
 	{
 		image = ItemSpriteSheet.DART;
@@ -113,7 +113,7 @@ public class Dart extends MissileWeapon {
 	
 	protected static Crossbow bow;
 	
-	private void updateCrossbow(){
+	public void updateCrossbow(){
 		//player can instant swap anyway, so this is just QoL
 		bow = Crossbow.find(Dungeon.hero);
 	}

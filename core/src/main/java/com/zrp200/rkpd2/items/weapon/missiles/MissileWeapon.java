@@ -54,6 +54,7 @@ import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.items.weapon.melee.RunicBlade;
+import com.zrp200.rkpd2.items.weapon.missiles.darts.CrossbowAmmo;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
@@ -216,7 +217,7 @@ public boolean isSimilar( Item item ) {
 			}
 		}
 		else if (!projecting && Random.Int(3) < user.pointsInTalent(Talent.RK_SNIPER)) {
-			if (this instanceof Dart && ((Dart) this).crossbowHasEnchant(Dungeon.hero)){
+			if (this instanceof CrossbowAmmo && ((CrossbowAmmo) this).crossbowHasEnchant(Dungeon.hero)){
 				//do nothing
 			} else {
 				SpiritBow bow = Dungeon.hero.belongings.getItem(SpiritBow.class);
@@ -333,7 +334,7 @@ public boolean isSimilar( Item item ) {
 					}
 				}
 			} else if (Random.Int(3) < hero.pointsInTalent(Talent.RK_SNIPER)) {
-				if (this instanceof Dart && ((Dart) this).crossbowHasEnchant(hero)) {
+				if (this instanceof CrossbowAmmo && ((CrossbowAmmo) this).crossbowHasEnchant(hero)) {
 					//do nothing
 				} else {
 					SpiritBow bow = hero.belongings.getItem(SpiritBow.class);

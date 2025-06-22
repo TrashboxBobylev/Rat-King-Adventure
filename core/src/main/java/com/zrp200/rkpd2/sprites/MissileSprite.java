@@ -47,6 +47,7 @@ import com.zrp200.rkpd2.items.weapon.missiles.ThrowingKnife;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingSpear;
 import com.zrp200.rkpd2.items.weapon.missiles.ThrowingSpike;
 import com.zrp200.rkpd2.items.weapon.missiles.Trident;
+import com.zrp200.rkpd2.items.weapon.missiles.darts.CrossbowAmmo;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.Dart;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.watabou.noosa.Visual;
@@ -195,7 +196,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		if (item instanceof NerfGun.SmallDart){
 			speed *= 3.66f;
 		}
-		if (item instanceof Dart
+		if (item instanceof CrossbowAmmo
 				&& Crossbow.find(Dungeon.hero) != null){
 			speed *= 3f;
 			
