@@ -520,50 +520,52 @@ public boolean isSimilar( Item item ) {
 	}
 	
 	protected void decrementDurability(){
-		//if this weapon was thrown from a source stack, degrade that stack.
-		//unless a weapon is about to break, then break the one being thrown
-		if (parent != null){
-			if (parent.durability <= parent.durabilityPerUse()){
-				if (Dungeon.hero.hasTalent(Talent.AUTO_RELOAD)){
-					LiquidMetal metal = Dungeon.hero.belongings.getItem(LiquidMetal.class);
-					if (metal != null){
-						metal.useToRepair(parent);
-						if (Dungeon.hero.pointsInTalent(Talent.AUTO_RELOAD) > 1)
-							Buff.affect(Dungeon.hero, Talent.AutoReloadBuff.class, 3f);
+		if (Dungeon.hero.hasTalent(Talent.HEROIC_ARCHERY) && !(Random.Int(7) < Dungeon.hero.pointsInTalent(Talent.HEROIC_ARCHERY))) {
+			//if this weapon was thrown from a source stack, degrade that stack.
+			//unless a weapon is about to break, then break the one being thrown
+			if (parent != null) {
+				if (parent.durability <= parent.durabilityPerUse()) {
+					if (Dungeon.hero.hasTalent(Talent.AUTO_RELOAD)) {
+						LiquidMetal metal = Dungeon.hero.belongings.getItem(LiquidMetal.class);
+						if (metal != null) {
+							metal.useToRepair(parent);
+							if (Dungeon.hero.pointsInTalent(Talent.AUTO_RELOAD) > 1)
+								Buff.affect(Dungeon.hero, Talent.AutoReloadBuff.class, 3f);
+						} else {
+							durability = 0;
+							parent.durability = MAX_DURABILITY;
+							if (parent.durabilityPerUse() < 100f) {
+								GLog.n(Messages.get(this, "has_broken"));
+							}
+						}
 					} else {
 						durability = 0;
 						parent.durability = MAX_DURABILITY;
-                        if (parent.durabilityPerUse() < 100f) {
-                            GLog.n(Messages.get(this, "has_broken"));
-                        }
+						if (parent.durabilityPerUse() < 100f) {
+							GLog.n(Messages.get(this, "has_broken"));
+						}
 					}
 				} else {
-					durability = 0;
-					parent.durability = MAX_DURABILITY;
-                    if (parent.durabilityPerUse() < 100f) {
-                        GLog.n(Messages.get(this, "has_broken"));
-                    }
+					parent.durability -= parent.durabilityPerUse();
+					if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()) {
+						GLog.w(Messages.get(this, "about_to_break"));
+					}
 				}
+				parent = null;
 			} else {
-				parent.durability -= parent.durabilityPerUse();
-				if (parent.durability > 0 && parent.durability <= parent.durabilityPerUse()){
+				durability -= durabilityPerUse();
+				if (durability > 0 && durability <= durabilityPerUse()) {
 					GLog.w(Messages.get(this, "about_to_break"));
+				} else if (durabilityPerUse() < 100f && durability <= 0) {
+					GLog.n(Messages.get(this, "has_broken"));
 				}
-			}
-			parent = null;
-		} else {
-			durability -= durabilityPerUse();
-			if (durability > 0 && durability <= durabilityPerUse()){
-				GLog.w(Messages.get(this, "about_to_break"));
-			} else if (durabilityPerUse() < 100f && durability <= 0){
-				GLog.n(Messages.get(this, "has_broken"));
-			}
-			if (Dungeon.hero.hasTalent(Talent.AUTO_RELOAD) && durability <= 0){
-				LiquidMetal metal = Dungeon.hero.belongings.getItem(LiquidMetal.class);
-				if (metal != null){
-					metal.useToRepair(this);
-					if (Dungeon.hero.pointsInTalent(Talent.AUTO_RELOAD) > 1)
-						Buff.affect(Dungeon.hero, Talent.AutoReloadBuff.class, 3f);
+				if (Dungeon.hero.hasTalent(Talent.AUTO_RELOAD) && durability <= 0) {
+					LiquidMetal metal = Dungeon.hero.belongings.getItem(LiquidMetal.class);
+					if (metal != null) {
+						metal.useToRepair(this);
+						if (Dungeon.hero.pointsInTalent(Talent.AUTO_RELOAD) > 1)
+							Buff.affect(Dungeon.hero, Talent.AutoReloadBuff.class, 3f);
+					}
 				}
 			}
 		}
