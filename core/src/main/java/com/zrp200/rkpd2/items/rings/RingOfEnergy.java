@@ -50,6 +50,10 @@ public class RingOfEnergy extends Ring {
 
     @Override
 	protected float cap() {
+		return energyCap();
+	}
+
+	public static float energyCap() {
 		return 2f;
 	}
 
@@ -65,7 +69,7 @@ public class RingOfEnergy extends Ring {
 			bonus *= 1f + (0.4f * ((Hero) target).pointsInTalent(Talent.LIGHT_READING)/3f);
 		}
 
-		return bonus;
+		return Math.min(bonus, energyCap()+1f);
 	}
 
 	public static float artifactChargeMultiplier( Char target ){
@@ -76,7 +80,7 @@ public class RingOfEnergy extends Ring {
 			bonus *= 1f + /*(0.2f * ((Hero) target).pointsInTalent(Talent.LIGHT_CLOAK)/3f)*/ 0.1f*hero.pointsInTalent(Talent.LIGHT_CLOAK);
 		}
 
-		return bonus;
+		return Math.min(bonus, energyCap()+1f);
 	}
 
 	public static float armorChargeMultiplier( Char target ){
