@@ -88,6 +88,7 @@ abstract public class MissileWeapon extends Weapon {
 	public boolean spawnedForEffect = false;
 
 	protected boolean sticky = true;
+	protected boolean recoverable = true;
 	
 	public static final float MAX_DURABILITY = 100;
 	protected float durability = MAX_DURABILITY;
@@ -465,7 +466,8 @@ public boolean isSimilar( Item item ) {
 					return;
 				}
 			}
-			Dungeon.level.drop( this, cell ).sprite.drop();
+			if (recoverable)
+				Dungeon.level.drop( this, cell ).sprite.drop();
 		}
 	}
 	

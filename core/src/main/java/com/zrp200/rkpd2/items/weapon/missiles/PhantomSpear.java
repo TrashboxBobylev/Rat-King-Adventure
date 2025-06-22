@@ -48,6 +48,8 @@ public class PhantomSpear extends MissileWeapon {
 		
 		tier = 6;
 		baseUses = 20;
+		sticky = false;
+		recoverable = false;
 	}
 
 	@Override
