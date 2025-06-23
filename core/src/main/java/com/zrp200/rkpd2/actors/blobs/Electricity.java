@@ -27,6 +27,8 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.DamageOverTimeEffect;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
+import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.BlobEmitter;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
 import com.zrp200.rkpd2.items.Heap;
@@ -75,7 +77,8 @@ public class Electricity extends Blob implements DamageOverTimeEffect {
 							Buff.prolong( ch, Paralysis.class, cur[cell]);
 						}
 						if (cur[cell] % 2 == 1) {
-							ch.damage(Math.round(Random.Float(2 + Dungeon.scalingDepth() / 5f)), this);
+							if (!(ch instanceof Hero && ((Hero) ch).hasTalent(Talent.FARADAY_CAGE)))
+								ch.damage(Math.round(Random.Float(2 + Dungeon.scalingDepth() / 5f)), this);
 							if (!ch.isAlive() && ch == Dungeon.hero){
 								Dungeon.fail( this );
 								GLog.n( Messages.get(this, "ondeath") );
