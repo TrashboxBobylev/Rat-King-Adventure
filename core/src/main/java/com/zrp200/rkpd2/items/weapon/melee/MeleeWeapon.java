@@ -716,7 +716,7 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			if (charges < chargeCap()){
 				if (Regeneration.regenOn()){
 					//60 to 45 turns per charge
-					float chargeToGain = 1/(60f-1.5f*(chargeCap()-charges));
+					float chargeToGain = 1/(getBaseRecharge()-1.5f*(chargeCap()-charges));
 
 					//40 to 30 turns per charge for champion
 					if (hero.subClass == HeroSubClass.CHAMPION){
@@ -753,13 +753,13 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			return true;
 		}
 
-		private float getBaseRecharge(int slot) {
+		private float getBaseRecharge() {
 			Hero hero = SafeCast.cast(target, Hero.class);
 			if (hero.hasTalent(Talent.ADVENTUROUS_SNOOZING) && hero.resting){
 				float boostMod = hero.heroClass.isExact(HeroClass.DUELIST) ? 2f : 1f;
-				return 40f * (1f - ((hero.pointsInTalent(Talent.ADVENTUROUS_SNOOZING))*boostMod / (float) chargeCap()));
+				return 60f * (1f - ((hero.pointsInTalent(Talent.ADVENTUROUS_SNOOZING))*boostMod*1.5f / (float) chargeCap()));
 			}
-			return 40f;
+			return 60f;
 		}
 
 		@Override
