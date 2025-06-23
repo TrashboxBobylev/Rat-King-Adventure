@@ -162,6 +162,9 @@ public class Bomb extends Item {
 					affectedCells.add(i);
 					Char ch = Actor.findChar(i);
 					if (ch != null) {
+						if (doNotDamageHero && ch instanceof Hero) {
+							continue;
+						}
 						affectedChars.add(ch);
 					}
 				}
