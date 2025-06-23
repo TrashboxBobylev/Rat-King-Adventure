@@ -2129,7 +2129,7 @@ if (wep != null) {
 				damage *= 0.2f;
 			}
 			if (buff(DuelistGrass.GrassitateResistance.class) != null){
-				dmg *= 0.6f;
+				damage *= 0.6f;
 			}
 		}
 
@@ -2149,7 +2149,7 @@ if (wep != null) {
 		}
 
 		if ((src instanceof Electricity || src instanceof Elemental.ShockElemental || src instanceof WandOfLightning) && pointsInTalent(Talent.FARADAY_CAGE) > 1){
-			dmg /= 2;
+			damage /= 2;
 		}
 
         if (buff(Talent.WarriorFoodImmunity.class) != null){
