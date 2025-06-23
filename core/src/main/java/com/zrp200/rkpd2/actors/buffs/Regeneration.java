@@ -26,7 +26,10 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.SpiritForm;
+import com.zrp200.rkpd2.items.artifacts.ChaliceOfBlood;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
+import com.zrp200.rkpd2.items.trinkets.SaltCube;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.watabou.utils.Bundle;
 
@@ -74,15 +77,30 @@ public class Regeneration extends Buff {
 
 	public static float getRegenDelay(Char target) {
 		RegenerationBuff regenBuff = target.buff( RegenerationBuff.class);
+		boolean chaliceCursed = false;
+		int chaliceLevel = -1;
+		if (target.buff(MagicImmune.class) == null) {
+			if (regenBuff != null) {
+				chaliceCursed = regenBuff.isCursed();
+				chaliceLevel = regenBuff.itemLevel();
+			} else if (Dungeon.hero.buff(SpiritForm.SpiritFormBuff.class) != null
+					&& Dungeon.hero.buff(SpiritForm.SpiritFormBuff.class).artifact() instanceof ChaliceOfBlood) {
+				chaliceLevel = SpiritForm.artifactLevel();
+			}
+		}
 		float delay = REGENERATION_DELAY;
-		if (regenBuff != null && target.buff(MagicImmune.class) == null) {
-			if (regenBuff.isCursed()) {
+		if (chaliceLevel != -1 && target.buff(MagicImmune.class) == null) {
+			if (chaliceCursed) {
 				delay *= 1.5f;
 			} else {
 				//15% boost at +0, scaling to a 500% boost at +10
-				delay -= 1.33f + regenBuff.itemLevel()*0.667f;
+				delay -= 1.33f + chaliceLevel*0.667f;
 				delay /= RingOfEnergy.artifactChargeMultiplier(target);
 			}
+		}
+		//salt cube is turned off while regen is disabled.
+		if (target.buff(LockedFloor.class) == null) {
+			delay /= SaltCube.healthRegenMultiplier();
 		}
 		if (Dungeon.hero.hasTalent(Talent.NATURE_AID_2) && Dungeon.level.map[Dungeon.hero.pos] == Terrain.FURROWED_GRASS){
 			delay *= 1 - Dungeon.hero.pointsInTalent(Talent.NATURE_AID_2)*0.35f;
