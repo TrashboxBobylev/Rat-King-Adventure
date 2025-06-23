@@ -605,18 +605,8 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 		public static class DragonKick extends TargetedMonkAbility {
 
-			public int min(){
-				return 3 * (MonkEnergy.isFeelingEmpowered(Level.Feeling.LARGE) ? 2 : 1);
-			}
-
-			public int max(){
-				return 3*(hero.STR()-8) * (MonkEnergy.isFeelingEmpowered(Level.Feeling.LARGE) ? 2 : 1);
-			}
-
 			@Override
 			public int energyCost() {
-				if (MonkEnergy.isFeelingEmpowered(Level.Feeling.LARGE))
-					return 6;
 				return 4;
 			}
 
@@ -639,7 +629,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
 
-				int knockPower = Math.round(6 * (MonkEnergy.isFeelingEmpowered(Level.Feeling.LARGE) ? 1.5f : 1f));
+				int knockPower = Math.round(6 * (MonkEnergy.isFeelingEmpowered(Level.Feeling.LARGE) ? 2f : 1f));
 
 				if (oldPos == enemy.pos){
 					//trace a ballistica to our target (which will also extend past them
