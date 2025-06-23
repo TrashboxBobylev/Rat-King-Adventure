@@ -1125,6 +1125,17 @@ public class Hero extends Char {
 	}
 
 	@Override
+	public float stealth() {
+		float stealth = super.stealth();
+
+		if (RobotBuff.isVehicle()){
+			stealth += 3;
+		}
+
+		return stealth;
+	}
+
+	@Override
 	public boolean canSurpriseAttack(){
 		KindOfWeapon w = belongings.attackingWeapon();
 		if (!(w instanceof Weapon))             return true;
