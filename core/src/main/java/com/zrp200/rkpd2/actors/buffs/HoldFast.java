@@ -21,7 +21,6 @@
 
 package com.zrp200.rkpd2.actors.buffs;
 
-import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.messages.Messages;
@@ -76,10 +75,6 @@ public class HoldFast extends Buff {
     public static int armorMax() {
         return 2 * hero.shiftedPoints(Talent.HOLD_FAST, Talent.RK_BERSERKER);
     }
-
-	public static int minArmor(){
-		return Dungeon.hero.pointsInTalent(Talent.HOLD_FAST);
-	}
 
 	@Override
 	public String desc() {
