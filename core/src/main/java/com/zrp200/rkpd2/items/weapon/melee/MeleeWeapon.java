@@ -374,11 +374,14 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		hero.belongings.abilityWeapon = this;
 		Charger charger = Buff.affect(hero, Charger.class);
 
-		charger.partialCharge -= abilityChargeUse(hero, target);
+		float charge = abilityChargeUse(hero, target);
+		charger.partialCharge -= charge;
 		while (charger.partialCharge < 0 && charger.charges > 0) {
 			charger.charges--;
 			charger.partialCharge++;
 		}
+		if (charge == 0)
+			grass -= DuelistGrass.getAbilityGrassCost();
 
 		if (hero.heroClass.is(HeroClass.DUELIST)
 				&& hero.canHaveTalent(Talent.AGGRESSIVE_BARRIER)
@@ -450,7 +453,12 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 	}
 
 	public final float abilityChargeUse(Hero hero, Char target){
-		return baseChargeUse(hero, target) * (activeAbility == null ? 1 : 2);
+		int chargeUse = baseChargeUse(hero, target) * (activeAbility == null ? 1 : 2);
+		if (cutGrass)
+			chargeUse = 1;
+		if (grass > DuelistGrass.getAbilityGrassCost())
+			chargeUse = 0;
+		return chargeUse;
 	}
 
 	@Override
