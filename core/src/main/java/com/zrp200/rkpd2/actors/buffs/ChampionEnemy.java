@@ -182,7 +182,11 @@ public abstract class ChampionEnemy extends Buff {
 	}
 
 	private static Class<? extends ChampionEnemy> getTitle(){
-		return Random.element(championTitles);
+		Class title;
+		do {
+			title = Random.element(championTitles);
+		} while (Dungeon.scalingDepth() <= 5 && (title == Reflective.class || title == Explosive.class));
+		return title;
 	}
 
 	private static void makeChampion(Mob m, Class<? extends ChampionEnemy> title) {
