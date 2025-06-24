@@ -22,22 +22,27 @@
 package com.zrp200.rkpd2.journal;
 
 import com.zrp200.rkpd2.Badges;
+import com.zrp200.rkpd2.actors.mobs.AbyssalSpawner;
 import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.Ankh;
 import com.zrp200.rkpd2.items.ArcaneResin;
 import com.zrp200.rkpd2.items.BrokenSeal;
 import com.zrp200.rkpd2.items.Dewdrop;
+import com.zrp200.rkpd2.items.DuelistGrass;
 import com.zrp200.rkpd2.items.EnergyCrystal;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Honeypot;
 import com.zrp200.rkpd2.items.KingsCrown;
+import com.zrp200.rkpd2.items.KromerCrown;
+import com.zrp200.rkpd2.items.KromerMask;
 import com.zrp200.rkpd2.items.LiquidMetal;
 import com.zrp200.rkpd2.items.Stylus;
 import com.zrp200.rkpd2.items.TengusMask;
 import com.zrp200.rkpd2.items.Torch;
 import com.zrp200.rkpd2.items.Waterskin;
 import com.zrp200.rkpd2.items.armor.Armor;
+import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.bags.MagicalHolster;
 import com.zrp200.rkpd2.items.bags.PotionBandolier;
 import com.zrp200.rkpd2.items.bags.ScrollHolder;
@@ -48,6 +53,7 @@ import com.zrp200.rkpd2.items.bombs.Firebomb;
 import com.zrp200.rkpd2.items.bombs.FlashBangBomb;
 import com.zrp200.rkpd2.items.bombs.FrostBomb;
 import com.zrp200.rkpd2.items.bombs.HolyBomb;
+import com.zrp200.rkpd2.items.bombs.KromerizedBomb;
 import com.zrp200.rkpd2.items.bombs.Noisemaker;
 import com.zrp200.rkpd2.items.bombs.RegrowthBomb;
 import com.zrp200.rkpd2.items.bombs.ShrapnelBomb;
@@ -75,6 +81,7 @@ import com.zrp200.rkpd2.items.potions.brews.CausticBrew;
 import com.zrp200.rkpd2.items.potions.brews.InfernalBrew;
 import com.zrp200.rkpd2.items.potions.brews.ShockingBrew;
 import com.zrp200.rkpd2.items.potions.brews.UnstableBrew;
+import com.zrp200.rkpd2.items.potions.elixirs.DoNotDieElixir;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfAquaticRejuvenation;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfArcaneArmor;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfDragonsBlood;
@@ -83,14 +90,19 @@ import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfHoneyedHealing;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfIcyTouch;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfMight;
 import com.zrp200.rkpd2.items.potions.elixirs.ElixirOfToxicEssence;
+import com.zrp200.rkpd2.items.potions.elixirs.KromerPotion;
 import com.zrp200.rkpd2.items.potions.exotic.ExoticPotion;
 import com.zrp200.rkpd2.items.quest.CeremonialCandle;
+import com.zrp200.rkpd2.items.quest.Chaosstone;
 import com.zrp200.rkpd2.items.quest.CorpseDust;
 import com.zrp200.rkpd2.items.quest.DarkGold;
 import com.zrp200.rkpd2.items.quest.DwarfToken;
 import com.zrp200.rkpd2.items.quest.Embers;
 import com.zrp200.rkpd2.items.quest.GooBlob;
+import com.zrp200.rkpd2.items.quest.Kromer;
 import com.zrp200.rkpd2.items.quest.MetalShard;
+import com.zrp200.rkpd2.items.quest.NerfGun;
+import com.zrp200.rkpd2.items.quest.RedCrystal;
 import com.zrp200.rkpd2.items.remains.BowFragment;
 import com.zrp200.rkpd2.items.remains.BrokenHilt;
 import com.zrp200.rkpd2.items.remains.BrokenStaff;
@@ -101,8 +113,10 @@ import com.zrp200.rkpd2.items.scrolls.exotic.ExoticScroll;
 import com.zrp200.rkpd2.items.spells.Alchemize;
 import com.zrp200.rkpd2.items.spells.BeaconOfReturning;
 import com.zrp200.rkpd2.items.spells.CurseInfusion;
+import com.zrp200.rkpd2.items.spells.KromerScroll;
 import com.zrp200.rkpd2.items.spells.MagicalInfusion;
 import com.zrp200.rkpd2.items.spells.PhaseShift;
+import com.zrp200.rkpd2.items.spells.Pipisfusion;
 import com.zrp200.rkpd2.items.spells.ReclaimTrap;
 import com.zrp200.rkpd2.items.spells.Recycle;
 import com.zrp200.rkpd2.items.spells.SummonElemental;
@@ -110,8 +124,11 @@ import com.zrp200.rkpd2.items.spells.TelekineticGrab;
 import com.zrp200.rkpd2.items.spells.UnstableSpell;
 import com.zrp200.rkpd2.items.spells.WildEnergy;
 import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
+import com.zrp200.rkpd2.items.weapon.KromerBow;
+import com.zrp200.rkpd2.items.weapon.Slingshot;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.items.weapon.melee.KromerStaff;
 import com.zrp200.rkpd2.items.weapon.missiles.darts.TippedDart;
 import com.zrp200.rkpd2.messages.Messages;
 import com.watabou.utils.Bundle;
@@ -190,6 +207,8 @@ public enum Catalog {
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T3.classes);
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T4.classes);
 		MELEE_WEAPONS.addItems(Generator.Category.WEP_T5.classes);
+		MELEE_WEAPONS.addItems(Generator.Category.WEP_T6.classes);
+		MELEE_WEAPONS.addItems(KromerStaff.class);
 
 		ARMOR.addItems(Generator.Category.ARMOR.classes);
 
@@ -198,6 +217,8 @@ public enum Catalog {
 		THROWN_WEAPONS.addItems(Generator.Category.MIS_T3.classes);
 		THROWN_WEAPONS.addItems(Generator.Category.MIS_T4.classes);
 		THROWN_WEAPONS.addItems(Generator.Category.MIS_T5.classes);
+		THROWN_WEAPONS.addItems(Generator.Category.MIS_T6.classes);
+		THROWN_WEAPONS.addItems(Slingshot.class);
 
 		ENCHANTMENTS.addItems(Weapon.Enchantment.common);
 		ENCHANTMENTS.addItems(Weapon.Enchantment.uncommon);
@@ -214,11 +235,12 @@ public enum Catalog {
 		RINGS.addItems(Generator.Category.RING.classes);
 
 		ARTIFACTS.addItems(Generator.Category.ARTIFACT.classes);
+		ARTIFACTS.addItems(KromerCloak.class);
 
 		TRINKETS.addItems(Generator.Category.TRINKET.classes);
 
-		MISC_EQUIPMENT.addItems(BrokenSeal.class, SpiritBow.class, Waterskin.class, VelvetPouch.class,
-				PotionBandolier.class, ScrollHolder.class, MagicalHolster.class, Amulet.class);
+		MISC_EQUIPMENT.addItems(BrokenSeal.class, SpiritBow.class, Waterskin.class, NerfGun.class, VelvetPouch.class,
+				PotionBandolier.class, ScrollHolder.class, MagicalHolster.class, Amulet.class, KromerBow.class);
 
 
 
@@ -239,26 +261,30 @@ public enum Catalog {
 		EXOTIC_SCROLLS.addItems(ExoticScroll.exoToReg.keySet().toArray(new Class[0]));
 
 		BOMBS.addItems( Bomb.class, FrostBomb.class, Firebomb.class, SmokeBomb.class, RegrowthBomb.class,
-				WoollyBomb.class, Noisemaker.class, FlashBangBomb.class, HolyBomb.class, ArcaneBomb.class, ShrapnelBomb.class);
+				WoollyBomb.class, Noisemaker.class, FlashBangBomb.class, HolyBomb.class, ArcaneBomb.class, ShrapnelBomb.class, KromerizedBomb.class);
 
 		TIPPED_DARTS.addItems(TippedDart.types.values().toArray(new Class[0]));
 
 		BREWS_ELIXIRS.addItems( UnstableBrew.class, InfernalBrew.class, BlizzardBrew.class,
 				ShockingBrew.class, CausticBrew.class, AquaBrew.class, ElixirOfHoneyedHealing.class,
 				ElixirOfAquaticRejuvenation.class, ElixirOfArcaneArmor.class, ElixirOfDragonsBlood.class,
-				ElixirOfIcyTouch.class, ElixirOfToxicEssence.class, ElixirOfMight.class, ElixirOfFeatherFall.class);
+				ElixirOfIcyTouch.class, ElixirOfToxicEssence.class, ElixirOfMight.class, ElixirOfFeatherFall.class,
+				DoNotDieElixir.class, KromerPotion.class);
 
 		SPELLS.addItems( UnstableSpell.class, WildEnergy.class, TelekineticGrab.class, PhaseShift.class,
 				Alchemize.class, CurseInfusion.class, MagicalInfusion.class, Recycle.class,
-				ReclaimTrap.class, SummonElemental.class, BeaconOfReturning.class);
+				ReclaimTrap.class, SummonElemental.class, BeaconOfReturning.class,
+				KromerScroll.class, Pipisfusion.class);
 
-		MISC_CONSUMABLES.addItems( Gold.class, EnergyCrystal.class, Dewdrop.class,
+		MISC_CONSUMABLES.addItems( Gold.class, EnergyCrystal.class, Dewdrop.class, DuelistGrass.class,
 				IronKey.class, GoldenKey.class, CrystalKey.class, SkeletonKey.class,
 				TrinketCatalyst.class, Stylus.class, Torch.class, Honeypot.class, Ankh.class,
 				CorpseDust.class, Embers.class, CeremonialCandle.class, DarkGold.class, DwarfToken.class,
 				GooBlob.class, TengusMask.class, MetalShard.class, KingsCrown.class,
-				LiquidMetal.class, ArcaneResin.class,
-				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class, TornPage.class);
+				LiquidMetal.class, ArcaneResin.class, Kromer.class,
+				SealShard.class, BrokenStaff.class, CloakScrap.class, BowFragment.class, BrokenHilt.class, TornPage.class,
+				Chaosstone.class, AbyssalSpawner.Clump.class, RedCrystal.class,
+				KromerMask.class, KromerCrown.class);
 
 	}
 

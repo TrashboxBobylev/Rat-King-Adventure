@@ -31,8 +31,10 @@ import com.zrp200.rkpd2.items.armor.LeatherArmor;
 import com.zrp200.rkpd2.items.armor.MageArmor;
 import com.zrp200.rkpd2.items.armor.MailArmor;
 import com.zrp200.rkpd2.items.armor.PlateArmor;
+import com.zrp200.rkpd2.items.armor.RatKingArmor;
 import com.zrp200.rkpd2.items.armor.RogueArmor;
 import com.zrp200.rkpd2.items.armor.ScaleArmor;
+import com.zrp200.rkpd2.items.armor.ScoutArmor;
 import com.zrp200.rkpd2.items.armor.WarriorArmor;
 import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
@@ -144,6 +146,7 @@ import com.zrp200.rkpd2.items.wands.WandOfPrismaticLight;
 import com.zrp200.rkpd2.items.wands.WandOfRegrowth;
 import com.zrp200.rkpd2.items.wands.WandOfTransfusion;
 import com.zrp200.rkpd2.items.wands.WandOfUnstable;
+import com.zrp200.rkpd2.items.wands.WandOfUnstable2;
 import com.zrp200.rkpd2.items.wands.WandOfWarding;
 import com.zrp200.rkpd2.items.weapon.melee.AluminumSword;
 import com.zrp200.rkpd2.items.weapon.melee.AssassinsBlade;
@@ -153,6 +156,7 @@ import com.zrp200.rkpd2.items.weapon.melee.ConstructWand;
 import com.zrp200.rkpd2.items.weapon.melee.Crossbow;
 import com.zrp200.rkpd2.items.weapon.melee.Cudgel;
 import com.zrp200.rkpd2.items.weapon.melee.Dagger;
+import com.zrp200.rkpd2.items.weapon.melee.Dagger2;
 import com.zrp200.rkpd2.items.weapon.melee.Dirk;
 import com.zrp200.rkpd2.items.weapon.melee.DreadSlicer;
 import com.zrp200.rkpd2.items.weapon.melee.ElementalDirk;
@@ -437,8 +441,9 @@ public class Generator {
 					WandOfCorruption.class,
 					WandOfRegrowth.class,
 					WandOfFirebolt.class,
-					WandOfUnstable.class};
-			WAND.defaultProbs = new float[]{ 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 3, 1 };
+					WandOfUnstable.class,
+					WandOfUnstable2.class};
+			WAND.defaultProbs = new float[]{ 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 3, 1, 0 };
             WAND.probs = WAND.defaultProbs.clone();
 
 			//see generator.randomWeapon
@@ -463,9 +468,10 @@ public class Generator {
 					Quarterstaff.class,
 					Dirk.class,
 					Sickle.class,
-					Pickaxe.class
+					Pickaxe.class,
+					Dagger2.class
 			};
-			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0 };
+			WEP_T2.defaultProbs = new float[]{ 2, 2, 2, 2, 2, 2, 0, 0 };
 			WEP_T2.probs = WEP_T2.defaultProbs.clone();
 			
 			WEP_T3.classes = new Class<?>[]{
@@ -530,15 +536,16 @@ public class Generator {
 					MailArmor.class,
 					ScaleArmor.class,
 					PlateArmor.class,
-					PlateArmor.class,
 					WarriorArmor.class,
 					MageArmor.class,
 					RogueArmor.class,
 					HuntressArmor.class,
 					DuelistArmor.class,
-					ClericArmor.class
+					ClericArmor.class,
+					RatKingArmor.class,
+					ScoutArmor.class
 			};
-			ARMOR.probs = new float[]{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 };
+			ARMOR.probs = new float[]{ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 			
 			//see Generator.randomMissile
 			MISSILE.classes = new Class<?>[]{};
