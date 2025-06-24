@@ -15,6 +15,7 @@ import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.quest.RedCrystal;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
+import com.zrp200.rkpd2.items.spells.TelekineticGrab;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
@@ -169,6 +170,8 @@ public class AbyssalSpawner extends AbyssalMob {
 
         @Override
         public boolean doPickUp(Hero hero, int pos) {
+            Item item = new ScrollOfUpgrade();
+            boolean couldntpickupgrade = false;
 
             if (!Dungeon.LimitedDrops.ABYSSAL_SPAWNER.dropped()){
                 Dungeon.LimitedDrops.ABYSSAL_SPAWNER.drop();
@@ -176,15 +179,14 @@ public class AbyssalSpawner extends AbyssalMob {
             } else {
                 Dungeon.LimitedDrops.ABYSSAL_SPAWNER.count = 0;
                 GLog.p( Messages.capitalize(Messages.get(this, "piece2")) );
-                Item item = new ScrollOfUpgrade();
 
                 if (item.doPickUp(hero, hero.pos)) {
                     hero.spend(-Item.TIME_TO_PICK_UP);
                     GLog.i( Messages.capitalize(Messages.get(hero, "you_now_have", item.name())) );
                     return true;
                 } else {
-                    GLog.w(Messages.get(this, "cant_grab"));
-                    Dungeon.level.drop(item, hero.pos).sprite.drop();
+                    GLog.w(Messages.get(TelekineticGrab.class, "cant_grab"));
+                    couldntpickupgrade = true;
                 }
             }
 
@@ -193,7 +195,13 @@ public class AbyssalSpawner extends AbyssalMob {
             Talent.onItemCollected( hero, this );
             hero.spendAndNext( TIME_TO_PICK_UP );
 
-            return true;
+            if (couldntpickupgrade){
+                Dungeon.level.heaps.get(pos).pickUp();
+                Dungeon.level.drop(item, hero.pos).sprite.drop();
+                return false;
+            } else {
+                return true;
+            }
         }
 
         @Override
