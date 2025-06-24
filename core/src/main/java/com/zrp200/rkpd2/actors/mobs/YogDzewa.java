@@ -429,7 +429,7 @@ public class YogDzewa extends Mob {
 
 		int preHP = HP;
 		if (Dungeon.isChallenged(Challenges.EVIL_MODE)){
-			dmg /= Math.min(3, phase);
+			dmg /= Math.min(3, Math.max(1, phase));
 		}
 		super.damage( dmg, src );
 
