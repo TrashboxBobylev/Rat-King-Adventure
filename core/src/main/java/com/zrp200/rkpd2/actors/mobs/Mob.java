@@ -988,7 +988,8 @@ public abstract class Mob extends Char {
 			if (!(cause instanceof CurseInfusion || cause instanceof Gravery)){
 				rollToDropLoot();
 			} else {
-				EXP = 0;
+				if (hero.lvl > maxLvl + 2)
+					EXP = 0;
 			}
 			if (cause == hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment) {
 				Talent.LethalMomentumTracker.process();
