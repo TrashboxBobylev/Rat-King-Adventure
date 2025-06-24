@@ -4,9 +4,11 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
+import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.quest.Chaosstone;
+import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.painters.PrisonPainter;
 import com.zrp200.rkpd2.levels.rooms.Room;
@@ -25,11 +27,15 @@ import com.zrp200.rkpd2.levels.traps.RockfallTrap;
 import com.zrp200.rkpd2.levels.traps.StormTrap;
 import com.zrp200.rkpd2.levels.traps.WarpingTrap;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
+import com.zrp200.rkpd2.windows.WndMessage;
+import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Halo;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
@@ -159,6 +165,21 @@ public class AbyssLevel extends RegularLevel {
             if (level.map[i] == Terrain.WALL_DECO) {
                 group.add( new Torch( i ) );
             }
+        }
+    }
+
+    @Override
+    public boolean activateTransition(Hero hero, LevelTransition transition) {
+        if (transition.type == LevelTransition.Type.SURFACE){
+            Game.runOnRenderThread(new Callback() {
+                @Override
+                public void call() {
+                    GameScene.show( new WndMessage( Messages.get(hero, "leave") ) );
+                }
+            });
+            return false;
+        } else {
+            return super.activateTransition(hero, transition);
         }
     }
 
