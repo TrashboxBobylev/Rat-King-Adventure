@@ -114,12 +114,14 @@ public class AbyssLevel extends RegularLevel {
         return Assets.Environment.WATER_ABYSS;
     }
 
+    public static final Class[] trapClasses = {
+            FrostTrap.class, StormTrap.class, CorrosionTrap.class, DisintegrationTrap.class,
+            RockfallTrap.class, FlashingTrap.class, GuardianTrap.class,
+            DisarmingTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class};
+
     @Override
     protected Class<?>[] trapClasses() {
-        return new Class[]{
-                FrostTrap.class, StormTrap.class, CorrosionTrap.class,  DisintegrationTrap.class,
-                RockfallTrap.class, FlashingTrap.class, GuardianTrap.class,
-                DisarmingTrap.class, WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class };
+        return trapClasses;
     }
 
     @Override

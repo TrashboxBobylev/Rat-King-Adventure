@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.potions.PotionOfLevitation;
 import com.zrp200.rkpd2.items.weapon.Weapon;
+import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.painters.Painter;
@@ -108,7 +109,13 @@ public class TrapsRoom extends SpecialRoom {
 		for(Point p : getPoints()) {
 			int cell = level.pointToCell(p);
 			if (level.map[cell] == Terrain.TRAP){
-				level.setTrap(Reflection.newInstance(trapClass).reveal(), cell);
+				Class<? extends Trap> usedTrapClass;
+				if (Dungeon.branch == AbyssLevel.BRANCH){
+					usedTrapClass = Random.oneOf(AbyssLevel.trapClasses);
+				} else {
+					usedTrapClass = trapClass;
+				}
+				level.setTrap(Reflection.newInstance(usedTrapClass).reveal(), cell);
 			}
 		}
 		
