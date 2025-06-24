@@ -51,8 +51,11 @@ public abstract class Trinket extends Item {
 			return -1;
 		}
 
-		if (Dungeon.hero.buff(Metaexpression.TrinketHolder.class) != null){
-			return Dungeon.hero.buff(Metaexpression.TrinketHolder.class).trinket.buffedLvl();
+		Metaexpression.TrinketHolder trinketHolder;
+
+		if ((trinketHolder = Dungeon.hero.buff(Metaexpression.TrinketHolder.class)) != null
+				&& trinketHolder.trinket.getClass().isAssignableFrom(trinketType)){
+			return trinketHolder.trinket.buffedLvl();
 		}
 
 		Trinket trinket = Dungeon.hero.belongings.getItem(trinketType);
