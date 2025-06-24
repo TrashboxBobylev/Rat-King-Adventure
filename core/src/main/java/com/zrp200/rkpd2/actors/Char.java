@@ -1423,7 +1423,7 @@ if (Dungeon.hero.heroClass != HeroClass.CLERIC
 	
 	public void die( Object src ) {
 		destroy();
-		if (src != Chasm.class) {
+		if (src != Chasm.class && sprite != null) {
 			sprite.die();
 			if (!flying && Dungeon.level != null && sprite instanceof MobSprite && Dungeon.level.map[pos] == Terrain.CHASM){
 				((MobSprite) sprite).fall();
