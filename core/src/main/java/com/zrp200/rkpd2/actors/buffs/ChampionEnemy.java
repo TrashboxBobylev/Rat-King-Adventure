@@ -426,7 +426,7 @@ public abstract class ChampionEnemy extends Buff {
 		public boolean attachTo(Char target) {
 			if (target instanceof Hero){
 				resistances.addAll(com.zrp200.rkpd2.items.armor.glyphs.AntiMagic.RESISTS);
-				immunities.remove(com.zrp200.rkpd2.items.armor.glyphs.AntiMagic.RESISTS);
+				immunities.removeAll(com.zrp200.rkpd2.items.armor.glyphs.AntiMagic.RESISTS);
 			}
 			return super.attachTo(target);
 		}

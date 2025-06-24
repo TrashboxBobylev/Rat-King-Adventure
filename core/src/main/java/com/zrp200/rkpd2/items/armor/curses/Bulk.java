@@ -23,6 +23,7 @@ package com.zrp200.rkpd2.items.armor.curses;
 
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -43,6 +44,9 @@ public class Bulk extends Armor.Glyph {
 				(Dungeon.level.map[owner.pos] != Terrain.DOOR && Dungeon.level.map[owner.pos] != Terrain.OPEN_DOOR )) {
 			return 1;
 		} else {
+			if (owner.buff(ChampionEnemy.Giant.class) != null){
+				return 1/6f;
+			}
 			return 1/3f * genericProcChanceMultiplier(owner);
 		}
 	}
