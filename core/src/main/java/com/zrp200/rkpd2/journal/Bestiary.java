@@ -27,6 +27,8 @@ import com.zrp200.rkpd2.actors.hero.abilities.huntress.SpiritHawk;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.Wrath;
 import com.zrp200.rkpd2.actors.hero.abilities.rogue.ShadowClone;
 import com.zrp200.rkpd2.actors.hero.abilities.rogue.SmokeBomb;
+import com.zrp200.rkpd2.actors.mobs.AbyssalNightmare;
+import com.zrp200.rkpd2.actors.mobs.AbyssalSpawner;
 import com.zrp200.rkpd2.actors.mobs.Acidic;
 import com.zrp200.rkpd2.actors.mobs.Albino;
 import com.zrp200.rkpd2.actors.mobs.ArmoredBrute;
@@ -34,6 +36,7 @@ import com.zrp200.rkpd2.actors.mobs.ArmoredStatue;
 import com.zrp200.rkpd2.actors.mobs.Bandit;
 import com.zrp200.rkpd2.actors.mobs.Bat;
 import com.zrp200.rkpd2.actors.mobs.Bee;
+import com.zrp200.rkpd2.actors.mobs.BlinkingMan;
 import com.zrp200.rkpd2.actors.mobs.Brute;
 import com.zrp200.rkpd2.actors.mobs.CausticSlime;
 import com.zrp200.rkpd2.actors.mobs.Crab;
@@ -45,12 +48,16 @@ import com.zrp200.rkpd2.actors.mobs.DM100;
 import com.zrp200.rkpd2.actors.mobs.DM200;
 import com.zrp200.rkpd2.actors.mobs.DM201;
 import com.zrp200.rkpd2.actors.mobs.DM300;
+import com.zrp200.rkpd2.actors.mobs.DarkestElf;
 import com.zrp200.rkpd2.actors.mobs.DemonSpawner;
+import com.zrp200.rkpd2.actors.mobs.Dragon;
 import com.zrp200.rkpd2.actors.mobs.DwarfKing;
 import com.zrp200.rkpd2.actors.mobs.EbonyMimic;
 import com.zrp200.rkpd2.actors.mobs.Elemental;
 import com.zrp200.rkpd2.actors.mobs.Eye;
 import com.zrp200.rkpd2.actors.mobs.FetidRat;
+import com.zrp200.rkpd2.actors.mobs.FinalFroggit;
+import com.zrp200.rkpd2.actors.mobs.GhostChicken;
 import com.zrp200.rkpd2.actors.mobs.Ghoul;
 import com.zrp200.rkpd2.actors.mobs.Gnoll;
 import com.zrp200.rkpd2.actors.mobs.GnollGeomancer;
@@ -62,9 +69,11 @@ import com.zrp200.rkpd2.actors.mobs.Golem;
 import com.zrp200.rkpd2.actors.mobs.Goo;
 import com.zrp200.rkpd2.actors.mobs.GreatCrab;
 import com.zrp200.rkpd2.actors.mobs.Guard;
+import com.zrp200.rkpd2.actors.mobs.LostSpirit;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
 import com.zrp200.rkpd2.actors.mobs.Monk;
 import com.zrp200.rkpd2.actors.mobs.Necromancer;
+import com.zrp200.rkpd2.actors.mobs.Phantom;
 import com.zrp200.rkpd2.actors.mobs.PhantomPiranha;
 import com.zrp200.rkpd2.actors.mobs.Piranha;
 import com.zrp200.rkpd2.actors.mobs.Pylon;
@@ -79,6 +88,7 @@ import com.zrp200.rkpd2.actors.mobs.Skeleton;
 import com.zrp200.rkpd2.actors.mobs.Slime;
 import com.zrp200.rkpd2.actors.mobs.Snake;
 import com.zrp200.rkpd2.actors.mobs.SpectralNecromancer;
+import com.zrp200.rkpd2.actors.mobs.SpectreRat;
 import com.zrp200.rkpd2.actors.mobs.Spinner;
 import com.zrp200.rkpd2.actors.mobs.Statue;
 import com.zrp200.rkpd2.actors.mobs.Succubus;
@@ -86,6 +96,7 @@ import com.zrp200.rkpd2.actors.mobs.Swarm;
 import com.zrp200.rkpd2.actors.mobs.Tengu;
 import com.zrp200.rkpd2.actors.mobs.Thief;
 import com.zrp200.rkpd2.actors.mobs.TormentedSpirit;
+import com.zrp200.rkpd2.actors.mobs.Trappet;
 import com.zrp200.rkpd2.actors.mobs.Warlock;
 import com.zrp200.rkpd2.actors.mobs.Wraith;
 import com.zrp200.rkpd2.actors.mobs.YogDzewa;
@@ -211,7 +222,8 @@ public enum Bestiary {
 				Skeleton.class, Thief.class, DM100.class, Guard.class, Necromancer.class,
 				Bat.class, Brute.class, Shaman.RedShaman.class, Shaman.BlueShaman.class, Shaman.PurpleShaman.class, Spinner.class, DM200.class,
 				Ghoul.class, Elemental.FireElemental.class, Elemental.FrostElemental.class, Elemental.ShockElemental.class, Warlock.class, Monk.class, Golem.class,
-				RipperDemon.class, DemonSpawner.class, Succubus.class, Eye.class, Scorpio.class);
+				RipperDemon.class, DemonSpawner.class, Succubus.class, Eye.class, Scorpio.class, FinalFroggit.class,
+				AbyssalSpawner.class, BlinkingMan.class, DarkestElf.class, SpectreRat.class, Trappet.class, Phantom.class, GhostChicken.class);
 
 		BOSSES.addEntities(Goo.class,
 				Tengu.class,
@@ -226,7 +238,8 @@ public enum Bestiary {
 				ArmoredBrute.class, DM201.class,
 				Elemental.ChaosElemental.class, Senior.class,
 				Acidic.class,
-				TormentedSpirit.class, PhantomPiranha.class, CrystalMimic.class, ArmoredStatue.class);
+				TormentedSpirit.class, PhantomPiranha.class, CrystalMimic.class, ArmoredStatue.class,
+				AbyssalNightmare.class, Dragon.class, Dragon.SmallDragon.class, LostSpirit.class);
 
 		QUEST.addEntities(FetidRat.class, GnollTrickster.class, GreatCrab.class,
 				Elemental.NewbornFireElemental.class, RotLasher.class, RotHeart.class,
