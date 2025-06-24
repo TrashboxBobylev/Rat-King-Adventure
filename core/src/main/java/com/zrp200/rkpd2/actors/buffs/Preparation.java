@@ -329,6 +329,11 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 	}
 
 	@Override
+	public int actionIcon() {
+		return HeroIcon.PREPARATION;
+	}
+
+	@Override
 	public Visual primaryVisual() {
 		Image actionIco = new HeroIcon(this);
 		tintIcon(actionIco);
