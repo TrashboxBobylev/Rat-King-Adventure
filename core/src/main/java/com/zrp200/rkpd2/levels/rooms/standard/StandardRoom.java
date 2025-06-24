@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.levels.rooms.standard;
 
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.rooms.Room;
@@ -183,7 +184,7 @@ public abstract class StandardRoom extends Room {
 	
 	
 	public static StandardRoom createRoom(){
-		if (Dungeon.scalingDepth() >= 25){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
 			float[] chance = new float[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 			return Reflection.newInstance(rooms.get(Random.chances(chance)));
 		}
