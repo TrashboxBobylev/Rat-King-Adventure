@@ -165,6 +165,8 @@ public enum HeroClass {
 				return HeroSubClass.RK_CHAMPION;
 			case DUELIST:
 				return HeroSubClass.HIGHNESS;
+			case CLERIC:
+				return HeroSubClass.FREERUNNER;
 			default:
 				return null;
 		}
