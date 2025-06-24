@@ -47,7 +47,6 @@ import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.watabou.noosa.Visual;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -60,32 +59,12 @@ public class RingOfWealth extends Ring {
 		buffClass = Wealth.class;
 	}
 
-	private float triesToDrop = Float.MIN_VALUE;
-	private int dropsToRare = Integer.MIN_VALUE;
-
 	@Override
 	protected float multiplier() { return 1.20f; }
 
     public String upgradeStat1(int level){
 		if (cursed && cursedKnown) level = Math.min(-1, level-3);
 		return Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, level+1)-1f)) + "%";
-	}
-
-	private static final String TRIES_TO_DROP = "tries_to_drop";
-	private static final String DROPS_TO_RARE = "drops_to_rare";
-
-	@Override
-	public void storeInBundle(Bundle bundle) {
-		super.storeInBundle(bundle);
-		bundle.put(TRIES_TO_DROP, triesToDrop);
-		bundle.put(DROPS_TO_RARE, dropsToRare);
-	}
-
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		triesToDrop = bundle.getFloat(TRIES_TO_DROP);
-		dropsToRare = bundle.getInt(DROPS_TO_RARE);
 	}
 
 	@Override
@@ -105,7 +84,7 @@ public class RingOfWealth extends Ring {
 		CounterBuff triesToDrop = target.buff(TriesToDropTracker.class);
 		if (triesToDrop == null){
 			triesToDrop = Buff.affect(target, TriesToDropTracker.class);
-			triesToDrop.countUp( Random.NormalIntRange(0, 20) );
+			triesToDrop.countUp( Math.max(1, Random.NormalIntRange(0, (int) (20 - bonus*0.75f)) ));
 		}
 
 		CounterBuff dropsToEquip = target.buff(DropsToEquipTracker.class);
@@ -147,7 +126,7 @@ public class RingOfWealth extends Ring {
 				drops.add(i);
 				dropsToEquip.countDown(1);
 			}
-			triesToDrop.countUp( Random.NormalIntRange(0, 20) );
+			triesToDrop.countUp( Math.max(1, Random.NormalIntRange(0, (int) (20 - bonus*0.75f)) ) );
 		}
 		
 		return drops;
