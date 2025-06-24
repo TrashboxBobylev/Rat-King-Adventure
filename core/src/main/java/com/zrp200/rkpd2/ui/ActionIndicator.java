@@ -40,7 +40,9 @@ import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
+import com.zrp200.rkpd2.windows.WndActionList;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Visual;
@@ -174,12 +176,13 @@ public class ActionIndicator extends Tag {
 
 	@Override
 	protected boolean onLongClick() {
-		return findAction(true);
+		GameScene.show(new WndActionList());
+		return true;
 	}
 
 	private final Button longClickListener = new Button() {
 		@Override public GameAction keyAction() { return SPDAction.TAG_CYCLE; }
-		@Override protected void onClick()      { findAction(true); }
+		@Override protected void onClick()      { GameScene.show(new WndActionList()); }
 	};
 
 	public static boolean setAction(Action action){
@@ -192,7 +195,7 @@ public class ActionIndicator extends Tag {
 	}
 
 	// list of action buffs that we should replace it with.
-	private static final Class<?extends Buff>[] actionBuffClasses = new Class[]{
+	public static final Class<?extends Buff>[] actionBuffClasses = new Class[]{
 			Preparation.class,
 			SnipersMark.class,
 			Combo.class,
