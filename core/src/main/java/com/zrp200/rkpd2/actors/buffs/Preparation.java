@@ -29,7 +29,6 @@ import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroAction;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
-import com.zrp200.rkpd2.actors.hero.abilities.rogue.DeathMark;
 import com.zrp200.rkpd2.actors.mobs.npcs.NPC;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.Speck;
@@ -190,32 +189,6 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 
 	public boolean canKO( Char defender ){
 		return !defender.isInvulnerable(target.getClass()) && AttackLevel.getLvl(turnsInvis).canKO(defender);
-	}
-
-	public boolean procKO(Char attacker, Char enemy){
-		boolean assassinated = false;
-
-		if (enemy.isAlive() && canKO(enemy)){
-			enemy.HP = 0;
-			if (!enemy.isAlive()) {
-				enemy.die(this);
-			} else {
-				//helps with triggering any on-damage effects that need to activate
-				enemy.damage(-1, this);
-				DeathMark.processFearTheReaper(enemy, true);
-			}
-			assassinated = true;
-			enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
-		}
-		if (attacker instanceof Hero && assassinated) {
-			if (((Hero) attacker).hasTalent(Talent.BLOODBATH)) {
-				Preparation.bloodbathProc((Hero) attacker, enemy);
-			}
-			if (((Hero) attacker).hasTalent(Talent.DARKENING_STEPS)){
-				Buff.affect(attacker, ArtifactRecharge.class).postpone(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
-			}
-		}
-		return assassinated;
 	}
 
 	@Override

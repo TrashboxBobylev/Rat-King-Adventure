@@ -701,6 +701,14 @@ public abstract class Char extends Actor {
 				if (enemy.sprite != null) {
 					enemy.sprite.showStatus(CharSprite.NEGATIVE, Messages.get(Preparation.class, "assassinated"));
 				}
+				if (this instanceof Hero) {
+					if (((Hero) this).hasTalent(Talent.BLOODBATH)) {
+						Preparation.bloodbathProc((Hero) this, enemy);
+					}
+					if (((Hero) this).hasTalent(Talent.DARKENING_STEPS)) {
+						Buff.affect(this, ArtifactRecharge.class).postpone(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS) * 2);
+					}
+				}
 			}
 
 			Talent.CombinedLethalityAbilityTracker combinedLethality = buff(Talent.CombinedLethalityAbilityTracker.class);
@@ -731,8 +739,6 @@ public abstract class Char extends Actor {
 				enemy.sprite.flash();
 			}
 
-			if (prep != null) prep.procKO(this, enemy);
-
 			if (!enemy.isAlive() && visibleFight) {
 				if (enemy == hero) {
 					
@@ -750,14 +756,13 @@ public abstract class Char extends Actor {
 				} else if (this == hero) {
 					GLog.i( Messages.capitalize(Messages.get(Char.class, "defeat", enemy.name())) );
 				}
-
-				if (this instanceof Hero && ((Hero) this).hasTalent(Talent.BLOODBATH) &&
-						buff(Preparation.class) != null && Random.Float() < 0.4f){
-					Preparation.bloodbathProc((Hero) this, enemy);
-				}
-				if (this instanceof Hero && ((Hero) this).hasTalent(Talent.DARKENING_STEPS) &&
-						buff(Preparation.class) != null && Random.Float() < 0.4f){
-					Buff.affect(this, ArtifactRecharge.class).postpone(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
+				if (this instanceof Hero && prep != null && Random.Float() < 2/3f){
+					if (((Hero) this).hasTalent(Talent.BLOODBATH)){
+						Preparation.bloodbathProc((Hero) this, enemy);
+					}
+					if (((Hero) this).hasTalent(Talent.DARKENING_STEPS)){
+						Buff.affect(this, ArtifactRecharge.class).postpone(Dungeon.hero.pointsInTalent(Talent.DARKENING_STEPS)*2);
+					}
 				}
 			}
 			
