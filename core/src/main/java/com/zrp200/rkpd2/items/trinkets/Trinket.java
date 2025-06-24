@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.items.trinkets;
 
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.actors.hero.spells.Metaexpression;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.Recipe;
 import com.zrp200.rkpd2.journal.Catalog;
@@ -48,6 +49,10 @@ public abstract class Trinket extends Item {
 	protected static int trinketLevel(Class<? extends Trinket> trinketType ){
 		if (Dungeon.hero == null || Dungeon.hero.belongings == null){
 			return -1;
+		}
+
+		if (Dungeon.hero.buff(Metaexpression.TrinketHolder.class) != null){
+			return Dungeon.hero.buff(Metaexpression.TrinketHolder.class).trinket.buffedLvl();
 		}
 
 		Trinket trinket = Dungeon.hero.belongings.getItem(trinketType);

@@ -36,10 +36,12 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.buffs.AscensionChallenge;
+import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.Metaexpression;
 import com.zrp200.rkpd2.actors.mobs.DemonSpawner;
 import com.zrp200.rkpd2.actors.mobs.Ghoul;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
@@ -54,6 +56,7 @@ import com.zrp200.rkpd2.effects.Ripple;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.TargetedCell;
 import com.zrp200.rkpd2.items.Ankh;
+import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Honeypot;
 import com.zrp200.rkpd2.items.Item;
@@ -62,6 +65,7 @@ import com.zrp200.rkpd2.items.journal.Guidebook;
 import com.zrp200.rkpd2.items.potions.Potion;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
 import com.zrp200.rkpd2.items.trinkets.DimensionalSundial;
+import com.zrp200.rkpd2.items.trinkets.Trinket;
 import com.zrp200.rkpd2.items.trinkets.TrinketCatalyst;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.journal.Bestiary;
@@ -533,6 +537,15 @@ public class GameScene extends PixelScene {
 					if (ch instanceof DriedRose.GhostHero){
 						((DriedRose.GhostHero) ch).sayAppeared();
 					}
+				}
+				if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC) && Dungeon.hero.hasTalent(Talent.METAEXPRESSION)){
+					Trinket coolTrinket = (Trinket) Generator.random(Generator.Category.TRINKET);
+					coolTrinket.level(Dungeon.hero.pointsInTalent(Talent.METAEXPRESSION));
+					coolTrinket.identify();
+					Buff.detach(Dungeon.hero, Metaexpression.TrinketHolder.class);
+					Metaexpression.TrinketHolder holder = Buff.affect(Dungeon.hero, Metaexpression.TrinketHolder.class, Metaexpression.DURATION*2);
+					holder.trinket = coolTrinket;
+					GLog.p(Messages.get(Metaexpression.class, "trinket", Messages.titleCase(coolTrinket.title())));
 				}
 
 				int spawnersAbove = Statistics.spawnersAlive;

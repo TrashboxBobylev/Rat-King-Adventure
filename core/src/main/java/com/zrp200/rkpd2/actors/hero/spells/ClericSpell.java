@@ -208,7 +208,7 @@ public abstract class ClericSpell {
 			spells.add(HolyWard.INSTANCE);
 
 			for (ClericSpell spell : new ClericSpell[]{
-					HolyIntuition.INSTANCE, ShieldOfLight.INSTANCE
+					HolyIntuition.INSTANCE, ShieldOfLight.INSTANCE, Metaexpression.INSTANCE
 			}) if (spell.isVisible(cleric)) spells.add(spell);
 
 		} else if (tier == 2) {
@@ -282,6 +282,7 @@ public abstract class ClericSpell {
 		spells.add(HolyWard.INSTANCE);
 		spells.add(HolyIntuition.INSTANCE);
 		spells.add(ShieldOfLight.INSTANCE);
+		spells.add(Metaexpression.INSTANCE);
 		spells.add(RecallInscription.INSTANCE);
 		spells.add(Sunray.INSTANCE);
 		spells.add(DivineSense.INSTANCE);

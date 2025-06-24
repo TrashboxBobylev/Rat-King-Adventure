@@ -145,6 +145,7 @@ public class BuffIndicator extends Component {
 	public static final int SCAM        = 4_07;
 	public static final int WARP        = 5_07;
 	public static final int HIGHNESS    = 6_07;
+	public static final int TRINKETHOLD = 7_07;
 
     private static BuffIndicator heroInstance;
 	private static BuffIndicator bossInstance;
