@@ -26,6 +26,7 @@ package com.zrp200.rkpd2.actors.mobs;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.effects.MagicMissile;
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.MobSprite;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
@@ -80,6 +81,11 @@ public class FinalFroggitSprite extends MobSprite {
                 } );
         Sample.INSTANCE.play( Assets.Sounds.ZAP );
     }
+
+	public static void zap(CharSprite sprite, int cell, Callback onZapComplete) {
+		MagicMissile.boltFromChar( sprite.parent, MagicMissile.FROGGIT, sprite, cell, onZapComplete);
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
+	}
 
     @Override
     public void onComplete( MovieClip.Animation anim ) {
