@@ -223,7 +223,7 @@ public abstract class RegularLevel extends Level {
 
 	@Override
 	public int mobLimit() {
-		if (Dungeon.depth <= 1 && !Dungeon.isChallenged(Challenges.KROMER)){
+		if (Dungeon.depth <= 1 && !Dungeon.isChallenged(Challenges.KROMER) && !(this instanceof AbyssLevel)){
 			if (!Statistics.amuletObtained) return 0;
 			else                            return 10;
 		}
