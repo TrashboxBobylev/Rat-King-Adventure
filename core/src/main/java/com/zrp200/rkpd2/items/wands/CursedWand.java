@@ -123,7 +123,7 @@ public class CursedWand {
 
 	public static void cursedZap(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
 
-		boolean positiveOnly = user == Dungeon.hero && Random.Float() < WondrousResin.positiveCurseEffectChance();
+		boolean positiveOnly = user == Dungeon.hero && (Random.Float() < WondrousResin.positiveCurseEffectChance() || eldritchLevel >= 3);
 		CursedEffect effect = randomValidEffect(origin, user, bolt, positiveOnly);
 
 		effect.FX(origin, user, bolt, new Callback() {
@@ -184,21 +184,15 @@ public class CursedWand {
 	// common/uncommon/rare/v.rare have a 60/30/9/1% chance respectively
 	private static float[] EFFECT_CAT_CHANCES = new float[]{60, 30, 9, 1};
 
-	public static CursedEffect randomEffect(){
-		switch (Random.chances(EFFECT_CAT_CHANCES)){
-			case 0: default:
-				return randomCommonEffect();
-			case 1:
-				return randomUncommonEffect();
-			case 2:
-				return randomRareEffect();
-			case 3:
-				return randomVeryRareEffect();
-		}
-	}
-
 	public static CursedEffect randomValidEffect(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
-		switch (Random.chances(EFFECT_CAT_CHANCES)){
+		float[] chances = EFFECT_CAT_CHANCES.clone();
+		if (eldritchLevel > 1){
+			chances[0] = 50;
+			chances[1] = 35;
+			chances[2] = 12f;
+			chances[3] = 3f;
+		}
+		switch (Random.chances(chances)){
 			case 0: default:
 				return randomValidCommonEffect(origin, user, bolt, positiveOnly);
 			case 1:
@@ -250,9 +244,9 @@ public class CursedWand {
 			//doesn't affect caster if positive only
 			if (Random.Int(2) == 0) {
 				if (target != null) Buff.affect(target, Burning.class).reignite(target);
-				if (user != null && !positiveOnly) Buff.affect(user, Frost.class, Frost.DURATION);
+				if (user != null && !positiveOnly) Buff.affect(user, Frost.class, Frost.DURATION * (eldritchLevel > 0 ? 0.5f : 1f));
 			} else {
-				if (user != null && !positiveOnly) Buff.affect(user, Burning.class).reignite(user);
+				if (user != null && !positiveOnly) Buff.affect(user, Burning.class).reignite(user, Burning.DURATION * (eldritchLevel > 0 ? 0.5f : 1f));
 				if (target != null) Buff.affect(target, Frost.class, Frost.DURATION);
 			}
 			tryForWandProc(target, origin);
@@ -311,13 +305,13 @@ public class CursedWand {
 			}
 			switch (Random.Int(3)) {
 				case 0: default:
-					GameScene.add( Blob.seed( bolt.collisionPos, 800, ConfusionGas.class ) );
+					GameScene.add( Blob.seed( bolt.collisionPos, 800 / (eldritchLevel > 0 ? 2 : 1), ConfusionGas.class ) );
 					return true;
 				case 1:
-					GameScene.add( Blob.seed( bolt.collisionPos, 500, ToxicGas.class ) );
+					GameScene.add( Blob.seed( bolt.collisionPos, 500 / (eldritchLevel > 0 ? 2 : 1), ToxicGas.class ) );
 					return true;
 				case 2:
-					GameScene.add( Blob.seed( bolt.collisionPos, 200, ParalyticGas.class ) );
+					GameScene.add( Blob.seed( bolt.collisionPos, 200 / (eldritchLevel > 0 ? 2 : 1), ParalyticGas.class ) );
 					return true;
 			}
 		}
@@ -330,16 +324,32 @@ public class CursedWand {
 			if (Actor.findChar(bolt.collisionPos) == null){
 				Dungeon.level.pressCell(bolt.collisionPos);
 			}
-			switch (Random.Int(3)) {
-				case 0: default:
-					new BurningTrap().set(bolt.collisionPos).activate();
-					return true;
-				case 1:
-					new ChillingTrap().set(bolt.collisionPos).activate();
-					return true;
-				case 2:
-					new ShockingTrap().set(bolt.collisionPos).activate();
-					return true;
+			if (eldritchLevel > 0){
+				switch (Random.Int(5)) {
+					case 0:
+						new BurningTrap().set(bolt.collisionPos).activate();
+						return true;
+					case 1:
+					default:
+						new ChillingTrap().set(bolt.collisionPos).activate();
+						return true;
+					case 2:
+						new ShockingTrap().set(bolt.collisionPos).activate();
+						return true;
+				}
+			} else {
+				switch (Random.Int(3)) {
+					case 0:
+					default:
+						new BurningTrap().set(bolt.collisionPos).activate();
+						return true;
+					case 1:
+						new ChillingTrap().set(bolt.collisionPos).activate();
+						return true;
+					case 2:
+						new ShockingTrap().set(bolt.collisionPos).activate();
+						return true;
+				}
 			}
 		}
 	}
@@ -423,7 +433,7 @@ public class CursedWand {
 					Char ch = Actor.findChar(  i );
 					//does not harm hero or allies when positive only
 					if (ch != null && (!positiveOnly || ch.alignment != Char.Alignment.ALLY)){
-						Buff.affect(ch, Ooze.class).set( Ooze.DURATION );
+						Buff.affect(ch, Ooze.class).set( Ooze.DURATION / (eldritchLevel > 0 && ch instanceof Hero ? 2 : 1)  );
 					}
 				}
 			}
@@ -514,7 +524,7 @@ public class CursedWand {
 				toHeal.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 				toHeal.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(damage/2), FloatingText.HEALING );
 
-				toDamage.damage(damage, new CursedWand());
+				toDamage.damage(damage / (eldritchLevel > 0 && toDamage instanceof Hero ? 2 : 1), new CursedWand());
 				toDamage.sprite.emitter().start(ShadowParticle.UP, 0.05f, 10);
 
 				if (toDamage == Dungeon.hero){
@@ -543,7 +553,12 @@ public class CursedWand {
 	public static class Explosion extends CursedEffect {
 		@Override
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
-			new Bomb.ConjuredBomb().explode(bolt.collisionPos);
+			new Bomb.ConjuredBomb(){
+				{
+                    doNotDamageHero = eldritchLevel > 0;
+				}
+			}.explode(bolt.collisionPos);
+			Bomb.doNotDamageHero = false;
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			return true;
 		}
@@ -798,7 +813,7 @@ public class CursedWand {
 				Level.beforeTransition();
 				InterlevelScene.mode = InterlevelScene.Mode.RETURN;
 				InterlevelScene.returnDepth = depth;
-				InterlevelScene.returnBranch = 0;
+				InterlevelScene.returnBranch = Dungeon.branch;
 				InterlevelScene.returnPos = -1;
 				Game.switchScene(InterlevelScene.class);
 
@@ -847,8 +862,10 @@ public class CursedWand {
 					if (Actor.findChar(i) != null){
 						Char ch = Actor.findChar(i);
 						Burning burning = Buff.affect(ch, Burning.class);
-						burning.reignite(ch);
+						burning.reignite(ch, Burning.DURATION / (eldritchLevel > 0 && ch instanceof Hero ? 2 : 1));
 						int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
+						if (eldritchLevel > 0 && ch instanceof Hero)
+							dmg /= 2;
 						ch.damage(dmg, burning);
 					}
 					if (Dungeon.level.flamable[i]){
@@ -929,33 +946,35 @@ public class CursedWand {
 				} else {
 
 					int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
+					if (eldritchLevel > 0 && ch instanceof Hero)
+						dmg /= 2;
 					switch (Random.Int(5)){
 						case 0: default:
 							Burning burning = Buff.affect(ch, Burning.class);
-							burning.reignite(ch);
+							burning.reignite(ch, Burning.DURATION / (eldritchLevel > 0 && ch instanceof Hero ? 2 : 1));
 							ch.damage(dmg, burning);
 							ch.sprite.emitter().burst(FlameParticle.FACTORY, 20);
 							break;
 						case 1:
 							ch.damage(dmg, new Frost());
-							if (ch.isAlive()) Buff.affect(ch, Frost.class, Frost.DURATION);
+							if (ch.isAlive()) Buff.affect(ch, Frost.class, Frost.DURATION / (eldritchLevel > 0 && ch instanceof Hero ? 2 : 1) );
 							Splash.at( ch.sprite.center(), 0xFFB2D6FF, 20 );
 							break;
 						case 2:
 							Poison poison = Buff.affect(ch, Poison.class);
-							poison.set(3 + Dungeon.scalingDepth() / 2);
+							poison.set((3 + Dungeon.scalingDepth() / 2) / (eldritchLevel > 0 && ch instanceof Hero ? 2f : 1f));
 							ch.damage(dmg, poison);
 							ch.sprite.emitter().burst(PoisonParticle.SPLASH, 20);
 							break;
 						case 3:
 							Ooze ooze = Buff.affect(ch, Ooze.class);
-							ooze.set(Ooze.DURATION);
+							ooze.set(Ooze.DURATION / (eldritchLevel > 0 && ch instanceof Hero ? 2 : 1));
 							ch.damage(dmg, ooze);
 							Splash.at( ch.sprite.center(), 0x000000, 20 );
 							break;
 						case 4:
 							ch.damage(dmg, new Electricity());
-							if (ch.isAlive()) Buff.affect(ch, Paralysis.class, Paralysis.DURATION);
+							if (ch.isAlive()) Buff.affect(ch, Paralysis.class, Paralysis.DURATION / (eldritchLevel > 0 && ch instanceof Hero ? 2 : 1));
 							ch.sprite.emitter().burst(SparkParticle.FACTORY, 20);
 							break;
 					}
@@ -1017,7 +1036,7 @@ public class CursedWand {
 		@Override
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
 
-			Buff.affect(user, TimeStasis.class, 100f);
+			Buff.affect(user, TimeStasis.class, 100f / (eldritchLevel > 0 && user instanceof Hero ? 2 : 1));
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
 			user.sprite.emitter().burst(Speck.factory(Speck.STEAM), 10);
@@ -1103,6 +1122,8 @@ public class CursedWand {
 			Sample.INSTANCE.play(Assets.Sounds.MIMIC, 1, 0.85f);
 			CellEmitter.get(mimic.pos).burst(Speck.factory(Speck.STAR), 10);
 			mimic.items.clear();
+			if (eldritchLevel > 0)
+				mimic.HP = mimic.HT = mimic.HT / 2;
 			GameScene.add(mimic);
 
 			//mimic is enthralled, but also contains no extra reward, if positive only
@@ -1288,7 +1309,7 @@ public class CursedWand {
 			p.setPositions(positions);
 
 			//effect does not harm hero/allies if positive only
-			if (positiveOnly){
+			if (positiveOnly || eldritchLevel > 0){
 				p.ignoreAllies = true;
 				GLog.p(Messages.get(CursedWand.class, "sinkhole_positive"));
 			} else {
@@ -1307,7 +1328,10 @@ public class CursedWand {
 
 		@Override
 		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
-			Buff.append(Dungeon.hero, GravityChaosTracker.class).positiveOnly = positiveOnly;
+			GravityChaosTracker gravityChaosTracker = Buff.append(Dungeon.hero, GravityChaosTracker.class);
+			gravityChaosTracker.positiveOnly = positiveOnly;
+			if (eldritchLevel > 0)
+				gravityChaosTracker.left /= 2;
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 			if (positiveOnly){
 				GLog.p(Messages.get(CursedWand.class, "gravity_positive"));
