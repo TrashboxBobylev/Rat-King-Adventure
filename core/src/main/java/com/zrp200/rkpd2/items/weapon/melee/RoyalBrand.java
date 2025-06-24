@@ -371,6 +371,21 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
         return Messages.get(this, "prompt");
     }
 
+    @Override
+    public String abilityInfo() {
+        return Messages.get(this, "ability_desc",
+                Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.swordDanceDuration(Dungeon.hero)),
+                Messages.decimalFormat("#", RoyalBrand.DuelistInfo.powerModifier(Dungeon.hero)),
+                RoyalBrand.DuelistInfo.sneakDistance(Dungeon.hero),
+                Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.spearBoost(Dungeon.hero)),
+                Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.greataxeBoost(Dungeon.hero)),
+                Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.maceBoost(Dungeon.hero)),
+                Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.pickaxeBoost(Dungeon.hero)),
+                Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.comboStrikeBoost(Dungeon.hero)),
+                Messages.decimalFormat("#.#", RoyalBrand.DuelistInfo.dazeDuration(Dungeon.hero)),
+                Messages.decimalFormat("#.#", 100f * RoyalBrand.DuelistInfo.bleedDamage(Dungeon.hero)));
+    }
+
     //does NOT work with elite dexterity (otherwise I will lose my sanity)
     @Override
     protected void duelistAbility(Hero hero, Integer target) {
