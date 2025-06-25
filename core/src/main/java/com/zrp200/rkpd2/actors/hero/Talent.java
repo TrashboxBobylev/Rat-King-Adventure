@@ -258,7 +258,7 @@ public enum Talent {
 	//Cleric T2
 	ENLIGHTENING_MEAL(164), RECALL_INSCRIPTION(165), SUNRAY(166), DIVINE_SENSE(167), BLESS(168), RADIANT_GRAPPLER(imageAt(1, 13)),
 	//Cleric T3
-	CLEANSE(169, 3), LIGHT_READING(170, 3),
+	CLEANSE(169, 3), LIGHT_READING(170, 3), EXORCISM(imageAt(2, 13), 3),
 	//Priest T3
 	HOLY_LANCE(171, 3), HALLOWED_GROUND(172, 3), MNEMONIC_PRAYER(173, 3), DIVINE_ADVENT(188, 3), ENDURING_LIGHT(189, 3),
 	//Paladin T3
@@ -1745,7 +1745,7 @@ public enum Talent {
 					case DUELIST:
 						return new Talent[]{PRECISE_ASSAULT, DEADLY_FOLLOWUP, GRASSY_OFFENSE};
 					case CLERIC:
-						return new Talent[]{CLEANSE, LIGHT_READING};
+						return new Talent[]{CLEANSE, LIGHT_READING, EXORCISM};
 					case RAT_KING:
 						return new Talent[]{};
 				}

@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Cooldown;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
@@ -98,6 +99,7 @@ public class GuidingLight extends MultiTargetSpell {
 					if (ch.isAlive()){
 						Buff.affect(ch, Illuminated.class);
 						Buff.affect(ch, WasIlluminatedTracker.class);
+						HolyFlames.proc(ch);
 					}
 				} else {
 					Dungeon.level.pressCell(aim.collisionPos);

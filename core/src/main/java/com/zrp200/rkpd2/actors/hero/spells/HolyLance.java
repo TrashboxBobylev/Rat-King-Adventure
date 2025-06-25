@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Cooldown;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Splash;
@@ -138,6 +139,7 @@ public class HolyLance extends MultiTargetSpell {
 										min = max;
 									}
 									enemy.damage(Random.NormalIntRange(min, max), HolyLance.this);
+									HolyFlames.proc(enemy);
 									Sample.INSTANCE.play( Assets.Sounds.HIT_MAGIC, 1, Random.Float(0.8f, 1f) );
 									Sample.INSTANCE.play( Assets.Sounds.HIT_STAB, 1, Random.Float(0.8f, 1f) );
 

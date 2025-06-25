@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Challenges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.buffs.Light;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -87,6 +88,7 @@ public class Radiance extends ClericSpell {
 				Buff.affect(mob, GuidingLight.Illuminated.class);
 				Buff.affect(mob, GuidingLight.WasIlluminatedTracker.class);
 				Buff.affect(mob, Paralysis.class, 3f);
+				HolyFlames.proc(mob);
 			}
 		}
 

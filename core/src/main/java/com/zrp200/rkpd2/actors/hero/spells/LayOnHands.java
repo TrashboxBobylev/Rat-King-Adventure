@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.actors.buffs.Adrenaline;
 import com.zrp200.rkpd2.actors.buffs.Barrier;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Combo;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
@@ -203,5 +204,6 @@ public class LayOnHands extends TargetedClericSpell {
 				ch.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(totalHeal), FloatingText.HEALING );
 			}
 		}
+		HolyFlames.proc(ch);
 	}
 }

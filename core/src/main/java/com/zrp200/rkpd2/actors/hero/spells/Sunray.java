@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Blindness;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -125,6 +126,7 @@ public class Sunray extends MultiTargetSpell {
 			}
 
 			if (ch.isAlive()) {
+				HolyFlames.proc(ch);
 				if (ch.buff(Blindness.class) != null && ch.buff(SunRayRecentlyBlindedTracker.class) != null) {
 					Buff.prolong(ch, Paralysis.class, dur);
 					ch.buff(SunRayRecentlyBlindedTracker.class).detach();

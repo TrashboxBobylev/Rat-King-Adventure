@@ -38,6 +38,7 @@ import com.zrp200.rkpd2.actors.buffs.FireImbue;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
 import com.zrp200.rkpd2.actors.buffs.GreaterHaste;
 import com.zrp200.rkpd2.actors.buffs.Healing;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.buffs.LifeLink;
 import com.zrp200.rkpd2.actors.buffs.Ooze;
 import com.zrp200.rkpd2.actors.buffs.Poison;
@@ -249,6 +250,7 @@ public class MnemonicPrayer extends TargetedClericSpell {
 				b.mnemonicExtended = affected = true;
 
 			}
+			HolyFlames.proc(ch);
 			if (affected) {
 				if (!multiCast || !multiCastedDebuff) {
 					multiCastedDebuff = multiCast;

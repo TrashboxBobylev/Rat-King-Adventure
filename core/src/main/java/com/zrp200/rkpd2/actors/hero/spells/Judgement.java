@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.cleric.AscendedForm;
@@ -85,6 +86,7 @@ public class Judgement extends ClericSpell {
 							// vfx?
 						}
 						ch.damage( damage, Judgement.this);
+						HolyFlames.proc(ch);
 					}
 				}
 

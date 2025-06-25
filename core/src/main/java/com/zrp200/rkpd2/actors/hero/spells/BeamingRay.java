@@ -26,6 +26,7 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.buffs.LifeLink;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -161,6 +162,7 @@ public class BeamingRay extends TargetedClericSpell {
 				((Mob) ally).aggro(chTarget);
 			}
 			FlavourBuff.prolong(ally, BeamingRayBoost.class, BeamingRayBoost.DURATION).object = chTarget.id();
+			HolyFlames.proc(chTarget);
 		} else {
 			if (ally instanceof DirectableAlly) {
 				((DirectableAlly) ally).clearDefensingPos();

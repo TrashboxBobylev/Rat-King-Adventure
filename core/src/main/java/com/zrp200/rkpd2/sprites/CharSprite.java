@@ -42,6 +42,7 @@ import com.zrp200.rkpd2.effects.TorchHalo;
 import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.effects.particles.FrostfireParticle;
 import com.zrp200.rkpd2.effects.particles.GodfireParticle;
+import com.zrp200.rkpd2.effects.particles.HolyParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.effects.particles.SnowParticle;
 import com.zrp200.rkpd2.effects.particles.VineParticle;
@@ -93,7 +94,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED, CHILLED, DARKENED, MARKED, HEALING, SHIELDED, GLOWING, AURA,
-        GODBURNING, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, SWORDS, STONED, HEARTS, WARPED, VINECOVERED
+        GODBURNING, FROSTBURNING, SPIRIT, SHRUNK, ALLURED, ENLARGENED, SWORDS, STONED, HEARTS, WARPED, VINECOVERED, HOLYBURNING
 	}
 
 	protected Animation idle;
@@ -127,6 +128,7 @@ protected void copyAnimations(CharSprite other) {
 	protected Emitter allured;
 	protected Emitter warped;
 	protected Emitter vines;
+	protected Emitter holyburning;
 	public Emitter swords;
 
 	protected IceBlock iceBlock;
@@ -528,6 +530,13 @@ private final HashSet<State> stateAdditions = new HashSet<>();
 				vines = emitter();
 				vines.start(VineParticle.FACTORY, 0.05f, 0 );
 				break;
+			case HOLYBURNING:
+				holyburning = emitter();
+				holyburning.pour( HolyParticle.FACTORY, 0.045f );
+				if (visible) {
+					Sample.INSTANCE.play( Assets.Sounds.BURNING );
+				}
+				break;
 			case GLOWING:
 				if (glowBlock != null) glowBlock.killAndErase();
 				glowBlock = GlowBlock.lighten(this);
@@ -697,6 +706,12 @@ private final HashSet<State> stateRemovals = new HashSet<>();
                     vines = null;
                 }
                 break;
+			case HOLYBURNING:
+				if (holyburning != null) {
+					holyburning.on = false;
+					holyburning = null;
+				}
+				break;
 		}
 	}
 	

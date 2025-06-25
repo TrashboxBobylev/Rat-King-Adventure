@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.BrawlerBuff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.buffs.Preparation;
 import com.zrp200.rkpd2.actors.buffs.RobotBuff;
 import com.zrp200.rkpd2.actors.buffs.WandEmpower;
@@ -88,6 +89,7 @@ public abstract class DamageWand extends Wand{
 			boolean result = Dungeon.hero.buff(Preparation.class).procKO(Dungeon.hero, enemy);
 			if (result) Dungeon.hero.buff(Preparation.class).detach();
 		}
+		HolyFlames.proc(enemy);
 	}
 
 	@Override

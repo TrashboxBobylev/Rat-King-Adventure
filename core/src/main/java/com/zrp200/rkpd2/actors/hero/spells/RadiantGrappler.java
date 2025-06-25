@@ -4,6 +4,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.Chains;
@@ -177,6 +178,7 @@ public class RadiantGrappler extends TargetedClericSpell {
                     }
                 }));
                 enemy.pos = pulledPos;
+                HolyFlames.proc(enemy);
                 Dungeon.observe();
                 GameScene.updateFog();
                 hero.spendAndNext(1f);

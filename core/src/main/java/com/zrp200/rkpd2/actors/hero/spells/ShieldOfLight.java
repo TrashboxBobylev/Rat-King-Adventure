@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
@@ -114,6 +115,7 @@ public class ShieldOfLight extends TargetedClericSpell {
 		//1 turn less as the casting is instant
 		existing.spend(existing.getDuration() - 1);
 		ch.sprite.emitter().start(Speck.factory(Speck.LIGHT), 0.15f, 6);
+		HolyFlames.proc(ch);
 	}
 
 	public static int min() { return 2 + Dungeon.hero.pointsInTalent(Talent.SHIELD_OF_LIGHT); }

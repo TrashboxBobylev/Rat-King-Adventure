@@ -28,6 +28,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Combo;
 import com.zrp200.rkpd2.actors.buffs.FlavourBuff;
+import com.zrp200.rkpd2.actors.buffs.HolyFlames;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
@@ -155,6 +156,7 @@ public class Smite extends TargetedClericSpell {
 		if (hero.attack(enemy, 1, 0, accMult)) {
 			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 			enemy.sprite.burst(0xFFFFFFFF, Random.round(10 * dmgMulti));
+			HolyFlames.proc(enemy);
 		}
 
 		onSpellCast(tome, hero);
