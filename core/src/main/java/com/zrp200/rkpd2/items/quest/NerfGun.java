@@ -280,7 +280,7 @@ public class NerfGun extends Weapon {
     int exp;
 
     public int maxExp(){
-        return 20 + (level())*30;
+        return 40 + (level())*60;
     }
 
     @Override
