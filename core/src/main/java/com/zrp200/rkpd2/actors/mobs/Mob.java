@@ -924,7 +924,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 
-				int exp = !isRewardSuppressed() ? EXP : 0;
+				int exp = hero.lvl <= maxLvl + 2 ? EXP : 0;
 
 				//during ascent, under-levelled enemies grant 10 xp each until level 30
 				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
@@ -988,8 +988,7 @@ public abstract class Mob extends Char {
 			if (!(cause instanceof CurseInfusion || cause instanceof Gravery)){
 				rollToDropLoot();
 			} else {
-				if (hero.lvl > maxLvl + 2)
-					EXP = 0;
+				EXP = 0;
 			}
 			if (cause == hero || cause instanceof Weapon || cause instanceof Weapon.Enchantment) {
 				Talent.LethalMomentumTracker.process();
