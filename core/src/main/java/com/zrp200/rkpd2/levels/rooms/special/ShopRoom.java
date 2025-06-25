@@ -24,6 +24,9 @@ package com.zrp200.rkpd2.levels.rooms.special;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.hero.Belongings;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
+import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.RadiantGrappler;
 import com.zrp200.rkpd2.actors.mobs.Mob;
 import com.zrp200.rkpd2.actors.mobs.npcs.Shopkeeper;
 import com.zrp200.rkpd2.items.Ankh;
@@ -275,6 +278,9 @@ public class ShopRoom extends SpecialRoom {
 
 		itemsToSpawn.add( new Alchemize().quantity(Random.IntRange(2, 3)));
 		itemsToSpawn.add( new FlexTape().quantity(Random.IntRange(1, 3)));
+
+		if (Dungeon.hero.hasTalent(Talent.RADIANT_GRAPPLER) && !Dungeon.hero.heroClass.is(HeroClass.CLERIC))
+			itemsToSpawn.add(new RadiantGrappler.GrapplerItem().quantity(Random.Int(3, 10)));
 
 		Bag bag = ChooseBag(Dungeon.hero.belongings);
 		if (bag != null) {

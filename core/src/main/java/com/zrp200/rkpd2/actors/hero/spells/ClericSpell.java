@@ -217,7 +217,8 @@ public abstract class ClericSpell {
 					RecallInscription.INSTANCE,
 					Sunray.INSTANCE,
 					DivineSense.INSTANCE,
-					BlessSpell.INSTANCE
+					BlessSpell.INSTANCE,
+					RadiantGrappler.INSTANCE
 			}) if (spell.isVisible(cleric)) spells.add(spell);
 
 		} else if (tier == 3){

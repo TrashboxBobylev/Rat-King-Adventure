@@ -31,7 +31,9 @@ import com.zrp200.rkpd2.actors.blobs.Blob;
 import com.zrp200.rkpd2.actors.blobs.SacrificialFire;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.WellFed;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.RadiantGrappler;
 import com.zrp200.rkpd2.actors.mobs.EbonyMimic;
 import com.zrp200.rkpd2.actors.mobs.GoldenMimic;
 import com.zrp200.rkpd2.actors.mobs.Mimic;
@@ -512,6 +514,9 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 			}
 
 		}
+
+		if (Dungeon.hero.hasTalent(Talent.RADIANT_GRAPPLER) && !Dungeon.hero.heroClass.is(HeroClass.CLERIC) &&
+				Random.Int(10) < 2) itemsToSpawn.add(new RadiantGrappler.GrapplerItem().quantity(Random.Int(1, 3)));
 
 		for (Item item : itemsToSpawn) {
 			Heap.Type type = Heap.Type.HEAP;

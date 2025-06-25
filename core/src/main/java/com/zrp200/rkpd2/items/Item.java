@@ -70,7 +70,7 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 	protected static final String TXT_TO_STRING_X		= "%s x%d";
 	
 	protected static final float TIME_TO_THROW		= 1.0f;
-	protected static final float TIME_TO_PICK_UP	= 1.0f;
+	public static final float TIME_TO_PICK_UP	= 1.0f;
 	protected static final float TIME_TO_DROP		= 1.0f;
 	
 	public static final String AC_DROP		= "DROP";
