@@ -105,7 +105,7 @@ public class NerfGun extends Weapon {
     }
 
     public enum NerfMode {
-        NORMAL(Dart.class),
+        NORMAL(NerfDart.class),
         RAPID(SmallDart.class),
         DISC(Disc.class);
 
@@ -386,7 +386,7 @@ public class NerfGun extends Weapon {
         }
     }
 
-    public static class Dart extends NerfAmmo {
+    public static class NerfDart extends NerfAmmo {
         {
             image = ItemSpriteSheet.NERF_AMMO_1;
         }
@@ -418,7 +418,7 @@ public class NerfGun extends Weapon {
                         Actor.findChar(defender.pos + i) != Dungeon.hero) targets.add(Actor.findChar(defender.pos + i));
             }
             for (Char target : targets){
-                curUser.shoot(target, new Dart());
+                curUser.shoot(target, new NerfDart());
             }
             return super.proc(attacker, defender, damage);
         }

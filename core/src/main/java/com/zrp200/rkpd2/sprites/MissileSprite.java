@@ -190,7 +190,7 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 		if (item instanceof NerfGun.Disc){
 			speed *= 1.75f;
 		}
-		if (item instanceof NerfGun.Dart){
+		if (item instanceof NerfGun.NerfDart){
 			speed *= 2.25f;
 		}
 		if (item instanceof NerfGun.SmallDart){
