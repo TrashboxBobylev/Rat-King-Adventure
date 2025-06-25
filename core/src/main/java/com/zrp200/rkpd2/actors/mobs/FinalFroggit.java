@@ -134,6 +134,8 @@ public class FinalFroggit extends AbyssalMob implements Callback {
 			return;
 		}
 
+		spend(TIME_TO_ZAP);
+
 		Char enemy = this.enemy;
 
 		if (hit( this, enemy, true )) {
