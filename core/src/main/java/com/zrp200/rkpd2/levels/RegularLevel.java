@@ -70,6 +70,7 @@ import com.zrp200.rkpd2.levels.rooms.special.PitRoom;
 import com.zrp200.rkpd2.levels.rooms.special.ShopRoom;
 import com.zrp200.rkpd2.levels.rooms.special.SpecialRoom;
 import com.zrp200.rkpd2.levels.rooms.standard.StandardRoom;
+import com.zrp200.rkpd2.levels.rooms.standard.entrance.EntranceRoom;
 import com.zrp200.rkpd2.levels.traps.BlazingTrap;
 import com.zrp200.rkpd2.levels.traps.BurningTrap;
 import com.zrp200.rkpd2.levels.traps.ChillingTrap;
@@ -270,6 +271,8 @@ public abstract class RegularLevel extends Level {
             HashSet<Integer> largeCells = new HashSet<>();
             while (stdRoomIter.hasNext()) {
                 Room r = stdRoomIter.next();
+				if (r instanceof EntranceRoom)
+					continue;
                 for (int i = r.left; i < r.right; i++) {
                     for (int j = r.top; j < r.bottom; j++) {
                         int c = pointToCell(new Point(i, j));
