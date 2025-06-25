@@ -515,7 +515,7 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CHESTS))
 				type = Heap.Type.CHEST;
 			int cell = randomDropCell();
-            if (Dungeon.isChallenged(Challenges.REDUCED_POWER)){
+			if (Dungeon.isChallenged(Challenges.REDUCED_POWER)){
                 if (Dungeon.depth > 1 && findMob(cell) == null
                         && (item instanceof ScrollOfUpgrade || item instanceof PotionOfStrength ||
                         item instanceof Stylus || item instanceof Torch)){
@@ -539,21 +539,14 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 					losBlocking[keyCell] = false;
 				}
 			} else {
-				drop( item, cell ).type = Heap.Type.HEAP;
-			}
-			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-				map[cell] = Terrain.GRASS;
-				losBlocking[cell] = false;
-			}
-			else {
 				Heap drop = drop(item, cell);
 				drop.type = type;
 				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER) && Random.Int(4) == 0)
 					drop.items.add(Generator.random());
-				if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-					map[cell] = Terrain.GRASS;
-					losBlocking[cell] = false;
-				}
+			}
+			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+				map[cell] = Terrain.GRASS;
+				losBlocking[cell] = false;
 			}
 		}
 
