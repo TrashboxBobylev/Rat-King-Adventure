@@ -522,7 +522,7 @@ public boolean isSimilar( Item item ) {
 	}
 	
 	protected void decrementDurability(){
-		if (Dungeon.hero.hasTalent(Talent.HEROIC_ARCHERY) && !(Random.Int(7) < Dungeon.hero.pointsInTalent(Talent.HEROIC_ARCHERY))) {
+		if (!Dungeon.hero.hasTalent(Talent.HEROIC_ARCHERY) || !(Random.Int(7) < Dungeon.hero.pointsInTalent(Talent.HEROIC_ARCHERY))) {
 			//if this weapon was thrown from a source stack, degrade that stack.
 			//unless a weapon is about to break, then break the one being thrown
 			if (parent != null) {
