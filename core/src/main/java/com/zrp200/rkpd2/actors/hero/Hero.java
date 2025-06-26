@@ -165,6 +165,7 @@ import com.zrp200.rkpd2.items.rings.RingOfMight;
 import com.zrp200.rkpd2.items.rings.RingOfTenacity;
 import com.zrp200.rkpd2.items.scrolls.Scroll;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfMagicMapping;
+import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfChallenge;
 import com.zrp200.rkpd2.items.trinkets.ThirteenLeafClover;
 import com.zrp200.rkpd2.items.wands.Wand;
@@ -2207,6 +2208,18 @@ if (wep != null) {
 		int effectiveDamage = preHP - postHP;
 
 		if (effectiveDamage <= 0) return;
+
+		if (hasTalent(Talent.HEROIC_INFUSION)){
+			belongings.charge(0.25f*(1+pointsInTalent(Talent.HEROIC_INFUSION)),false);
+			for (Buff b : buffs()) {
+				if (b instanceof Artifact.ArtifactBuff) {
+					if (!((Artifact.ArtifactBuff) b).isCursed()) {
+						((Artifact.ArtifactBuff) b).charge(this, 0.25f*(1+pointsInTalent(Talent.HEROIC_INFUSION)));
+					}
+				}
+			}
+			ScrollOfRecharging.charge(this);
+		}
 
 		if (buff(Challenge.DuelParticipant.class) != null){
 			buff(Challenge.DuelParticipant.class).addDamage(effectiveDamage);

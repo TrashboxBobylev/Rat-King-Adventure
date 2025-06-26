@@ -304,7 +304,7 @@ public enum Talent {
 			return super.title();
 		}
 	},
-	HEROIC_ENDURANCE(imageAt(4, 8), 4), HEROIC_WIZARDRY(imageAt(4, 9), 4), HEROIC_STAMINA(imageAt(4, 10), 4), HEROIC_ARCHERY(imageAt(4, 11), 4), HEROIC_ADAPTABILITY(imageAt(4, 12), 4), HEROIC_RATINESS(imageAt(4, 14), 3),
+	HEROIC_ENDURANCE(imageAt(4, 8), 4), HEROIC_WIZARDRY(imageAt(4, 9), 4), HEROIC_STAMINA(imageAt(4, 10), 4), HEROIC_ARCHERY(imageAt(4, 11), 4), HEROIC_ADAPTABILITY(imageAt(4, 12), 4), HEROIC_RATINESS(imageAt(4, 14), 3), HEROIC_INFUSION(imageAt(4, 13), 4),
 
 	//Ratmogrify T4
 	RATSISTANCE(215, 4), RATLOMACY(216, 4), RATFORCEMENTS(217, 4), DRRATEDON(imageAt(13, 14), 4),
@@ -1761,6 +1761,8 @@ public enum Talent {
 						return new Talent[]{HEROIC_ARCHERY};
 					case DUELIST:
 						return new Talent[]{HEROIC_ADAPTABILITY};
+					case CLERIC:
+						return new Talent[]{HEROIC_INFUSION};
 					case RAT_KING:
 						return new Talent[]{HEROIC_RATINESS};
 				}
