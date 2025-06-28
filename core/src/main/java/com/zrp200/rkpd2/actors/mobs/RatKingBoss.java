@@ -81,7 +81,6 @@ import com.zrp200.rkpd2.levels.traps.FlashingTrap;
 import com.zrp200.rkpd2.levels.traps.FrostTrap;
 import com.zrp200.rkpd2.levels.traps.GrimTrap;
 import com.zrp200.rkpd2.levels.traps.RockfallTrap;
-import com.zrp200.rkpd2.levels.traps.StormTrap;
 import com.zrp200.rkpd2.levels.traps.Trap;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
@@ -1154,7 +1153,7 @@ public class RatKingBoss extends Mob {
         }
 
         protected Class[] trapClasses = new Class[]{
-                FrostTrap.class, StormTrap.class, CorrosionTrap.class,  DisintegrationTrap.class,
+                FrostTrap.class, CorrosionTrap.class,  DisintegrationTrap.class,
                 RockfallTrap.class, FlashingTrap.class,
                 DisarmingTrap.class, CursingTrap.class, GrimTrap.class, DistortionTrap.class };
 
