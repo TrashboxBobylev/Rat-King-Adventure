@@ -1152,7 +1152,7 @@ public class Hero extends Char {
 
 		KindOfWeapon wep = Dungeon.hero.belongings.attackingWeapon();
 		if (RobotBuff.isVehicle()){
-			return KindOfWeapon.canReach(this, enemy.pos, 8);
+			return KindOfWeapon.canReach(this, enemy.pos, 8) && new Ballistica(pos, enemy.pos, Ballistica.FRIENDLY_PROJECTILE).collisionPos == enemy.pos;
 		}
 
 		if (wep != null){
