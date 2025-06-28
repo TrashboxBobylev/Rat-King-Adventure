@@ -389,9 +389,9 @@ public class RatKingBoss extends Mob {
         }
         if (phase == SNIPER){
             if (phase3()){
-                return Random.NormalIntRange(9, 20);
+                return Random.NormalIntRange(3, 15);
             }
-            return Random.NormalIntRange(5, 14);
+            return Random.NormalIntRange(8, 20);
         }
         return super.damageRoll();
     }
@@ -601,7 +601,7 @@ public class RatKingBoss extends Mob {
     }
 
     private void zap() {
-        spend( phase3() ? 0.5f : 0.66f );
+        spend( phase3() ? 0.5f : 1f );
 
         attack(enemy);
     }
