@@ -15,6 +15,7 @@ import com.zrp200.rkpd2.effects.Effects;
 import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.mechanics.Ballistica;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -144,6 +145,19 @@ public class SharksTooth extends MeleeWeapon {
         } else {
             return 3;
         }
+    }
+
+    @Override
+    public String abilityInfo() {
+        if (levelKnown){
+            return Messages.get(this, "ability_desc", augment.damageFactor((max()-min())/3));
+        } else {
+            return Messages.get(this, "typical_ability_desc", augment.damageFactor((max(0)-min(0))/3));
+        }
+    }
+
+    public String upgradeAbilityStat(int level){
+        return "+" + augment.damageFactor((max(level)-min(level))/3);
     }
 
     @Override

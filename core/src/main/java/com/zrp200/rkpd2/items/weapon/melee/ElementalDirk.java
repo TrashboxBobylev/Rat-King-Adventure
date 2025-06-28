@@ -100,6 +100,19 @@ public class ElementalDirk extends AssassinsBlade {
     }
 
     @Override
+    public String abilityInfo() {
+        if (levelKnown){
+            return Messages.get(this, "ability_desc", augment.damageFactor(min())*3/4, augment.damageFactor(max())*3/4);
+        } else {
+            return Messages.get(this, "typical_ability_desc", min(0)*3/4, max(0)*3/4);
+        }
+    }
+
+    public String upgradeAbilityStat(int level){
+        return augment.damageFactor(min(level)*3/4) + "-" + augment.damageFactor(max(level)*3/4);
+    }
+
+    @Override
     public int targetingPos(Hero user, int dst) {
         return new Ballistica( user.pos, dst, Ballistica.FRIENDLY_MAGIC_BOLT ).collisionPos;
     }

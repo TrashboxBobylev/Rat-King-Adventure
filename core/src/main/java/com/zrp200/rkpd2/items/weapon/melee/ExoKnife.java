@@ -141,6 +141,19 @@ public class ExoKnife extends MeleeWeapon{
     }
 
     @Override
+    public String abilityInfo() {
+        if (levelKnown){
+            return Messages.get(this, "ability_desc", augment.damageFactor(min()*5), augment.damageFactor(max())*5);
+        } else {
+            return Messages.get(this, "typical_ability_desc", min(0)*5, max(0)*5);
+        }
+    }
+
+    public String upgradeAbilityStat(int level){
+        return augment.damageFactor(min(level)*5) + "-" + augment.damageFactor(max(level)*5);
+    }
+
+    @Override
     protected DuelistAbility duelistAbility() {
         return new ExoEffect();
     }

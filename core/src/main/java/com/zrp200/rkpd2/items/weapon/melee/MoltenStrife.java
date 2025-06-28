@@ -71,6 +71,19 @@ public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForger
     }
 
     @Override
+    public String abilityInfo() {
+        if (levelKnown){
+            return Messages.get(this, "ability_desc", (4 + Dungeon.scalingDepth())*5/4, (12 + 3*Dungeon.scalingDepth())*5/4);
+        } else {
+            return Messages.get(this, "typical_ability_desc", (4 + Dungeon.scalingDepth())*5/4, (12 + 3*Dungeon.scalingDepth())*5/4);
+        }
+    }
+
+    public String upgradeAbilityStat(int level){
+        return (4 + Dungeon.scalingDepth())*5/4 + "-" + (12 + 3*Dungeon.scalingDepth())*5/4;
+    }
+
+    @Override
     protected void duelistAbility(Hero hero, Integer target) {
         beforeAbilityUsed(hero, null);
         Enchanting.show(hero, new MoltenStrife(){

@@ -94,6 +94,19 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 	}
 
 	@Override
+	public String abilityInfo() {
+		if (levelKnown){
+			return Messages.get(this, "ability_desc", augment.damageFactor(min())*2, augment.damageFactor(max())*2);
+		} else {
+			return Messages.get(this, "typical_ability_desc", min(0)*2, max(0)*2);
+		}
+	}
+
+	public String upgradeAbilityStat(int level){
+		return augment.damageFactor(min(level)*2) + "-" + augment.damageFactor(max(level)*2);
+	}
+
+	@Override
 	public String targetingPrompt() {
 		return Messages.get(this, "prompt");
 	}

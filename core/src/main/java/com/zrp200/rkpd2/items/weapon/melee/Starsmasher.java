@@ -326,6 +326,19 @@ public class Starsmasher extends MeleeWeapon {
     }
 
     @Override
+    public String abilityInfo() {
+        if (levelKnown){
+            return Messages.get(this, "ability_desc", augment.damageFactor(min())/4, augment.damageFactor(max())/4);
+        } else {
+            return Messages.get(this, "typical_ability_desc", min(0)/4, max(0)/4);
+        }
+    }
+
+    public String upgradeAbilityStat(int level){
+        return augment.damageFactor(min(level)/4) + "-" + augment.damageFactor(max(level)/4);
+    }
+
+    @Override
     public String targetingPrompt() {
         return Messages.get(this, "prompt");
     }

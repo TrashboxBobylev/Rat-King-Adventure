@@ -72,6 +72,19 @@ public class DreadSlicer extends MeleeWeapon implements Talent.SpellbladeForgery
     }
 
     @Override
+    public String abilityInfo() {
+        if (levelKnown){
+            return Messages.get(this, "ability_desc", augment.damageFactor(min()*2), augment.damageFactor(max())*2);
+        } else {
+            return Messages.get(this, "typical_ability_desc", min(0)*2, max(0)*2);
+        }
+    }
+
+    public String upgradeAbilityStat(int level){
+        return augment.damageFactor(min(level)*2) + "-" + augment.damageFactor(max(level)*2);
+    }
+
+    @Override
     protected DuelistAbility duelistAbility() {
         return new MeleeAbility(2) {
 
