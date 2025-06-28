@@ -1011,7 +1011,7 @@ public abstract class Mob extends Char {
 		super.die( cause );
 
 		if (RobotBuff.isRobot() && cause instanceof Hero && hero.pointsInTalent(Talent.MECHANICAL_POWER) > 1){
-			Buff.affect(hero, Barkskin.class).set(hero.lvl, 4);
+			Buff.affect(hero, Barkskin.class).set(hero.lvl, 1);
 		}
 
 		if (!(this instanceof Wraith)
