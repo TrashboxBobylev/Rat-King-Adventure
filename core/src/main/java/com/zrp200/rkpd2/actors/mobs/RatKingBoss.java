@@ -306,7 +306,7 @@ public class RatKingBoss extends Mob {
         public void detach() {
             super.detach();
             for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])){
-                if (mob instanceof RatKingBoss){
+                if (mob instanceof RatKingBoss && visualcooldown() <= 1){
                     mob.sprite.flash();
                     mob.sprite.bloodBurstA(target.sprite.center(), target.HT*2);
                     Sample.INSTANCE.play(Assets.Sounds.BLAST);
