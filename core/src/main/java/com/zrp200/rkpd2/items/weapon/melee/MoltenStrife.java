@@ -101,7 +101,7 @@ public class MoltenStrife extends MeleeWeapon implements Talent.SpellbladeForger
 
             for (Char ch : affected){
                 // 125% bomb damage that pierces armor.
-                int damage = Math.round(Random.NormalIntRange( Dungeon.scalingDepth()+5, 10 + Dungeon.scalingDepth() * 2 )*1.25f);
+                int damage = Math.round(Random.NormalIntRange( 4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth() )*1.25f);
                 ch.damage(damage, this);
             }
 
