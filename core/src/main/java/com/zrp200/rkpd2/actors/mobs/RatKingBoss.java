@@ -335,7 +335,7 @@ public class RatKingBoss extends Mob {
 
     @Override
     public void damage(int dmg, Object src) {
-        dmg *= Math.max(0.45f, 1 - (HP * 1.f / HT));
+        dmg *= Math.max(0.45f, HP * 1.f / HT);
         LockedFloor lock = Dungeon.hero.buff(LockedFloor.class);
         if (lock != null && !isImmune(src.getClass())) lock.addTime(dmg*1.5f);
         if (phase == ASSASSIN){
