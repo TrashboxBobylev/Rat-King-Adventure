@@ -186,7 +186,7 @@ public class PowerOfMany extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.IMITATE, Talent.HEROIC_ENERGY};
 	}
 
 	public static Char getPoweredAlly(){

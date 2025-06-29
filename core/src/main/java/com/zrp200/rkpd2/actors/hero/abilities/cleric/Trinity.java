@@ -307,7 +307,7 @@ public class Trinity extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.BODY_FORM, Talent.MIND_FORM, Talent.SPIRIT_FORM, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.BODY_FORM, Talent.MIND_FORM, Talent.SPIRIT_FORM, Talent.META_FORM, Talent.HEROIC_ENERGY};
 	}
 
 	public static class WndItemtypeSelect extends WndTitledMessage {

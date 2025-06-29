@@ -68,7 +68,7 @@ public class AscendedForm extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.DIVINE_INTERVENTION, Talent.JUDGEMENT, Talent.FLASH, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.DIVINE_INTERVENTION, Talent.JUDGEMENT, Talent.FLASH, Talent.DIVINE_PROFICIENCY, Talent.HEROIC_ENERGY};
 	}
 
 	public static class AscendBuff extends ShieldBuff {
