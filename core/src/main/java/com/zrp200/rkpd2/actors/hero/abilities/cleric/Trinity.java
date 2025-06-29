@@ -424,7 +424,7 @@ public class Trinity extends ArmorAbility {
 				}
 			}
 
-			int top = height + 2;
+			int top = height + 20;
 			int left = 0;
 
 			for (Item item : options){
@@ -494,7 +494,7 @@ public class Trinity extends ArmorAbility {
 				}
 			};
 			btnConfirm.setRect(0, height+2, width, 16);
-			add(btnConfirm);
+			addToBottom(btnConfirm);
 
 			resize(width, (int)btnConfirm.bottom());
 
