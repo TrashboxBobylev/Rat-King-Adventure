@@ -260,6 +260,9 @@ public abstract class ClericSpell {
 			if (cleric.hasTalent(Talent.SPIRIT_FORM)){
 				spells.add(SpiritForm.INSTANCE);
 			}
+			if (cleric.hasTalent(Talent.META_FORM)){
+				spells.add(MetaForm.INSTANCE);
+			}
 
 			if (cleric.hasTalent(Talent.BEAMING_RAY)){
 				spells.add(BeamingRay.INSTANCE);

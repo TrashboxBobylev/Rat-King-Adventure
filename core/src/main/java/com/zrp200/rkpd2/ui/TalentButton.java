@@ -25,7 +25,9 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.effects.Speck;
+import com.zrp200.rkpd2.effects.Transmuting;
 import com.zrp200.rkpd2.items.scrolls.exotic.ScrollOfMetamorphosis;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -58,7 +60,8 @@ public class TalentButton extends Button {
 		INFO,
 		UPGRADE,
 		METAMORPH_CHOOSE,
-		METAMORPH_REPLACE
+		METAMORPH_REPLACE,
+		METAFORM_SELECT
 	}
 
 	public TalentButton(int tier, Talent talent, int points, Mode mode){
@@ -207,6 +210,28 @@ public class TalentButton extends Button {
 						ScrollOfMetamorphosis.WndMetamorphReplace.INSTANCE.hide();
 					}
 
+				}
+			});
+		} else if (mode == Mode.METAFORM_SELECT && Dungeon.hero != null && Dungeon.hero.isAlive()) {
+			toAdd = new WndInfoTalent(talent, pointsInTalent, new WndInfoTalent.TalentButtonCallback() {
+				@Override
+				public String prompt() {
+					return Messages.titleCase(Messages.get(Trinity.class, "select_talent"));
+				}
+
+				@Override
+				public boolean metamorphDesc() {
+					return true;
+				}
+
+				@Override
+				public void call() {
+					Trinity.WndTalentSelect.INSTANCE.hide();
+					((Trinity)Dungeon.hero.armorAbility).metaForm = talent;
+
+					Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+					Transmuting.show(Dungeon.hero, talent, talent);
+					Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				}
 			});
 		} else {

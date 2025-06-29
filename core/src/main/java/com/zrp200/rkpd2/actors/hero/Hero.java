@@ -95,6 +95,7 @@ import com.zrp200.rkpd2.actors.hero.spells.BodyForm;
 import com.zrp200.rkpd2.actors.hero.spells.HallowedGround;
 import com.zrp200.rkpd2.actors.hero.spells.HolyWard;
 import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
+import com.zrp200.rkpd2.actors.hero.spells.MetaForm;
 import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
 import com.zrp200.rkpd2.actors.hero.spells.Smite;
 import com.zrp200.rkpd2.actors.mobs.AbyssalSpawner;
@@ -559,6 +560,12 @@ public class Hero extends Char {
 	}
 
 	public boolean canHaveTalent(Talent talent) {
+		if (buff(MetaForm.MetaFormBuff.class) != null){
+			Talent metaTalent = buff(MetaForm.MetaFormBuff.class).talent;
+			if (metaTalent == talent){
+				return true;
+			}
+		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
 			return true;
 		for(LinkedHashMap<Talent,Integer> tier : talents) if(tier.containsKey(talent)) return true;
@@ -575,6 +582,12 @@ public class Hero extends Char {
 	}
 
 	public int pointsInTalent( Talent talent ){
+		if (buff(MetaForm.MetaFormBuff.class) != null){
+			Talent metaTalent = buff(MetaForm.MetaFormBuff.class).talent;
+			if (metaTalent == talent){
+				return metaTalent.maxPoints;
+			}
+		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
 			return talent.maxPoints();
 		for (LinkedHashMap<Talent, Integer> tier : talents){
@@ -672,6 +685,8 @@ public class Hero extends Char {
 //				|| (tier == 4 && armorAbility == null));
 	}
 	public int talentPointsAvailable(int tier){
+		if (tier == 999)
+			return 999;
 		if (!hasTier(tier)) {
 			return 0;
 		} else {

@@ -29,13 +29,16 @@ import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.hero.Hero;
+import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.spells.BodyForm;
 import com.zrp200.rkpd2.actors.hero.spells.ClericSpell;
+import com.zrp200.rkpd2.actors.hero.spells.MetaForm;
 import com.zrp200.rkpd2.actors.hero.spells.MindForm;
 import com.zrp200.rkpd2.actors.hero.spells.SpiritForm;
 import com.zrp200.rkpd2.effects.Enchanting;
+import com.zrp200.rkpd2.effects.Transmuting;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
@@ -59,22 +62,30 @@ import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.journal.Catalog;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.ItemButton;
 import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.ui.RedButton;
+import com.zrp200.rkpd2.ui.RenderedTextBlock;
+import com.zrp200.rkpd2.ui.TalentButton;
+import com.zrp200.rkpd2.ui.TalentIcon;
+import com.zrp200.rkpd2.ui.TalentsPane;
 import com.zrp200.rkpd2.ui.Window;
 import com.zrp200.rkpd2.utils.GLog;
+import com.zrp200.rkpd2.windows.IconTitle;
 import com.zrp200.rkpd2.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Trinity extends ArmorAbility {
 
@@ -85,11 +96,12 @@ public class Trinity extends ArmorAbility {
 	private Bundlable bodyForm = null;
 	private Bundlable mindForm = null;
 	private Bundlable spiritForm = null;
+	public  Talent    metaForm = null;
 
 	@Override
 	public void activate(ClassArmor armor, Hero hero, Integer target) {
 
-		if (bodyForm == null && mindForm == null && spiritForm == null){
+		if (bodyForm == null && mindForm == null && spiritForm == null && metaForm == null){
 			GLog.w(Messages.get(this, "no_imbue"));
 		} else {
 			GameScene.show(new WndUseTrinity(armor));
@@ -273,6 +285,34 @@ public class Trinity extends ArmorAbility {
 				btnSpirit.enable(Dungeon.hero.buff(MagicImmune.class) == null && armor.charge >= trinityChargeUsePerEffect(spiritForm.getClass()));
 			}
 
+			if (metaForm != null){
+				RedButton btnMeta = new RedButton(Messages.get(WndUseTrinity.class, "meta",
+						Messages.titleCase((metaForm).title()))
+						+ " " + trinityItemUseText(metaForm.getClass()), 6){
+					@Override
+					protected void onClick() {
+						Invisibility.dispel();
+						Buff.prolong(Dungeon.hero, MetaForm.MetaFormBuff.class, MetaForm.duration()).setEffect(metaForm);
+						Dungeon.hero.spendAndNext(1f);
+						Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
+						Transmuting.show(Dungeon.hero, metaForm, metaForm);
+						Dungeon.hero.sprite.operate(Dungeon.hero.pos);
+						armor.charge -= trinityChargeUsePerEffect(metaForm.getClass());
+						armor.updateQuickslot();
+						hide();
+					}
+				};
+
+				btnMeta.icon(new TalentIcon(metaForm));
+				btnMeta.multiline = true;
+				btnMeta.setSize(width, 100); //for text layout
+				btnMeta.setRect(0, top + 2, width, btnMeta.reqHeight());
+				toAdd.add(btnMeta);
+				top = (int)btnMeta.bottom();
+
+				btnMeta.enable(Dungeon.hero.buff(MagicImmune.class) == null && armor.charge >= trinityChargeUsePerEffect(metaForm.getClass()));
+			}
+
 			addToBottom(toAdd.toArray(new Component[0]));
 			resize(width, top);
 
@@ -283,6 +323,7 @@ public class Trinity extends ArmorAbility {
 	private static final String BODY = "body_form";
 	private static final String MIND = "mind_form";
 	private static final String SPIRIT = "spirit_form";
+	private static final String META = "meta_form";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
@@ -290,6 +331,7 @@ public class Trinity extends ArmorAbility {
 		if (bodyForm != null)   bundle.put(BODY, bodyForm);
 		if (mindForm != null)   bundle.put(MIND, mindForm);
 		if (spiritForm != null) bundle.put(SPIRIT, spiritForm);
+		if (metaForm != null) bundle.put(META, metaForm.name());
 	}
 
 	@Override
@@ -298,6 +340,7 @@ public class Trinity extends ArmorAbility {
 		if (bundle.contains(BODY))  bodyForm = bundle.get(BODY);
 		if (bundle.contains(MIND))  mindForm = bundle.get(MIND);
 		if (bundle.contains(SPIRIT))spiritForm = bundle.get(SPIRIT);
+		if (bundle.contains(META))  metaForm = bundle.getEnum(META, Talent.class);
 	}
 
 	@Override
@@ -478,6 +521,76 @@ public class Trinity extends ArmorAbility {
 
 	}
 
+	public static class WndTalentSelect extends Window {
+
+		public static WndTalentSelect INSTANCE;
+		ArrayList<Talent> replaceOptions;
+
+		public WndTalentSelect(){
+			super();
+			INSTANCE = this;
+
+			ArrayList<Talent> possibleTalents = new ArrayList<>();
+
+			ArrayList<Talent> allTalents = new ArrayList<>();
+			for (HeroClass heroClass: HeroClass.values()){
+				ArrayList<LinkedHashMap<Talent, Integer>> talents = new ArrayList<>();
+				Talent.initClassTalents(heroClass, talents);
+				for (LinkedHashMap<Talent, Integer> tier : talents){
+                    allTalents.addAll(tier.keySet());
+				}
+			}
+
+			for (Talent talent: allTalents){
+				for(LinkedHashMap<Talent,Integer> tier : Dungeon.hero.talents)
+					if(!tier.containsKey(talent))
+						possibleTalents.add(talent);
+			}
+
+			ArrayList<Talent> options = new ArrayList<>();
+			while (options.size() < 10){
+				Talent talent = Random.element(possibleTalents);
+				if (!options.contains(talent))
+					options.add(talent);
+			}
+
+			replaceOptions = options;
+			setup(options);
+		}
+
+		private void setup(ArrayList<Talent> replaceOptions){
+			float top = 0;
+
+			IconTitle title = new IconTitle( new HeroIcon(MetaForm.INSTANCE), Messages.titleCase(MetaForm.INSTANCE.name()) );
+			title.color( TITLE_COLOR );
+			title.setRect(0, 0, 120, 0);
+			add(title);
+
+			top = title.bottom() + 2;
+
+			RenderedTextBlock text = PixelScene.renderTextBlock(Messages.get(WndTalentSelect.class, "desc"), 6);
+			text.maxWidth(120);
+			text.setPos(0, top);
+			add(text);
+
+			top = text.bottom() + 2;
+
+			LinkedHashMap<Talent, Integer> talentMap = new LinkedHashMap<>();
+			for (Talent talent: replaceOptions){
+				talentMap.put(talent, talent.maxPoints());
+			}
+
+			TalentsPane.TalentTierPane optionsPane = new TalentsPane.TalentTierPane(talentMap, 999, TalentButton.Mode.METAFORM_SELECT);
+			add(optionsPane);
+			optionsPane.title.text(" ");
+			optionsPane.setPos(0, top);
+			optionsPane.setSize(120, optionsPane.height());
+			resize((int)optionsPane.width(), (int)optionsPane.bottom());
+
+			resize(120, (int)optionsPane.bottom());
+		}
+	}
+
 	public static String trinityItemUseText(Class<?> cls ){
 		float chargeUse = trinityChargeUsePerEffect(cls);
 		if (Weapon.Enchantment.class.isAssignableFrom(cls) || Armor.Glyph.class.isAssignableFrom(cls)) {
@@ -508,6 +621,9 @@ public class Trinity extends ArmorAbility {
 		if (Artifact.class.isAssignableFrom(cls)){
 			return Messages.get(Trinity.class, cls.getSimpleName() + "_use", SpiritForm.artifactLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
+		if (Talent.class.isAssignableFrom(cls)){
+			return Messages.get(Trinity.class, "talent_use", MetaForm.duration(), Messages.decimalFormat("#.##", chargeUse));
+		}
 		return "error!";
 
 	}
@@ -536,6 +652,9 @@ public class Trinity extends ArmorAbility {
 			if (cls.equals(EtherealChains.class) || cls.equals(TalismanOfForesight.class) || cls.equals(TimekeepersHourglass.class)){
 				return 1.4f*chargeUse; //35 charge
 			}
+		}
+		if (Talent.class.isAssignableFrom(cls)){
+			return 2.68f*chargeUse; //66.6 charge
 		}
 		//all other effects are standard charge use, 25 at base
 		return chargeUse;
