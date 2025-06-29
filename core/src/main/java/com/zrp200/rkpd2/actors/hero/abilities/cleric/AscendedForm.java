@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.Buff;
+import com.zrp200.rkpd2.actors.buffs.CounterBuff;
 import com.zrp200.rkpd2.actors.buffs.Invisibility;
 import com.zrp200.rkpd2.actors.buffs.ShieldBuff;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -39,6 +40,8 @@ import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
+
+import static com.zrp200.rkpd2.Dungeon.hero;
 
 public class AscendedForm extends ArmorAbility {
 
@@ -67,6 +70,13 @@ public class AscendedForm extends ArmorAbility {
 	}
 
 	@Override
+	public String desc() {
+		DivineProficiencyTracker boost = hero != null ? hero.buff(DivineProficiencyTracker.class) : null;
+		return Messages.get(this, "desc", (int)(AscendBuff.DURATION + (boost != null ? boost.count() : 0))) + "\n\n" + Messages.get(this, "cost",
+				hero != null ? (int)chargeUse(hero) : (int)baseChargeUse);
+	}
+
+	@Override
 	public Talent[] talents() {
 		return new Talent[]{Talent.DIVINE_INTERVENTION, Talent.JUDGEMENT, Talent.FLASH, Talent.DIVINE_PROFICIENCY, Talent.HEROIC_ENERGY};
 	}
@@ -89,7 +99,7 @@ public class AscendedForm extends ArmorAbility {
 
 		@Override
 		public float iconFadePercent() {
-			return Math.max(0, (DURATION - left) / DURATION);
+			return Math.max(0, (duration() - left) / duration());
 		}
 
 		@Override
@@ -110,7 +120,12 @@ public class AscendedForm extends ArmorAbility {
 
 		public void reset(){
 			setShield(30);
-			left = (int)DURATION;
+			left = duration();
+		}
+
+		public int duration(){
+			DivineProficiencyTracker boost = target.buff(DivineProficiencyTracker.class);
+			return (int)(DURATION + (boost != null ? boost.count() : 0));
 		}
 
 		public void extend( int amt ){
@@ -125,6 +140,12 @@ public class AscendedForm extends ArmorAbility {
 				for (Char ch : Actor.chars()){
 					if (ch.buff(DivineIntervention.DivineShield.class) != null){
 						ch.buff(DivineIntervention.DivineShield.class).detach();
+					}
+				}
+				if (hero.hasTalent(Talent.DIVINE_PROFICIENCY)){
+					DivineProficiencyTracker tracker = Buff.affect(target, DivineProficiencyTracker.class);
+					if (tracker.count() < hero.pointsInTalent(Talent.DIVINE_PROFICIENCY)*5){
+						tracker.countUp(1 + (hero.pointsInTalent(Talent.DIVINE_PROFICIENCY)-1)/2);
 					}
 				}
 				return true;
@@ -162,5 +183,7 @@ public class AscendedForm extends ArmorAbility {
 			divineInverventionCast = bundle.getBoolean(DIVINE_INTERVENTION_CAST);
 		}
 	}
+
+	public static class DivineProficiencyTracker extends CounterBuff{};
 
 }
