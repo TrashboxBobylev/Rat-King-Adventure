@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.actors.hero.spells.BeamingRay;
 import com.zrp200.rkpd2.actors.hero.spells.ClericSpell;
+import com.zrp200.rkpd2.actors.hero.spells.EnrageSpell;
 import com.zrp200.rkpd2.actors.hero.spells.LifeLinkSpell;
 import com.zrp200.rkpd2.actors.hero.spells.Stasis;
 import com.zrp200.rkpd2.actors.mobs.Mob;
@@ -186,7 +187,7 @@ public class PowerOfMany extends ArmorAbility {
 
 	@Override
 	public Talent[] talents() {
-		return new Talent[]{Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.IMITATE, Talent.HEROIC_ENERGY};
+		return new Talent[]{Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.ENRAGE, Talent.HEROIC_ENERGY};
 	}
 
 	public static Char getPoweredAlly(){
@@ -226,7 +227,8 @@ public class PowerOfMany extends ArmorAbility {
 		@Override
 		public boolean act() {
 			if (target.buff(BeamingRay.BeamingRayBoost.class) != null
-				|| target.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null){
+				|| target.buff(LifeLinkSpell.LifeLinkSpellBuff.class) != null
+				|| target.buff(EnrageSpell.EnrageBuff.class) != null){
 				spend(TICK);
 				return true;
 			}

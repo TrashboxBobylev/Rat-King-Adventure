@@ -138,6 +138,7 @@ public abstract class ClericSpell {
 					|| this == BeamingRay.INSTANCE
 					|| this == LifeLinkSpell.INSTANCE
 					|| this == Stasis.INSTANCE
+					|| this == EnrageSpell.INSTANCE
 			) empoweredChargeUse -= Math.max(tome.getCharges(), empoweredChargeUse);
 			SpellEmpower.useCharge(empoweredChargeUse);
 		}
@@ -272,6 +273,9 @@ public abstract class ClericSpell {
 			}
 			if (cleric.hasTalent(Talent.STASIS)){
 				spells.add(Stasis.INSTANCE);
+			}
+			if (cleric.hasTalent(Talent.ENRAGE)){
+				spells.add(EnrageSpell.INSTANCE);
 			}
 
 		}

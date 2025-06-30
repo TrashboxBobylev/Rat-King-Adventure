@@ -268,7 +268,7 @@ public enum Talent {
 	//Trinity T4
 	BODY_FORM(180, 4), MIND_FORM(181, 4), SPIRIT_FORM(182, 4), META_FORM(imageAt(14, 13), 4),
 	//Power of Many T4
-	BEAMING_RAY(183, 4), LIFE_LINK(184, 4), STASIS(185, 4), IMITATE(imageAt(15, 13), 4),
+	BEAMING_RAY(183, 4), LIFE_LINK(184, 4), STASIS(185, 4), ENRAGE(imageAt(15, 13), 4),
 
 	//universal T4
 	HEROIC_ENERGY(26, 4) {

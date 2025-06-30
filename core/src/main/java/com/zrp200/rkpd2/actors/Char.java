@@ -104,6 +104,7 @@ import com.zrp200.rkpd2.actors.hero.abilities.rogue.DeathMark;
 import com.zrp200.rkpd2.actors.hero.abilities.warrior.Endure;
 import com.zrp200.rkpd2.actors.hero.spells.AuraOfProtection;
 import com.zrp200.rkpd2.actors.hero.spells.BeamingRay;
+import com.zrp200.rkpd2.actors.hero.spells.EnrageSpell;
 import com.zrp200.rkpd2.actors.hero.spells.GuidingLight;
 import com.zrp200.rkpd2.actors.hero.spells.HolyWard;
 import com.zrp200.rkpd2.actors.hero.spells.HolyWeapon;
@@ -547,6 +548,9 @@ public abstract class Char extends Actor {
 				} else {
 					dmg *= 1.25f;
 				}
+			}
+			if (buff(EnrageSpell.EnrageBuff.class) != null){
+				dmg *= 1.5f;
 			}
 
 			for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
@@ -1139,6 +1143,9 @@ if (Dungeon.hero.heroClass != HeroClass.CLERIC
 			}
 			if (this.buff(NuclearHatchet.Exposed.class) != null && src instanceof DamageOverTimeEffect){
 				damage *= 2.5f;
+			}
+			if (buff(EnrageSpell.EnrageBuff.class) != null){
+				damage *= 1.5f;
 			}
 
 			Class<?> srcClass = src.getClass();
