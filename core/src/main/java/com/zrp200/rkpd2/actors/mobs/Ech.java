@@ -58,7 +58,10 @@ public class Ech extends DirectableAlly {
     @Override
     public int damageRoll() {
         int damage = Random.NormalIntRange((int) (damageRange[0] * getModifier()), (int) (damageRange[1] * getModifier()));
-        if (!level.adjacent(pos, enemy.pos)) damage /= 2;
+        if (Dungeon.hero.heroClass.isExact(HeroClass.DUELIST) && Dungeon.hero.belongings.weapon() != null){
+            damage += Dungeon.hero.belongings.weapon().damageRoll(Dungeon.hero)/4;
+        }
+        if (!level.adjacent(pos, enemy.pos)) damage /= 4;
         return damage;
     }
 
@@ -96,6 +99,11 @@ public class Ech extends DirectableAlly {
             damage = bow.enchantment.proc(bow, this, enemy, damage);
         }
         return super.attackProc(enemy, damage);
+    }
+
+    @Override
+    public float attackDelay() {
+        return super.attackDelay()/(Dungeon.hero.heroClass.isExact(HeroClass.DUELIST) ? 2f : 1);
     }
 
     @Override
