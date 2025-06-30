@@ -27,6 +27,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.Icons;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.DeviceCompat;
@@ -45,7 +46,17 @@ public enum Document {
 	CAVES_EXPLORER(ItemSpriteSheet.CAVES_PAGE, true),
 	CITY_WARLOCK(ItemSpriteSheet.CITY_PAGE, true),
 	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true),
-	TERMINUS(ItemSpriteSheet.TERMINAL_PAG, true);
+	TERMINUS(ItemSpriteSheet.TERMINAL_PAG, true),
+
+	SPECIAL_SEEDS(ItemSpriteSheet.SEED_PAGE, false){
+		//as the name is just the seed
+		public String pageTitle( String page ){
+			return page;
+		}
+		public String pageBody( String page ){
+			return Messages.get( DungeonSeed.class, page + ".desc");
+		}
+	};
 	
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
@@ -339,6 +350,10 @@ public enum Document {
 		TERMINUS.pagesStates.put("no_scrolls",                  debug ? READ : NOT_FOUND);
 		TERMINUS.pagesStates.put("champion_enemies",            debug ? READ : NOT_FOUND);
 		TERMINUS.pagesStates.put("stronger_bosses",             debug ? READ : NOT_FOUND);
+
+		for (DungeonSeed.SpecialSeed seed: DungeonSeed.SpecialSeed.values()){
+			SPECIAL_SEEDS.pagesStates.put(seed.fullSeed, debug ? READ : NOT_FOUND);
+		}
 	}
 	
 	private static final String DOCUMENTS = "documents";

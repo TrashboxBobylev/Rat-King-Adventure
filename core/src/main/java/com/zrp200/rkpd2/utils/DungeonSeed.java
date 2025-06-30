@@ -211,6 +211,7 @@ public class DungeonSeed {
 		};
 
 		public long seed;
+		public String fullSeed;
 		public boolean random;
 
 		SpecialSeed(long seed) {
@@ -226,11 +227,13 @@ public class DungeonSeed {
 		SpecialSeed(String seed){
 			this.seed = convertFromText(seed);
 			this.random = true;
+			this.fullSeed = seed;
 		}
 
 		SpecialSeed(String seed, boolean random){
 			this.seed = convertFromText(seed);
 			this.random = random;
+			this.fullSeed = seed;
 		}
 
 		public void addSeeds(HashSet<SpecialSeed> list){

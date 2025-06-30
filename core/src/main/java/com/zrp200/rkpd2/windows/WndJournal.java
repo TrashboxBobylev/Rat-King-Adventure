@@ -98,6 +98,7 @@ public class WndJournal extends WndTabbed {
 	private NotesTab notesTab;
 	private CatalogTab catalogTab;
 	private BadgesTab badgesTab;
+	private SpecialSeedsTab seedsTab;
 	public static int last_index = 0;
 
 	private static WndJournal INSTANCE = null;
@@ -136,6 +137,12 @@ public class WndJournal extends WndTabbed {
 		add(badgesTab);
 		badgesTab.setRect(0, 0, width, height);
 		badgesTab.updateList();
+
+		seedsTab = new SpecialSeedsTab();
+		add(seedsTab);
+		seedsTab.setRect(0, 0, width, height);
+		seedsTab.updateList();
+
 		Tab[] tabs = {
 				new IconTab( Icons.JOURNAL.get() ) {
 					protected void select( boolean value ) {
@@ -196,7 +203,19 @@ public class WndJournal extends WndTabbed {
 					protected String hoverText() {
 						return Messages.get(badgesTab, "title");
 					}
-				}
+				},
+				new IconTab( new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE, null) ) {
+					protected void select( boolean value ) {
+						super.select( value );
+						guideTab.active = guideTab.visible = value;
+						if (value) last_index = 5;
+					}
+
+					@Override
+					protected String hoverText() {
+						return Messages.get(seedsTab, "title");
+					}
+				},
 		};
 
 		for (Tab tab : tabs) {
@@ -262,6 +281,57 @@ public class WndJournal extends WndTabbed {
 									Document.ADVENTURERS_GUIDE.pageTitle(page),
 									Document.ADVENTURERS_GUIDE.pageBody(page) ));
 							Document.ADVENTURERS_GUIDE.readPage(page);
+							return true;
+						} else {
+							return false;
+						}
+					}
+				};
+				if (!found){
+					item.hardlight(0x999999);
+					item.hardlightIcon(0x999999);
+				}
+				list.addItem(item);
+			}
+
+			list.setRect(x, y, width, height);
+		}
+
+	}
+
+	public static class SpecialSeedsTab extends Component {
+
+		private ScrollingListPane list;
+
+		@Override
+		protected void createChildren() {
+			list = new ScrollingListPane();
+			add( list );
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+			list.setRect( x, y, width, height);
+		}
+
+		public void updateList(){
+			list.addTitle(Document.SPECIAL_SEEDS.title());
+
+			for (String page : Document.SPECIAL_SEEDS.pageNames()){
+				boolean found = Document.SPECIAL_SEEDS.isPageFound(page);
+				ScrollingListPane.ListItem item = new ScrollingListPane.ListItem(
+						Document.SPECIAL_SEEDS.pageSprite(page),
+						null,
+						found ? Messages.titleCase(Document.SPECIAL_SEEDS.pageTitle(page)) : Messages.titleCase(Messages.get( GuideTab.class, "missing" ))
+				){
+					@Override
+					public boolean onClick(float x, float y) {
+						if (inside( x, y ) && found) {
+							ShatteredPixelDungeon.scene().addToFront( new WndStory( Document.SPECIAL_SEEDS.pageSprite(page),
+									Document.SPECIAL_SEEDS.pageTitle(page),
+									Document.SPECIAL_SEEDS.pageBody(page) ));
+							Document.SPECIAL_SEEDS.readPage(page);
 							return true;
 						} else {
 							return false;

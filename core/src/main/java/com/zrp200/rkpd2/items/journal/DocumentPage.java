@@ -55,6 +55,8 @@ public abstract class DocumentPage extends Item {
 		GameScene.flashForDocument(document(), page());
 		if (document() == Document.ADVENTURERS_GUIDE){
 			WndJournal.last_index = 1;
+		} else if (document() == Document.SPECIAL_SEEDS) {
+			WndJournal.last_index = 4;
 		} else if (document() == Document.ALCHEMY_GUIDE) {
 			WndJournal.last_index = 2;
 			WndJournal.AlchemyTab.currentPageIdx = document().pageIdx(page());

@@ -51,6 +51,7 @@ import com.zrp200.rkpd2.items.food.SupplyRation;
 import com.zrp200.rkpd2.items.journal.DocumentPage;
 import com.zrp200.rkpd2.items.journal.GuidePage;
 import com.zrp200.rkpd2.items.journal.RegionLorePage;
+import com.zrp200.rkpd2.items.journal.SpecialSeedPage;
 import com.zrp200.rkpd2.items.keys.GoldenKey;
 import com.zrp200.rkpd2.items.keys.Key;
 import com.zrp200.rkpd2.items.potions.PotionOfStrength;
@@ -681,6 +682,33 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 			drop( p, cell );
 		}
 		Random.popGenerator();
+
+		//seeds pages
+		if (this instanceof AbyssLevel) {
+			Random.pushGenerator(Random.Long());
+			if (Random.Int(2) == 0) {
+				allPages = Document.SPECIAL_SEEDS.pageNames();
+				missingPages = new ArrayList<>();
+				for (String page : allPages) {
+					if (!Document.SPECIAL_SEEDS.isPageFound(page)) {
+						missingPages.add(page);
+					}
+				}
+
+				//chance to find a page is 50%
+				if (!missingPages.isEmpty()) {
+					SpecialSeedPage p = new SpecialSeedPage();
+					p.page(Random.element(missingPages));
+					int cell = randomDropCell();
+					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+						map[cell] = Terrain.GRASS;
+						losBlocking[cell] = false;
+					}
+					drop(p, cell);
+				}
+			}
+			Random.popGenerator();
+		}
 
 		//lore pages
 		//TODO a fair bit going on here, I might want to refactor/externalize this in the future
