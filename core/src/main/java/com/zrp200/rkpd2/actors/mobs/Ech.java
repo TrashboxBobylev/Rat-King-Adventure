@@ -9,6 +9,7 @@ import com.zrp200.rkpd2.actors.buffs.MagicImmune;
 import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.mobs.npcs.DirectableAlly;
+import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.scenes.GameScene;
@@ -40,7 +41,7 @@ public class Ech extends DirectableAlly {
     }
 
     public void update(){
-        HT = (int) (8 * getModifier());
+        HT = (int) (8 * getModifier()*(Dungeon.hero.heroClass.isExact(HeroClass.CLERIC) ? 1.33f : 1));
         defenseSkill = (int) ((int) (5 * getModifier())*
                 (Dungeon.hero.heroClass.isExact(HeroClass.ROGUE) ? 1.5f : 1));
     }
@@ -99,6 +100,17 @@ public class Ech extends DirectableAlly {
             damage = bow.enchantment.proc(bow, this, enemy, damage);
         }
         return super.attackProc(enemy, damage);
+    }
+
+    @Override
+    public int defenseProc(Char enemy, int damage) {
+        if (Random.Int(4) == 0){
+            HolyTome.TomeRecharge recharge = Dungeon.hero.buff(HolyTome.TomeRecharge.class);
+            if (recharge != null){
+                recharge.charge(Dungeon.hero, 1f);
+            }
+        }
+        return super.defenseProc(enemy, damage);
     }
 
     @Override
