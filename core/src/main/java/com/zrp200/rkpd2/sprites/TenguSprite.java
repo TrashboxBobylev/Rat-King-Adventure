@@ -84,7 +84,7 @@ public class TenguSprite extends MobSprite {
 
 	@Override
 	public void update() {
-		if (paused && !curAnim.looped){
+		if (paused && (curAnim == null || !curAnim.looped)){
 			updateAnimation();
 		}
 		super.update();
