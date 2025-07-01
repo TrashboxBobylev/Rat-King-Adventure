@@ -330,7 +330,7 @@ public class WndJournal extends WndTabbed {
 						if (inside( x, y ) && found) {
 							ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage( Document.SPECIAL_SEEDS.pageSprite(page),
 									Document.SPECIAL_SEEDS.pageTitle(page),
-									Document.SPECIAL_SEEDS.pageBody(page) ));
+									Document.SPECIAL_SEEDS.pageBody(page), 330 ));
 							Document.SPECIAL_SEEDS.readPage(page);
 							return true;
 						} else {
