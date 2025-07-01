@@ -149,7 +149,7 @@ public abstract class RegularLevel extends Level {
 		for (int i = 0; i < standards; i++) {
 			int sizeCat = standards-i;
 			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
-				sizeCat = 0;
+				sizeCat = 1;
 			StandardRoom s;
 			do {
 				s = StandardRoom.createRoom();
