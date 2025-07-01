@@ -569,7 +569,7 @@ public abstract class Wand extends Item {
 	}
 
 	public int getMinCharges(){
-		return Dungeon.hero.hasTalent(Talent.HEROIC_WIZARDRY) ? -Dungeon.hero.pointsInTalent(Talent.HEROIC_WIZARDRY) : 0;
+		return hero != null && Dungeon.hero.hasTalent(Talent.HEROIC_WIZARDRY) ? -Dungeon.hero.pointsInTalent(Talent.HEROIC_WIZARDRY) : 0;
 	}
 
 	public void wandUsed() {
