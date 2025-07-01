@@ -90,6 +90,7 @@ import com.zrp200.rkpd2.items.weapon.melee.Cudgel;
 import com.zrp200.rkpd2.items.weapon.melee.Dagger;
 import com.zrp200.rkpd2.items.weapon.melee.Gloves;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
+import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.items.weapon.melee.Rapier;
 import com.zrp200.rkpd2.items.weapon.melee.WornShortsword;
 import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
@@ -272,6 +273,21 @@ public enum HeroClass {
 			case RAT_KING:
 				initRatKing(hero);
 				break;
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUELIST)){
+			MeleeWeapon weapon = (MeleeWeapon) Generator.randomUsingDefaults(Random.oneOf(Generator.Category.WEP_T1, Generator.Category.WEP_T2, Generator.Category.WEP_T3, Generator.Category.WEP_T4, Generator.Category.WEP_T5));
+			if (Random.Int(22) == 0){
+				weapon = (MeleeWeapon) Generator.randomUsingDefaults(Generator.Category.WEP_T6);
+			}
+			if (weapon != null){
+				weapon.duelistStart = true;
+				weapon.tier = 1;
+				weapon.cursed = false;
+				weapon.level(0);
+				weapon.enchant(null);
+				(hero.belongings.weapon = weapon).identify();
+			}
 		}
 
 		if (SPDSettings.quickslotWaterskin()) {

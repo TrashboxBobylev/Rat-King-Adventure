@@ -83,6 +83,7 @@ import static com.zrp200.rkpd2.Dungeon.level;
 public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	public boolean trollers = false;
+	public boolean duelistStart = false;
 	public int grass = 0;
 	protected static boolean cutGrass = false;
 
@@ -909,12 +910,14 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 
 	private static final String KROMER	        = "pipisfusion";
 	private static final String GRASS	        = "grasscharge";
+	private static final String DUELIST_START   = "dueliststart";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(KROMER, trollers);
 		bundle.put(GRASS, grass);
+		bundle.put(DUELIST_START, duelistStart);
 	}
 
 	@Override
@@ -923,6 +926,10 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		trollers = bundle.getBoolean(KROMER);
 		if (bundle.contains(GRASS))
 			grass = bundle.getInt(GRASS);
+		if (bundle.contains(DUELIST_START)){
+			duelistStart = bundle.getBoolean(DUELIST_START);
+			tier = 1;
+		}
 	}
 
 	public float warriorMod(){
