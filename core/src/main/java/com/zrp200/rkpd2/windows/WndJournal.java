@@ -328,7 +328,7 @@ public class WndJournal extends WndTabbed {
 					@Override
 					public boolean onClick(float x, float y) {
 						if (inside( x, y ) && found) {
-							ShatteredPixelDungeon.scene().addToFront( new WndStory( Document.SPECIAL_SEEDS.pageSprite(page),
+							ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage( Document.SPECIAL_SEEDS.pageSprite(page),
 									Document.SPECIAL_SEEDS.pageTitle(page),
 									Document.SPECIAL_SEEDS.pageBody(page) ));
 							Document.SPECIAL_SEEDS.readPage(page);
