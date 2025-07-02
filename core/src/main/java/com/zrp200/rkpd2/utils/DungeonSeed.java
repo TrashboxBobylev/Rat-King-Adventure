@@ -257,6 +257,12 @@ public class DungeonSeed {
 				return new ItemSprite(ItemSpriteSheet.STONE_ENCHANT);
 			}
 		},
+		EQUAL_RARITY("EQU-ALO-DDS"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.UNSTABLE_SPELL);
+			}
+		},
 		DUNGEONEER("WHO-LEP-ACK"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {
