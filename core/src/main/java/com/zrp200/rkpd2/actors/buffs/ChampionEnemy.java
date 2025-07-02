@@ -46,6 +46,7 @@ import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.BArray;
@@ -136,7 +137,7 @@ public abstract class ChampionEnemy extends Buff {
 		Dungeon.mobsToChampion--;
 		Class<? extends ChampionEnemy> title = getTitle();
 
-		if (Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)){
+		if ((Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)){
 			makeChampion(m, title);
 			if (m instanceof ThreadRipper) makeChampion(m, title);
 			m.state = m.WANDERING;

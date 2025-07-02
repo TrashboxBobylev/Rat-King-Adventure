@@ -60,6 +60,7 @@ import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.levels.RatBossLevel;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
@@ -102,7 +103,7 @@ public class AscensionChallenge extends Buff {
 	}
 
 	public static float statModifier(Char ch){
-		if (Dungeon.hero == null || Dungeon.hero.buff(AscensionChallenge.class) == null){
+		if (Dungeon.hero == null || (Dungeon.hero.buff(AscensionChallenge.class) == null && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE))){
 			return 1;
 		}
 
@@ -116,13 +117,20 @@ public class AscensionChallenge extends Buff {
 			return 1f;
 		}
 
+		float mod = 1f;
+
 		for (Class<?extends Mob> cls : modifiers.keySet()){
 			if (cls.isAssignableFrom(ch.getClass())){
-				return modifiers.get(cls);
+				mod = modifiers.get(cls);
+				break;
 			}
 		}
 
-		return 1;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)){
+			mod *= 0.67f;
+		}
+
+		return mod;
 	}
 
 	//distant mobs get constantly beckoned to the hero at 2+ stacks

@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.hero.HeroSubClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.abilities.cleric.PowerOfMany;
 import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
 import com.zrp200.rkpd2.sprites.EchSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
@@ -390,6 +391,21 @@ public class DungeonSeed {
 				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.AMULET);
 				sprite.glow(new ItemSprite.Glowing(0.1f));
 				return sprite;
+			}
+		},
+		EASY_MODE("FUN-FUN-FUN"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(ECH);
+				list.add(ALLIES);
+				list.add(ENCHANTED_WORLD);
+				list.add(NO_WARP);
+			}
+
+			@Override
+			public Image getIcon() {
+				return new HeroIcon(new PowerOfMany());
 			}
 		},
 		BALANCE("VBA-LAN-CED"){
