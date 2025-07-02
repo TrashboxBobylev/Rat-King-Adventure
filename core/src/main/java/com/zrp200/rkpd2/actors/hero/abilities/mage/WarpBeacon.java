@@ -123,11 +123,6 @@ public class WarpBeacon extends ArmorAbility {
 						if (tracker.depth == Dungeon.depth && tracker.branch == Dungeon.branch){
 							Char existing = Actor.findChar(tracker.pos);
 
-                            if (hero.hasTalent(Talent.CHRONO_SCREW)){
-                                Buff.affect(hero, Swiftthistle.TimeBubble.class).reset(1
-                                        + 1.5f*(hero.pointsInTalent(Talent.CHRONO_SCREW)-1));
-                            }
-
 							if (existing != null && existing != hero){
 								//if (hero.hasTalent(Talent.TELEFRAG)){
 									int heroHP = hero.HP + hero.shielding();
@@ -178,6 +173,11 @@ public class WarpBeacon extends ArmorAbility {
 							GameScene.updateFog();
 							hero.checkVisibleMobs();
 							AttackIndicator.updateState();
+
+							if (hero.hasTalent(Talent.CHRONO_SCREW)){
+								Buff.affect(hero, Swiftthistle.TimeBubble.class).reset(1
+										+ 1.5f*(hero.pointsInTalent(Talent.CHRONO_SCREW)-1));
+							}
 
 						} else {
 
