@@ -21,6 +21,21 @@
 
 package com.zrp200.rkpd2.utils;
 
+import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.actors.buffs.WarriorParry;
+import com.zrp200.rkpd2.actors.hero.HeroSubClass;
+import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.items.weapon.melee.MagesStaff;
+import com.zrp200.rkpd2.sprites.EchSprite;
+import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.sprites.RatSprite;
+import com.zrp200.rkpd2.ui.BuffIcon;
+import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.zrp200.rkpd2.ui.HeroIcon;
+import com.zrp200.rkpd2.ui.Icons;
+import com.zrp200.rkpd2.ui.TalentIcon;
+import com.watabou.noosa.Image;
 import com.watabou.utils.Random;
 
 import java.util.Arrays;
@@ -151,30 +166,101 @@ public class DungeonSeed {
 	}
 
 	public enum SpecialSeed {
-		RATS("RAT-RAT-RAT"),
-		ROGUE("ROG-UEB-UFF"),
-		REVERSE("REV-ERS-EED"),
-		NO_WALLS("NOW-ALL-SHE"),
-		RANDOM_ITEMS("RNG-ITE-MSS"),
-		CHESTS("ITE-MCH-EST"),
-		BIGGER("EXP-ANS-IVE"),
-		ALLIES("BES-TFR-END"),
-		ECH("ECH-ECH-ECH"),
+		RATS("RAT-RAT-RAT"){
+			@Override
+			public Image getIcon() {
+				return new RatSprite();
+			}
+		},
+		ROGUE("ROG-UEB-UFF"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK);
+			}
+		},
+		REVERSE("REV-ERS-EED"){
+			@Override
+			public Image getIcon() {
+				Image icon = Icons.get(Icons.STAIRS);
+				icon.invert();
+				return icon;
+			}
+		},
+		NO_WALLS("NOW-ALL-SHE"){
+			@Override
+			public Image getIcon() {
+				return new Image(Assets.Environment.TILES_ABYSS, 128, 16, 16, 16);
+			}
+		},
+		RANDOM_ITEMS("RNG-ITE-MSS"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.SOMETHING);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		CHESTS("ITE-MCH-EST"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.CHEST);
+			}
+		},
+		BIGGER("EXP-ANS-IVE"){
+			@Override
+			public Image getIcon() {
+				return Icons.get(Icons.STAIRS_LARGE);
+			}
+		},
+		ALLIES("BES-TFR-END"){
+			@Override
+			public Image getIcon() {
+				return new BuffIcon(BuffIndicator.HEART, true);
+			}
+		},
+		ECH("ECH-ECH-ECH"){
+			@Override
+			public Image getIcon() {
+				return new EchSprite();
+			}
+		},
 		EVERYTHING("BOB-PAL-KIA"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {
 				list.addAll(Arrays.asList(SpecialSeed.values()));
 			}
 		},
-		NO_WARP("ROT-INM-IND"),
-		CAPITALISM("IWA-NTM-ONY"),
-		CORROSION("COR-ROS-ION"),
+		NO_WARP("ROT-INM-IND"){
+			@Override
+			public Image getIcon() {
+				Image sprite = new BuffIcon(BuffIndicator.WARP, true);
+				sprite.hardlight(0x333333);
+				return sprite;
+			}
+		},
+		CAPITALISM("IWA-NTM-ONY"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.GOLD);
+			}
+		},
+		CORROSION("COR-ROS-ION"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.WAND_CORROSION);
+			}
+		},
 		DUNGEONEER("WHO-LEP-ACK"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {
 				super.addSeeds(list);
 				list.add(CHESTS);
 				list.add(BIGGER);
+			}
+
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.LOCKED_CHEST);
 			}
 		},
 		RLETTER("RRR-RRR-RRR"){
@@ -185,17 +271,88 @@ public class DungeonSeed {
 				list.add(REVERSE);
 				list.add(ROGUE);
 			}
+
+			@Override
+			public Image getIcon() {
+				Image image = new Image(Assets.Interfaces.BANNERS, 0, 103, 40, 52);
+				image.scale.set(1/2.5f);
+				return image;
+			}
 		},
-		MAGE("AMA-GEN-ERF"),
-		WARRIOR("COL-LOS-EUM"),
-		HUNTRESS("BUF-HUN-TRS"),
-		DUELIST("BET-TER-WEP"),
-		CLERIC("GOD-CHI-LDD"),
-		RANDOM_TALENTS("RNG-SKI-LLS"),
-		LEVELLING_DOWN("LEV-ELD-OWN"),
-		ALL_TALENTS("ULT-IMA-TEE"),
-		ALL_CLASSES("SUP-ERM-ANN"),
-		ALL_SUBS("IRO-NMA-NNN"),
+		MAGE("AMA-GEN-ERF"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite().view(new MagesStaff());
+			}
+		},
+		WARRIOR("COL-LOS-EUM"){
+			@Override
+			public Image getIcon() {
+				return new HeroIcon(new WarriorParry());
+			}
+		},
+		HUNTRESS("BUF-HUN-TRS"){
+			@Override
+			public Image getIcon() {
+				Image sprite = new ItemSprite(ItemSpriteSheet.SPIRIT_BOW);
+				sprite.hardlight(0x444444);
+				return sprite;
+			}
+		},
+		DUELIST("BET-TER-WEP"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.WEAPON_HOLDER);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		CLERIC("GOD-CHI-LDD"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.ARTIFACT_TOME);
+				sprite.glow(new ItemSprite.Glowing(0xFFFF00, 0.85f));
+				return sprite;
+			}
+		},
+		RANDOM_TALENTS("RNG-SKI-LLS"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.MASTERY);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
+		LEVELLING_DOWN("LEV-ELD-OWN"){
+			@Override
+			public Image getIcon() {
+				Image sprite = Icons.get(Icons.TALENT);
+				sprite.hardlight(0xFF0000);
+				return sprite;
+			}
+		},
+		ALL_TALENTS("ULT-IMA-TEE"){
+			@Override
+			public Image getIcon() {
+				Image sprite = new BuffIcon(BuffIndicator.INVISIBLE, true);
+				sprite.hardlight(0xfa00ff);
+				return sprite;
+			}
+		},
+		ALL_CLASSES("SUP-ERM-ANN"){
+			@Override
+			public Image getIcon() {
+				return new TalentIcon(Talent.KINGS_WISDOM);
+			}
+		},
+		ALL_SUBS("IRO-NMA-NNN"){
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.MASK);
+				sprite.glow(new ItemSprite.Glowing());
+				return sprite;
+			}
+		},
 		ALL_POWERS("ASC-END-ANT"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {
@@ -203,6 +360,13 @@ public class DungeonSeed {
 				list.add(ALL_CLASSES);
 				list.add(ALL_TALENTS);
 				list.add(ALL_SUBS);
+			}
+
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.AMULET);
+				sprite.glow(new ItemSprite.Glowing(0.1f));
+				return sprite;
 			}
 		},
 		BALANCE("VBA-LAN-CED"){
@@ -213,6 +377,11 @@ public class DungeonSeed {
 				list.add(MAGE);
 				list.add(ROGUE);
 				list.add(HUNTRESS);
+			}
+
+			@Override
+			public Image getIcon() {
+				return new HeroIcon(HeroSubClass.KING);
 			}
 		};
 
@@ -244,6 +413,10 @@ public class DungeonSeed {
 
 		public void addSeeds(HashSet<SpecialSeed> list){
 			list.add(this);
+		}
+
+		public Image getIcon(){
+			return new ItemSprite(ItemSpriteSheet.SEED_PAGE);
 		}
 
 		public static void interpret(HashSet<SpecialSeed> list, String seed){

@@ -53,7 +53,19 @@ public enum Document {
 		public String pageTitle( String page ){
 			return page;
 		}
-		public String pageBody( String page ){
+
+		@Override
+		public Image pageSprite(String page) {
+			long s = DungeonSeed.convertFromText(page);
+			for (DungeonSeed.SpecialSeed specialSeed : DungeonSeed.SpecialSeed.values()){
+				if (s == specialSeed.seed){
+					return specialSeed.getIcon();
+				}
+			}
+			return super.pageSprite(page);
+		}
+
+		public String pageBody(String page ){
 			return Messages.get( DungeonSeed.class, page + ".desc");
 		}
 	};
