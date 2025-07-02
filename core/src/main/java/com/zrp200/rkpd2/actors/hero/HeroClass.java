@@ -500,8 +500,8 @@ public enum HeroClass {
 
 	public ArrayList<HeroSubClass> subClasses() {
 		ArrayList<HeroSubClass> subClasses = this.subClasses;
-		if ((Badges.isUnlocked(Badges.Badge.DEFEATED_RK) || Badges.isUnlocked(secretSub().secretBadge()))
-				&& !subClasses.contains(secretSub())){
+		if (DeviceCompat.isDebug() || ((Badges.isUnlocked(Badges.Badge.DEFEATED_RK) || Badges.isUnlocked(secretSub().secretBadge()))
+				&& !subClasses.contains(secretSub()))){
 			subClasses.add(secretSub());
 		}
 		subClasses.remove(null);
