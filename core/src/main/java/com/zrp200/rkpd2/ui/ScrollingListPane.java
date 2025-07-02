@@ -99,7 +99,7 @@ public class ScrollingListPane extends ScrollPane {
 			super();
 
 			if (icon != null) {
-				this.icon.copy(icon);
+				add(this.icon = icon);
 			} else {
 				remove(label);
 				label = PixelScene.renderTextBlock(9);
