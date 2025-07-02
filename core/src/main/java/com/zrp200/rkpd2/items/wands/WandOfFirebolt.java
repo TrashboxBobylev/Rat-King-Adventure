@@ -32,12 +32,12 @@ public class WandOfFirebolt extends DamageWand {
 
     @Override
     public int min(int lvl) {
-        return (int) (lvl * (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC)*0.085f));
+        return (int) (lvl * (1 + (Dungeon.hero != null ? Dungeon.hero.pointsInTalent(Talent.PYROMANIAC)*0.085f: 0)));
     }
 
     @Override
     public int max(int lvl) {
-        return (int) ((9+6*lvl) * (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC)*0.085f));
+        return (int) ((9+6*lvl) * (1 + (Dungeon.hero != null ? Dungeon.hero.pointsInTalent(Talent.PYROMANIAC)*0.085f: 0)));
     }
 
     @Override
