@@ -214,6 +214,9 @@ public enum HeroClass {
 
 		hero.heroClass = this;
 		Talent.initClassTalents(hero);
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_TALENTS)){
+			Talent.shuffleTalents(hero);
+		}
 
 		Item i = new ClothArmor().identify();
 		if (!Challenges.isItemBlocked(i)) hero.belongings.armor = (ClothArmor)i;
