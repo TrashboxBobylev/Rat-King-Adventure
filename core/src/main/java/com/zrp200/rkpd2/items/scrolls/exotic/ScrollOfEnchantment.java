@@ -22,6 +22,7 @@
 package com.zrp200.rkpd2.items.scrolls.exotic;
 
 import com.zrp200.rkpd2.Assets;
+import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Belongings;
 import com.zrp200.rkpd2.effects.Enchanting;
 import com.zrp200.rkpd2.items.Item;
@@ -33,11 +34,13 @@ import com.zrp200.rkpd2.items.stones.StoneOfEnchantment;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
+import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.Icons;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndBag;
 import com.zrp200.rkpd2.windows.WndOptions;
@@ -69,7 +72,8 @@ public class ScrollOfEnchantment extends ExoticScroll {
 	}
 
 	public static boolean enchantable( Item item ){
-		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor);
+		return (item instanceof MeleeWeapon || item instanceof SpiritBow || item instanceof Armor ||
+				(Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD) && item instanceof MissileWeapon));
 	}
 
 	private void confirmCancelation() {

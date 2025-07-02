@@ -403,6 +403,9 @@ public boolean isSimilar( Item item ) {
 				quantity++;
 			}
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			enchant();
+		}
 		return this;
 	}
 

@@ -512,8 +512,16 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 	public int image() {
 		return image;
 	}
+
+	ItemSprite.Glowing uselessGlowy;
 	
 	public ItemSprite.Glowing glowing() {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			if (uselessGlowy == null){
+				uselessGlowy = new ItemSprite.Glowing(Random.IntRange(0x000000, 0xFFFFFF));
+			}
+			return uselessGlowy;
+		}
 		return null;
 	}
 
@@ -589,6 +597,7 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 	private static final String QUICKSLOT		= "quickslotpos";
 	private static final String KEPT_LOST       = "kept_lost";
 	private static final String COLLECTED		= "collected";
+	private static final String USELESS_GLOWY   = "useless_glowy";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -602,6 +611,8 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 			bundle.put( QUICKSLOT, Dungeon.quickslot.getSlot(this) );
 		}
 		bundle.put( KEPT_LOST, keptThoughLostInvent );
+		if (uselessGlowy != null)
+			bundle.put( USELESS_GLOWY, uselessGlowy.color);
 	}
 	
 	@Override
@@ -629,6 +640,9 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 		}
 
 		keptThoughLostInvent = bundle.getBoolean( KEPT_LOST );
+
+		if (bundle.contains(USELESS_GLOWY))
+			uselessGlowy = new ItemSprite.Glowing(bundle.getInt(USELESS_GLOWY));
 	}
 
 	public int targetingPos( Hero user, int dst ){

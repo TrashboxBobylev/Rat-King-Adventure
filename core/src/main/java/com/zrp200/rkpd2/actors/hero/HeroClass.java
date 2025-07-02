@@ -57,6 +57,7 @@ import com.zrp200.rkpd2.items.BrokenSeal;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.Waterskin;
+import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.ClothArmor;
 import com.zrp200.rkpd2.items.armor.ScoutArmor;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
@@ -87,6 +88,7 @@ import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfCorrosion;
 import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
+import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.melee.Cudgel;
 import com.zrp200.rkpd2.items.weapon.melee.Dagger;
 import com.zrp200.rkpd2.items.weapon.melee.Gloves;
@@ -331,6 +333,16 @@ public enum HeroClass {
 				if (Dungeon.quickslot.getItem(s) == null) {
 					Dungeon.quickslot.setSlot(s, wand);
 					break;
+				}
+			}
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			for (Item item: hero.belongings){
+				if (item instanceof Weapon){
+					((Weapon) item).enchant();
+				} else if (item instanceof Armor){
+					((Armor) item).inscribe();
 				}
 			}
 		}

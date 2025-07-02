@@ -107,6 +107,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.FunctionalStuff;
 import com.zrp200.rkpd2.utils.GLog;
@@ -154,6 +155,7 @@ public abstract class Mob extends Char {
 
 	public int EXP = 1;
 	public int maxLvl = 100000;
+	public ItemSprite.Glowing uselessGlowy;
 
 	public Char enemy;
 	protected int enemyID = -1; //used for save/restore
@@ -181,6 +183,7 @@ public abstract class Mob extends Char {
 	private static final String ENEMY_ID	= "enemy_id";
 
 	private static final String SCALE   = "scale";
+	private static final String USELESS_GLOWY   = "useless_glowy";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -206,6 +209,8 @@ public abstract class Mob extends Char {
 			bundle.put(ENEMY_ID, enemy.id() );
 		}
 		bundle.put( SCALE, scaleFactor);
+		if (uselessGlowy != null)
+			bundle.put( USELESS_GLOWY, uselessGlowy.color);
 	}
 
 	@Override
@@ -240,6 +245,9 @@ public abstract class Mob extends Char {
 
 		//no need to actually save this, must be false
 		firstAdded = false;
+
+		if (bundle.contains(USELESS_GLOWY))
+			uselessGlowy = new ItemSprite.Glowing(bundle.getInt(USELESS_GLOWY));
 	}
 
 	//mobs need to remember their targets after every actor is added

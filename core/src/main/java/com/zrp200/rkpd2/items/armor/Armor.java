@@ -633,6 +633,10 @@ public class Armor extends EquipableItem {
 				inscribe(null);
 			}
 
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			inscribe();
+		}
+
 		Random.popGenerator();
 
 		return this;

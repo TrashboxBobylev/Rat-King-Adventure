@@ -233,6 +233,7 @@ import com.zrp200.rkpd2.plants.Starflower;
 import com.zrp200.rkpd2.plants.Stormvine;
 import com.zrp200.rkpd2.plants.Sungrass;
 import com.zrp200.rkpd2.plants.Swiftthistle;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Random;
@@ -711,6 +712,9 @@ public class Generator {
 	}
 
 	public static void reset(Category cat){
+		if (cat == Category.STONE && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			cat.defaultProbs[0] = 4;
+		}
 		if (cat.defaultProbs != null) {
 			if (cat.defaultProbs2 != null){
 				cat.using2ndProbs = !cat.using2ndProbs;

@@ -250,6 +250,12 @@ public class DungeonSeed {
 				return new ItemSprite(ItemSpriteSheet.WAND_CORROSION);
 			}
 		},
+		ENCHANTED_WORLD("GLO-WIN-GGG"){
+			@Override
+			public Image getIcon() {
+				return new ItemSprite(ItemSpriteSheet.STONE_ENCHANT);
+			}
+		},
 		DUNGEONEER("WHO-LEP-ACK"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {

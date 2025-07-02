@@ -493,6 +493,9 @@ abstract public class Weapon extends KindOfWeapon {
 		} else {
 			enchant(null);
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ENCHANTED_WORLD)){
+			enchant();
+		}
 
 		Random.popGenerator();
 
