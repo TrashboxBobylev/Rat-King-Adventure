@@ -84,6 +84,7 @@ import com.zrp200.rkpd2.items.scrolls.ScrollOfRage;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRemoveCurse;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfUpgrade;
 import com.zrp200.rkpd2.items.wands.Wand;
+import com.zrp200.rkpd2.items.wands.WandOfCorrosion;
 import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.melee.Cudgel;
@@ -319,6 +320,19 @@ public enum HeroClass {
 			hero.lvl = 24;
 			hero.exp += hero.maxExp()/2;
 			hero.updateStats();
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CORROSION)){
+			WandOfCorrosion wand = new WandOfCorrosion();
+			wand.identify();
+			wand.upgrade(100);
+			wand.collect();
+			for (int s = 0; s < QuickSlot.SIZE; s++) {
+				if (Dungeon.quickslot.getItem(s) == null) {
+					Dungeon.quickslot.setSlot(s, wand);
+					break;
+				}
+			}
 		}
 
 	}

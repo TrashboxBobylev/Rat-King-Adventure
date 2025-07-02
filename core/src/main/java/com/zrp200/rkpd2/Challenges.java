@@ -24,8 +24,16 @@ package com.zrp200.rkpd2;
 import com.zrp200.rkpd2.items.Dewdrop;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.artifacts.HornOfPlenty;
+import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.food.Blandfruit;
+import com.zrp200.rkpd2.items.quest.NerfGun;
+import com.zrp200.rkpd2.items.rings.RingOfForce;
 import com.zrp200.rkpd2.items.rings.RingOfMight;
+import com.zrp200.rkpd2.items.stones.StoneOfBlast;
+import com.zrp200.rkpd2.items.wands.DamageWand;
+import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
+import com.zrp200.rkpd2.items.weapon.missiles.MissileWeapon;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.watabou.utils.DeviceCompat;
 
@@ -117,6 +125,10 @@ public class Challenges {
 	}
 
 	public static boolean isItemBlocked( Item item ){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CORROSION) && (item instanceof MeleeWeapon || item instanceof MissileWeapon || item instanceof DamageWand ||
+				item instanceof NerfGun || item instanceof RingOfForce || item instanceof Bomb || item instanceof StoneOfBlast)){
+			return true;
+		}
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
 			return true;
