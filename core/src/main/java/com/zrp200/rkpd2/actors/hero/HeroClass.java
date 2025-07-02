@@ -290,6 +290,19 @@ public enum HeroClass {
 			}
 		}
 
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+			HolyTome tome = new HolyTome();
+			tome.collect();
+			tome.identify();
+			tome.activate(hero);
+			for (int s = 0; s < QuickSlot.SIZE; s++) {
+				if (Dungeon.quickslot.getItem(s) == null) {
+					Dungeon.quickslot.setSlot(s, tome);
+					break;
+				}
+			}
+		}
+
 		if (SPDSettings.quickslotWaterskin()) {
 			for (int s = 0; s < QuickSlot.SIZE; s++) {
 				if (Dungeon.quickslot.getItem(s) == null) {

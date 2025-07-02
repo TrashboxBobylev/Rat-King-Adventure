@@ -41,6 +41,7 @@ import com.zrp200.rkpd2.ui.AttackIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.ui.RedButton;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndTitledMessage;
 import com.watabou.noosa.audio.Sample;
@@ -105,7 +106,8 @@ public class Smite extends TargetedClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.subClass.is(HeroSubClass.PALADIN);
+		return super.canCast(hero) &&
+				(hero.subClass.is(HeroSubClass.PALADIN) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC));
 	}
 
 	@Override

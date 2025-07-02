@@ -319,6 +319,9 @@ public class Hero extends Char {
 	}
 
 	public static boolean isClassedLoosely(Hero hero, HeroClass sub){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC) && sub == HeroClass.CLERIC){
+			return true;
+		}
 		if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_CLASSES))){
 			return true;
 		} else {
@@ -560,6 +563,14 @@ public class Hero extends Char {
 	}
 
 	public boolean canHaveTalent(Talent talent) {
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+			for (Talent tal: HolyTome.allSpellTalents){
+				if (tal == talent)
+					return true;
+			}
+			if (talent == Talent.LIGHT_READING)
+				return true;
+		}
 		if (buff(MetaForm.MetaFormBuff.class) != null){
 			Talent metaTalent = buff(MetaForm.MetaFormBuff.class).talent;
 			if (metaTalent == talent){
@@ -582,6 +593,14 @@ public class Hero extends Char {
 	}
 
 	public int pointsInTalent( Talent talent ){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
+			for (Talent tal: HolyTome.allSpellTalents){
+				if (tal == talent)
+					return talent.maxPoints();
+			}
+			if (talent == Talent.LIGHT_READING)
+				return talent.maxPoints();
+		}
 		if (buff(MetaForm.MetaFormBuff.class) != null){
 			Talent metaTalent = buff(MetaForm.MetaFormBuff.class).talent;
 			if (metaTalent == talent){

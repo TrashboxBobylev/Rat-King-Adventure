@@ -182,6 +182,16 @@ public class HolyTome extends Artifact {
 		}
 	}
 
+	public static Talent[] allSpellTalents = {
+		Talent.HOLY_INTUITION, Talent.SHIELD_OF_LIGHT, Talent.METAEXPRESSION,
+		Talent.RECALL_INSCRIPTION, Talent.SUNRAY, Talent.DIVINE_SENSE, Talent.BLESS, Talent.RADIANT_GRAPPLER,
+		Talent.CLEANSE, Talent.HOLY_LANCE, Talent.HALLOWED_GROUND, Talent.MNEMONIC_PRAYER, Talent.DIVINE_ADVENT,
+			Talent.LAY_ON_HANDS, Talent.AURA_OF_PROTECTION, Talent.WALL_OF_LIGHT, Talent.LIMIT_BREAK,
+		Talent.DIVINE_INTERVENTION, Talent.JUDGEMENT, Talent.FLASH,
+			Talent.BODY_FORM, Talent.SPIRIT_FORM, Talent.MIND_FORM, Talent.META_FORM,
+		Talent.BEAMING_RAY, Talent.LIFE_LINK, Talent.STASIS, Talent.ENRAGE
+	};
+
 	public boolean canCast( Hero hero, ClericSpell spell ){
 		return spell != null && (isEquipped(hero) || (hero.canHaveTalent(Talent.LIGHT_READING) && hero.belongings.contains(this)))
 				&& hero.buff(MagicImmune.class) == null

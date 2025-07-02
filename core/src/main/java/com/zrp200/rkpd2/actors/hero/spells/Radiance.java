@@ -36,6 +36,7 @@ import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.ui.HeroIcon;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
@@ -61,7 +62,8 @@ public class Radiance extends ClericSpell {
 
 	@Override
 	public boolean canCast(Hero hero) {
-		return super.canCast(hero) && hero.subClass.is(HeroSubClass.PRIEST);
+		return super.canCast(hero) &&
+				(hero.subClass.is(HeroSubClass.PRIEST) || Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC));
 	}
 
 	@Override
