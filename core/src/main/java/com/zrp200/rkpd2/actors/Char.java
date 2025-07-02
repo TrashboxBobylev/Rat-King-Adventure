@@ -852,8 +852,8 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : attacker.buffs(ChampionEnemy.class)){
 			acuRoll *= buff.evasionAndAccuracyFactor();
 		}
-acuRoll *= AscensionChallenge.statModifier(attacker);
-if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		acuRoll *= AscensionChallenge.statModifier(attacker);
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& attacker.alignment == Alignment.ALLY){
 			// + 3%/5%
@@ -880,7 +880,7 @@ if (Dungeon.hero.heroClass != HeroClass.CLERIC
 		}
 
 		defRoll *= AscensionChallenge.statModifier(defender);
-if (Dungeon.hero.heroClass != HeroClass.CLERIC
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.BLESS)
 				&& defender.alignment == Alignment.ALLY){
 			// + 3%/5%
