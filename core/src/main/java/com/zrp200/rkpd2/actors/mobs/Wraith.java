@@ -36,6 +36,7 @@ import com.zrp200.rkpd2.actors.buffs.DLCAllyBuff;
 import com.zrp200.rkpd2.actors.buffs.Paralysis;
 import com.zrp200.rkpd2.actors.buffs.Poison;
 import com.zrp200.rkpd2.actors.buffs.Shrink;
+import com.zrp200.rkpd2.actors.buffs.SpiritBuff;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.effects.CellEmitter;
 import com.zrp200.rkpd2.effects.particles.ChallengeParticle;
@@ -158,7 +159,7 @@ public class Wraith extends Mob {
 
 	@Override
 	public void die(Object cause) {
-		if (Dungeon.hero.pointsInTalent(Talent.POWER_IN_NUMBERS) > 2 && buff(DLCAllyBuff.class) != null && buff(Shrink.class) == null){
+		if (Dungeon.hero.pointsInTalent(Talent.POWER_IN_NUMBERS) > 2 && buff(SpiritBuff.WraithMark.class) != null && buff(Shrink.class) == null){
 			int wraiths = Random.IntRange(1, 3);
 			for (int i = 0; i < wraiths; i++){
 				int pos;
