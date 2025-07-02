@@ -59,6 +59,7 @@ import com.zrp200.rkpd2.effects.particles.SmokeParticle;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.KromerCrown;
 import com.zrp200.rkpd2.items.TengusMask;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.artifacts.LloydsBeacon;
@@ -77,6 +78,7 @@ import com.zrp200.rkpd2.sprites.MissileSprite;
 import com.zrp200.rkpd2.sprites.TenguSprite;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.zrp200.rkpd2.ui.BossHealthBar;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -231,6 +233,9 @@ public class Tengu extends Mob {
 	public void die( Object cause ) {
 		
 		if (Dungeon.hero.subClass.is(HeroSubClass.NONE)) {
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_HERO)){
+				Dungeon.level.drop( new KromerCrown(), pos ).sprite.drop();
+			}
 			Dungeon.level.drop( new TengusMask(), pos ).sprite.drop();
 		}
 		

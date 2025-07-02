@@ -544,6 +544,9 @@ public enum HeroClass {
 	}
 
 	public ArmorAbility[] armorAbilities(){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_HERO) && hero != null && hero.armorAbility == null){
+			return new ArmorAbility[]{new OmniAbility()};
+		}
 		switch (this) {
 			case WARRIOR: default:
 				return new ArmorAbility[]{new HeroicLeap(), new Shockwave(), new Endure()};

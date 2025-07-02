@@ -97,7 +97,8 @@ public enum HeroSubClass {
 		}
 
 		if (tome instanceof KromerCrown){
-			Talent.initSubclassTalents(subClass, hero.talents, 3);
+			Talent.initSubclassTalents(subClass, hero.talents,
+					(hero.subClass2 == NONE ? 2 : 3));
 		} else {
 			Talent.initSubclassTalents(hero);
 		}

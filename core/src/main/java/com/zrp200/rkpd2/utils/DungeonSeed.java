@@ -329,6 +329,23 @@ public class DungeonSeed {
 				return sprite;
 			}
 		},
+		RANDOM_HERO("ROG-UEL-IKE"){
+			@Override
+			public void addSeeds(HashSet<SpecialSeed> list) {
+				super.addSeeds(list);
+				list.add(ROGUE);
+				list.add(MAGE);
+				list.add(DUELIST);
+				list.add(RANDOM_TALENTS);
+			}
+
+			@Override
+			public Image getIcon() {
+				ItemSprite sprite = new ItemSprite(ItemSpriteSheet.UNSTABLE_SPELL);
+				sprite.hardlight(0x2be538);
+				return sprite;
+			}
+		},
 		LEVELLING_DOWN("LEV-ELD-OWN"){
 			@Override
 			public Image getIcon() {
