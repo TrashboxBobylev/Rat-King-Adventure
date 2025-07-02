@@ -66,7 +66,7 @@ public class WandOfFireblast extends DamageWand {
 
 	//1/2/3 base damage with 1/2/3 scaling based on charges used
 	public int min(int lvl){
-		return (int) ((1+lvl) * chargesPerCast() * (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC)*0.125f));
+		return (int) ((1+lvl) * chargesPerCast() * (1 + (Dungeon.hero != null ? Dungeon.hero.pointsInTalent(Talent.PYROMANIAC)*0.125f : 0)));
 	}
 
 	//2/8/18 base damage with 2/4/6 scaling based on charges used
