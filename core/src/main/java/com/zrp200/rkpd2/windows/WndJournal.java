@@ -207,7 +207,7 @@ public class WndJournal extends WndTabbed {
 				new IconTab( new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE, null) ) {
 					protected void select( boolean value ) {
 						super.select( value );
-						guideTab.active = guideTab.visible = value;
+						seedsTab.active = seedsTab.visible = value;
 						if (value) last_index = 5;
 					}
 
@@ -246,6 +246,7 @@ public class WndJournal extends WndTabbed {
 		alchemyTab.layout();
 		notesTab.layout();
 		catalogTab.layout();
+		seedsTab.layout();
 	}
 	
 	public static class GuideTab extends Component {
