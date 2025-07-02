@@ -512,6 +512,9 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 				if (type == Heap.Type.SKELETON){
 					dropped.setHauntedIfCursed();
 				}
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM) && dropped.type == Heap.Type.HEAP){
+					dropped.type = Heap.Type.FOR_SALE;
+				}
 			}
 
 		}
@@ -538,6 +541,9 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
                         map[cell] = Terrain.GRASS;
                         losBlocking[cell] = false;
                     }
+					if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+						drop.type = Heap.Type.FOR_SALE;
+					}
                 }
             } else if (item instanceof TrinketCatalyst){
 				drop( item, cell ).type = Heap.Type.LOCKED_CHEST;
@@ -552,6 +558,9 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 				drop.type = type;
 				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER) && Random.Int(4) == 0)
 					drop.items.add(Generator.random());
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM) && drop.type == Heap.Type.HEAP){
+					drop.type = Heap.Type.FOR_SALE;
+				}
 			}
 			if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
 				map[cell] = Terrain.GRASS;
@@ -612,13 +621,16 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 						type = Heap.Type.CHEST;
 					Heap drop = drop(item, cell);
 					drop.type = type;
+						if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM) && drop.type == Heap.Type.HEAP){
+							drop.type = Heap.Type.FOR_SALE;
+						}
 					if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.DUNGEONEER) && Random.Int(4) == 0)
 						drop.items.add(Generator.random());
-						if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
-							map[cell] = Terrain.GRASS;
-							losBlocking[cell] = false;
-						}
-						rose.droppedPetals++;
+					if (map[cell] == Terrain.HIGH_GRASS || map[cell] == Terrain.FURROWED_GRASS) {
+						map[cell] = Terrain.GRASS;
+						losBlocking[cell] = false;
+					}
+					rose.droppedPetals++;
 					}
 				}
 			}

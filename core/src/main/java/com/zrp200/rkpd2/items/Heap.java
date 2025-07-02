@@ -48,6 +48,7 @@ import com.zrp200.rkpd2.items.weapon.missiles.darts.TippedDart;
 import com.zrp200.rkpd2.journal.Document;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
@@ -107,6 +108,9 @@ public class Heap implements Bundlable {
 		}
 
 		type = Type.HEAP;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			type = Heap.Type.FOR_SALE;
+		}
 		ArrayList<Item> bonus = RingOfWealth.tryForBonusDrop(hero, 1);
 		if (bonus != null && !bonus.isEmpty()) {
 			items.addAll(0, bonus);
@@ -181,6 +185,10 @@ public class Heap implements Bundlable {
 			d.quantity(TippedDart.lostDarts);
 			TippedDart.lostDarts = 0;
 			drop(d);
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			type = Heap.Type.FOR_SALE;
 		}
 	}
 	

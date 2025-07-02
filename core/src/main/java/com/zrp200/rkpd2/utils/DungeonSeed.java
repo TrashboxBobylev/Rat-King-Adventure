@@ -167,6 +167,7 @@ public class DungeonSeed {
 			}
 		},
 		NO_WARP("ROT-INM-IND"),
+		CAPITALISM("IWA-NTM-ONY"),
 		DUNGEONEER("WHO-LEP-ACK"){
 			@Override
 			public void addSeeds(HashSet<SpecialSeed> list) {

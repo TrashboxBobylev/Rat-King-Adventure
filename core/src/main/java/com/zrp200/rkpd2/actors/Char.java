@@ -130,6 +130,7 @@ import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.particles.FlameParticle;
 import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.items.DuelistGrass;
+import com.zrp200.rkpd2.items.Gold;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.curses.Bulk;
@@ -1258,6 +1259,13 @@ public abstract class Char extends Actor {
 					Badges.validateGrimWeapon();
 				}
 			}
+		}
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CAPITALISM)){
+			Gold gold = new Gold();
+			gold.quantity(Math.max(1, Random.Int(25, 500)*dmg/100));
+			gold.doPickUp(hero, pos);
+			hero.spendAndNext( -1F );
 		}
 
 		if (HP < 0 && src instanceof Char && alignment == Alignment.ENEMY){
