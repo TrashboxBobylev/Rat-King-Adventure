@@ -107,6 +107,7 @@ import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.FunctionalStuff;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -924,7 +925,7 @@ public abstract class Mob extends Char {
 
 				AscensionChallenge.processEnemyKill(this);
 
-				int exp = hero.lvl <= maxLvl + 2 ? EXP : 0;
+				int exp = (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN) || hero.lvl <= maxLvl + 2) ? EXP : 0;
 
 				//during ascent, under-levelled enemies grant 10 xp each until level 30
 				// after this enemy kills which reduce the amulet curse still grant 10 effective xp
@@ -934,7 +935,10 @@ public abstract class Mob extends Char {
 					exp = Math.round(10 * spawningWeight());
 				}
 				if (exp > 0) {
-					hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+					if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+						hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+					else
+						hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);;
 				}
 				Dungeon.hero.earnExp(exp, getClass());
 
@@ -1032,7 +1036,7 @@ public abstract class Mob extends Char {
 		}
 	}
 
-	public final boolean isRewardSuppressed() { return hero.lvl > maxLvl + 4; }
+	public final boolean isRewardSuppressed() { return hero.lvl > maxLvl + 4 || !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN); }
 
 	public float lootChance(){
 		float lootChance = this.lootChance;

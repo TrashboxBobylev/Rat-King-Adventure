@@ -36,6 +36,7 @@ import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
 import com.zrp200.rkpd2.journal.Bestiary;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 
 //generic class for buffs which convert an enemy into an ally
 // There is a decent amount of logic that ties into this, which is why it has its own abstract class
@@ -80,7 +81,10 @@ public abstract class AllyBuff extends Buff {
 
 			int exp = hero.lvl <= enemy.maxLvl ? enemy.EXP : 0;
 			if (exp > 0) {
-				hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+					hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+				else
+					hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
 			}
 			hero.earnExp(exp, enemy.getClass());
 

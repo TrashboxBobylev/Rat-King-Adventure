@@ -2611,12 +2611,21 @@ if (wep != null) {
 
 		return true;
 	}
+
+	public void updateStats(){
+		attackSkill = lvl + 9;
+		defenseSkill = lvl + 4;
+		updateHT(true);
+	}
 	
 	public void earnExp( int exp, Class source ) {
 
 		//xp granted by ascension challenge is only for on-exp gain effects
 		if (source != AscensionChallenge.class) {
-			this.exp += exp;
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+				this.exp -= exp;
+			else
+				this.exp += exp;
 		}
 		float percent = exp/(float)maxExp();
 
@@ -2661,62 +2670,99 @@ if (wep != null) {
 		}
 		
 		boolean levelUp = false;
-		while (this.exp >= maxExp()) {
-			this.exp -= maxExp();
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN)){
+			while (this.exp < 0) {
+				if (lvl > 1) {
+					lvl--;
+					this.exp += maxExp();
+					levelUp = true;
 
-			if (buff(Talent.WandPreservationCounter.class) != null
-				&& shiftedPoints(Talent.WAND_PRESERVATION, Talent.POWER_WITHIN) > 1){
-				buff(Talent.WandPreservationCounter.class).detach();
-			}
+					if (buff(ElixirOfMight.HTBoost.class) != null){
+						buff(ElixirOfMight.HTBoost.class).onLevelUp();
+					}
 
-			if (lvl < MAX_LEVEL) {
-				lvl++;
-				levelUp = true;
-				
-				if (buff(ElixirOfMight.HTBoost.class) != null){
-					buff(ElixirOfMight.HTBoost.class).onLevelUp();
+					updateHT( true );
+					attackSkill--;
+					defenseSkill--;
+
+				} else {
+					lvl--;
+					die(new PotionOfExperience());
+					break;
 				}
-				
-				updateHT( true );
-				attackSkill++;
-				defenseSkill++;
 
-			} else {
-				Buff.prolong(this, Bless.class, Bless.DURATION);
-				this.exp = 0;
+				if (levelUp) {
 
-				GLog.newLine();
-				GLog.p( Messages.get(this, "level_cap"));
-				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
-			}
-			
-		}
-		
-		if (levelUp) {
-			
-			if (sprite != null) {
-				GLog.newLine();
-				GLog.p( Messages.get(this, "new_level") );
-				sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
-				Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
-				if (lvl < Talent.tierLevelThresholds[Talent.MAX_TALENT_TIERS+1] && !Dungeon.isChallenged(Challenges.NO_TALENTS)){
-					int points = 1;
-					if(lvl >= 21 && lvl < 25) points += 1;
-					if(lvl >= Talent.tierLevelThresholds[4] && armorAbility != null && armorAbility.talents().length == 0) points--;
-					if(points > 0) {
+					if (sprite != null) {
 						GLog.newLine();
-						String new_talent = "new_talent";
-						if(points > 1) new_talent += "s"; // double
-						GLog.p( Messages.get(this, new_talent) );
-						StatusPane.talentBlink = 10f;
-						WndHero.lastIdx = 1;
+						GLog.n( Messages.get(this, "low_level") );
+						sprite.showStatus( CharSprite.NEGATIVE, Messages.get(Hero.class, "level_down") );
+						Sample.INSTANCE.play( Assets.Sounds.LEVELDOWN );
+					}
+
+					Item.updateQuickslot();
+
+					Badges.validateLevelReached();
+				}
+			}
+		} else {
+			while (this.exp >= maxExp()) {
+				this.exp -= maxExp();
+
+				if (buff(Talent.WandPreservationCounter.class) != null
+						&& shiftedPoints(Talent.WAND_PRESERVATION, Talent.POWER_WITHIN) > 1) {
+					buff(Talent.WandPreservationCounter.class).detach();
+				}
+
+				if (lvl < MAX_LEVEL) {
+					lvl++;
+					levelUp = true;
+
+					if (buff(ElixirOfMight.HTBoost.class) != null) {
+						buff(ElixirOfMight.HTBoost.class).onLevelUp();
+					}
+
+					updateHT(true);
+					attackSkill++;
+					defenseSkill++;
+
+				} else {
+					Buff.prolong(this, Bless.class, Bless.DURATION);
+					this.exp = 0;
+
+					GLog.newLine();
+					GLog.p(Messages.get(this, "level_cap"));
+					Sample.INSTANCE.play(Assets.Sounds.LEVELUP);
+				}
+
+			}
+
+			if (levelUp) {
+
+				if (sprite != null) {
+					GLog.newLine();
+					GLog.p( Messages.get(this, "new_level") );
+					sprite.showStatus( CharSprite.POSITIVE, Messages.get(Hero.class, "level_up") );
+					Sample.INSTANCE.play( Assets.Sounds.LEVELUP );
+					if (lvl < Talent.tierLevelThresholds[Talent.MAX_TALENT_TIERS+1] && !Dungeon.isChallenged(Challenges.NO_TALENTS)){
+						int points = 1;
+						if(lvl >= 21 && lvl < 25) points += 1;
+						if(lvl >= Talent.tierLevelThresholds[4] && armorAbility != null && armorAbility.talents().length == 0) points--;
+						if(points > 0) {
+							GLog.newLine();
+							String new_talent = "new_talent";
+							if(points > 1) new_talent += "s"; // double
+							GLog.p( Messages.get(this, new_talent) );
+							StatusPane.talentBlink = 10f;
+							WndHero.lastIdx = 1;
+						}
 					}
 				}
-			}
 
-			Item.updateQuickslot();
-			
-			Badges.validateLevelReached();
+				Item.updateQuickslot();
+
+				Badges.validateLevelReached();
+			}
 		}
 	}
 	

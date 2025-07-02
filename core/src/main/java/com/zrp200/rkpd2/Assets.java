@@ -199,6 +199,7 @@ public class Assets {
 		public static final String ZAP      = "sounds/zap.mp3";
 		public static final String LIGHTNING= "sounds/lightning.mp3";
 		public static final String LEVELUP  = "sounds/levelup.mp3";
+		public static final String LEVELDOWN= "sounds/leveldown.mp3";
 		public static final String DEATH    = "sounds/death.mp3";
 		public static final String CHALLENGE= "sounds/challenge.mp3";
 		public static final String CURSED   = "sounds/cursed.mp3";
@@ -244,7 +245,7 @@ public class Assets {
 				DESCEND, EAT, READ, LULLABY, DRINK, SHATTER, ZAP, LIGHTNING, LEVELUP, DEATH,
 				CHALLENGE, CURSED, TRAP, EVOKE, TOMB, ALERT, MELD, BOSS, BLAST, PLANT, RAY, BEACON,
 				TELEPORT, CHARMS, MASTERY, PUFF, ROCKS, BURNING, FALLING, GHOST, SECRET, BONES,
-				BEE, DEGRADE, MIMIC, DEBUFF, CHARGEUP, GAS, CHAINS, SCAN, SHEEP, MINE
+				BEE, DEGRADE, MIMIC, DEBUFF, CHARGEUP, GAS, CHAINS, SCAN, SHEEP, MINE, LEVELDOWN
 		};
 	}
 

@@ -21,14 +21,18 @@
 
 package com.zrp200.rkpd2.items.potions;
 
+import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.effects.FloatingText;
+import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.utils.DungeonSeed;
+import com.zrp200.rkpd2.utils.GLog;
 
-public class PotionOfExperience extends Potion {
+public class PotionOfExperience extends Potion implements Hero.Doom {
 
 	{
 		icon = ItemSpriteSheet.Icons.POTION_EXP;
@@ -41,7 +45,10 @@ public class PotionOfExperience extends Potion {
 	@Override
 	public void apply( Hero hero ) {
 		identify();
-		hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(hero.maxExp()), FloatingText.EXPERIENCE);
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+			hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(5 + 5* hero.lvl), FloatingText.EXPERIENCE);
+		else
+			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(5 + 5* hero.lvl), FloatingText.EXPERIENCE);
 		hero.earnExp( 5 + 5* hero.lvl, getClass() );
 		new Flare( 6, 32 ).color(0xFFFF00, true).show( curUser.sprite, 2f );
 	}
@@ -60,5 +67,14 @@ public class PotionOfExperience extends Potion {
 	@Override
 	public int energyVal() {
 		return isKnown() ? 10 * quantity : super.energyVal();
+	}
+
+	@Override
+	public void onDeath() {
+
+		Badges.validateDeathFromSacrifice();
+
+		Dungeon.fail( this );
+		GLog.n( Messages.get(this, "ondeath") );
 	}
 }

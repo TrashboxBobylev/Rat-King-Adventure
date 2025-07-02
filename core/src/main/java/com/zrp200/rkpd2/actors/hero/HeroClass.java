@@ -315,6 +315,12 @@ public enum HeroClass {
 			}
 		}
 
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN)){
+			hero.lvl = 24;
+			hero.exp += hero.maxExp()/2;
+			hero.updateStats();
+		}
+
 	}
 
 	public Badges.Badge masteryBadge() {
