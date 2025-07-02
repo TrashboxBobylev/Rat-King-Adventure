@@ -1327,7 +1327,7 @@ public enum Talent {
 			else Buff.prolong(hero, EnhancedRings.class, duration);
 		}
 
-		if (Dungeon.hero.heroClass.is(HeroClass.CLERIC)
+		if (!Dungeon.hero.heroClass.is(HeroClass.CLERIC)
 				&& Dungeon.hero.hasTalent(Talent.DIVINE_SENSE)){
 			Buff.prolong(Dungeon.hero, DivineSense.DivineSenseTracker.class, Dungeon.hero.cooldown()+1);
 		}
