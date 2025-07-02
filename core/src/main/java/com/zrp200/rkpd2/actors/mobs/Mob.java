@@ -944,7 +944,6 @@ public abstract class Mob extends Char {
 				if (HighnessBuff.isEnergized() && Dungeon.hero.hasTalent(Talent.SLASH_RUNNER)){
 					Buff.affect( Dungeon.hero, MeleeWeapon.Charger.class ).gainCharge(0.5f);
 				}
-				hero.earnExp(exp, getClass());
 			}
 
 			if (Random.Int(12) < hero.pointsInTalent(Talent.PRIMAL_AWAKENING)
