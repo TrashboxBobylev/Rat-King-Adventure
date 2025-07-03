@@ -726,7 +726,7 @@ public class Armor extends EquipableItem {
 				&& owner instanceof Hero
 				&& isEquipped((Hero) owner)
 				&& owner.buff(HolyWard.HolyArmBuff.class) != null
-				&& !((Hero) owner).subClass.is(HeroSubClass.PALADIN)){
+				&& !((Hero) owner).isSubclassedLoosely(HeroSubClass.PALADIN)){
 			return false;
 		} else if (owner.buff(BodyForm.BodyFormBuff.class) != null
 				&& owner.buff(BodyForm.BodyFormBuff.class).glyph() != null
