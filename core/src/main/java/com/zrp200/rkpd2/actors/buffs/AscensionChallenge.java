@@ -119,10 +119,12 @@ public class AscensionChallenge extends Buff {
 
 		float mod = 1f;
 
-		for (Class<?extends Mob> cls : modifiers.keySet()){
-			if (cls.isAssignableFrom(ch.getClass())){
-				mod = modifiers.get(cls);
-				break;
+		if (!(Dungeon.hero == null || (Dungeon.hero.buff(AscensionChallenge.class) == null))) {
+			for (Class<? extends Mob> cls : modifiers.keySet()) {
+				if (cls.isAssignableFrom(ch.getClass())) {
+					mod = modifiers.get(cls);
+					break;
+				}
 			}
 		}
 
