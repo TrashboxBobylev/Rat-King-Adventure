@@ -25,6 +25,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Callback;
+import com.watabou.utils.Random;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,6 +39,8 @@ public enum Sample {
 
 	private boolean enabled = true;
 	private float globalVolume = 1f;
+
+	public boolean rMode = false;
 
 	public synchronized void reset() {
 
@@ -123,6 +126,11 @@ public enum Sample {
 	public synchronized long play( Object id, float leftVolume, float rightVolume, float pitch ) {
 		float volume = Math.max(leftVolume, rightVolume);
 		float pan = rightVolume - leftVolume;
+		if (rMode && Random.Int(15) == 0) {
+			id = "sounds/r.mp3";
+			volume *= 0.5f + Random.Float();
+			pitch *= 0.25f + Random.Float()*2;
+		}
 		if (enabled && ids.containsKey( id )) {
 			return ids.get(id).play( globalVolume*volume, pitch, pan );
 		} else {

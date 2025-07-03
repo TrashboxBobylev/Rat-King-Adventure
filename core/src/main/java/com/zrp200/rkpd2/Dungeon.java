@@ -82,6 +82,7 @@ import com.zrp200.rkpd2.ui.Toolbar;
 import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.windows.WndResurrect;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -247,6 +248,7 @@ public class Dungeon {
 			customSeedText = "";
 			seed = DungeonSeed.randomSeed();
 		}
+		Sample.INSTANCE.rMode = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER);
 	}
 
 	public static void init() {
@@ -801,6 +803,7 @@ public class Dungeon {
 				}
 			}
 		}
+        Sample.INSTANCE.rMode = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER);
 
 		Actor.clear();
 		Actor.restoreNextID( bundle );

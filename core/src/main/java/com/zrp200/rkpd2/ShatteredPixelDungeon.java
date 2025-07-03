@@ -31,6 +31,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
+import com.watabou.utils.Random;
 
 @SuppressWarnings("unused")
 public class ShatteredPixelDungeon extends Game {
@@ -207,14 +208,23 @@ public static final int v3_0_0 = 831;
 	}
 
 	public static String turnIntoRrrr(String name){
-		StringBuilder builder = new StringBuilder();
-		for (char lol : name.toCharArray()) {
-			if (Character.isLetter(lol))
-				builder.append('r');
-			else
-				builder.append(lol);
+		StringBuilder superBuilder = new StringBuilder();
+		for (String word: Game.platform.splitforTextBlock(name, true)){
+			StringBuilder builder = new StringBuilder();
+			char[] letters = word.toCharArray();
+			for (int i = 0; i < letters.length; i++){
+				if (i == 0 && Character.isLetter(letters[i]) && letters[i] != 'x' && Random.Int(3) == 0){
+					builder.append(Character.isUpperCase(letters[i]) ? "R" : "r");
+					if ("AEIOUaeiou".indexOf(letters[i]) != -1){
+						builder.append(letters[i]);
+					}
+				} else {
+					builder.append(letters[i]);
+				}
+			}
+			superBuilder.append(builder.toString());
 		}
-		name = builder.toString();
+		name = superBuilder.toString();
 		return name;
 	}
 }

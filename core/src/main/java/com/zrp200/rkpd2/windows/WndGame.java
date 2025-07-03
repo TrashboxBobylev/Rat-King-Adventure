@@ -35,6 +35,7 @@ import com.zrp200.rkpd2.ui.Icons;
 import com.zrp200.rkpd2.ui.RedButton;
 import com.zrp200.rkpd2.ui.Window;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.audio.Sample;
 
 import java.io.IOException;
 
@@ -106,6 +107,8 @@ public class WndGame extends Window {
 				} catch (IOException e) {
 					ShatteredPixelDungeon.reportException(e);
 				}
+				Sample.INSTANCE.rMode = false;
+				Dungeon.specialSeeds.clear();
 				Game.switchScene(TitleScene.class);
 			}
 		});

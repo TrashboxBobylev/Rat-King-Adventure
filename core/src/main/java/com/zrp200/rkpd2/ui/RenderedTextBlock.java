@@ -21,9 +21,12 @@
 
 package com.zrp200.rkpd2.ui;
 
+import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.messages.Languages;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.PixelScene;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.WarpPile;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
@@ -69,6 +72,9 @@ public class RenderedTextBlock extends Component {
 	}
 
 	public void text(String text){
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
+			text = ShatteredPixelDungeon.turnIntoRrrr(text);
+		}
 		this.text = text;
 
 		if (text != null && !text.equals("")) {
