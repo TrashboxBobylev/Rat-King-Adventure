@@ -180,10 +180,12 @@ public class Berserk extends Buff implements ActionIndicator.Action {
 	}
 
 	public float enchantFactor(float chance, boolean glyph){
-		return chance + Math.min(1f,power)*((Hero)target).byTalent(
+		if (target instanceof Hero)
+			return chance + Math.min(1f,power)*((Hero)target).byTalent(
 				Talent.ENRAGED_CATALYST, 1/5f,
 				Talent.RK_BERSERKER, !glyph ? .15f : 0f
 		);
+		return chance;
 	}
 	public float enchantFactor(float chance) { return enchantFactor(chance, false); }
 
