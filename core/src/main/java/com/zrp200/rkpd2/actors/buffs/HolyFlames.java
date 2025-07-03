@@ -5,6 +5,7 @@ import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.hero.Hero;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.mobs.Brute;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
@@ -48,7 +49,7 @@ public class HolyFlames extends Buff implements Hero.Doom, DamageOverTimeEffect 
     public boolean attachTo(Char target) {
         Buff.detach( target, Chill.class);
         for (Buff b: target.buffs()){
-            if (b.type == buffType.POSITIVE)
+            if (b.type == buffType.POSITIVE && !(b instanceof Brute.BruteRage))
                 b.detach();
         }
 
@@ -70,7 +71,7 @@ public class HolyFlames extends Buff implements Hero.Doom, DamageOverTimeEffect 
 
             Buff.detach( target, Chill.class);
             for (Buff b: target.buffs()){
-                if (b.type == buffType.POSITIVE)
+                if (b.type == buffType.POSITIVE && !(b instanceof Brute.BruteRage))
                     b.detach();
             }
 
