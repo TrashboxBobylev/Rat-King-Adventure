@@ -38,9 +38,11 @@ import com.zrp200.rkpd2.effects.Pushing;
 import com.zrp200.rkpd2.effects.ShieldHalo;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.bombs.ArcaneBomb;
+import com.zrp200.rkpd2.items.spells.SummonElemental;
 import com.zrp200.rkpd2.items.wands.CursedWand;
 import com.zrp200.rkpd2.items.wands.Wand;
 import com.zrp200.rkpd2.items.wands.WandOfMagicMissile;
+import com.zrp200.rkpd2.items.weapon.melee.BloomingPick;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.mechanics.Ballistica;
 import com.zrp200.rkpd2.messages.Messages;
@@ -56,6 +58,7 @@ import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 public abstract class ChampionEnemy extends Buff {
@@ -120,7 +123,11 @@ public abstract class ChampionEnemy extends Buff {
 	}
 
 	{
-		immunities.add(AllyBuff.class);
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EASY_MODE)){
+            immunities.addAll(Arrays.asList(new Class[]{Corruption.class, DLCAllyBuff.class, SummonElemental.InvisAlly.class, BloomingPick.PlaceVineHolder.class, BloomingPick.VineCovered.class, SpiritBuff.WraithMark.class}));
+		} else {
+			immunities.add(AllyBuff.class);
+		}
 	}
 
 	public static boolean isChampion(Mob m){
