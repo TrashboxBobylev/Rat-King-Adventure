@@ -928,7 +928,8 @@ public class MeleeWeapon extends Weapon implements BrawlerBuff.BrawlerWeapon {
 			grass = bundle.getInt(GRASS);
 		if (bundle.contains(DUELIST_START)){
 			duelistStart = bundle.getBoolean(DUELIST_START);
-			tier = 1;
+			if (duelistStart)
+				tier = 1;
 		}
 	}
 
