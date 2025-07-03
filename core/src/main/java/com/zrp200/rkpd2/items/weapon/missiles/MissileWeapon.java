@@ -326,7 +326,7 @@ public boolean isSimilar( Item item ) {
 			if (hero.hasTalent(Talent.SHARED_ENCHANTMENT)) {
 				// proc bow enchantment at 0.5x / 1x / 1.5x power
 				SpiritBow bow = hero.belongings.getItem(SpiritBow.class);
-				if (bow.hasEnchant(Weapon.Enchantment.class, hero)) {
+				if (bow != null && bow.hasEnchant(Weapon.Enchantment.class, hero)) {
 					procChanceMultiplier = 0.5f * hero.pointsInTalent(Talent.SHARED_ENCHANTMENT);
 					try {
 						damage = bow.enchantment.proc(this, attacker, defender, damage);
