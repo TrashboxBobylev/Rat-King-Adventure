@@ -372,11 +372,6 @@ protected float lightCloakFactor(Hero hero) {
 		}
 
 		@Override
-		public String actionName() {
-			return null;
-		}
-
-		@Override
 		public void doAction() {
 			execute(Dungeon.hero, AC_TELEPORT);
 		}
