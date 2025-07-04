@@ -41,6 +41,7 @@ import com.zrp200.rkpd2.items.wands.WandOfFirebolt;
 import com.zrp200.rkpd2.items.weapon.SpiritBow;
 import com.zrp200.rkpd2.items.weapon.enchantments.Explosive;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.scenes.ChangesScene;
 import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
 import com.zrp200.rkpd2.sprites.BlacksmithSprite;
@@ -93,10 +94,103 @@ public enum RKPD2Changes {
                     new ChangeInfo("RKA-2.2.0", true, TITLE_COLOR,
                             new ChangeButton(new ItemSprite(ARMOR_RAT_KING), "RKPD 3.0.1 ports",
                                     "Successfully ported RKPD2 3.0.1.\n\n" +
-                                            "_-_ Third Cleric subclass is currently placeholder Freerunner. A more defined one may appear during beta testing.\n" +
-                                            "_-_ There is no T2/T3 spells as well."
+                                            "_-_ Third Cleric subclass is currently placeholder Freerunner. A more defined one may appear in later updates."
+                            )
+                    ),
+                    NewContent(
+                            new ChangeButton(HeroSprite.avatar(CLERIC, 2), "Cleric New Talents",
+                                    list("Added _Metaexpression_ T1 spell, that allows to temporarily gain trinket effects in exchange for tome charges.",
+                                            "Added _Radiant Grappler_ T2 spell, that launches a grappling hook, capable of picking up items, activating traps and moving both you and enemies.",
+                                            "Added _Exorcism_ T3 talent, that makes offensive spells inflict powerful Holy Flames debuff.",
+                                            "Added _Heroic Infusion_ T4 talent, that gives wand and artifact charge, when taking damage.")
                             ),
-                            misc(list("WIP"))
+                            new ChangeButton(HeroSprite.avatar(CLERIC, 6), "New Armor Ability Talents",
+                                    list("Added _Divine Proficiency_ talent to Ascended Form, that lengthens the ascended state with each use of ability.",
+                                            "Added _Meta Form_ spell to Trinity, that imbues Trinity with power of some talent for limited amount of time.",
+                                            "Added _Enrage_ spell to Power of Many, that enrages the empowered ally, making it both take and deal 1.5x more physical damage.")
+                            ),
+                            new ChangeButton(new Swiftthistle.Seed(), "Special Seed Expansion",
+                                    "_-_ Added 14 new seeds:\n" +
+                                            "   _- IWA-NTM-ONY_\n" +
+                                            "   _- COR-ROS-ION_\n" +
+                                            "   _- GLO-WIN-GGG_\n" +
+                                            "   _- EQU-ALO-DDS_\n" +
+                                            "   _- BET-TER-WEP_\n" +
+                                            "   _- GOD-CHI-LDD_\n" +
+                                            "   _- RNG-SKI-LLS_\n" +
+                                            "   _- ROG-UEL-IKE_\n" +
+                                            "   _- LEV-ELD-OWN_\n" +
+                                            "   _- ULT-IMA-TEE_\n" +
+                                            "   _- SUP-ERM-ANN_\n" +
+                                            "   _- IRO-NMA-NNN_\n" +
+                                            "   _- ASC-END-ANT_\n" +
+                                            "   _- FUN-FUN-FUN_",
+                                    list("Seeds can now be documented and discovered in-game via finding yellow lore tablets in Abyss",
+                                            "Seeds have associated icons and descriptions in new journal tab!",
+                                            "_EXP-ANS-IVE_: now reduces the sizes of rooms as it was intended",
+                                            "_ECH-ECH-ECH_: added ech ally effects for duelist and cleric",
+                                            "_RRR-RRR-RRR_: reworked its visual effect to randomly change first letters to be R in all text and added a chance to play special R sound")
+                            )
+                    ),
+                    Changes(
+                            new ChangeButton(Icons.get(TALENT), "Talent changes",
+                                    list(
+                                            "Changed _Eldritch Blessing_'s cursed effect chance arrangement from _52%/36%/10.8%/1.2%_ to _50%/35%/12%/3%_.",
+                                            "_Eldritch Blessing_'s cursed effect self-harm reduction now applies to a lot more effects.",
+                                            "Tweaked _Bloodbath_ and _Energized Steps_:\n" +
+                                                    "   _*_ now proc with 66.6% chance instead of 40%\n" +
+                                                    "   _*_ now proc with same roll on non-assassination kills instead of rolling independently, improving the consistency",
+                                            "Replaced RKA's _Hold Fast_ with RKPD2 variant.",
+                                            "Made _Heroic Archery_ account for more cases of missile durability use.",
+                                            "Nerfed _Mechanical Power_'s barkskin decay from 4 turns to 1 turn."
+                                    )
+                            ),
+                            misc(
+                                    list(
+                                        "Completely redesigned title banner and its fireball.",
+                                            "Changed title screen buttons to be self-transparent.",
+                                            "Simplified large floor's Dragon Kick to just deal double knockback.",
+                                            "Reduced the Ring of Wealth's loot rate boost from upgrading it by 2x.",
+                                            "Trapped puzzle rooms now use a smorgasbord of traps in Abyss.",
+                                            "Explosive and reflective champions no longer spawn in sewers.",
+                                            "Replaced action cycling from holding action button with action list:\n" +
+                                                    "   _*_ now shows a list of currently possible actions\n" +
+                                                    "   _*_ normal click uses the action, long click sets it as current action",
+                                            "Increased experience requirements for nerf guns by 2x.",
+                                            "Buffed Molten Strife's Duelist ability damage to match Shattered 2.5.3 bombs.",
+                                            "Changed Duelist ability descriptions for tier 6 weapons to match Shattered 2.4's standards.",
+                                            "Shadowflare can no longer shoot through walls.",
+                                            "Changed the Rat King boss' sniper phase:\n" +
+                                                    "   _*_ no longer spawns storm traps\n" +
+                                                    "   _*_ now only shoots two arrows during desperation\n" +
+                                                    "   _*_ changed the damage from 5-14/9-20 to 8-20/3-15",
+                                            "Removed beginning of region cutscenes."
+                                    )
+                            ),
+                            bugFixes("Fixed following bugs:" +
+                                    list(
+                                            "The split abyssal dragons being effectively immortal",
+                                            "Heroic Enchanting triggering enchantments on the hero instead of enemy",
+                                            "Traps being disproportionally weak in Abyss",
+                                            "No mob limit in the Abyss's depth 1",
+                                            "Runic Cluster's merge behavior failing, if inventory is full",
+                                            "Animosity Mode Yog's division by zero crash",
+                                            "The ability to ascend into negative numbered depths in Abyss",
+                                            "Unknown crash with Ratmogrify",
+                                            "Wrong coloration of Gladiator talents",
+                                            "The loot not dropping past mob's level cap",
+                                            "Crash on resurrecting during Rat King boss's last stand phase",
+                                            "Rat King boss's damage reduction not working properly",
+                                            "Forbidden Runes challenge having no effect",
+                                            "Unknown crash with Tengu being paralysed",
+                                            "Chrono Screw having no effect",
+                                            "Power of Numbers +3 having no effect",
+                                            "Experience gain being doubled",
+                                            "Another berserking rat proc crash",
+                                            "Cloak teleport action not having a name",
+                                            "Trinity item selects window having odd layouts"
+                                    )
+                            )
                     )
             },
             {
