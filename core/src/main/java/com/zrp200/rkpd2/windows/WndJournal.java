@@ -25,6 +25,7 @@ import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.Badges;
 import com.zrp200.rkpd2.Dungeon;
 import com.zrp200.rkpd2.SPDAction;
+import com.zrp200.rkpd2.SPDSettings;
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Char;
@@ -76,6 +77,7 @@ import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
+import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.RectF;
 import com.watabou.utils.Reflection;
@@ -331,7 +333,21 @@ public class WndJournal extends WndTabbed {
 						if (inside( x, y ) && found) {
 							ShatteredPixelDungeon.scene().addToFront( new WndTitledMessage( Document.SPECIAL_SEEDS.pageSprite(page),
 									Document.SPECIAL_SEEDS.pageTitle(page),
-									Document.SPECIAL_SEEDS.pageBody(page), 330 ));
+									Document.SPECIAL_SEEDS.pageBody(page), 330 ){
+								{
+									addToBottom(new RedButton(Messages.get(SpecialSeedsTab.class, "set_seed")) {
+										@Override
+										protected void onClick() {
+											hide();
+											SPDSettings.customSeed(page);
+											Sample.INSTANCE.play(Assets.Sounds.LEVELUP);
+										}
+										{
+											setHeight(18);
+										}
+									});
+								}
+							});
 							Document.SPECIAL_SEEDS.readPage(page);
 							return true;
 						} else {
