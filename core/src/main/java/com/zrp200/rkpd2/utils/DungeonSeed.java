@@ -464,13 +464,14 @@ public class DungeonSeed {
 			return new ItemSprite(ItemSpriteSheet.SEED_PAGE);
 		}
 
-		public static void interpret(HashSet<SpecialSeed> list, String seed){
+		public static boolean interpret(HashSet<SpecialSeed> list, String seed){
 			long s = convertFromText(seed);
 			for (SpecialSeed specialSeed : SpecialSeed.values()){
 				if (s == specialSeed.seed) {
 					specialSeed.addSeeds(list);
 				}
 			}
+			return !list.isEmpty();
         }
 
 		static final HashMap<String, String> conversions = new HashMap<>();

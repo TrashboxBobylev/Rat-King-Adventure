@@ -33,6 +33,8 @@ import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.journal.Journal;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.HeroSprite;
+import com.zrp200.rkpd2.sprites.ItemSprite;
+import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.ActionIndicator;
 import com.zrp200.rkpd2.ui.ExitButton;
 import com.zrp200.rkpd2.ui.IconButton;
@@ -67,6 +69,7 @@ import com.watabou.utils.PointF;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -645,17 +648,23 @@ public class HeroSelectScene extends PixelScene {
 								for (GamesInProgress.Info info : GamesInProgress.checkAll()){
 									if (info.customSeed.isEmpty() && info.seed == seed){
 										SPDSettings.customSeed("");
-										icon.resetColor();
+										icon.copy(Icons.get(Icons.SEED));
 										ShatteredPixelDungeon.scene().addToFront(new WndMessage(Messages.get(HeroSelectScene.class, "custom_seed_duplicate")));
 										return;
 									}
 								}
 
 								SPDSettings.customSeed(text);
-								icon.hardlight(1f, 1.5f, 0.67f);
+								if (DungeonSeed.SpecialSeed.interpret(new HashSet<>(), SPDSettings.customSeed())) {
+									icon.copy(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE));
+									Sample.INSTANCE.play(Assets.Sounds.LEVELUP);
+								} else {
+									icon.copy(Icons.get(Icons.SEED));
+									icon.hardlight(1f, 1.5f, 0.67f);
+								}
 							} else {
 								SPDSettings.customSeed("");
-								icon.resetColor();
+								icon.copy(Icons.get(Icons.SEED));
 							}
 							updateOptionsColor();
 						}
@@ -664,7 +673,14 @@ public class HeroSelectScene extends PixelScene {
 			};
 			seedButton.leftJustify = true;
 			seedButton.icon(Icons.get(Icons.SEED));
-			if (!SPDSettings.customSeed().isEmpty()) seedButton.icon().hardlight(1f, 1.5f, 0.67f);;
+			if (!SPDSettings.customSeed().isEmpty()){
+				if (DungeonSeed.SpecialSeed.interpret(new HashSet<>(), SPDSettings.customSeed()))
+					seedButton.icon(new ItemSprite(ItemSpriteSheet.SEED_SWIFTTHISTLE));
+				else {
+					seedButton.icon(Icons.get(Icons.SEED));
+					seedButton.icon().hardlight(1f, 1.5f, 0.67f);
+				}
+			};
 			buttons.add(seedButton);
 			add(seedButton);
 
