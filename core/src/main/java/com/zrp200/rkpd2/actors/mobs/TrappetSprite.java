@@ -2,6 +2,7 @@ package com.zrp200.rkpd2.actors.mobs;
 
 import com.zrp200.rkpd2.Assets;
 import com.zrp200.rkpd2.effects.MagicMissile;
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.MobSprite;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.TextureFilm;
@@ -49,6 +50,11 @@ public class TrappetSprite extends MobSprite {
                         ((Trappet)ch).onZapComplete();
                     }
                 } );
+        Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW );
+    }
+
+    public static void zap(CharSprite sprite, int cell, Callback onZapComplete) {
+        MagicMissile.boltFromChar( sprite.parent, MagicMissile.ELMO, sprite, cell, onZapComplete);
         Sample.INSTANCE.play( Assets.Sounds.ATK_SPIRITBOW );
     }
 

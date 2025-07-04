@@ -42,6 +42,7 @@ import com.zrp200.rkpd2.actors.buffs.Vulnerable;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
 import com.zrp200.rkpd2.actors.buffs.Weakness;
 import com.zrp200.rkpd2.actors.hero.Talent;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
 import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
@@ -135,8 +136,29 @@ public class SpectreRat extends AbyssalMob implements Callback {
 	//used so resistances can differentiate between melee and magical attacks
 	public static class DarkBolt{}
 
-	private void zap() {
-		spend( TIME_TO_ZAP );
+	protected boolean isZapVisible(Char enemy) {
+		return sprite != null && (sprite.visible || enemy.sprite.visible);
+	}
+
+	private void reflectZap() {
+		Char enemy = this.enemy;
+		this.enemy = this;
+		zap();
+		this.enemy = enemy;
+	}
+
+	protected void zap() {
+
+		if (ShieldOfLight.DivineShield.tryUse(enemy, this, () -> {
+			if (isZapVisible(enemy)) SpectreRatSprite.zap(enemy.sprite, pos, this::reflectZap);
+			else reflectZap();
+		})) {
+			return;
+		}
+
+		spend(TIME_TO_ZAP);
+
+		Char enemy = this.enemy;
 
 		if (hit( this, enemy, true )) {
 			//TODO would be nice for this to work on ghost/statues too

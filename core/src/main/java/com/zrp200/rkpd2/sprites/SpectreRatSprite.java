@@ -77,6 +77,11 @@ public class SpectreRatSprite extends MobSprite {
 				} );
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
 	}
+
+	public static void zap(CharSprite sprite, int cell, Callback onZapComplete) {
+		MagicMissile.boltFromChar( sprite.parent, MagicMissile.SHADOW, sprite, cell, onZapComplete);
+		Sample.INSTANCE.play( Assets.Sounds.ZAP );
+	}
 	
 	@Override
 	public void onComplete( Animation anim ) {

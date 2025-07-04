@@ -5,6 +5,7 @@ import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.buffs.ChampionEnemy;
 import com.zrp200.rkpd2.actors.buffs.Light;
 import com.zrp200.rkpd2.actors.buffs.WarriorParry;
+import com.zrp200.rkpd2.actors.hero.spells.ShieldOfLight;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.items.Gold;
@@ -88,8 +89,29 @@ public class Trappet extends AbyssalMob implements Callback {
             DisarmingTrap.class,
             WarpingTrap.class, CursingTrap.class, GrimTrap.class, PitfallTrap.class, DistortionTrap.class };
 
-    private void zap() {
-        spend( TIME_TO_ZAP );
+    protected boolean isZapVisible(Char enemy) {
+        return sprite != null && (sprite.visible || enemy.sprite.visible);
+    }
+
+    private void reflectZap() {
+        Char enemy = this.enemy;
+        this.enemy = this;
+        zap();
+        this.enemy = enemy;
+    }
+
+    protected void zap() {
+
+        if (ShieldOfLight.DivineShield.tryUse(enemy, this, () -> {
+            if (isZapVisible(enemy)) TrappetSprite.zap(enemy.sprite, pos, this::reflectZap);
+            else reflectZap();
+        })) {
+            return;
+        }
+
+        spend(TIME_TO_ZAP);
+
+        Char enemy = this.enemy;
 
         if (hit( this, enemy, true )) {
             if (enemy.buff(WarriorParry.BlockTrock.class) != null){
