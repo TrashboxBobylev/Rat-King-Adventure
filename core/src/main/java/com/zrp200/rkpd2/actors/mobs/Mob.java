@@ -1044,7 +1044,7 @@ public abstract class Mob extends Char {
 		}
 	}
 
-	public final boolean isRewardSuppressed() { return hero.lvl > maxLvl + 4 || !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN); }
+	public final boolean isRewardSuppressed() { return hero.lvl > maxLvl + 4 && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN); }
 
 	public float lootChance(){
 		float lootChance = this.lootChance;
