@@ -97,6 +97,11 @@ public enum RKPD2Changes {
                                             "_-_ Third Cleric subclass is currently placeholder Freerunner. A more defined one may appear in later updates."
                             )
                     ),
+                    new ChangeInfo("v2.2.1", false, TITLE_COLOR,
+                            bugFixes("Caused by v2.2.0:" + list(
+                                    "Mobs not dropping anything outside LEV-ELD-OWN mode."
+                            ))
+                    ),
                     NewContent(
                             new ChangeButton(HeroSprite.avatar(CLERIC, 2), "Cleric New Talents",
                                     list("Added _Metaexpression_ T1 spell, that allows to temporarily gain trinket effects in exchange for tome charges.",
