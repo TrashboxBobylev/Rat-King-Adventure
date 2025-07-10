@@ -20,7 +20,7 @@ public class HolyFlames extends Buff implements Hero.Doom, DamageOverTimeEffect 
     public static final float DURATION = 8f;
 
     public float left;
-    private int burnIncrement = 0; //for tracking burning of hero items
+    private float burnIncrement = 0; //for tracking burning of hero items
 
     private static final String LEFT	= "left";
     private static final String BURN	= "burnIncrement";
@@ -42,7 +42,7 @@ public class HolyFlames extends Buff implements Hero.Doom, DamageOverTimeEffect 
     public void restoreFromBundle( Bundle bundle ) {
         super.restoreFromBundle(bundle);
         left = bundle.getFloat( LEFT );
-        burnIncrement = bundle.getInt( BURN );
+        burnIncrement = bundle.getFloat( BURN );
     }
 
     @Override
@@ -60,14 +60,18 @@ public class HolyFlames extends Buff implements Hero.Doom, DamageOverTimeEffect 
     public boolean act() {
 
         if (target.isAlive() && !target.isImmune(getClass())) {
-            float damage = Random.NormalIntRange( 1, 3 + Dungeon.scalingDepth()/4 );
+            float damage = Random.NormalIntRange( 1, 2 + Dungeon.scalingDepth()/5 );
             damage += burnIncrement;
             HashSet<Char.Property> props = target.properties();
             if (props.contains(Char.Property.DEMONIC) || props.contains(Char.Property.UNDEAD))
                 damage *= 1.5f;
             damage *= (1 + Dungeon.hero.pointsInTalent(Talent.PYROMANIAC, Talent.RK_FIRE)*0.125f);
 
-            burnIncrement++;
+            if (damage < (Dungeon.scalingDepth()/2)+2) {
+                burnIncrement++;
+            } else {
+                burnIncrement += 0.5f;
+            }
 
             Buff.detach( target, Chill.class);
             for (Buff b: target.buffs()){
