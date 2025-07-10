@@ -136,9 +136,6 @@ public class RadiantGrappler extends TargetedClericSpell {
         if (success) {
             Sample.INSTANCE.play(Assets.Sounds.CHAINS);
             Sample.INSTANCE.play(Assets.Sounds.MISS);
-
-            hero.busy();
-            hero.spendAndNext( 1f );
             onSpellCast(tome, hero);
         }
     }
