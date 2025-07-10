@@ -148,6 +148,8 @@ public class Dragon extends AbyssalMob {
         }
     }
 
+    boolean doingaSwipe = false;
+
     @Override
     public int attackProc( Char enemy, int damage ) {
         damage = super.attackProc( enemy, damage );
@@ -155,36 +157,40 @@ public class Dragon extends AbyssalMob {
             Buff.affect(enemy, FrostBurn.class ).reignite(enemy, 10f );
             Splash.at( enemy.sprite.center(), sprite.blood(), 5);
         }
-        for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-            if (pos + PathFinder.NEIGHBOURS8[i] == enemy.pos) {
-                switch (i) {
-                    case 0:
-                        swipeAttack(1, 3);
-                        break;
-                    case 1:
-                        swipeAttack(0, 2);
-                        break;
-                    case 2:
-                        swipeAttack(1, 5);
-                        break;
-                    case 3:
-                        swipeAttack(0, 6);
-                        break;
-                    case 4:
-                        swipeAttack(2, 8);
-                        break;
-                    case 5:
-                        swipeAttack(3, 7);
-                        break;
-                    case 6:
-                        swipeAttack(6, 8);
-                        break;
-                    case 7:
-                        swipeAttack(5, 7);
-                        break;
+        if (!doingaSwipe) {
+            doingaSwipe = true;
+            for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
+                if (pos + PathFinder.NEIGHBOURS8[i] == enemy.pos) {
+                    switch (i) {
+                        case 0:
+                            swipeAttack(1, 3);
+                            break;
+                        case 1:
+                            swipeAttack(0, 2);
+                            break;
+                        case 2:
+                            swipeAttack(1, 5);
+                            break;
+                        case 3:
+                            swipeAttack(0, 6);
+                            break;
+                        case 4:
+                            swipeAttack(2, 8);
+                            break;
+                        case 5:
+                            swipeAttack(3, 7);
+                            break;
+                        case 6:
+                            swipeAttack(6, 8);
+                            break;
+                        case 7:
+                            swipeAttack(5, 7);
+                            break;
+                    }
+                    break;
                 }
-                break;
             }
+            doingaSwipe = false;
         }
 
         return damage;
