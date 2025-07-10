@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.effects.Flare;
 import com.zrp200.rkpd2.effects.Speck;
 import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.quest.Chaosstone;
+import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
@@ -129,6 +130,7 @@ public class AmuletScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				InterlevelScene.mode = InterlevelScene.Mode.ABYSS;
+				Notes.reset();
 				Game.switchScene(InterlevelScene.class);
 			}
 		};
