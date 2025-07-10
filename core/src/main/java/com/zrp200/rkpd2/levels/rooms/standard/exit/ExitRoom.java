@@ -104,6 +104,7 @@ public class ExitRoom extends StandardRoom {
 	}
 
 	private static float[][] chances = new float[27][];
+	private static float[] abyss;
 	static {
 		chances[1] =  new float[]{3,  6,1, 0,0, 0,0, 0,0, 0,0};
 		chances[5] =  chances[4] = chances[3] = chances[2] = chances[1];
@@ -119,9 +120,14 @@ public class ExitRoom extends StandardRoom {
 
 		chances[21] = new float[]{3,  0,0, 0,0, 0,0, 0,0, 6,1};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
+
+		abyss = new float[]{1,  1,1, 1,1, 1,1, 1,1, 1,1};
 	}
 
 	public static StandardRoom createExit(){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
+			return Reflection.newInstance(rooms.get(Random.chances(abyss)));
+		}
 		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 }

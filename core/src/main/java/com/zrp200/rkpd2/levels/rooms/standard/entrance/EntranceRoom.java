@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.items.journal.GuidePage;
 import com.zrp200.rkpd2.items.journal.Guidebook;
 import com.zrp200.rkpd2.items.potions.brews.AquaBrew;
 import com.zrp200.rkpd2.journal.Document;
+import com.zrp200.rkpd2.levels.AbyssLevel;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.zrp200.rkpd2.levels.features.LevelTransition;
@@ -167,6 +168,7 @@ public class EntranceRoom extends StandardRoom {
 	}
 
 	private static float[][] chances = new float[27][];
+	private static float[] abyss;
 	static {
 		chances[1] =  new float[]{1,  0,0, 0,0, 0,0, 0,0, 0,0};
 		chances[2] =  chances[1];
@@ -184,9 +186,14 @@ public class EntranceRoom extends StandardRoom {
 
 		chances[21] = new float[]{3,  0,0, 0,0, 0,0, 0,0, 6,1};
 		chances[26] = chances[25] = chances[24] = chances[23] = chances[22] = chances[21];
+
+		abyss = new float[]{1,  1,1, 1,1, 1,1, 1,1, 1,1};
 	}
 
 	public static StandardRoom createEntrance(){
+		if (Dungeon.branch == AbyssLevel.BRANCH){
+			return Reflection.newInstance(rooms.get(Random.chances(abyss)));
+		}
 		return Reflection.newInstance(rooms.get(Random.chances(chances[Dungeon.depth])));
 	}
 
