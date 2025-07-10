@@ -131,6 +131,7 @@ public class AmuletScene extends PixelScene {
 			protected void onClick() {
 				InterlevelScene.mode = InterlevelScene.Mode.ABYSS;
 				Notes.reset();
+				Dungeon.LimitedDrops.LAB_ROOM.count = 0;
 				Game.switchScene(InterlevelScene.class);
 			}
 		};
