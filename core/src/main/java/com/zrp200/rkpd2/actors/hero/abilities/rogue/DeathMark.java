@@ -35,6 +35,7 @@ import com.zrp200.rkpd2.actors.hero.HeroClass;
 import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.ArmorAbility;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
+import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
@@ -44,6 +45,9 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Random;
+
+import java.util.ArrayList;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
 
@@ -242,6 +246,39 @@ public class DeathMark extends ArmorAbility {
 		public void restoreFromBundle(Bundle bundle) {
 			super.restoreFromBundle(bundle);
 			initialHP = bundle.getInt(INITIAL_HP);
+		}
+	}
+
+	public static class DeathBomb extends Bomb {
+		@Override
+		public boolean explodesDestructively() {
+			return false;
+		}
+
+		@Override
+		public void explode(int cell) {
+			super.explode(cell);
+
+			ArrayList<Char> affected = new ArrayList<>();
+
+			PathFinder.buildDistanceMap( cell, BArray.not( Dungeon.level.solid, null ), explosionRange() );
+			for (int i = 0; i < PathFinder.distance.length; i++) {
+				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
+					Char ch = Actor.findChar(i);
+					if (ch != null){
+						if (ch instanceof Hero) {
+							continue;
+						}
+						affected.add(ch);
+					}
+				}
+			}
+
+			for (Char ch : affected){
+				//pierces armor, and damage in 5x5 instead of 3x3
+				int damage = Math.round(Random.NormalIntRange( 4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth() ));
+				ch.damage(damage, this);
+			}
 		}
 	}
 
