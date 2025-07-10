@@ -72,6 +72,7 @@ import com.zrp200.rkpd2.effects.particles.ShadowParticle;
 import com.zrp200.rkpd2.effects.particles.SparkParticle;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfMirrorImage;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfRecharging;
@@ -122,17 +123,18 @@ public class CursedWand {
 	public static int eldritchLevel = 0;
 
 	public static void cursedZap(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
+		if (!SoulOfYendor.create(bolt.collisionPos, origin)) {
+			boolean positiveOnly = user == Dungeon.hero && (Random.Float() < WondrousResin.positiveCurseEffectChance() || eldritchLevel >= 3);
+			CursedEffect effect = randomValidEffect(origin, user, bolt, positiveOnly);
 
-		boolean positiveOnly = user == Dungeon.hero && (Random.Float() < WondrousResin.positiveCurseEffectChance() || eldritchLevel >= 3);
-		CursedEffect effect = randomValidEffect(origin, user, bolt, positiveOnly);
-
-		effect.FX(origin, user, bolt, new Callback() {
-			@Override
-			public void call() {
-				effect.effect(origin, user, bolt, positiveOnly);
-				afterZap.call();
-			}
-		});
+			effect.FX(origin, user, bolt, new Callback() {
+				@Override
+				public void call() {
+					effect.effect(origin, user, bolt, positiveOnly);
+					afterZap.call();
+				}
+			});
+		}
 	}
 
 	public static void tryForWandProc( Char target, Item origin ){

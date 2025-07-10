@@ -54,6 +54,7 @@ import com.zrp200.rkpd2.effects.SpellSprite;
 import com.zrp200.rkpd2.effects.Surprise;
 import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.Generator;
+import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
 import com.zrp200.rkpd2.items.food.Food;
 import com.zrp200.rkpd2.items.quest.Chaosstone;
@@ -977,5 +978,71 @@ public class SoulOfYendor extends Artifact implements AlchemyScene.ToolkitLike {
             outQuantity = 1;
         }
 
+    }
+
+    public static boolean create(int pos, Item origin){
+
+        for (int i : PathFinder.NEIGHBOURS4){
+            Heap heap = Dungeon.level.heaps.get(pos + i);
+            if (heap == null && !Dungeon.level.solid[pos + i]){
+                pos = pos + i;
+                break;
+            }
+        }
+
+        ArrayList<Class<? extends Artifact>> artifacts = new ArrayList<>();
+        ArrayList<Integer> artifactLevels = new ArrayList<>();
+        artifacts.add(EtherealChains.class);
+        artifacts.add(AlchemistsToolkit.class);
+        artifacts.add(HornOfPlenty.class);
+        artifacts.add(ChaliceOfBlood.class);
+        artifacts.add(MasterThievesArmband.class);
+        artifacts.add(SandalsOfNature.class);
+        artifacts.add(TimekeepersHourglass.class);
+        artifacts.add(UnstableSpellbook.class);
+        boolean circleOfItems = true;
+        for (int i : PathFinder.NEIGHBOURS8){
+            Heap heap = Dungeon.level.heaps.get(pos + i);
+            if (heap == null) circleOfItems = false;
+        }
+        if (circleOfItems){
+            for (int i : PathFinder.NEIGHBOURS8){
+                Heap heap = Dungeon.level.heaps.get(pos + i);
+                if (heap != null) scanForArtifact(heap, artifacts, artifactLevels);
+            }
+        } else {
+            return false;
+        }
+        if (artifacts.isEmpty()){
+            int averageLevel = 0;
+            for (int i : artifactLevels){
+                averageLevel += i;
+            }
+            averageLevel /= 8;
+            Dungeon.level.drop(new SoulOfYendor().upgrade(averageLevel), pos).sprite.drop();
+            GameScene.flash(0xFFFFFF);
+            Sample.INSTANCE.play(Assets.Sounds.BOSS);
+            origin.detach(Dungeon.hero.belongings.backpack);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    private static void scanForArtifact(Heap heap, ArrayList<Class<? extends Artifact>> requiredArtifacts,
+                                        ArrayList<Integer> artifactLevels){
+        for (Item item: heap.items){
+            for (Class<? extends Artifact> artifactClass : requiredArtifacts){
+                if (artifactClass.isAssignableFrom(item.getClass())){
+                    heap.items.remove(item);
+                    artifactLevels.add(item.level());
+                    if (heap.items.isEmpty()) {
+                        heap.destroy();
+                    }
+                    requiredArtifacts.remove(artifactClass);
+                    break;
+                }
+            }
+        }
     }
 }
