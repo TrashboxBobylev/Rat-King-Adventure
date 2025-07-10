@@ -97,6 +97,25 @@ public enum RKPD2Changes {
                                             "_-_ Third Cleric subclass is currently placeholder Freerunner. A more defined one may appear in later updates."
                             )
                     ),
+                    new ChangeInfo("v2.2.2", false, TITLE_COLOR,
+                            new ChangeButton(Icons.get(TALENT), "Talent changes",
+                                    list("_Cataclysmic Energy_'s explosions no longer damage hero or explode items",
+                                    "Nerfed _Exorcism_'s holy flames:\n" +
+                                            "   _*_ reduced max initial damage from _3(+0.25)_ to _2(+0.2)_\n" +
+                                            "   _*_ now has similar nerf from corrosion, where damage increases at half rate when it surpasses _(depth/2+2)_"
+                            )),
+                            bugFixes("Caused by v2.2.0:" + list(
+                                    "Soul of Yendor not being possible to make with cursed wand method.",
+                                    "Alchemy rooms not spawning in Abyss.",
+                                    "Abyss not having entrances and exits randomized (which also fixes the crash of going below depth 26)",
+                                    "Radiant Grappler spending 2 turns on successful actions",
+                                    "Empowered Radiant Grappler not consuming any charges and causing infinite turn with no items to collect"
+                            ), "Existed prior:" + list(
+                                    "Abyssal Dragon causing infinite recursion with the way it attacks",
+                                    "Abyss keeping the journal from main dungeon",
+                                    "Dread Slicer crashing, if Terror is somehow not inflicted"
+                            ))
+                    ),
                     new ChangeInfo("v2.2.1", false, TITLE_COLOR,
                             bugFixes("Caused by v2.2.0:" + list(
                                     "Mobs not dropping anything outside LEV-ELD-OWN mode."
