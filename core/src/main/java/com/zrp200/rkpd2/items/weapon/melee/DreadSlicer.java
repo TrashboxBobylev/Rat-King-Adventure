@@ -43,7 +43,10 @@ public class DreadSlicer extends MeleeWeapon implements Talent.SpellbladeForgery
         if (!Dungeon.level.adjacent(attacker.pos, defender.pos))
             damage /= 2;
         if (Random.Int(2) == 0){
-            Buff.prolong(defender, Terror.class, 8f).object = curUser.id();
+            Terror terror = Buff.prolong(defender, Terror.class, 8f);
+            if (terror != null) {
+                terror.object = curUser.id();
+            }
         }
         if (defender.buff(Terror.class) != null){
             defender.buff(Terror.class).ignoreNextHit = true;
