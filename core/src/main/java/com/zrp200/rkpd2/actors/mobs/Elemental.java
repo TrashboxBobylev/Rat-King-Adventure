@@ -135,6 +135,9 @@ public abstract class Elemental extends Mob {
 
 	@Override
 	public boolean canAttack(Char enemy) {
+		if (buff(ChampionEnemy.Paladin.class) != null){
+			return false;
+		}
 		if (super.canAttack(enemy)){
 			return true;
 		} else {
