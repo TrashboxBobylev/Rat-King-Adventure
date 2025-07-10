@@ -74,30 +74,32 @@ public class RadiantGrappler extends TargetedClericSpell {
                     targets.add(h);
                 }
             }
-            for (Heap h: targets) {
-                Callback callback = () -> {
-                    Item item = h.peek();
-                    if (item.doPickUp(hero, h.pos)) {
-                        h.pickUp();
-                        hero.spend(-Item.TIME_TO_PICK_UP); //casting the spell already takes a turn
-                        GLog.i( Messages.capitalize(Messages.get(hero, "you_now_have", item.name())) );
-                    } else {
-                        GLog.w( Messages.capitalize(Messages.get(hero, "you_cant_have", item.name())) );
-                        h.sprite.drop();
-                    }
-                    callbacks.remove( this );
-                    if (callbacks.isEmpty()) {
-                        hero.spendAndNext( 1f );
-                        onSpellCast(tome, hero);
-                    }
-                };
-                hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(h.pos), Effects.Type.RADIANT_GRAPPLER, callback));
-                Sample.INSTANCE.play(Assets.Sounds.CHAINS);
-                Sample.INSTANCE.play(Assets.Sounds.MISS);
-                callbacks.add(callback);
+            if (!targets.isEmpty()) {
+                for (Heap h : targets) {
+                    Callback callback = () -> {
+                        Item item = h.peek();
+                        if (item.doPickUp(hero, h.pos)) {
+                            h.pickUp();
+                            hero.spend(-Item.TIME_TO_PICK_UP); //casting the spell already takes a turn
+                            GLog.i(Messages.capitalize(Messages.get(hero, "you_now_have", item.name())));
+                        } else {
+                            GLog.w(Messages.capitalize(Messages.get(hero, "you_cant_have", item.name())));
+                            h.sprite.drop();
+                        }
+                        callbacks.remove(this);
+                        if (callbacks.isEmpty()) {
+                            hero.spendAndNext(1f);
+                        }
+                    };
+                    hero.sprite.parent.add(new Chains(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(h.pos), Effects.Type.RADIANT_GRAPPLER, callback));
+                    Sample.INSTANCE.play(Assets.Sounds.CHAINS);
+                    Sample.INSTANCE.play(Assets.Sounds.MISS);
+                    callbacks.add(callback);
+                }
             }
             hero.sprite.zap(hero.pos);
             hero.busy();
+            onSpellCast(tome, hero);
         } else {
             super.onCast(tome, hero);
         }
