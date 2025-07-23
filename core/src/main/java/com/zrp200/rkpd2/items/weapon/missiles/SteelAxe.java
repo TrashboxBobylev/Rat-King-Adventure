@@ -97,11 +97,7 @@ public class SteelAxe extends MissileWeapon implements CrossbowAmmo {
     private static Crossbow bow;
 
     public void updateCrossbow(){
-        if (Dungeon.hero.belongings.weapon instanceof Crossbow){
-            bow = (Crossbow) Dungeon.hero.belongings.weapon;
-        } else {
-            bow = null;
-        }
+        bow = Crossbow.find(Dungeon.hero);
     }
 
     public boolean crossbowHasEnchant( Char owner ){
