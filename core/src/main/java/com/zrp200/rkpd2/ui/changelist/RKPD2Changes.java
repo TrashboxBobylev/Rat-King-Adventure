@@ -97,6 +97,20 @@ public enum RKPD2Changes {
                                             "_-_ Third Cleric subclass is currently placeholder Freerunner. A more defined one may appear in later updates."
                             )
                     ),
+                    new ChangeInfo("v2.2.3", false, TITLE_COLOR,
+                            misc(
+                                    list(
+                                            "Edited/revamped Abyss's tileset to properly support all kinds of doors and better stitching."
+                                    )
+                            ),
+                            bugFixes("Caused by v2.2.0:" + list(
+                                    "Steel Axe crashing the journal, if there is no hero available to check",
+                                    "Softlock from Ebony Mimic not being able to spawn during One Against Many challenge"
+                            ), "Existed prior:" + list(
+                                    "Possessed Rodent having no text for killing you",
+                                    "Crashes related to permanent fire and attempts to freeze it"
+                            ))
+                    ),
                     new ChangeInfo("v2.2.2", false, TITLE_COLOR,
                             new ChangeButton(Icons.get(TALENT), "Talent changes",
                                     list("_Cataclysmic Energy_'s explosions no longer damage hero or explode items",
