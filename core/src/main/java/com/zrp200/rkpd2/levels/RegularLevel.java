@@ -822,8 +822,10 @@ if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
                 }
             }
 
-            int pos = Random.element(candidateCells);
-            mobs.add(Mimic.spawnAt(pos, EbonyMimic.class, false));
+			if (!candidateCells.isEmpty()) {
+				int pos = Random.element(candidateCells);
+				mobs.add(Mimic.spawnAt(pos, EbonyMimic.class, false));
+			}
         }
         Random.popGenerator();
 
