@@ -23,10 +23,11 @@ package com.zrp200.rkpd2.levels.rooms.standard.entrance;
 
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
-import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.standard.CircleBasinRoom;
+
+import static com.zrp200.rkpd2.levels.rooms.standard.entrance.EntranceRoom.setupStairs;
 
 public class CircleBasinEntranceRoom extends CircleBasinRoom {
 
@@ -47,7 +48,7 @@ public class CircleBasinEntranceRoom extends CircleBasinRoom {
 		int entrance = level.pointToCell(center());
 		Painter.set( level, entrance, Terrain.ENTRANCE_SP );
 
-		level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		setupStairs(level, entrance);
 	}
 
 	@Override

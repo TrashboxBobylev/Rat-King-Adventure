@@ -93,11 +93,7 @@ public class EntranceRoom extends StandardRoom {
 		} while (level.findMob(entrance) != null);
 		Painter.set( level, entrance, Terrain.ENTRANCE );
 
-		if (Dungeon.depth == 1){
-			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.SURFACE));
-		} else {
-			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
-		}
+		setupStairs(level, entrance);
 
 		//use a separate generator here so meta progression doesn't affect levelgen
 		Random.pushGenerator();
@@ -144,6 +140,14 @@ public class EntranceRoom extends StandardRoom {
 
 		Random.popGenerator();
 
+	}
+
+	public static void setupStairs(Level level, int entrance){
+		if (Dungeon.depth == 1){
+			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.SURFACE));
+		} else {
+			level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		}
 	}
 
 	private static ArrayList<Class<?extends StandardRoom>> rooms = new ArrayList<>();

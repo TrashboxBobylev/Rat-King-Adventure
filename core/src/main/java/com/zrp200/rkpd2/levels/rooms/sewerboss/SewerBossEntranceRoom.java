@@ -23,7 +23,6 @@ package com.zrp200.rkpd2.levels.rooms.sewerboss;
 
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
-import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.standard.entrance.EntranceRoom;
@@ -53,7 +52,7 @@ public class SewerBossEntranceRoom extends EntranceRoom {
 			entrance = level.pointToCell(random(3));
 		} while (level.findMob(entrance) != null);
 		Painter.set( level, entrance, Terrain.ENTRANCE );
-		level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		setupStairs(level, entrance);
 
 		for (Room.Door door : connected.values()) {
 			door.set( Room.Door.Type.REGULAR );

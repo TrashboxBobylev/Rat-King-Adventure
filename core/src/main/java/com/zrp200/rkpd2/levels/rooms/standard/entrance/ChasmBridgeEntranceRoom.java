@@ -23,10 +23,11 @@ package com.zrp200.rkpd2.levels.rooms.standard.entrance;
 
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
-import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.standard.ChasmBridgeRoom;
 import com.watabou.utils.PathFinder;
+
+import static com.zrp200.rkpd2.levels.rooms.standard.entrance.EntranceRoom.setupStairs;
 
 public class ChasmBridgeEntranceRoom extends ChasmBridgeRoom {
 
@@ -60,7 +61,7 @@ public class ChasmBridgeEntranceRoom extends ChasmBridgeRoom {
 		}
 
 		Painter.set( level, entrance, Terrain.ENTRANCE );
-		level.transitions.add(new LevelTransition(level, entrance, LevelTransition.Type.REGULAR_ENTRANCE));
+		setupStairs(level, entrance);
 	}
 
 }

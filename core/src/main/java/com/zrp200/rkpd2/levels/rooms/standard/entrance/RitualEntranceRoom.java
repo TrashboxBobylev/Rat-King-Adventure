@@ -23,7 +23,6 @@ package com.zrp200.rkpd2.levels.rooms.standard.entrance;
 
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.Terrain;
-import com.zrp200.rkpd2.levels.features.LevelTransition;
 import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.standard.RitualRoom;
 import com.watabou.utils.Point;
@@ -38,6 +37,6 @@ public class RitualEntranceRoom extends RitualRoom {
 	@Override
 	protected void placeloot(Level level, Point p) {
 		Painter.set(level, p, Terrain.ENTRANCE);
-		level.transitions.add(new LevelTransition(level, level.pointToCell(p), LevelTransition.Type.REGULAR_ENTRANCE));
+		EntranceRoom.setupStairs(level, level.pointToCell(p));
 	}
 }
