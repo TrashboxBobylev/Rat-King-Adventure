@@ -555,10 +555,10 @@ public abstract class Level implements Bundlable {
 		}
 
 		Mob m = Reflection.newInstance(mobsToSpawn.remove(0));
-		ChampionEnemy.rollForChampion(m);
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RATS)){
 			m = new Ratmogrify.SummonedRat();
 		}
+		ChampionEnemy.rollForChampion(m);
 		return m;
 	}
 
