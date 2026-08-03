@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.spells.SpiritForm;
 import com.zrp200.rkpd2.items.artifacts.ChaliceOfBlood;
 import com.zrp200.rkpd2.items.rings.RingOfEnergy;
+import com.zrp200.rkpd2.items.trinkets.ChaoticCenser;
 import com.zrp200.rkpd2.items.trinkets.SaltCube;
 import com.zrp200.rkpd2.levels.Terrain;
 import com.watabou.utils.Bundle;
@@ -48,6 +49,12 @@ public class Regeneration extends Buff {
 	@Override
 	public boolean act() {
 		if (target.isAlive()) {
+
+			//if other trinkets ever get buffs like this should probably make the buff attaching
+			// behaviour more like wands/rings/artifacts
+			if (ChaoticCenser.averageTurnsUntilGas() != -1){
+				Buff.affect(Dungeon.hero, ChaoticCenser.CenserGasTracker.class);
+			}
 
 			if (target.HP < regencap() && !((Hero)target).isStarving()) {
 				if (regenOn()) {
