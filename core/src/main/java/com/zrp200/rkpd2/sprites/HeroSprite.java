@@ -163,7 +163,7 @@ public class HeroSprite extends CharSprite {
 	@Override
 	public void move( int from, int to ) {
 		super.move( from, to );
-		if (ch != null && ch.flying && Dungeon.hero.isSubclassedLoosely(HeroSubClass.DECEPTICON)) {
+		if (ch != null && (ch.flying || Dungeon.hero.isSubclassedLoosely(HeroSubClass.DECEPTICON))) {
 			play( fly );
 		}
 		Camera.main.panFollow(this, 20f);
