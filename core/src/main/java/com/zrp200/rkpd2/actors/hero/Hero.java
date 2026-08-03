@@ -405,11 +405,11 @@ public class Hero extends Char {
 		super();
 
 		HP = HT = 20;
-		if (Dungeon.isChallenged(Challenges.JUST_KILL_ME)){
-			HP = HT = 10;
-		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
 			HP = HT = 5;
+		}
+		if (Dungeon.isChallenged(Challenges.JUST_KILL_ME)){
+			HP = HT = HT / 2;
 		}
 		STR = STARTING_STR;
 		
@@ -423,11 +423,11 @@ public class Hero extends Char {
         int level = lvlCenobite > 1 ? lvlCenobite : lvl;
 		
 		HT = 20 + 5*(level-1) + HTBoost;
-		if (Dungeon.isChallenged(Challenges.JUST_KILL_ME)){
-			HT = Math.round(10 + 2.5f*(level-1) + HTBoost/2f);
-		}
 		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BALANCE)){
 			HT = 5 + 3*(level-1) + HTBoost;
+		}
+		if (Dungeon.isChallenged(Challenges.JUST_KILL_ME)){
+			HT /= 2;
 		}
 		float multiplier = RingOfMight.HTMultiplier(this);
 		HT = Math.round(multiplier * HT);
