@@ -64,7 +64,9 @@ import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-import static com.zrp200.rkpd2.Dungeon.*;
+import static com.zrp200.rkpd2.Dungeon.hero;
+import static com.zrp200.rkpd2.Dungeon.level;
+import static com.zrp200.rkpd2.Dungeon.quickslot;
 
 public class MagesStaff extends MeleeWeapon {
 
@@ -261,12 +263,13 @@ public class MagesStaff extends MeleeWeapon {
 				counter.countUp(1);
 			}
 			this.wand.level(0);
-			if (!this.wand.collect()) {
-				level.drop(this.wand, owner.pos);
-			}
-			else {
-				GameScene.pickUp( this, owner.pos );
-				Sample.INSTANCE.play( Assets.Sounds.ITEM );
+			if (owner != null) {
+				if (!this.wand.collect()) {
+					level.drop(this.wand, owner.pos);
+				} else {
+					GameScene.pickUp(this, owner.pos);
+					Sample.INSTANCE.play(Assets.Sounds.ITEM);
+				}
 			}
 			GLog.newLine();
 			GLog.p(Messages.get(this, "preserved"));
