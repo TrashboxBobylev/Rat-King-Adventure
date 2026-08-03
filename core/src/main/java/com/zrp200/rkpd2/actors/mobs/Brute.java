@@ -122,6 +122,8 @@ public class Brute extends Mob {
 		
 		{
 			type = buffType.POSITIVE;
+
+			revivePersists = true;
 		}
 		
 		@Override

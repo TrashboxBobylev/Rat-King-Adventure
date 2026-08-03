@@ -71,7 +71,7 @@ public class HolyFlames extends Buff implements Hero.Doom, DamageOverTimeEffect 
 
             Buff.detach( target, Chill.class);
             for (Buff b: target.buffs()){
-                if (b.type == buffType.POSITIVE && !(b instanceof Brute.BruteRage))
+                if (b.type == buffType.POSITIVE && !b.revivePersists)
                     b.detach();
             }
 
