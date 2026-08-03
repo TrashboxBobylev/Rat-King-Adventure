@@ -112,7 +112,9 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import static com.zrp200.rkpd2.Dungeon.hero;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.*;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.CENOBITE;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.PALADIN;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.PRIEST;
 
 public enum HeroClass {
 
@@ -535,8 +537,8 @@ public enum HeroClass {
 
 	public ArrayList<HeroSubClass> subClasses() {
 		ArrayList<HeroSubClass> subClasses = this.subClasses;
-		if (DeviceCompat.isDebug() || ((Badges.isUnlocked(Badges.Badge.DEFEATED_RK) || Badges.isUnlocked(secretSub().secretBadge()))
-				&& !subClasses.contains(secretSub()))){
+		if (!subClasses.contains(secretSub()) && (DeviceCompat.isDebug() || ((Badges.isUnlocked(Badges.Badge.DEFEATED_RK) || Badges.isUnlocked(secretSub().secretBadge()))
+				))){
 			subClasses.add(secretSub());
 		}
 		subClasses.remove(null);
