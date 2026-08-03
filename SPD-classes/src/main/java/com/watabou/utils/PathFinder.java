@@ -256,7 +256,7 @@ public class PathFinder {
 		queue[tail++] = to;
 		distance[to] = 0;
 		
-		while (head < tail) {
+		while (head < tail && tail < queue.length) {
 			
 			// Remove from queue
 			int step = queue[head++];
