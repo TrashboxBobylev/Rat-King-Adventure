@@ -86,7 +86,8 @@ public class WarriorParry extends CounterBuff implements ActionIndicator.Action 
         @Override
         public void detach() {
             super.detach();
-            target.sprite.idle();
+            if (target.sprite != null)
+                target.sprite.idle();
         }
 
         @Override
