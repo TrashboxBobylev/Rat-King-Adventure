@@ -241,6 +241,7 @@ import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -692,6 +693,13 @@ public class Generator {
 			0, 1, 1, 1, 1, 1
 	};
 
+	private static final EnumSet<Category> chaosCategories = EnumSet.of(
+			Category.POTION, Category.SCROLL, Category.WEAPON, Category.ARMOR,
+			Category.RING, Category.ARTIFACT, Category.MISSILE, Category.NERF,
+			Category.WAND, Category.FOOD, Category.SEED, Category.STONE,
+			Category.GOLD
+	);
+
 	private static boolean usingFirstDeck = false;
 	private static HashMap<Category,Float> defaultCatProbs = new LinkedHashMap<>();
 	private static HashMap<Category,Float> categoryProbs = new LinkedHashMap<>();
@@ -702,16 +710,6 @@ public class Generator {
 		for (Category cat : Category.values()) {
 			cat.using2ndProbs =  cat.defaultProbs2 != null && Random.Int(2) == 0;
 			reset(cat);
-			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EQUAL_RARITY)){
-				if (cat.defaultProbs != null)
-					Arrays.fill(cat.defaultProbs, 1);
-				if (cat.defaultProbs2 != null)
-					Arrays.fill(cat.defaultProbs2, 1);
-				if (cat.probs != null)
-					Arrays.fill(cat.probs, 1);
-				if (cat.defaultProbsTotal != null)
-					Arrays.fill(cat.defaultProbsTotal, 1);
-			}
 			if (cat.defaultProbs != null) {
 				cat.seed = Random.Long();
 				cat.dropped = 0;
@@ -767,7 +765,9 @@ public class Generator {
 			cat = Random.chances( categoryProbs );
 		}
 		categoryProbs.put( cat, categoryProbs.get( cat ) - 1);
-
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EQUAL_RARITY)){
+			cat = Random.element(chaosCategories);
+		}
 		if (cat == Category.SEED) {
 			//We specifically use defaults for seeds here because, unlike other item categories
 			// their predominant source of drops is grass, not levelgen. This way the majority
@@ -779,7 +779,9 @@ public class Generator {
 	}
 
 	public static Item randomUsingDefaults(){
-		return randomUsingDefaults(Random.chances( defaultCatProbs ));
+		return randomUsingDefaults(Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EQUAL_RARITY) ?
+				Random.element( chaosCategories ) :
+				Random.chances( defaultCatProbs ));
 	}
 
 	public static Item random( Category cat ) {
@@ -806,7 +808,7 @@ public class Generator {
 					i = Random.chances(cat.probs);
 				}
 				if (cat.defaultProbs != null) cat.probs[i]--;
-				Class<?> itemCls = cat.classes[i];
+				Class<?> itemCls = Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EQUAL_RARITY) ? Random.element(cat.classes) : cat.classes[i];
 
 				if (cat.defaultProbs != null && cat.seed != null){
 					Random.popGenerator();
@@ -837,9 +839,13 @@ public class Generator {
 		} else if (cat.defaultProbs == null || cat == Category.ARTIFACT) {
 			return random(cat);
 		} else if (cat.defaultProbsTotal != null){
-			return ((Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbsTotal)])).random();
+			return (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EQUAL_RARITY) ?
+					(Item) Reflection.newInstance(Random.element(cat.classes)) :
+					(Item) Reflection.newInstance(cat.classes[Random.chances(cat.defaultProbsTotal)])).random();
 		} else {
 			Class<?> itemCls = cat.classes[Random.chances(cat.defaultProbs)];
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.EQUAL_RARITY))
+				itemCls = Random.element(cat.classes);
 
 			if (ExoticPotion.regToExo.containsKey(itemCls)){
 				if (Random.Float() < ExoticCrystals.consumableExoticChance()){
