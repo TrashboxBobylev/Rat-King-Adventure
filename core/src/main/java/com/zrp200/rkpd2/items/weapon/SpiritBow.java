@@ -360,7 +360,7 @@ public class SpiritBow extends Weapon implements BrawlerBuff.BrawlerWeapon {
 		}
 
 		public boolean sniperSpecial = false;
-		private Collection<Char> sniperSpecialTargets;
+		public Collection<Char> sniperSpecialTargets;
 		public float sniperSpecialBonusDamage = 0f;
 		public boolean doNotDelay = false;
 

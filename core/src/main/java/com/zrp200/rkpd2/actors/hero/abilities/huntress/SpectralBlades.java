@@ -54,6 +54,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import static com.zrp200.rkpd2.actors.hero.Talent.FUN;
@@ -265,7 +266,11 @@ public class SpectralBlades extends ArmorAbility {
 						}
 						if (bow != null && hero.subClass.is(HeroSubClass.SNIPER)){
 							SpiritBow.SpiritArrow spiritArrow = bow.knockArrow();
-							if (hero.pointsInTalent(Talent.SPECTRAL_SHOT) > 3) spiritArrow.sniperSpecial = true;
+							if (hero.pointsInTalent(Talent.SPECTRAL_SHOT) > 3) {
+								spiritArrow.sniperSpecial = true;
+								spiritArrow.sniperSpecialTargets = new ArrayList<>();
+								spiritArrow.sniperSpecialTargets.add(ch);
+							}
 							spiritArrow.forceSkipDelay = true;
 							spiritArrow.doNotDelay = true;
 							spiritArrow.cast(hero, ch.pos);
