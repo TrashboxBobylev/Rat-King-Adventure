@@ -200,7 +200,7 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
                                                 Char enemy = Actor.findChar( cell );
                                                 if (enemy != null && enemy != curUser) {
                                                     if (Char.hit(curUser, enemy, true)) {
-                                                        curUser.attack(enemy, 1.0f, 0, 100000);
+                                                        curUser.attack(enemy, 3.0f, 0, 100000);
                                                         Sample.INSTANCE.play(Assets.Sounds.HIT_MAGIC);
                                                     } else {
                                                         enemy.sprite.showStatus( CharSprite.NEUTRAL,  enemy.defenseVerb() );
