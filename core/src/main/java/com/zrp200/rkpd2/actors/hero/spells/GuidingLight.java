@@ -134,7 +134,7 @@ public class GuidingLight extends MultiTargetSpell {
 	}
 
 	public String desc(){
-		String desc = checkEmpowerMsg("desc");
+		String desc = checkEmpowerMsg("desc", 2 + scalingPoints(), 6 + scalingPoints()*2);
 		if (Dungeon.hero.subClass.is(HeroSubClass.PRIEST)){
 			desc += "\n\n" + Messages.get(this, "desc_priest");
 		}

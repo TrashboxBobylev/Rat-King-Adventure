@@ -41,6 +41,9 @@ import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Radiance extends ClericSpell {
 
 	public static final Radiance INSTANCE = new Radiance();
@@ -106,5 +109,10 @@ public class Radiance extends ClericSpell {
 
 		onSpellCast(tome, hero);
 
+	}
+
+	@Override
+	protected List<Object> getDescArgs() {
+		return Arrays.asList(Math.round(3f*(1f + 0.25f*scalingPoints())), Math.round(100*(1 + 0.25f*scalingPoints())));
 	}
 }
