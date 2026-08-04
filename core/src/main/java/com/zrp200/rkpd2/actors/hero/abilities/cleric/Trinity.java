@@ -49,6 +49,7 @@ import com.zrp200.rkpd2.items.artifacts.ChaliceOfBlood;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.artifacts.EtherealChains;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
+import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.artifacts.TalismanOfForesight;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
 import com.zrp200.rkpd2.items.artifacts.UnstableSpellbook;
@@ -619,6 +620,9 @@ public class Trinity extends ArmorAbility {
 		if (Ring.class.isAssignableFrom(cls)){
 			return Messages.get(Trinity.class, "ring_use", SpiritForm.ringLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
+		if (SoulOfYendor.class.isAssignableFrom(cls)){
+			return Messages.get(Trinity.class, cls.getSimpleName() + "_use", 5+SpiritForm.artifactLevel(), Messages.decimalFormat("#.##", chargeUse));
+		}
 		if (Artifact.class.isAssignableFrom(cls)){
 			return Messages.get(Trinity.class, cls.getSimpleName() + "_use", SpiritForm.artifactLevel(), Messages.decimalFormat("#.##", chargeUse));
 		}
@@ -653,6 +657,9 @@ public class Trinity extends ArmorAbility {
 			if (cls.equals(EtherealChains.class) || cls.equals(TalismanOfForesight.class) || cls.equals(TimekeepersHourglass.class)){
 				return 1.4f*chargeUse; //35 charge
 			}
+		}
+		if (cls.equals(SoulOfYendor.class)){
+			return 4f*chargeUse; //100 charge
 		}
 		if (Talent.class.isAssignableFrom(cls)){
 			return 2.68f*chargeUse; //66.6 charge

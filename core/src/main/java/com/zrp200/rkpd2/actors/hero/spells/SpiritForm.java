@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.actors.hero.Talent;
 import com.zrp200.rkpd2.actors.hero.abilities.cleric.Trinity;
 import com.zrp200.rkpd2.actors.hero.abilities.rat_king.OmniAbility;
 import com.zrp200.rkpd2.actors.mobs.Wraith;
+import com.zrp200.rkpd2.effects.FloatingText;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
@@ -41,9 +42,11 @@ import com.zrp200.rkpd2.items.artifacts.HolyTome;
 import com.zrp200.rkpd2.items.artifacts.HornOfPlenty;
 import com.zrp200.rkpd2.items.artifacts.MasterThievesArmband;
 import com.zrp200.rkpd2.items.artifacts.SandalsOfNature;
+import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
 import com.zrp200.rkpd2.items.artifacts.TalismanOfForesight;
 import com.zrp200.rkpd2.items.artifacts.TimekeepersHourglass;
 import com.zrp200.rkpd2.items.artifacts.UnstableSpellbook;
+import com.zrp200.rkpd2.items.potions.PotionOfExperience;
 import com.zrp200.rkpd2.items.rings.Ring;
 import com.zrp200.rkpd2.items.rings.RingOfMight;
 import com.zrp200.rkpd2.messages.Messages;
@@ -56,9 +59,11 @@ import com.zrp200.rkpd2.plants.Stormvine;
 import com.zrp200.rkpd2.plants.Swiftthistle;
 import com.zrp200.rkpd2.scenes.AlchemyScene;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.ui.BuffIndicator;
 import com.zrp200.rkpd2.ui.HeroIcon;
 import com.zrp200.rkpd2.ui.QuickSlotButton;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
@@ -262,6 +267,16 @@ public class SpiritForm extends ClericSpell {
 			((BookOfWonder) effect).doReadEffect(Dungeon.hero);
 		} else if (effect instanceof UnstableSpellbook){
 			((UnstableSpellbook) effect).doReadEffect(Dungeon.hero);
+		} else if (effect instanceof SoulOfYendor){
+			//gives 10% of level in exp, min of 2
+			int expToGive = Math.max(2, Math.round(Dungeon.hero.maxExp()*(0.01f)*(5+artifactLevel())));
+			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.LEVELLING_DOWN))
+				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(expToGive), FloatingText.EXPERIENCE);
+			else
+				Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(expToGive), FloatingText.EXPERIENCE);
+			Dungeon.hero.earnExp(expToGive, PotionOfExperience.class);
+			Talent.onArtifactUsed(Dungeon.hero);
+			Dungeon.hero.spendAndNext(1f);
 		}
 	}
 
