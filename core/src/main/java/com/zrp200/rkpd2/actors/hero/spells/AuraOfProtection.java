@@ -34,6 +34,7 @@ import com.zrp200.rkpd2.ui.HeroIcon;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.GameMath;
 
 public class AuraOfProtection extends ClericSpell {
 
@@ -55,7 +56,7 @@ public class AuraOfProtection extends ClericSpell {
     }
 
     public static float reduction() {
-		return .1f * Math.max(1, AuraOfProtection.INSTANCE.scalingPoints());
+		return .1f * GameMath.gate(1, AuraOfProtection.INSTANCE.scalingPoints(), 7.5f);
 	}
 
 	@Override
