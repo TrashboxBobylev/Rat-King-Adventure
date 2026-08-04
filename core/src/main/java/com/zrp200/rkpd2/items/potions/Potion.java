@@ -28,8 +28,10 @@ import com.zrp200.rkpd2.Statistics;
 import com.zrp200.rkpd2.actors.Actor;
 import com.zrp200.rkpd2.actors.Char;
 import com.zrp200.rkpd2.actors.blobs.Fire;
+import com.zrp200.rkpd2.actors.blobs.FrostFire;
 import com.zrp200.rkpd2.actors.buffs.Buff;
 import com.zrp200.rkpd2.actors.buffs.Burning;
+import com.zrp200.rkpd2.actors.buffs.FrostBurn;
 import com.zrp200.rkpd2.actors.buffs.HighnessBuff;
 import com.zrp200.rkpd2.actors.buffs.Ooze;
 import com.zrp200.rkpd2.actors.hero.Hero;
@@ -431,9 +433,15 @@ public class Potion extends Item {
 			fire.clear(cell);
 		}
 
+		FrostFire ffire = (FrostFire) Dungeon.level.blobs.get( FrostFire.class );
+		if (ffire != null) {
+			ffire.clear(cell);
+		}
+
 		Char ch = Actor.findChar(cell);
 		if (ch != null && ch.alignment == Char.Alignment.ALLY) {
 			Buff.detach(ch, Burning.class);
+			Buff.detach(ch, FrostBurn.class);
 			Buff.detach(ch, Ooze.class);
 		}
 
