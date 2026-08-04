@@ -126,8 +126,11 @@ public abstract class ClericSpell {
             return Talent.Aspect.NEUTRAL;
     }
 
-    public int scalingPoints(){
-        Hero cleric = Dungeon.hero;
+	public int scalingPoints(){
+		return scalingPoints(Dungeon.hero);
+	}
+
+	public int scalingPoints(Hero cleric){
         int points = 0;
         if (talent() != null)
             points = cleric.pointsInTalent(talent());

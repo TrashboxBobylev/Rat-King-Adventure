@@ -417,7 +417,7 @@ public class Ring extends KindofMisc {
 				&& spiritForm != null
 				&& spiritForm.ring() != null
 				&& spiritForm.ring().buffClass == type){
-			bonus += spiritForm.ring().soloBonus();
+			bonus += spiritForm.ring().soloBonus(true);
 		}
 		return bonus;
 	}
@@ -433,7 +433,7 @@ public class Ring extends KindofMisc {
 				&& target.buff(SpiritForm.SpiritFormBuff.class) != null
 				&& target.buff(SpiritForm.SpiritFormBuff.class).ring() != null
 				&& target.buff(SpiritForm.SpiritFormBuff.class).ring().buffClass == type){
-			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBuffedBonus();
+			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBuffedBonus(true);
 		}
 		return bonus;
 	}

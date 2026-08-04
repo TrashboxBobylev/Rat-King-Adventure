@@ -105,7 +105,11 @@ public class SpiritForm extends ClericSpell {
 	}
 
 	public static int ringLevel(){
-		return SpiritForm.INSTANCE.scalingPoints();
+		return ringLevel(Dungeon.hero);
+	}
+
+	public static int ringLevel(Hero hero){
+		return SpiritForm.INSTANCE.scalingPoints(hero);
 	}
 
 	public static int artifactLevel(){
@@ -140,7 +144,7 @@ public class SpiritForm extends ClericSpell {
 		public void setEffect(Bundlable effect){
 			this.effect = effect;
 			if (effect instanceof RingOfMight){
-				((Ring) effect).level(ringLevel());
+				((Ring) effect).level(ringLevel((Hero) target));
 				Dungeon.hero.updateHT( false );
 			}
 		}
@@ -155,7 +159,7 @@ public class SpiritForm extends ClericSpell {
 
 		public Ring ring(){
 			if (effect instanceof Ring){
-				((Ring) effect).level(ringLevel());
+				((Ring) effect).level(ringLevel((Hero) target));
 				return (Ring) effect;
 			}
 			return null;
