@@ -303,7 +303,7 @@ public abstract class Char extends Actor {
 	}
 
 	public int getMaxDistance() {
-		if (hero.pointsInTalent(Talent.RK_PALADIN) == 3){
+		if (hero.pointsInTalent(Talent.RK_PALADIN) == 3 && hero.buff(ChampionEnemy.Paladin.class) != null){
 			return 3;
 		}
 		return Math.max(4* hero.pointsInTalent(Talent.ALLY_WARP), 2* hero.pointsInTalent(Talent.RK_WARLOCK));
