@@ -627,9 +627,10 @@ public class Hero extends Char {
                 return spellTalent.maxPoints;
             }
         }
-		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
-			return talent.maxPoints();
-		for (LinkedHashMap<Talent, Integer> tier : talents){
+        if ((Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_YOUR_TALENTS) && canHaveTalent(talent))
+				|| Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.ALL_TALENTS))
+            return talent.maxPoints();
+        for (LinkedHashMap<Talent, Integer> tier : talents){
 			for (Talent f : tier.keySet()){
 				if (f == talent) return tier.get(f);
 			}

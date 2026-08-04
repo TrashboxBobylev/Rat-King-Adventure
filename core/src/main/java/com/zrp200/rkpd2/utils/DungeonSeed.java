@@ -361,6 +361,12 @@ public class DungeonSeed {
 				return sprite;
 			}
 		},
+		ALL_YOUR_TALENTS("ALL-TAL-ENT"){
+			@Override
+			public Image getIcon() {
+				return new TalentIcon(Talent.DIVINE_ADVENT);
+			}
+		},
 		ALL_TALENTS("ULT-IMA-TEE"){
 			@Override
 			public Image getIcon() {
