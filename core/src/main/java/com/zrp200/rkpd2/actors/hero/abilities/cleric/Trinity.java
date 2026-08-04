@@ -44,6 +44,7 @@ import com.zrp200.rkpd2.items.armor.Armor;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.items.armor.ClothArmor;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
+import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.artifacts.ChaliceOfBlood;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.artifacts.EtherealChains;
@@ -646,7 +647,7 @@ public class Trinity extends ArmorAbility {
 			return 2*chargeUse;
 		}
 		if (Artifact.class.isAssignableFrom(cls)){
-			if (cls.equals(DriedRose.class) || cls.equals(UnstableSpellbook.class)){
+			if (cls.equals(DriedRose.class) || cls.equals(UnstableSpellbook.class) || cls.equals(BookOfWonder.class)){
 				return 2*chargeUse; //50 charge
 			}
 			if (cls.equals(EtherealChains.class) || cls.equals(TalismanOfForesight.class) || cls.equals(TimekeepersHourglass.class)){

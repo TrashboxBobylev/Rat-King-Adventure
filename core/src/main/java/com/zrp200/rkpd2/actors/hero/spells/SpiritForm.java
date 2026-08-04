@@ -34,6 +34,7 @@ import com.zrp200.rkpd2.actors.mobs.Wraith;
 import com.zrp200.rkpd2.items.armor.ClassArmor;
 import com.zrp200.rkpd2.items.artifacts.AlchemistsToolkit;
 import com.zrp200.rkpd2.items.artifacts.Artifact;
+import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.artifacts.DriedRose;
 import com.zrp200.rkpd2.items.artifacts.EtherealChains;
 import com.zrp200.rkpd2.items.artifacts.HolyTome;
@@ -257,6 +258,8 @@ public class SpiritForm extends ClericSpell {
 			Buff.affect(Dungeon.hero, Swiftthistle.TimeBubble.class).reset(artifactLevel());
 			Dungeon.hero.spendAndNext(1f);
 
+		} else if (effect instanceof BookOfWonder){
+			((BookOfWonder) effect).doReadEffect(Dungeon.hero);
 		} else if (effect instanceof UnstableSpellbook){
 			((UnstableSpellbook) effect).doReadEffect(Dungeon.hero);
 		}
