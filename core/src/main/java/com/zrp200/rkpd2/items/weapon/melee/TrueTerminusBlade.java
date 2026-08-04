@@ -122,6 +122,11 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
         return super.proc(attacker, defender, -1);
     }
 
+    @Override
+    public String defaultAction() {
+        return AC_ZAP;
+    }
+
     public static boolean isWorthy(){
         boolean isHeroHere = Dungeon.hero != null;
         return (isHeroHere ? !Dungeon.hero.isClassed(HeroClass.RAT_KING) : false) && Document.TERMINUS.allPagesFound();
