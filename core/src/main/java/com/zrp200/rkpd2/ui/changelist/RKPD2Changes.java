@@ -61,14 +61,79 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 import static com.zrp200.rkpd2.Assets.Interfaces.TALENT_ICONS;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.*;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.*;
-import static com.zrp200.rkpd2.actors.hero.Talent.*;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.CLERIC;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.DUELIST;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.HUNTRESS;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.MAGE;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.RAT_KING;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.ROGUE;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.WARRIOR;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.ASSASSIN;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.BATTLEMAGE;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.BERSERKER;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.CENOBITE;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.HIGHNESS;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.KING;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.SNIPER;
+import static com.zrp200.rkpd2.actors.hero.Talent.ADVENTUROUS_SNOOZING;
+import static com.zrp200.rkpd2.actors.hero.Talent.BACKUP_BARRIER;
+import static com.zrp200.rkpd2.actors.hero.Talent.BARKSKIN;
+import static com.zrp200.rkpd2.actors.hero.Talent.DUAL_WIELDING;
+import static com.zrp200.rkpd2.actors.hero.Talent.ELITE_DEXTERITY;
+import static com.zrp200.rkpd2.actors.hero.Talent.EVERYTHING_IS_A_WEAPON;
+import static com.zrp200.rkpd2.actors.hero.Talent.EXORCISM;
+import static com.zrp200.rkpd2.actors.hero.Talent.FUN;
+import static com.zrp200.rkpd2.actors.hero.Talent.HEROIC_ENERGY;
+import static com.zrp200.rkpd2.actors.hero.Talent.HEROIC_WIZARDRY;
+import static com.zrp200.rkpd2.actors.hero.Talent.IRON_WILL;
+import static com.zrp200.rkpd2.actors.hero.Talent.KINGS_VISION;
+import static com.zrp200.rkpd2.actors.hero.Talent.KINGS_WISDOM;
+import static com.zrp200.rkpd2.actors.hero.Talent.LETHAL_MOMENTUM;
+import static com.zrp200.rkpd2.actors.hero.Talent.LETHAL_MOMENTUM_2;
+import static com.zrp200.rkpd2.actors.hero.Talent.LIGHT_CLOAK;
+import static com.zrp200.rkpd2.actors.hero.Talent.LIKE_A_BULLET;
+import static com.zrp200.rkpd2.actors.hero.Talent.LIMIT_BREAK;
+import static com.zrp200.rkpd2.actors.hero.Talent.METAEXPRESSION;
+import static com.zrp200.rkpd2.actors.hero.Talent.NATURES_AID;
+import static com.zrp200.rkpd2.actors.hero.Talent.NOBLE_CAUSE;
+import static com.zrp200.rkpd2.actors.hero.Talent.PERFECT_COPY;
+import static com.zrp200.rkpd2.actors.hero.Talent.POINTY_BLACK;
+import static com.zrp200.rkpd2.actors.hero.Talent.RATFORCEMENTS;
+import static com.zrp200.rkpd2.actors.hero.Talent.SORCERY;
+import static com.zrp200.rkpd2.actors.hero.Talent.SOUL_SIPHON;
+import static com.zrp200.rkpd2.actors.hero.Talent.STRONGMAN;
+import static com.zrp200.rkpd2.actors.hero.Talent.WARLOCKS_TOUCH;
 import static com.zrp200.rkpd2.messages.Messages.get;
 import static com.zrp200.rkpd2.messages.Messages.h;
-import static com.zrp200.rkpd2.sprites.CharSprite.*;
+import static com.zrp200.rkpd2.sprites.CharSprite.NEGATIVE;
+import static com.zrp200.rkpd2.sprites.CharSprite.POSITIVE;
+import static com.zrp200.rkpd2.sprites.CharSprite.WARNING;
 import static com.zrp200.rkpd2.sprites.HeroSprite.avatar;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.*;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ALUMINUM_SWORD;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARMOR_RAT_KING;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_ARMBAND;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_OMNI;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_SANDALS;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_TOOLKIT;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.CHOC_AMULET;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.CLEANSING_DART;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.CROWN;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.DREAD_SWORD;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.KIT;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.KROMER_CROWN;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.KROMER_MASK;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.MAGES_STAFF;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.MASK;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_AGATE;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_AMETHYST;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_GARNET;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_RUBY;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ROYAL_SWORD;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.SEED_SWIFTTHISTLE;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.STONE_ENCHANT;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.TERMINUS;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.TRUE_TERMINUS;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.WAND_UNSTABLE;
 import static com.zrp200.rkpd2.ui.Icons.CHANGES;
 import static com.zrp200.rkpd2.ui.Icons.DEPTH;
 import static com.zrp200.rkpd2.ui.Icons.DISPLAY_LAND;
@@ -93,6 +158,41 @@ public enum RKPD2Changes {
     v3_v2(() -> new ChangeInfo[][]{
             {
                     new ChangeInfo("RKA-2.3.0", true, TITLE_COLOR
+                    ),
+                    new ChangeInfo("v2.3.2", false, TITLE_COLOR,
+                            new ChangeButton(Icons.get(TALENT), "Talent changes",
+                                    list("Exorcism's Holy Flames can no longer can remove champion status from an enemy",
+                                            "Auto Repair now procs slightly earlier, allowing Star Pieces to be repaired by it",
+                                            "Capped Cenobite-boosted Aura of Protection at 75% damage reduction",
+                                            "Implemented Trinity effects for Soul of Yendor and Book of Wonder"
+                                    )),
+                            misc(list(
+                                    "Added new seed, that makes all selected hero's talents active at same time instead of all talents.",
+                                    "Made Frostburn be possible to remove with potions.",
+                                    "Made True Terminus Blade deal 3x damage with ranged attack."
+                            )),
+                            bugFixes("Fixed following bugs:\n" + list(
+                                    "Ability to ascend beyond level 0 in randomized room setups (like Abyss)",
+                                    "Auto-aim pathfinding crash",
+                                    "EQU-ALO-DDS seed affecting other runs",
+                                    "Spectral Shot crashing, when used with Multishot active",
+                                    "Crash with transmutating Mage's Staff",
+                                    "Flying animation being broken",
+                                    "COL-LOS-EUM parry crashing the game, if carried over with resurrection",
+                                    "RAT-RAT-RAT rats not being affected by Hostile Champions",
+                                    "The Weakling challenge and VBA-LAN-CED seed not stacking with each other",
+                                    "Chaotic Censer not functioning",
+                                    "Secret subclass button endlessly duplicating in debug mode",
+                                    "Shielding Behind the Army's ally swap working without Paladin state",
+                                    "Phantom Spear dropping on the ground",
+                                    "Trinity's Spirit Form having no effect on rings",
+                                    "Ring of Might Spirit Form crashing the game, if Enhanced Rings is active on reloading the save",
+                                    "Royal Brand's teleportation range being stuck at 0",
+                                    "Royal Brand using missing message to denote the target being unreachable",
+                                    "Some Cleric spells not showing their scaling with Cenobite's perks",
+                                    "Shrinking not being considered a debuff",
+                                    "True Terminus Blade's ranged attack being impossible to use in some scenarios"
+                            ))
                     ),
                     new ChangeInfo("v2.3.1", false, TITLE_COLOR,
                             new ChangeButton(Icons.get(TALENT), "Talent changes",
