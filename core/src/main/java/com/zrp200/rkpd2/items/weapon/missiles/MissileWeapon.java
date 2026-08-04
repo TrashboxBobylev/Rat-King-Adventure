@@ -477,7 +477,7 @@ public boolean isSimilar( Item item ) {
 	
 	protected void rangedMiss( int cell ) {
 		parent = null;
-		if (!spawnedForEffect) super.onThrow(cell);
+		if (!spawnedForEffect && recoverable) super.onThrow(cell);
 	}
 
 	public float durabilityLeft(){
