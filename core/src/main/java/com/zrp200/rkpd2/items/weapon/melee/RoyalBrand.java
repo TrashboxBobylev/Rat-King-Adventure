@@ -431,16 +431,16 @@ public class RoyalBrand extends Crossbow implements Talent.SpellbladeForgeryWeap
                     hero.spend(hero.attackDelay()*2);
                 });
             } else if ((enemy != null || !Dungeon.level.heroFOV[target] || hero.rooted)) {
-                GLog.w(Messages.get(Dagger.class, "ability_bad_position"));
+                GLog.w(Messages.get(this, "ability_target_range"));
                 if (Dungeon.hero.rooted) PixelScene.shake(1, 1f);
                 Buff.detach(hero, RunicBlade.RunicSlashTracker.class);
                 hero.sprite.idle();
                 hero.next();
             } else {
-                PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), DuelistInfo.sneakDistance(hero));
+                PathFinder.buildDistanceMap(Dungeon.hero.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null), DuelistInfo.sneakDistance(powerModifier));
                 int distance = PathFinder.distance[target];
                 if (distance == Integer.MAX_VALUE) {
-                    GLog.w(Messages.get(Dagger.class, "ability_bad_position"));
+                    GLog.w(Messages.get(this, "ability_target_range"));
                     Buff.detach(hero, RunicBlade.RunicSlashTracker.class);
                     hero.next();
                     return;
