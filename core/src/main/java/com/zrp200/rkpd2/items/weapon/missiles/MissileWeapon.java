@@ -565,7 +565,7 @@ public boolean isSimilar( Item item ) {
 				} else if (durabilityPerUse() < 100f && durability <= 0) {
 					GLog.n(Messages.get(this, "has_broken"));
 				}
-				if (Dungeon.hero.hasTalent(Talent.AUTO_RELOAD) && durability <= 0) {
+				if (Dungeon.hero.hasTalent(Talent.AUTO_RELOAD) && durability <= durabilityPerUse()) {
 					LiquidMetal metal = Dungeon.hero.belongings.getItem(LiquidMetal.class);
 					if (metal != null) {
 						metal.useToRepair(this);

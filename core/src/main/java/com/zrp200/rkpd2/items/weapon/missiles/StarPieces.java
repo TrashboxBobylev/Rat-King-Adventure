@@ -128,7 +128,8 @@ public class StarPieces extends MissileWeapon {
             Callback callback = new Callback() {
                 @Override
                 public void call() {
-                    user.shoot( ch, StarPieces.this );
+                    if (ch.isAlive())
+                        user.shoot( ch, StarPieces.this );
                     callbacks.remove( this );
                     if (callbacks.isEmpty()) {
                         Invisibility.dispel();
