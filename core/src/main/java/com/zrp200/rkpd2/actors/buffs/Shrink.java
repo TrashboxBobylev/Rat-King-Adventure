@@ -34,7 +34,7 @@ public class Shrink extends Buff {
 	public int distance = 2;
 
 	{
-		type = buffType.POSITIVE;
+		type = buffType.NEGATIVE;
 		announced = true;
 	}
 	

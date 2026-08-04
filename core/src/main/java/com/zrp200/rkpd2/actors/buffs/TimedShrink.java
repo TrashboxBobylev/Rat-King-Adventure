@@ -35,7 +35,7 @@ public class TimedShrink extends FlavourBuff {
 	public static final float DURATION = 20f;
 
 	{
-		type = buffType.POSITIVE;
+		type = buffType.NEGATIVE;
 		announced = true;
 	}
 	
