@@ -207,8 +207,6 @@ public class TrueTerminusBlade extends MeleeWeapon implements Talent.SpellbladeF
                                                         Combo combo = curUser.buff(Combo.class);
                                                         if (combo != null) combo.miss( );
                                                     }
-                                                } else {
-                                                    Dungeon.level.pressCell(cell);
                                                 }
                                                 Splash.at(cell, 0xFFFFFF, 15);
                                                 updateQuickslot();
