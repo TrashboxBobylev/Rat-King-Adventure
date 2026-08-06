@@ -66,6 +66,7 @@ import com.zrp200.rkpd2.items.artifacts.LloydsBeacon;
 import com.zrp200.rkpd2.items.bombs.Bomb;
 import com.zrp200.rkpd2.items.potions.PotionOfExperience;
 import com.zrp200.rkpd2.items.scrolls.ScrollOfTeleportation;
+import com.zrp200.rkpd2.items.weapon.melee.TrueTerminusBlade;
 import com.zrp200.rkpd2.levels.Level;
 import com.zrp200.rkpd2.levels.PrisonBossLevel;
 import com.zrp200.rkpd2.mechanics.Ballistica;
@@ -231,31 +232,33 @@ public class Tengu extends Mob {
 
 	@Override
 	public void die( Object cause ) {
-		
-		if (Dungeon.hero.subClass.is(HeroSubClass.NONE)) {
-			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_HERO)){
-				Dungeon.level.drop( new KromerCrown(), pos ).sprite.drop();
+		if (!(cause instanceof TrueTerminusBlade.DamageType)) {
+
+			if (Dungeon.hero.subClass.is(HeroSubClass.NONE)) {
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_HERO)) {
+					Dungeon.level.drop(new KromerCrown(), pos).sprite.drop();
+				}
+				Dungeon.level.drop(new TengusMask(), pos).sprite.drop();
 			}
-			Dungeon.level.drop( new TengusMask(), pos ).sprite.drop();
-		}
-		
-		GameScene.bossSlain();
-		super.die( cause );
-		if (Dungeon.isChallenged(Challenges.NO_LEVELS))
-			new PotionOfExperience().apply(Dungeon.hero);
 
-		Badges.validateBossSlain();
-		if (Statistics.qualifiedForBossChallengeBadge){
-			Badges.validateBossChallengeCompleted();
-		}
-		Statistics.bossScores[1] += 2000;
+			GameScene.bossSlain();
+			super.die(cause);
+			if (Dungeon.isChallenged(Challenges.NO_LEVELS))
+				new PotionOfExperience().apply(Dungeon.hero);
 
-		LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
-		if (beacon != null) {
-			beacon.upgrade();
+			Badges.validateBossSlain();
+			if (Statistics.qualifiedForBossChallengeBadge) {
+				Badges.validateBossChallengeCompleted();
+			}
+			Statistics.bossScores[1] += 2000;
+
+			LloydsBeacon beacon = Dungeon.hero.belongings.getItem(LloydsBeacon.class);
+			if (beacon != null) {
+				beacon.upgrade();
+			}
+
+			yell(Messages.get(this, "defeated"));
 		}
-		
-		yell( Messages.get(this, "defeated") );
 	}
 	
 	@Override
