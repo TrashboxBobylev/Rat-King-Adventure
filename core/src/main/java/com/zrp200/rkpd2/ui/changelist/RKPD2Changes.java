@@ -168,8 +168,10 @@ public enum RKPD2Changes {
                                     )),
                             misc(list(
                                     "Added new seed, that makes all selected hero's talents active at same time instead of all talents.",
+                                    "Added new seed, that is themed around Ring of Wealth grinding.",
                                     "Made Frostburn be possible to remove with potions.",
-                                    "Made True Terminus Blade deal 3x damage with ranged attack."
+                                    "Made True Terminus Blade deal 3x damage with ranged attack, but no longer press tiles.",
+                                    "Disguise status effect can no longer roll Rat King."
                             )),
                             bugFixes("Fixed following bugs:\n" + list(
                                     "Ability to ascend beyond level 0 in randomized room setups (like Abyss)",
@@ -177,7 +179,9 @@ public enum RKPD2Changes {
                                     "EQU-ALO-DDS seed affecting other runs",
                                     "Spectral Shot crashing, when used with Multishot active",
                                     "Crash with transmutating Mage's Staff",
-                                    "Flying animation being broken",
+                                    "Flying animation being broken for everyone but Shadowflare",
+                                    "Prime Artifacts duping Tengu's Mask",
+                                    "Star Pieces duping enemy kills",
                                     "COL-LOS-EUM parry crashing the game, if carried over with resurrection",
                                     "RAT-RAT-RAT rats not being affected by Hostile Champions",
                                     "The Weakling challenge and VBA-LAN-CED seed not stacking with each other",
@@ -191,7 +195,10 @@ public enum RKPD2Changes {
                                     "Royal Brand using missing message to denote the target being unreachable",
                                     "Some Cleric spells not showing their scaling with Cenobite's perks",
                                     "Shrinking not being considered a debuff",
-                                    "True Terminus Blade's ranged attack being impossible to use in some scenarios"
+                                    "True Terminus Blade's ranged attack being impossible to use in some scenarios",
+                                    "Void Wrath not functioning properly",
+                                    "Improvised Projectiles not working at +0",
+                                    "Chalice of Blood's overlevel boost softlocking the game"
                             ))
                     ),
                     new ChangeInfo("v2.3.1", false, TITLE_COLOR,
