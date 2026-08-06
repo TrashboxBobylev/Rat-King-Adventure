@@ -689,17 +689,14 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 						public void call() {
 							curUser = user;
 							Item.this.detach(user.belongings.backpack).onThrow(cell);
-							if (curUser.hasTalent(Talent.IMPROVISED_PROJECTILES,Talent.KINGS_VISION)
+							if (curUser.shiftedPoints(Talent.IMPROVISED_PROJECTILES,Talent.KINGS_VISION) > 1
 									&& !(Item.this instanceof MissileWeapon)
 									&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null){
 								Char ch = Actor.findChar(cell);
 								if (ch != null && ch.alignment != curUser.alignment){
 									Sample.INSTANCE.play(Assets.Sounds.HIT);
-									// imp: 3/5, vis: 2/3
-									float duration = curUser.byTalent(
-											false, true,
-											Talent.IMPROVISED_PROJECTILES, 1.5f,
-											Talent.KINGS_VISION, 1.0f);
+									// imp: 2/3/4, vis: 2/3
+									float duration = 1 + curUser.shiftedPoints(Talent.IMPROVISED_PROJECTILES, Talent.KINGS_VISION);
 									Buff.affect(ch, Blindness.class, Math.round(duration));
 									Cooldown.affectHero(Talent.ImprovisedProjectileCooldown.class);
 								}
