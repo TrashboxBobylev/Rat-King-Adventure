@@ -60,6 +60,7 @@ import com.zrp200.rkpd2.sprites.LarvaSprite;
 import com.zrp200.rkpd2.sprites.YogSprite;
 import com.zrp200.rkpd2.tiles.DungeonTilemap;
 import com.zrp200.rkpd2.ui.BossHealthBar;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
@@ -83,6 +84,8 @@ public class YogDzewa extends Mob {
 		spriteClass = YogSprite.class;
 
 		HP = HT = 1000;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			HP = HT = HT * 4;
 
 		EXP = 50;
 

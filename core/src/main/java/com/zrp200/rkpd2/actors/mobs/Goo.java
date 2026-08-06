@@ -50,6 +50,7 @@ import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.GooSprite;
 import com.zrp200.rkpd2.ui.BossHealthBar;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -60,6 +61,8 @@ public class Goo extends Mob {
 
 	{
 		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 120 : 100;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			HP = HT = HT * 3 / 2;
 		EXP = 10;
 		defenseSkill = 8;
 		spriteClass = GooSprite.class;

@@ -2805,7 +2805,10 @@ if (wep != null) {
 	}
 	
 	public static int maxExp( int lvl ){
-		return (int) ((5 + lvl * 5)*Math.pow(1.25, Math.max(0, lvl - 30)));
+		double scaling = 1.25;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			scaling = 1.1;
+		return (int) ((5 + lvl * 5)*Math.pow(scaling, Math.max(0, lvl - 30)));
 	}
 	
 	public boolean isStarving() {

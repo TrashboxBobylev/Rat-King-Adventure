@@ -245,6 +245,12 @@ public class DungeonSeed {
 				return new ItemSprite(ItemSpriteSheet.GOLD);
 			}
 		},
+		WEALTH_ONLY("LOO-TGO-BBO"){
+			@Override
+			public Image getIcon() {
+				return Icons.get(Icons.BACKPACK_LRG);
+			}
+		},
 		CORROSION("COR-ROS-ION"){
 			@Override
 			public Image getIcon() {

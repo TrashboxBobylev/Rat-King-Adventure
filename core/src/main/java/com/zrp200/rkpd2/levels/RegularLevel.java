@@ -68,6 +68,7 @@ import com.zrp200.rkpd2.levels.painters.Painter;
 import com.zrp200.rkpd2.levels.rooms.Room;
 import com.zrp200.rkpd2.levels.rooms.connection.TunnelRoom;
 import com.zrp200.rkpd2.levels.rooms.secret.SecretRoom;
+import com.zrp200.rkpd2.levels.rooms.special.LaboratoryRoom;
 import com.zrp200.rkpd2.levels.rooms.special.MagicalFireRoom;
 import com.zrp200.rkpd2.levels.rooms.special.PitRoom;
 import com.zrp200.rkpd2.levels.rooms.special.ShopRoom;
@@ -171,6 +172,22 @@ public abstract class RegularLevel extends Level {
 		// reduce size of special rooms by same factor for net decrease. This will do much less in comparison to regular rooms but proportions are proportions.
 		//specials = Random.round( specials*SIZE_MODIFIER );
 		SpecialRoom.initForFloor();
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY)){
+			for (int i = 0; i < specials*2; i++) {
+				int sizeCat = specials*2-i;
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
+					sizeCat = 1;
+				StandardRoom s;
+				do {
+					s = StandardRoom.createRoom();
+				} while (!s.setSizeCat( sizeCat ));
+				i += s.sizeFactor()-1;
+				initRooms.add(s);
+			}
+            specials = SpecialRoom.floorSpecials.contains(LaboratoryRoom.class) ? 1 : 0;
+		}
+
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
 			if (s instanceof PitRoom) specials++;
@@ -229,7 +246,11 @@ public abstract class RegularLevel extends Level {
 	public int mobLimit() {
 		if (Dungeon.depth <= 1 && !Dungeon.isChallenged(Challenges.KROMER) && !(this instanceof AbyssLevel)){
 			if (!Statistics.amuletObtained) return 0;
-			else                            return 10;
+			else {
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+					return 20;
+				return 10;
+			}
 		}
 
 		int mobs = 3 + Dungeon.scalingDepth() % 5 + Random.Int(3);
@@ -239,13 +260,17 @@ public abstract class RegularLevel extends Level {
 		if (Dungeon.bossLevel() && Dungeon.branch == AbyssLevel.BRANCH){
 			mobs *= 3;
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			mobs *= 2;
 		return mobs;
 	}
 
 	@Override
 	protected void createMobs() {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
-		int mobsToSpawn = Dungeon.scalingDepth() == 1 ? 8 : mobLimit();
+		int mobsToSpawn = Dungeon.scalingDepth() == 1 ?
+			(Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY) ? 16 : 8)
+				: mobLimit();
 		if (Dungeon.isChallenged(Challenges.MANY_MOBS)){
 			mobsToSpawn *= 16;
 		}
@@ -443,6 +468,11 @@ public abstract class RegularLevel extends Level {
 		}
 if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.BIGGER))
 			nItems *= 1.5f;
+
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY)){
+			nItems = 0;
+		}
+
 		for (int i=0; i < nItems; i++) {
 
 			Item toDrop = Generator.random();

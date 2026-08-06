@@ -787,6 +787,8 @@ public abstract class Level implements Bundlable {
 		} else if (Dungeon.level.feeling == Feeling.DARK){
 			cooldown = 2* cooldown /3f;
 		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			cooldown /= 2.5f;
 		return cooldown / DimensionalSundial.spawnMultiplierAtCurrentTime();
 	}
 

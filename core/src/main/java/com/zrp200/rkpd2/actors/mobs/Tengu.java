@@ -99,6 +99,8 @@ public class Tengu extends Mob {
 		spriteClass = TenguSprite.class;
 		
 		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 250 : 200;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			HP = HT = HT * 2;
 		EXP = 20;
 		defenseSkill = 15;
 		

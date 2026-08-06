@@ -21,6 +21,7 @@ import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.AbyssalSpawnerSprite;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
@@ -92,6 +93,8 @@ public class AbyssalSpawner extends AbyssalMob {
                 }
 
                 spawnCooldown = Math.max(3, 25 - Dungeon.depth / 2);
+                if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+                    spawnCooldown /= 2;
             }
         }
         return super.act();

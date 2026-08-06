@@ -68,6 +68,7 @@ import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.KingSprite;
 import com.zrp200.rkpd2.ui.BossHealthBar;
 import com.zrp200.rkpd2.ui.BuffIndicator;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
@@ -96,6 +97,8 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 		spriteClass = KingSprite.class;
 
 		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 450 : 300;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			HP = HT = HT * 3;
 		EXP = 40;
 		defenseSkill = 22;
 
@@ -146,14 +149,18 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 	private final int MAX_COOLDOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 10 : 14;
 
 	private final int PHASE2_HP, SUMMONS_PER_WAVE; {
-		if(Dungeon.isChallenged(Challenges.STRONGER_BOSSES)) {
-			PHASE2_HP = 100;
+        int phase2Hp1;
+        if(Dungeon.isChallenged(Challenges.STRONGER_BOSSES)) {
+			phase2Hp1 = 100;
 			SUMMONS_PER_WAVE = 6;
 		} else {
-			PHASE2_HP = 50;
+			phase2Hp1 = 50;
 			SUMMONS_PER_WAVE = 4;
 		}
-	}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			phase2Hp1 *= 3;
+        PHASE2_HP = phase2Hp1;
+    }
 
 	private boolean abilityUsed;
 

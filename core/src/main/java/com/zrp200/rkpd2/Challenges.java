@@ -29,6 +29,7 @@ import com.zrp200.rkpd2.items.food.Blandfruit;
 import com.zrp200.rkpd2.items.quest.NerfGun;
 import com.zrp200.rkpd2.items.rings.RingOfForce;
 import com.zrp200.rkpd2.items.rings.RingOfMight;
+import com.zrp200.rkpd2.items.rings.RingOfWealth;
 import com.zrp200.rkpd2.items.stones.StoneOfBlast;
 import com.zrp200.rkpd2.items.wands.DamageWand;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
@@ -137,6 +138,9 @@ public class Challenges {
 			return true;
 		}
 		if (Dungeon.isChallenged(NO_STR) && (item instanceof RingOfMight)){
+			return true;
+		}
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY) && (item instanceof RingOfWealth)){
 			return true;
 		}
 

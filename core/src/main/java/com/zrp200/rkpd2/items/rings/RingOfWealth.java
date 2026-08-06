@@ -78,7 +78,6 @@ public class RingOfWealth extends Ring {
 	
 	public static ArrayList<Item> tryForBonusDrop(Char target, int tries ){
 		int bonus = getBuffedBonus(target, Wealth.class);
-
 		if (bonus <= 0) return null;
 
 		CounterBuff triesToDrop = target.buff(TriesToDropTracker.class);

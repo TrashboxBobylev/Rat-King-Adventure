@@ -71,6 +71,7 @@ import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.sprites.CharSprite;
 import com.zrp200.rkpd2.sprites.DM300Sprite;
 import com.zrp200.rkpd2.ui.BossHealthBar;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -93,6 +94,8 @@ public class DM300 extends Mob {
 		spriteClass = DM300Sprite.class;
 
 		HP = HT = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 400 : 300;
+		if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+			HP = HT = HT * 10 / 4;
 		EXP = 30;
 		defenseSkill = 15;
 

@@ -31,6 +31,7 @@ import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.SpawnerSprite;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -123,6 +124,8 @@ public class DemonSpawner extends Mob {
 					//60/53.33/46.67/40 turns to spawn on floor 21/22/23/24
 					spawnCooldown -= Math.min(20, (Dungeon.scalingDepth() -21)*6.67);
 				}
+				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+					spawnCooldown /= 2;
 			}
 		}
 		alerted = false;

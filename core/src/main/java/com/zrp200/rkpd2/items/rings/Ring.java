@@ -435,6 +435,8 @@ public class Ring extends KindofMisc {
 				&& target.buff(SpiritForm.SpiritFormBuff.class).ring().buffClass == type){
 			bonus += target.buff(SpiritForm.SpiritFormBuff.class).ring().soloBuffedBonus(true);
 		}
+        if (type == RingOfWealth.Wealth.class && Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+            bonus += 1 + Dungeon.hero.lvl / 2;
 		return bonus;
 	}
 

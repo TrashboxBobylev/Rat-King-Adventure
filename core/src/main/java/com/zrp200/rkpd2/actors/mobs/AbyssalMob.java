@@ -1,6 +1,7 @@
 package com.zrp200.rkpd2.actors.mobs;
 
 import com.zrp200.rkpd2.Dungeon;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.watabou.utils.Bundle;
 
 public abstract class AbyssalMob extends Mob {
@@ -38,6 +39,9 @@ public abstract class AbyssalMob extends Mob {
     }
 
     public int abyssLevel(){
-        return Math.max(0, (Dungeon.depth-1) / 5);
+        float lvl = Math.max(0, (Dungeon.depth - 1) / 5f);
+        if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.WEALTH_ONLY))
+            lvl *= 3;
+        return (int) lvl;
     }
 }
