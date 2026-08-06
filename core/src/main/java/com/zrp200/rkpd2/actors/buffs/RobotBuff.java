@@ -49,10 +49,10 @@ public class RobotBuff extends Buff implements ActionIndicator.Action {
         target.sprite.operate(target.pos, target.sprite::idle);
         ActionIndicator.setAction(this);
         Dungeon.level.occupyCell(target);
+        Dungeon.hero.spendAndNext(Actor.TICK);
         if (Dungeon.hero.hasTalent(Talent.VOID_WRATH)){
             Buff.affect(Dungeon.hero, ResistanceTracker.class, Dungeon.hero.cooldown());
         }
-        Dungeon.hero.spendAndNext(Actor.TICK);
     }
 
     @Override
@@ -77,5 +77,7 @@ public class RobotBuff extends Buff implements ActionIndicator.Action {
         return true;
     }
 
-    public static class ResistanceTracker extends FlavourBuff{}
+    public static class ResistanceTracker extends FlavourBuff{
+        {actPriority = HERO_PRIO+1;}
+    }
 }
