@@ -2173,8 +2173,8 @@ public enum Talent {
 
 		if (hero.heroClass != null)     initClassTalents(hero);
 		if (hero.heroClass2 != null) initSecondClassTalents(hero.heroClass2, hero.talents, hero.metamorphedTalents);
-		if (hero.subClass != null)  initSubclassTalents(hero.subClass, hero.talents, hero.heroClass2 != null ? 3 : 2);
-		if (hero.subClass2 != null) initSubclassTalents(hero.subClass2, hero.talents, 3);
+		if (hero.subClass != HeroSubClass.NONE)  initSubclassTalents(hero.subClass, hero.talents, 2);
+		if (hero.subClass2 != HeroSubClass.NONE) initSubclassTalents(hero.subClass2, hero.talents, 3);
 		if (hero.armorAbility != null)  initArmorTalents(hero);
 
 		for (int i = 0; i < MAX_TALENT_TIERS; i++){
