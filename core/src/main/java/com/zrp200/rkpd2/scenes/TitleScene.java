@@ -117,10 +117,8 @@ public class TitleScene extends PixelScene {
 
 		if (landscape()){
 			leftFB = placeTorch(title.x + 85, title.y + 70);
-			rightFB = placeTorch(title.x + title.width - 85, title.y + 70);
 		} else {
 			leftFB = placeTorch(title.x + 33, title.y + 80);
-			rightFB = placeTorch(title.x + title.width - 33, title.y + 70);
 		}
 
 		signs = new Image(BannerSprites.get( landscape() ? BannerSprites.Type.TITLE_GLOW_LAND : BannerSprites.Type.TITLE_GLOW_PORT)){
@@ -222,7 +220,7 @@ public class TitleScene extends PixelScene {
 		float buttonAreaWidth = landscape() ? PixelScene.MIN_WIDTH_L-6 : PixelScene.MIN_WIDTH_P-2;
 		float btnAreaLeft = insets.left + (w - buttonAreaWidth) / 2f;
 		if (landscape()) {
-			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, (buttonAreaWidth/2)-1, BTN_HEIGHT);
+			btnPlay.setRect(btnAreaLeft, insets.top + topRegion+GAP, (buttonAreaWidth)-1, BTN_HEIGHT);
 			align(btnPlay);
 			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (float) (Math.floor(buttonAreaWidth/2f)-1), BTN_HEIGHT);
             btnJournal.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
@@ -310,7 +308,7 @@ public class TitleScene extends PixelScene {
 
 		title.am = alpha;
 		leftFB.am = alpha;
-		rightFB.am = alpha;
+//		rightFB.am = alpha;
 		//signs.am = alpha; handles this itself
 
 		btnPlay.enable(alpha != 0);
