@@ -689,7 +689,7 @@ public class Item implements Bundlable, QuickSlotButton.Aimable {
 						public void call() {
 							curUser = user;
 							Item.this.detach(user.belongings.backpack).onThrow(cell);
-							if (curUser.shiftedPoints(Talent.IMPROVISED_PROJECTILES,Talent.KINGS_VISION) > 1
+							if (curUser.shiftedPoints(Talent.IMPROVISED_PROJECTILES,Talent.KINGS_VISION) > 0
 									&& !(Item.this instanceof MissileWeapon)
 									&& curUser.buff(Talent.ImprovisedProjectileCooldown.class) == null){
 								Char ch = Actor.findChar(cell);

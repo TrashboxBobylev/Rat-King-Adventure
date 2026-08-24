@@ -1479,7 +1479,7 @@ public abstract class Level implements Bundlable {
                 // todo should this transfer the innate?
                 if(hero.heroClass.isExact(HeroClass.HUNTRESS) || hero.hasTalent(Talent.HEIGHTENED_SENSES)) points++; // free point for huntress
                 if (points > 0) {
-                    mindVisRange = points;
+                    mindVisRange = points+1;
                 }
 				if (c.buff(DivineSense.DivineSenseTracker.class) != null){
 					if (((Hero) c).heroClass.is(HeroClass.CLERIC)){
