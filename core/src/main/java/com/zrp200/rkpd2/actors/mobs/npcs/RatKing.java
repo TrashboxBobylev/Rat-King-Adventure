@@ -142,7 +142,7 @@ public class RatKing extends NPC {
 							else
 								Dungeon.hero.belongings.getItem(SoulOfYendor.class).detach(Dungeon.hero.belongings.backpack);
 							Statistics.deepestFloor = -1;
-							InterlevelScene.curTransition = new LevelTransition(Dungeon.level, -1, LevelTransition.Type.REGULAR_ENTRANCE, 0, Dungeon.branch, LevelTransition.Type.REGULAR_EXIT);
+							InterlevelScene.curTransition = new LevelTransition(Dungeon.level, -1, LevelTransition.Type.REGULAR_ENTRANCE, 0, 0, LevelTransition.Type.REGULAR_EXIT);
 							InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
 							Game.switchScene(InterlevelScene.class);
 						}
