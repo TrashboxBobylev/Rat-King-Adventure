@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.7.1'
+        classpath 'com.android.tools.build:gradle:8.11.2'
     }
 }
 
@@ -21,13 +21,13 @@ allprojects {
         appVersionCode = 854
         appVersionName = '2.3.2'
 
-        appJavaCompatibility = JavaVersion.VERSION_1_8
+        appJavaCompatibility = JavaVersion.VERSION_11
 
-        appAndroidCompileSDK = 35
-        appAndroidMinSDK = 14
-        appAndroidTargetSDK = 35
+        appAndroidCompileSDK = 35   //Android 15
+        appAndroidMinSDK = 21       //Android 5.0
+        appAndroidTargetSDK = 35    //Android 15
 
-        gdxVersion = '1.12.1'
+        gdxVersion = '1.14.0' //using snapshot as 1.13.5 has issues with Android R8
         gdxControllersVersion = '2.2.4'
         robovmVersion = '2.3.21'
     }
