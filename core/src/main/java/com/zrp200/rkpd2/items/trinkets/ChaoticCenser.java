@@ -301,6 +301,7 @@ public class ChaoticCenser extends Trinket {
 		GAS_CAT_CHANCES[1] = new float[]{60, 30, 10};
 		GAS_CAT_CHANCES[2] = new float[]{50, 35, 15};
 		GAS_CAT_CHANCES[3] = new float[]{40, 40, 20};
+		GAS_CAT_CHANCES[4] = new float[]{20, 45, 35};
 	}
 
 	private static final HashMap<Class<? extends Blob>, Float> COMMON_GASSES = new HashMap<>();

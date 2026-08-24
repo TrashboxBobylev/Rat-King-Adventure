@@ -61,7 +61,7 @@ public class ShardOfOblivion extends Trinket {
 	@Override
 	public String statsDesc() {
 		if (isIdentified()){
-			return Messages.get(this, "stats_desc", buffedLvl()+1);
+			return Messages.get(this, "stats_desc", buffedLvl() == 4 ? 25 : 20, buffedLvl()+1);
 		} else {
 			return Messages.get(this, "stats_desc", 1);
 		}
@@ -185,7 +185,7 @@ public class ShardOfOblivion extends Trinket {
 		}
 
 		wornUnIDed = Math.min(wornUnIDed, level+1);
-		return 1f + .2f*wornUnIDed;
+		return 1f + (level == 4 ? .25f : .2f)*wornUnIDed;
 
 	}
 }

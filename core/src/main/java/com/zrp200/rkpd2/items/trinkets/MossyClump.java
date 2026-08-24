@@ -44,6 +44,9 @@ public class MossyClump extends Trinket {
 
 	@Override
 	public String statsDesc() {
+		if (buffedLvl() > 3){
+			return Messages.get("overcharged_desc");
+		}
 		if (isIdentified()){
 			return Messages.get(this, "stats_desc", (int)(100*overrideNormalLevelChance(buffedLvl())));
 		} else {
@@ -75,12 +78,17 @@ public class MossyClump extends Trinket {
 		}
 		if (clump.levelFeels.isEmpty()){
 			Random.pushGenerator(Dungeon.seed+1);
-				clump.levelFeels.add(true);
-				clump.levelFeels.add(true);
-				clump.levelFeels.add(false);
-				clump.levelFeels.add(false);
-				clump.levelFeels.add(false);
-				clump.levelFeels.add(false);
+				if (trinketLevel(MossyClump.class) > 3){
+					clump.levelFeels.add(true);
+					clump.levelFeels.add(false);
+				} else {
+					clump.levelFeels.add(true);
+					clump.levelFeels.add(true);
+					clump.levelFeels.add(false);
+					clump.levelFeels.add(false);
+					clump.levelFeels.add(false);
+					clump.levelFeels.add(false);
+				}
 				for (int i = 0; i <= clump.shuffles; i++) {
 					Random.shuffle(clump.levelFeels);
 				}

@@ -44,6 +44,9 @@ public class TrapMechanism extends Trinket {
 
 	@Override
 	public String statsDesc() {
+		if (buffedLvl() > 3){
+			return Messages.get("overcharged_desc");
+		}
 		if (isIdentified()){
 			return Messages.get(this, "stats_desc", (int)(100*overrideNormalLevelChance(buffedLvl())), (int)(100*revealHiddenTrapChance(buffedLvl())));
 		} else {
@@ -87,12 +90,17 @@ public class TrapMechanism extends Trinket {
 		}
 		if (mech.levelFeels.isEmpty()){
 			Random.pushGenerator(Dungeon.seed+1);
-				mech.levelFeels.add(true);
-				mech.levelFeels.add(true);
-				mech.levelFeels.add(true);
-				mech.levelFeels.add(false);
-				mech.levelFeels.add(false);
-				mech.levelFeels.add(false);
+				if (trinketLevel(TrapMechanism.class) > 3){
+					mech.levelFeels.add(true);
+					mech.levelFeels.add(false);
+				} else {
+					mech.levelFeels.add(true);
+					mech.levelFeels.add(true);
+					mech.levelFeels.add(true);
+					mech.levelFeels.add(false);
+					mech.levelFeels.add(false);
+					mech.levelFeels.add(false);
+				}
 				for (int i = 0; i <= mech.shuffles; i++) {
 					Random.shuffle(mech.levelFeels);
 				}

@@ -39,6 +39,9 @@ public class ThirteenLeafClover extends Trinket {
 
 	@Override
 	public String statsDesc() {
+		if (buffedLvl() > 3){
+			return Messages.get(this, "overcharged_desc");
+		}
 		if (isIdentified()){
 			return Messages.get(this, "stats_desc", Math.round(MAX_CHANCE * 100*alterHeroDamageChance(buffedLvl())), Math.round((1f-MAX_CHANCE) * 100*alterHeroDamageChance(buffedLvl())));
 		} else {

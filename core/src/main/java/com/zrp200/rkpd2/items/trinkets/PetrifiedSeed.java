@@ -80,6 +80,8 @@ public class PetrifiedSeed extends Trinket {
 				return 0.65f;
 			case 3:
 				return 0.8f;
+			case 4:
+				return 0.92f;
 		}
 	}
 }
