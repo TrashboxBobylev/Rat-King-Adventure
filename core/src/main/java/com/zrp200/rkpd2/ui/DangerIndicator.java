@@ -44,7 +44,7 @@ public class DangerIndicator extends Tag {
 	
 	private int lastNumber = -1;
 
-	public static int HEIGHT = 16;
+	public static int HEIGHT = 18;
 
 	public DangerIndicator() {
 		super( COLOR );
@@ -75,14 +75,14 @@ public class DangerIndicator extends Tag {
 		super.layout();
 
 		icon.x = left() + 14;
-		icon.y = y + (height - icon.height) / 2;
+		icon.y = y + (height - icon.height) / 2 - 2;
 
 		placeNumber();
 	}
 
 	private void placeNumber() {
 		number.x = left() + 13 - number.width();
-		number.y = y + (height - number.baseLine()) / 2f;
+		number.y = y + (height - number.baseLine()) / 2f - 2;
 		PixelScene.align(number);
 	}
 	
