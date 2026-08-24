@@ -162,7 +162,10 @@ public abstract class ChampionEnemy extends Buff {
 		}
 		boolean shouldBeWarped = Random.Int(100) < warpAmount;
 		if (shouldBeWarped){
-			Buff.affect(m, WarpedEnemy.class);
+			if (Char.hasProp(m, Char.Property.BOSS) || Char.hasProp(m, Char.Property.BOSS_MINION))
+				Buff.affect(m, WarpedEnemy.BossEffect.class);
+			else
+				Buff.affect(m, WarpedEnemy.class);
 		}
 	}
 
