@@ -924,9 +924,6 @@ public abstract class Char extends Actor {
 	// atm attack is always post-armor and defence is already pre-armor
 	
 	public int attackProc( Char enemy, int damage ) {
-		if ( buff(Weakness.class) != null ){
-			damage *= 0.67f;
-		}
 		if (Ratmogrify.drratedonEffect(this) > 3){
 			SoulMark.process(enemy, 3,1, true);
 		}
