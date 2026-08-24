@@ -25,7 +25,7 @@ import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.scenes.TitleScene;
 import com.zrp200.rkpd2.scenes.WelcomeScene;
-import com.badlogic.gdx.utils.StringBuilder;
+import com.badlogic.gdx.utils.CharArray;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
@@ -210,9 +210,9 @@ public static final int v3_0_0 = 831;
 	}
 
 	public static String turnIntoRrrr(String name){
-		StringBuilder superBuilder = new StringBuilder();
+		CharArray superBuilder = new CharArray();
 		for (String word: Game.platform.splitforTextBlock(name, true)){
-			StringBuilder builder = new StringBuilder();
+			CharArray builder = new CharArray();
 			char[] letters = word.toCharArray();
 			for (int i = 0; i < letters.length; i++){
 				if (i == 0 && Character.isLetter(letters[i]) && letters[i] != 'x' && Random.Int(3) == 0){

@@ -23,17 +23,19 @@ package com.zrp200.rkpd2.ui;
 
 import com.zrp200.rkpd2.ShatteredPixelDungeon;
 import com.zrp200.rkpd2.messages.Messages;
+import com.zrp200.rkpd2.scenes.PixelScene;
 import com.zrp200.rkpd2.scenes.TitleScene;
 import com.zrp200.rkpd2.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.Game;
+import com.watabou.utils.DeviceCompat;
 
 public class ExitButton extends IconButton {
 
 	public ExitButton() {
 		super(Icons.EXIT.get());
 
-		width = 20;
+		width = (PixelScene.landscape() && !DeviceCompat.isDesktop()) ? 40 : 20;
 		height = 20;
 	}
 

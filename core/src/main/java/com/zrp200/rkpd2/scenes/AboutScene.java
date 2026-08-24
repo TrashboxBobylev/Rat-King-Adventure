@@ -38,6 +38,7 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.PointerArea;
 import com.watabou.noosa.ui.Component;
+import com.watabou.utils.RectF;
 
 public class AboutScene extends PixelScene {
 
@@ -50,6 +51,8 @@ public class AboutScene extends PixelScene {
 
 		int w = Camera.main.width;
 		int h = Camera.main.height;
+
+		RectF insets = getCommonInsets();
 
 		Archs archs = new Archs();
 		archs.setSize( w, h );
@@ -66,7 +69,7 @@ public class AboutScene extends PixelScene {
 
 		// RKPD2 Credits
 		CreditsBlock rkpd2 = new CreditsBlock(true, Window.TITLE_COLOR, "RKPD2", new RatKingSprite(), "All Thanks To _Rat King_!\nInspired by Evan's Rat King Dungeon", "RKPD2 Source Code", "https://github.com/zrp200/rkpd2");
-		rkpd2.setRect((w - fullWidth)/2f, 6, 120, 0);
+		rkpd2.setRect((w - fullWidth)/2f, insets.top + 6, 120, 0);
 		content.add(rkpd2);
 
 		CreditsBlock zrp = new CreditsBlock(false, 0x9b57b6,"Development", new Image(Assets.Interfaces.ZRP200),"Zrp200",null,null);
@@ -261,13 +264,14 @@ public class AboutScene extends PixelScene {
 		freesound.setRect(transifex.left()-10, transifex.bottom() + 8, colWidth+20, 0);
 		content.add(freesound);
 
-		content.setSize( fullWidth, freesound.bottom()+10 );
+		content.setSize( fullWidth, freesound.bottom()+10 + insets.bottom );
 
 		list.setRect( 0, 0, w, h );
 		list.scrollTo(0, 0);
 
 		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( Camera.main.width - btnExit.width(), 0 );
+		int ofs = PixelScene.landscape() ? 0 : 4;
+		btnExit.setPos( Camera.main.width - btnExit.width() - ofs, ofs );
 		add( btnExit );
 
 		//fadeIn();

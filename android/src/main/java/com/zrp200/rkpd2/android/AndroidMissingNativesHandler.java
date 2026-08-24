@@ -87,7 +87,7 @@ public class AndroidMissingNativesHandler extends Activity {
 		text.setTextColor(0xFFFFFFFF);
 		text.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/pixel_font.ttf"));
 		text.setGravity(Gravity.CENTER_VERTICAL);
-		text.setPadding(10, 10, 10, 10);
+		text.setPadding(20, 20, 20, 20);
 		setContentView(text);
 
 	}

@@ -21,12 +21,17 @@
 
 package com.zrp200.rkpd2.android;
 
+import com.zrp200.rkpd2.SPDSettings;
+import com.zrp200.rkpd2.ShatteredPixelDungeon;
+import com.zrp200.rkpd2.services.news.News;
+import com.zrp200.rkpd2.services.news.NewsImpl;
+import com.zrp200.rkpd2.services.updates.UpdateImpl;
+import com.zrp200.rkpd2.services.updates.Updates;
+import com.zrp200.rkpd2.ui.Button;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.ViewConfiguration;
 import com.badlogic.gdx.Files;
@@ -37,16 +42,6 @@ import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.utils.GdxNativesLoader;
 import com.rohitss.uceh.UCEHandler;
-import com.watabou.noosa.Game;
-import com.watabou.utils.FileUtils;
-import com.zrp200.rkpd2.SPDSettings;
-import com.zrp200.rkpd2.ShatteredPixelDungeon;
-import com.zrp200.rkpd2.services.news.News;
-import com.zrp200.rkpd2.services.news.NewsImpl;
-import com.zrp200.rkpd2.services.updates.UpdateImpl;
-import com.zrp200.rkpd2.services.updates.Updates;
-import com.rohitss.uceh.UCEHandler;
-import com.zrp200.rkpd2.ui.Button;
 import com.watabou.noosa.Game;
 import com.watabou.utils.FileUtils;
 
@@ -67,11 +62,11 @@ public class AndroidLauncher extends AndroidApplication {
 			GdxNativesLoader.load();
 			FreeType.initFreeType();
 		} catch (Exception e){
+			GdxNativesLoader.disableNativesLoading = true;
 			AndroidMissingNativesHandler.error = e;
 			Intent intent = new Intent(this, AndroidMissingNativesHandler.class);
 			startActivity(intent);
 			finish();
-			return;
 		}
 
 		new UCEHandler.Builder(this).setUCEHEnabled(!googlePlay).build();
@@ -110,36 +105,23 @@ public class AndroidLauncher extends AndroidApplication {
 		} else {
 			instance = this;
 		}
-		
-		//set desired orientation (if it exists) before initializing the app.
-		if (SPDSettings.landscape() != null) {
-			instance.setRequestedOrientation( SPDSettings.landscape() ?
-					ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE :
-					ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT );
-		}
-		
+
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.depth = 0;
-		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-			//use rgb565 on ICS devices for better performance
-			config.r = 5;
-			config.g = 6;
-			config.b = 5;
-		}
 
 		//we manage this ourselves
 		config.useImmersiveMode = false;
 
 		config.useCompass = false;
 		config.useAccelerometer = false;
-		
+
 		if (support == null) support = new AndroidPlatformSupport();
 		else                 support.reloadGenerators();
-		
+
 		support.updateSystemUI();
 
 		Button.longClick = ViewConfiguration.getLongPressTimeout()/1000f;
-		
+
 		initialize(new ShatteredPixelDungeon(support), config);
 		
 	}
@@ -153,11 +135,7 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onResume() {
 		//prevents weird rare cases where the app is running twice
 		if (instance != this){
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-				finishAndRemoveTask();
-			} else {
-				finish();
-			}
+			finishAndRemoveTask();
 		}
 		super.onResume();
 	}
