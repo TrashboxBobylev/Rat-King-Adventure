@@ -202,6 +202,10 @@ public enum HeroClass {
 				new SpiritBow().identify().collect();
 				break;
 
+			case CLERIC:
+				new HolyTome().identify().collect();
+				break;
+
 			case RAT_KING:
 				if (hero.heroClass != WARRIOR)
 					new BrokenSeal().identify().collect();
