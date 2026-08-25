@@ -159,6 +159,39 @@ public enum RKPD2Changes {
             {
                     new ChangeInfo("RKA-2.3.0", true, TITLE_COLOR
                     ),
+                    new ChangeInfo("v2.3.3", false, TITLE_COLOR,
+                            new ChangeButton(Icons.get(TALENT), "Talent changes",
+                                    list("Buffed _Thinking with Portals_:" + list(
+                                                "reduced charge consumption per tile from 1.15/1/0.75 to 1/0.75/0.6",
+                                                    "increased Preparation charge modifier from 50% to 67%"
+                                            ),
+                                            "Buffed/reworked _Endure_ ability:" + list(
+                                                    "reduced charge cost from 50 to 30",
+                                                    "reduced endure time from 3 to 2 turns",
+                                                    "reduced striking time from 10 to 5 turns",
+                                                    "increased damage reduction from 50% to 67% (damage boost is still 50% of taken damage)",
+                                                    "buffed _Even the Odds_ and _Sustained Retribution_ damage scaling by 2x"
+                                            )
+                                    )),
+                            misc(list(
+                                    "Kromer Crown is now able to give Cleric subclasses to heroes, that got Holy Tome via GOD-CHI-LDD.",
+                                    "Implemented +4 trinkets for trinkets, that didn't have them.",
+                                    "Increased system requirements to match Shattered 3.2.4.",
+                                    "Implemented UI changes and edge-to-edge functionality from Shattered 3.2.2-3.2.4 (aside from title screen overhaul)."
+                            )),
+                            bugFixes("Fixed following bugs:\n" + list(
+                                    "Rat King bossfight trigger event sending you into failsafe level, if done outside of main dungeon",
+                                    "King's Vision +1 lacking half of its effects",
+                                    "Unique warped bosses not actually appearing in the game (for 4 years!)",
+                                    "Weakness being twice as effective in reducing physical damage",
+                                    "Combo descriptions displaying negative percentages, if combo leap is not available for them",
+                                    "Empowered Hallowed Ground deleting staircases",
+                                    "LOO-TGO-BBO Dwarf King softlocking after the first wave",
+                                    "State of Kromer Mask/Crown being preserved between different runs",
+                                    "Kromer Mask not giving Holy Tome, if Cleric was chosen",
+                                    "T6 Runic Blade crashing on attacking invisible enemies"
+                            ))
+                    ),
                     new ChangeInfo("v2.3.2", false, TITLE_COLOR,
                             new ChangeButton(Icons.get(TALENT), "Talent changes",
                                     list("Exorcism's Holy Flames can no longer can remove champion status from an enemy",
