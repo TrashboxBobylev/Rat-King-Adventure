@@ -343,6 +343,11 @@ public class StatusPane extends Component {
 		} else {
 			exp.scale.x = ((17 + heroPaneExtraWidth) / exp.width) * Dungeon.hero.exp / Dungeon.hero.maxExp();
 			expText.text(Dungeon.hero.exp + "/" + Dungeon.hero.maxExp());
+			if (expText.width > exp.width){
+				expText.scale.set(PixelScene.align(0.25f));
+				expText.y = exp.y + (exp.height - (expText.baseLine()+expText.scale.y))/2f;
+				expText.y -= 0.001f; //prefer to be slightly higher
+			}
 		}
 
 		if (Dungeon.hero.lvl != lastLvl) {
