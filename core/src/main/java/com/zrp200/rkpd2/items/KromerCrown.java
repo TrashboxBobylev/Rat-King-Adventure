@@ -37,6 +37,7 @@ import com.zrp200.rkpd2.scenes.GameScene;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
 import com.zrp200.rkpd2.ui.Window;
+import com.zrp200.rkpd2.utils.DungeonSeed;
 import com.zrp200.rkpd2.utils.GLog;
 import com.zrp200.rkpd2.windows.WndChooseSubclass;
 import com.watabou.noosa.Camera;
@@ -98,7 +99,7 @@ public class KromerCrown extends TengusMask {
 						heroSubClasses.remove(HeroSubClass.SNIPER);
 					if (!curUser.isClassedLoosely(HeroClass.ROGUE))
 						heroSubClasses.remove(HeroSubClass.ASSASSIN);
-                    if (!curUser.isClassedLoosely(HeroClass.CLERIC)){
+                    if (!curUser.isClassedLoosely(HeroClass.CLERIC) && !Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.CLERIC)){
                         heroSubClasses.remove(PRIEST);
                         heroSubClasses.remove(PALADIN);
 						heroSubClasses.remove(CENOBITE);
