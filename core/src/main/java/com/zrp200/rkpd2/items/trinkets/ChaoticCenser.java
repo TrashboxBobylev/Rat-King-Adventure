@@ -295,7 +295,7 @@ public class ChaoticCenser extends Trinket {
 		}
 	}
 
-	private static final float[][] GAS_CAT_CHANCES = new float[4][3];
+	private static final float[][] GAS_CAT_CHANCES = new float[5][3];
 	static {
 		GAS_CAT_CHANCES[0] = new float[]{70, 25, 5};
 		GAS_CAT_CHANCES[1] = new float[]{60, 30, 10};
