@@ -23,9 +23,9 @@ allprojects {
 
         appJavaCompatibility = JavaVersion.VERSION_11
 
-        appAndroidCompileSDK = 35   //Android 15
+        appAndroidCompileSDK = 36   //Android 16
         appAndroidMinSDK = 21       //Android 5.0
-        appAndroidTargetSDK = 35    //Android 15
+        appAndroidTargetSDK = 36    //Android 16
 
         gdxVersion = '1.14.0' //using snapshot as 1.13.5 has issues with Android R8
         gdxControllersVersion = '2.2.4'
