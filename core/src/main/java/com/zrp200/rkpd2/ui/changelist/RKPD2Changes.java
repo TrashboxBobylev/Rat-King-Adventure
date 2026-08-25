@@ -177,7 +177,8 @@ public enum RKPD2Changes {
                                     "Kromer Crown is now able to give Cleric subclasses to heroes, that got Holy Tome via GOD-CHI-LDD.",
                                     "Implemented +4 trinkets for trinkets, that didn't have them.",
                                     "Increased system requirements to match Shattered 3.2.4.",
-                                    "Implemented UI changes and edge-to-edge functionality from Shattered 3.2.2-3.2.4 (aside from title screen overhaul)."
+                                    "Implemented UI changes and edge-to-edge functionality from Shattered 3.2.2-3.2.4 (aside from title screen overhaul).",
+                                    "Implemented Chinese translation by huiyi3583."
                             )),
                             bugFixes("Fixed following bugs:\n" + list(
                                     "Rat King bossfight trigger event sending you into failsafe level, if done outside of main dungeon",

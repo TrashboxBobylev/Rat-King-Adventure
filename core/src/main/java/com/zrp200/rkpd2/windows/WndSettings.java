@@ -156,7 +156,7 @@ public class WndSettings extends WndTabbed {
 			}
 		});
 
-		/*langs = new LangsTab();
+		langs = new LangsTab();
 		langs.setSize(width, 0);
 		height = Math.max(height, langs.height());
 		add( langs );
@@ -184,13 +184,13 @@ public class WndSettings extends WndTabbed {
 			}
 
 		};
-		add( langsTab );*/
+		add( langsTab );
 
 		resize(width, (int)Math.ceil(height));
 
 		layoutTabs();
 
-		if (tabs.size() == 4 && last_index >= 2){
+		if (tabs.size() == 5 && last_index >= 2){
 			//input tab isn't visible
 			select(last_index-1);
 		} else {
