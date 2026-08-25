@@ -120,15 +120,15 @@ public class MusRexIra extends ArmorAbility {
             }
                 if (armor.charge >= chargeUse(hero)*3) {
                     //endure
-                    Buff.prolong(hero, Endure.EndureTracker.class, 13f);
+                    Buff.prolong(hero, Endure.EndureTracker.class, 8f);
 
                     Combo combo = hero.buff(Combo.class);
                     if (combo != null) {
-                        combo.addTime(3f);
+                        combo.addTime(2f);
                     }
                     armor.charge -= chargeUse(hero) * 2;
                     hero.sprite.operate(hero.pos);
-                    hero.spendAndNext(3f);
+                    hero.spendAndNext(2f);
                 }
                 if (armor.charge >= chargeUse(hero)) {
                     //nature's power

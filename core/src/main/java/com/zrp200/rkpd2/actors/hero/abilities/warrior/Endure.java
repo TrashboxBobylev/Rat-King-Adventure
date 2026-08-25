@@ -45,7 +45,7 @@ import com.watabou.utils.Bundle;
 public class Endure extends ArmorAbility {
 
 	{
-		baseChargeUse = 50f;
+		baseChargeUse = 30f;
 	}
 
 	@Override
@@ -54,17 +54,17 @@ public class Endure extends ArmorAbility {
 		if (hero.buff(EndureTracker.class) != null){
 			hero.buff(EndureTracker.class).detach();
 		}
-		Buff.prolong(hero, EndureTracker.class, 12f);
+		Buff.prolong(hero, EndureTracker.class, 8f);
 
 		Combo combo = hero.buff(Combo.class);
 		if (combo != null){
-			combo.addTime(3f);
+			combo.addTime(2f);
 		}
 		hero.sprite.operate(hero.pos);
 
 		armor.useCharge(hero, this);
 		Invisibility.dispel();
-		hero.spendAndNext(3f);
+		hero.spendAndNext(2f);
 	}
 
 	@Override
@@ -106,9 +106,9 @@ public class Endure extends ArmorAbility {
 		public float adjustDamageTaken(float damage){
 			if (enduring) {
 				damageBonus += damage/2;
-				float damageMulti = 0.5f;
+				float damageMulti = 0.33f;
 				if (Dungeon.hero.hasTalent(Talent.SHRUG_IT_OFF, Talent.BLOODFLARE_SKIN)){
-					//total damage reduction is 60%/68%/74%/80%, based on points in talent
+					//total damage reduction is 74%/79%/83%/86%, based on points in talent
 					damageMulti *= Math.pow(0.8f, Dungeon.hero.pointsInTalent(Talent.SHRUG_IT_OFF, Talent.BLOODFLARE_SKIN));
 				}
 				return damage*damageMulti;
@@ -124,7 +124,7 @@ public class Endure extends ArmorAbility {
 			}
 
 			enduring = false;
-			damageBonus *= 1f + 0.15f*Dungeon.hero.pointsInTalent(Talent.SUSTAINED_RETRIBUTION, Talent.BLOODFLARE_SKIN);
+			damageBonus *= 1f + 0.2f*Dungeon.hero.pointsInTalent(Talent.SUSTAINED_RETRIBUTION, Talent.BLOODFLARE_SKIN);
 
 			int nearby = 0;
 			for (Char ch : Actor.chars()){
@@ -132,7 +132,7 @@ public class Endure extends ArmorAbility {
 					nearby ++;
 				}
 			}
-			damageBonus *= 1f + (nearby*0.05f*Dungeon.hero.pointsInTalent(Talent.EVEN_THE_ODDS, Talent.BLOODFLARE_SKIN));
+			damageBonus *= 1f + (nearby*0.1f*Dungeon.hero.pointsInTalent(Talent.EVEN_THE_ODDS, Talent.BLOODFLARE_SKIN));
 
 			hitsLeft = 1+Dungeon.hero.pointsInTalent(Talent.SUSTAINED_RETRIBUTION);
 			damageBonus /= hitsLeft;
