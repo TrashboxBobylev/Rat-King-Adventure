@@ -147,7 +147,7 @@ public class CloakOfShadows extends Artifact {
 					if (Dungeon.hero.invisible > 0){
 						Preparation prep = Dungeon.hero.buff(Preparation.class);
 						if (prep != null){
-							prep.turnsInvis += (stealthDuration() / 2 * chargeCost);
+							prep.turnsInvis += (stealthDuration() * 2/3 * chargeCost);
 							prep.act();
 							BuffIndicator.refreshHero();
 						}
@@ -387,11 +387,11 @@ protected float lightCloakFactor(Hero hero) {
 	public float getChargeEfficiency() {
 		switch (Dungeon.hero.pointsInTalent(Talent.THINKING_WITH_PORTALS)){
 			case 1: default:
-				return 0.75f;
-			case 2:
 				return 1f;
-			case 3:
+			case 2:
 				return 1.33f;
+			case 3:
+				return 1.67f;
 		}
 	}
 
