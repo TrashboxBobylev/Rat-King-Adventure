@@ -150,6 +150,7 @@ public class HallowedGround extends TargetedClericSpell {
 					if (
 							// 13/25/38/50% chance to immediately give grass
 							Random.Int(quantity > 0 ? 8 : 4) <= points
+							&& (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO)
 					) {
 						Level.set(i, isStale() ? Terrain.FURROWED_GRASS : Terrain.HIGH_GRASS);
 						quantity += 5;
