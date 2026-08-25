@@ -291,7 +291,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 									-1;
                     break;
 				case SLAM:
-                    args[count >= reqCount ? 1 : 0] = count * 20;
+                    args[reqCount > 0 && count >= reqCount ? 1 : 0] = count * 20;
                     break;
 				case PARRY:
 					reqCount = baseEnhancedCombo >= 2 ? 9 :
@@ -300,7 +300,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 									-1;
                     break;
 				case CRUSH:
-                    args[count >= reqCount ? 1 : 0] = count * 25;
+                    args[reqCount > 0 && count >= reqCount ? 1 : 0] = count * 25;
                     break;
 			}
 			boolean empowered = reqCount > 0 && count >= reqCount;
