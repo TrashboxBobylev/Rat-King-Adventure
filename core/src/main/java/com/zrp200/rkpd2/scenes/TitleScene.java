@@ -36,6 +36,7 @@ import com.zrp200.rkpd2.services.news.News;
 import com.zrp200.rkpd2.services.updates.AvailableUpdateData;
 import com.zrp200.rkpd2.services.updates.Updates;
 import com.zrp200.rkpd2.sprites.CharSprite;
+import com.zrp200.rkpd2.sprites.RatKingSprite;
 import com.zrp200.rkpd2.ui.Archs;
 import com.zrp200.rkpd2.ui.ExitButton;
 import com.zrp200.rkpd2.ui.IconButton;
@@ -209,7 +210,7 @@ public class TitleScene extends PixelScene {
 				ShatteredPixelDungeon.switchScene( AboutScene.class );
 			}
 		};
-		btnAbout.icon(Icons.get(Icons.SHPX));
+		btnAbout.icon(new RatKingSprite());
 		add(btnAbout);
 		
 		final int BTN_HEIGHT = 20;
