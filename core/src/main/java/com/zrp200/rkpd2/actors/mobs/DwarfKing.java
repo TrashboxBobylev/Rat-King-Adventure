@@ -286,7 +286,7 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 					spend(3 * TICK);
 					summonsMade += 2;
 					return true;
-				} else if (shielding() <= 300 && summonsMade < 12){
+				} else if (shielding() <= HT*2/3 && summonsMade < 12){
 					if (summonsMade == 6) {
 						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
 						Sample.INSTANCE.play(CHALLENGE);
@@ -302,7 +302,7 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 					summonsMade += 3;
 					spend(3*TICK);
 					return true;
-				} else if (shielding() <= 150 && summonsMade < 18) {
+				} else if (shielding() <= HT/3 && summonsMade < 18) {
 					if (summonsMade == 12) {
 						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
 						Sample.INSTANCE.play(CHALLENGE);
@@ -335,7 +335,7 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 					summonSubject(3, DKGhoul.class);
 					spend(2 * TICK); // extra two turns before summoning next one.
 					summonsMade++;
-				} else if (shielding() <= 200 && summonsMade < 8) {
+				} else if (shielding() <= HT/3*2 && summonsMade < 8) {
 					if (summonsMade == 4) {
 						sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
 						Sample.INSTANCE.play(CHALLENGE);
@@ -347,7 +347,7 @@ public class DwarfKing extends Mob implements Hero.DeathCommentator {
 						summonSubject(3, DKGhoul.class);
 					}
 					summonsMade++;
-				} else if (shielding() <= 100 && summonsMade < 12) {
+				} else if (shielding() <= HT/3 && summonsMade < 12) {
 					sprite.centerEmitter().start(Speck.factory(Speck.SCREAM), 0.4f, 2);
 					Sample.INSTANCE.play(CHALLENGE);
 					yell(Messages.get(this, "wave_3"));
