@@ -347,7 +347,8 @@ public class RunicBladeMkII extends MeleeWeapon implements Talent.SpellbladeForg
     public int proc(Char attacker, Char defender, int damage) {
         if (!charged){
             attacker.buff(RunicCooldown.class).time -= 1;
-            defender.sprite.emitter().burst(RunicParticle.FACTORY, Random.Int(10, 15));
+            if (defender.sprite != null)
+                defender.sprite.emitter().burst(RunicParticle.FACTORY, Random.Int(10, 15));
         }
         return super.proc(attacker, defender, damage);
     }
