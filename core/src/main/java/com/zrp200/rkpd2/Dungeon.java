@@ -48,6 +48,8 @@ import com.zrp200.rkpd2.items.Amulet;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Heap;
 import com.zrp200.rkpd2.items.Item;
+import com.zrp200.rkpd2.items.KromerCrown;
+import com.zrp200.rkpd2.items.KromerMask;
 import com.zrp200.rkpd2.items.artifacts.TalismanOfForesight;
 import com.zrp200.rkpd2.items.potions.Potion;
 import com.zrp200.rkpd2.items.rings.Ring;
@@ -309,6 +311,9 @@ public class Dungeon {
 		}
 
 		GamesInProgress.selectedClass.initHero( hero );
+
+		KromerMask.classes.clear();
+		KromerCrown.subClasses.clear();
 	}
 
 	public static boolean isChallenged( int mask ) {
@@ -811,6 +816,9 @@ public class Dungeon {
 		quickslot.reset();
 		QuickSlotButton.reset();
 		Toolbar.swappedQuickslots = false;
+
+		KromerMask.classes.clear();
+		KromerCrown.subClasses.clear();
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
 		Dungeon.mobsToChampion = bundle.getInt( MOBS_TO_CHAMPION );
