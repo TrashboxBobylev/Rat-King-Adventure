@@ -79,6 +79,7 @@ import com.zrp200.rkpd2.levels.rooms.secret.SecretRoom;
 import com.zrp200.rkpd2.levels.rooms.special.SpecialRoom;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.scenes.GameScene;
+import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.ui.QuickSlotButton;
 import com.zrp200.rkpd2.ui.Toolbar;
 import com.zrp200.rkpd2.utils.DungeonSeed;
@@ -750,6 +751,8 @@ public class Dungeon {
 				bundle.put(SEED_ARRAY, ech);
 			}
 
+			ItemSprite.saveImageReplacements( bundle );
+
 			FileUtils.bundleToFile( GamesInProgress.gameFile(save), bundle);
 			
 		} catch (IOException e) {
@@ -901,6 +904,7 @@ public class Dungeon {
 
 		Statistics.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );
+		ItemSprite.restoreImageReplacements( bundle );
 
 	}
 	

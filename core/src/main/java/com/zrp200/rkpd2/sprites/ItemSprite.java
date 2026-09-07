@@ -47,10 +47,12 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
 import java.nio.Buffer;
+import java.util.HashMap;
 
 public class ItemSprite extends MovieClip {
 
@@ -245,16 +247,39 @@ public class ItemSprite extends MovieClip {
 				return view( 0, null );
 		}
 	}
+
+	public static HashMap<Integer, Integer> imageReplacements = new HashMap<>();
+
+	public static final String IMAGE_REPLACEMENTS = "image_replacements";
+
+	public static void saveImageReplacements(Bundle bundle){
+		bundle.put(IMAGE_REPLACEMENTS + "_keys", imageReplacements.keySet().stream().mapToInt(x -> x).toArray());
+		bundle.put(IMAGE_REPLACEMENTS + "_values", imageReplacements.values().stream().mapToInt(x -> x).toArray());
+	}
+
+	public static void restoreImageReplacements(Bundle bundle){
+		imageReplacements.clear();
+		if (bundle.contains(IMAGE_REPLACEMENTS + "_keys")){
+			int[] keys = bundle.getIntArray(IMAGE_REPLACEMENTS + "_keys");
+			int[] values = bundle.getIntArray(IMAGE_REPLACEMENTS + "_values");
+			for (int i = 0; i < keys.length; i++){
+				imageReplacements.put(keys[i], values[i]);
+			}
+		}
+	}
 	
 	public ItemSprite view( int image, Glowing glowing ) {
 		if (this.emitter != null) this.emitter.killAndErase();
 		emitter = null;
 		try {
 			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_ITEMS)) {
-				Object o = Random.element(ItemSpriteSheet.class.getFields()).get(null);
-				if (!(o instanceof TextureFilm))
-					image = (int) o;
-			}
+                if (!imageReplacements.containsKey(image)) {
+                    Object o = Random.element(ItemSpriteSheet.class.getFields()).get(null);
+                    if (!(o instanceof TextureFilm))
+                        imageReplacements.put(image, (int)o);
+                }
+				image = imageReplacements.get(image);
+            }
 		} catch (IllegalAccessException e) {
 			ShatteredPixelDungeon.reportException(e);
 		}
