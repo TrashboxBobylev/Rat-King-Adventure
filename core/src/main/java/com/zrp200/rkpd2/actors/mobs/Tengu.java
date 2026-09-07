@@ -239,8 +239,9 @@ public class Tengu extends Mob {
 			if (Dungeon.hero.subClass.is(HeroSubClass.NONE)) {
 				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RANDOM_HERO)) {
 					Dungeon.level.drop(new KromerCrown(), pos).sprite.drop();
+				} else {
+					Dungeon.level.drop(new TengusMask(), pos).sprite.drop();
 				}
-				Dungeon.level.drop(new TengusMask(), pos).sprite.drop();
 			}
 
 			GameScene.bossSlain();
