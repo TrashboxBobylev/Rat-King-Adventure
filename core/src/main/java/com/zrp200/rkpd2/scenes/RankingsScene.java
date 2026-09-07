@@ -34,6 +34,7 @@ import com.zrp200.rkpd2.items.quest.Chaosstone;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.ItemSprite;
 import com.zrp200.rkpd2.sprites.ItemSpriteSheet;
+import com.zrp200.rkpd2.ui.Archs;
 import com.zrp200.rkpd2.ui.Button;
 import com.zrp200.rkpd2.ui.ExitButton;
 import com.zrp200.rkpd2.ui.IconButton;
@@ -76,6 +77,10 @@ public class RankingsScene extends PixelScene {
 		int w = Camera.main.width;
 		int h = Camera.main.height;
 		RectF insets = getCommonInsets();
+
+		Archs archs = new Archs();
+		archs.setSize( w, h );
+		add( archs );
 
 		w -= insets.left + insets.right;
 		h -= insets.top + insets.bottom;
