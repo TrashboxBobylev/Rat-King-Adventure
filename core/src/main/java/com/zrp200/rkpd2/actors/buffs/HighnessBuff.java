@@ -114,12 +114,12 @@ public class HighnessBuff extends Buff implements ActionIndicator.Action, Wand.R
             }
 
             for (Char target: targets){
-                if (target.HP < target.HT && !((Hero)target).isStarving()) {
+                if (target.HP < target.HT && (!(target instanceof Hero) || !((Hero)target).isStarving())) {
                     if (Regeneration.regenOn() && currentPower % 2 == 1) {
                         target.HP += 1;
                         if (target.HP < target.HT && Dungeon.hero.pointsInTalent(Talent.PARTY_FEELING) > 1)
                             target.HP += 1;
-                        if (target.HP == target.HT) {
+                        if (target.HP == target.HT && target instanceof Hero) {
                             ((Hero) target).resting = false;
                         }
                     }
