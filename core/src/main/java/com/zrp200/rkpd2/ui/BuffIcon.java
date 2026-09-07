@@ -64,7 +64,7 @@ public class BuffIcon extends Image {
 	}
 
 	public static int actualIconID(int icon, int filmWidth){
-		if (icon > 99){
+		if (icon > 99 && icon != BuffIndicator.NONE){
 			return (icon / 100)-1 + (icon % 100) * filmWidth;
 		} else {
 			return icon;
