@@ -211,7 +211,10 @@ public abstract class SpellEmpower extends ClericSpell {
 
             @Override
             public String desc() {
-                return super.desc() + "\n" + Messages.get(this, "cooldown", target.buff(Cooldown.class).iconTextDisplay());
+                String desc = super.desc();
+                if (target.buff(Cooldown.class) != null)
+                    desc += "\n" + Messages.get(this, "cooldown", target.buff(Cooldown.class).iconTextDisplay());
+                return desc;
             }
 
             @Override
