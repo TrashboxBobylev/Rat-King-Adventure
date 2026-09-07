@@ -92,6 +92,8 @@ public class WndGame extends Window {
 				@Override
 				protected void onClick() {
 					InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
+					Sample.INSTANCE.rMode = false;
+					Dungeon.specialSeeds.clear();
 					Game.switchScene( RankingsScene.class );
 				}
 			} );
