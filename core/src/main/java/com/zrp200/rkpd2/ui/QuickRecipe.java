@@ -27,12 +27,10 @@ import com.zrp200.rkpd2.items.ArcaneResin;
 import com.zrp200.rkpd2.items.DuelistGrass;
 import com.zrp200.rkpd2.items.Generator;
 import com.zrp200.rkpd2.items.Item;
-import com.zrp200.rkpd2.items.KingsCrown;
 import com.zrp200.rkpd2.items.KromerCrown;
 import com.zrp200.rkpd2.items.KromerMask;
 import com.zrp200.rkpd2.items.LiquidMetal;
 import com.zrp200.rkpd2.items.Recipe;
-import com.zrp200.rkpd2.items.TengusMask;
 import com.zrp200.rkpd2.items.artifacts.BookOfWonder;
 import com.zrp200.rkpd2.items.artifacts.KromerCloak;
 import com.zrp200.rkpd2.items.artifacts.SoulOfYendor;
@@ -445,14 +443,8 @@ public class QuickRecipe extends Component {
 				if (Dungeon.branch == AbyssLevel.BRANCH) {
 					result.add(new QuickRecipe(new SoulOfYendor.Recipe()));
 				}
-				if (Dungeon.hero != null) {
-					if (Dungeon.hero.belongings.getSimilar(new KingsCrown()) != null) {
-						result.add(new QuickRecipe(new KromerCrown.Recipe()));
-					}
-					if (Dungeon.hero.belongings.getSimilar(new TengusMask()) != null) {
-						result.add(new QuickRecipe(new KromerMask.Recipe()));
-					}
-				}
+				result.add(new QuickRecipe(new KromerCrown.Recipe()));
+				result.add(new QuickRecipe(new KromerMask.Recipe()));
 				if (Dungeon.branch == AbyssLevel.BRANCH){
 					result.add(new QuickRecipe(new RedCrystal.StrengthRecipe()));
 				}
