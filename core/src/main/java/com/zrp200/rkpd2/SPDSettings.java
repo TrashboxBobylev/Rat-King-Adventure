@@ -31,6 +31,8 @@ import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameSettings;
 import com.watabou.utils.Point;
 
+import java.util.Locale;
+
 public class SPDSettings extends GameSettings {
 	
 	//Version info
@@ -421,13 +423,12 @@ public static void playMusicInBackground( boolean value ){
 
 	// no translations in rkpd2
 	public static Languages language() {
-		return Languages.ENGLISH;
-		//String code = getString(KEY_LANG, null);
-		//if (code == null){
-		//	return Languages.matchLocale(Locale.getDefault());
-		//} else {
-		//	return Languages.matchCode(code);
-		//}
+		String code = getString(KEY_LANG, null);
+		if (code == null){
+			return Languages.matchLocale(Locale.getDefault());
+		} else {
+			return Languages.matchCode(code);
+		}
 	}
 
 	//Window management (desktop only atm)
