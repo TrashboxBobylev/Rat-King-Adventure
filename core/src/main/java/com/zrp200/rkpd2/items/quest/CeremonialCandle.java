@@ -138,7 +138,7 @@ public class CeremonialCandle extends Item {
 
 		boolean allCandles = true;
 		for (Heap h : candleHeaps){
-			if (h != null && h.type == Heap.Type.HEAP){
+			if (h != null && (h.type == Heap.Type.HEAP || h.type == Heap.Type.FOR_SALE)){
 				boolean foundCandle = false;
 				for (Item i : h.items){
 					if (i instanceof CeremonialCandle){
