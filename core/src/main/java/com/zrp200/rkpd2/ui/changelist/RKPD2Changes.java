@@ -159,6 +159,25 @@ public enum RKPD2Changes {
             {
                     new ChangeInfo("RKA-2.3.0", true, TITLE_COLOR
                     ),
+                    new ChangeInfo("v2.3.4", false, TITLE_COLOR,
+                            misc(list(
+                                    "Recoded RNG-ITE-MSS effect to be visually stable and less disorienting.",
+                                    "kromer crown and kromer mask are no longer semi-hidden in recipe guide."
+                            )),
+                            bugFixes("Fixed following bugs:\n" + list(
+                                    "Chinese translation not being accessible",
+                                    "Party Feeling talent crash",
+                                    "Spirit Hawk crashing the game, if displayed in the journal",
+                                    "Crash with Limit Break description, if its cooldown is not there",
+                                    "Potential error with empty buff icon",
+                                    "Crash with Omnibattler's blessed form",
+                                    "Ceremonial candles not working in IWA-NTM-ONY",
+                                    "ROG-UEL-IKE Tengu dropping two masks",
+                                    "Glitches with Wand of Kromer's recipe",
+                                    "Special seed effects persisting into the rankings screen",
+                                    "Ranking scene having no background"
+                            ))
+                    ),
                     new ChangeInfo("v2.3.3", false, TITLE_COLOR,
                             new ChangeButton(Icons.get(TALENT), "Talent changes",
                                     list("Buffed _Thinking with Portals_:" + list(

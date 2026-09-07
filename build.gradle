@@ -18,8 +18,8 @@ allprojects {
         appName = 'Rat King Adventures'
         appPackageName = 'com.zrp200.rkpd2abyssal'
 
-        appVersionCode = 855
-        appVersionName = '2.3.3'
+        appVersionCode = 856
+        appVersionName = '2.3.4'
 
         appJavaCompatibility = JavaVersion.VERSION_11
 
