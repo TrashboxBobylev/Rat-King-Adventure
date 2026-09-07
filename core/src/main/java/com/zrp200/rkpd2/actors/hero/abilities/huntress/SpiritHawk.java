@@ -332,7 +332,7 @@ public class SpiritHawk extends ArmorAbility {
 
 		@Override
 		public String name() {
-			if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
+			if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
 				String nameRat = Messages.get(this, "name_rat");
 				if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
 					nameRat = ShatteredPixelDungeon.turnIntoRrrr(nameRat);
