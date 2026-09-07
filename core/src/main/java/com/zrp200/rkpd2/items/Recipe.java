@@ -245,7 +245,7 @@ public abstract class Recipe {
 			for (Item ingredient : ingredients){
 				for (int i = 0; i < inputs.length; i++) {
 					if (ingredient.getClass() == inputs[i] && needed[i] > 0) {
-						if (ingredient instanceof EquipableItem) equipList.add(Bundlable.clone(ingredient));
+						if (ingredient instanceof EquipableItem || ingredient instanceof Wand) equipList.add(Bundlable.clone(ingredient));
 						if (needed[i] <= ingredient.quantity()) {
 							ingredient.quantity(ingredient.quantity() - needed[i]);
 							needed[i] = 0;
