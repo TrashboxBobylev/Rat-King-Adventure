@@ -117,7 +117,8 @@ public class Flare extends Visual {
 		} else {
 			point(visual.center());
 		}
-		visual.parent.addToBack( this );
+		if (visual.parent != null)
+			visual.parent.addToBack( this );
 		
 		lifespan = this.duration = duration;
 		if (lifespan > 0) scale.set( 0 );
