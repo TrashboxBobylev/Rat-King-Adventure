@@ -159,6 +159,21 @@ public enum RKPD2Changes {
             {
                     new ChangeInfo("RKA-2.3.0", true, TITLE_COLOR
                     ),
+                    new ChangeInfo("v2.3.5", false, TITLE_COLOR,
+                            misc(list(
+                                    "_Faraday Cage_ now grants immunity to electricity blob's paralysis."
+                            )),
+                            bugFixes("Fixed following bugs:\n" + list(
+                                    "Spirit Hawk crashing the game, if displayed in the journal (for real)",
+                                    "Crash on transmuting weapons above tier 6",
+                                    "Various crashes related to statues having no weapons",
+                                    "Crash with Omnibattler's cursed form casting cone wands",
+                                    "Crash for reading Aluminum sword's combo description, when wielded by another creature",
+                                    "Crash for ratmogrify rat's description",
+                                    "Crashes with autoaiming",
+                                    "Crashes with loading the badges"
+                            ))
+                    ),
                     new ChangeInfo("v2.3.4", false, TITLE_COLOR,
                             misc(list(
                                     "Recoded RNG-ITE-MSS effect to be visually stable and less disorienting.",
