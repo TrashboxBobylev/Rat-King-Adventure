@@ -188,7 +188,7 @@ public class AluminumSword extends MeleeWeapon implements Talent.SpellbladeForge
 
 		@Override
 		public String desc() {
-			return Messages.get(this, "desc",((Hero)target).heroClass.title(), count, visualcooldown(), Math.round((count) / 3f * 100 + 100));
+			return Messages.get(this, "desc", target instanceof Hero ? ((Hero)target).heroClass.title() : target.name(), count, visualcooldown(), Math.round((count) / 3f * 100 + 100));
 		}
 
 		@Override
