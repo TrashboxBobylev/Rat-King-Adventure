@@ -356,6 +356,9 @@ public class QuickSlotButton extends Button {
 	//FIXME: this is currently very expensive, should either optimize ballistica or this, or both
 	public static int autoAim(Char target, Aimable item){
 
+		if (target == null)
+			return -1;
+
 		//first try to directly target
 		if (item.targetingPos(Dungeon.hero, target.pos) == target.pos) {
 			return target.pos;
