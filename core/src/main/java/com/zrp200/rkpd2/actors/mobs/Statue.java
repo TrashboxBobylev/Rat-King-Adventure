@@ -30,6 +30,7 @@ import com.zrp200.rkpd2.items.weapon.Weapon;
 import com.zrp200.rkpd2.items.weapon.Weapon.Enchantment;
 import com.zrp200.rkpd2.items.weapon.enchantments.Grim;
 import com.zrp200.rkpd2.items.weapon.melee.MeleeWeapon;
+import com.zrp200.rkpd2.items.weapon.melee.Sword;
 import com.zrp200.rkpd2.journal.Notes;
 import com.zrp200.rkpd2.messages.Messages;
 import com.zrp200.rkpd2.sprites.StatueSprite;
@@ -48,7 +49,7 @@ public class Statue extends Mob {
 		properties.add(Property.INORGANIC);
 	}
 	
-	public Weapon weapon;
+	public Weapon weapon = new Sword();
 
 	public boolean levelGenStatue = true;
 	
