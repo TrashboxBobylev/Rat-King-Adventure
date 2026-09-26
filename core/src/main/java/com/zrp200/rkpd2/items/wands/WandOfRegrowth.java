@@ -86,7 +86,9 @@ public class WandOfRegrowth extends Wand {
 
 	@Override
 	public void onZap(Ballistica bolt) {
-
+		if (cone == null){
+			fx(bolt, null);
+		}
 		ArrayList<Integer> cells = new ArrayList<>(cone.cells);
 
 		float furrowedChance = 0;

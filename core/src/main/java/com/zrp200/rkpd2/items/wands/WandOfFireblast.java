@@ -88,6 +88,9 @@ public class WandOfFireblast extends DamageWand {
 
 		ArrayList<Char> affectedChars = new ArrayList<>();
 		ArrayList<Integer> adjacentCells = new ArrayList<>();
+		if (cone == null){
+			fx(bolt, null);
+		}
 		for( int cell : cone.cells ){
 
 			//ignore caster cell
