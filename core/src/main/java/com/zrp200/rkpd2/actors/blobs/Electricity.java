@@ -74,7 +74,8 @@ public class Electricity extends Blob implements DamageOverTimeEffect {
 					Char ch = Actor.findChar( cell );
 					if (ch != null && (!ch.isImmune(this.getClass()))) {
 						if (ch.buff(Paralysis.class) == null){
-							Buff.prolong( ch, Paralysis.class, cur[cell]);
+							if (!(ch instanceof Hero && ((Hero) ch).hasTalent(Talent.FARADAY_CAGE)))
+								Buff.prolong( ch, Paralysis.class, cur[cell]);
 						}
 						if (cur[cell] % 2 == 1) {
 							if (!(ch instanceof Hero && ((Hero) ch).hasTalent(Talent.FARADAY_CAGE)))
