@@ -363,6 +363,7 @@ public class Badges {
 			try {
 				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				global = restore( bundle );
+				global.remove(null);
 
 			} catch (IOException e) {
 				global = new HashSet<>();
