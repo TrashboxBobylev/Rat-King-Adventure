@@ -355,7 +355,7 @@ public class Ratmogrify extends ArmorAbility {
 
 		@Override
 		public String name() {
-			String name = Messages.get(this, "name", original.name());
+			String name = Messages.get(this, "name", original != null ? original.name() : new Rat().name());
 			if (Dungeon.isSpecialSeedEnabled(DungeonSeed.SpecialSeed.RLETTER)) {
 				name = ShatteredPixelDungeon.turnIntoRrrr(name);
 			}
