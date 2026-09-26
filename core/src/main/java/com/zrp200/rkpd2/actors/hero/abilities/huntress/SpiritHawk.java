@@ -345,7 +345,7 @@ public class SpiritHawk extends ArmorAbility {
 		@Override
 		public String description() {
 			String message = Messages.get(this, "desc", (int)timeRemaining);
-            if (Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
+            if (Dungeon.hero != null && Dungeon.hero.heroClass.is(HeroClass.RAT_KING)){
                 message = Messages.get(this, "desc_rat", (int)timeRemaining);
             }
             if (Actor.chars().contains(this)){
