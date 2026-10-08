@@ -82,7 +82,7 @@ public class Kromer extends Item {
                     while (randomTalent == null) {
                         do {
                             cls = Random.element(HeroClass.values());
-                        } while (cls == Dungeon.hero.heroClass);
+                        } while (cls == Dungeon.hero.heroClass || (index == 2 && cls == HeroClass.RAT_KING));
                         randomTalent = Random.element(Talent.talentList(cls, index + 1));
                     }
                     Dungeon.hero.talents.get(index).put(randomTalent, 0);
