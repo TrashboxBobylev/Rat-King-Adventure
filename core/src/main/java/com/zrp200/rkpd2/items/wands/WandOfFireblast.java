@@ -219,18 +219,18 @@ public class WandOfFireblast extends DamageWand {
 			if (longestRay == null || ray.dist > longestRay.dist){
 				longestRay = ray;
 			}
-			((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
-					curUser.hasTalent(Talent.CRYONIC_SPELL) ? MagicMissile.FROST_CONE : MagicMissile.FIRE_CONE,
-					curUser.sprite,
+			((MagicMissile)Dungeon.hero.sprite.parent.recycle( MagicMissile.class )).reset(
+					Dungeon.hero.hasTalent(Talent.CRYONIC_SPELL) ? MagicMissile.FROST_CONE : MagicMissile.FIRE_CONE,
+					Dungeon.hero.sprite,
 					ray.path.get(ray.dist),
 					null
 			);
 		}
 
 		//final zap at half distance of the longest ray, for timing of the actual wand effect
-		MagicMissile.boltFromChar( curUser.sprite.parent,
-				curUser.hasTalent(Talent.CRYONIC_SPELL) ? MagicMissile.FROST_CONE : MagicMissile.FIRE_CONE,
-				curUser.sprite,
+		MagicMissile.boltFromChar( Dungeon.hero.sprite.parent,
+				Dungeon.hero.hasTalent(Talent.CRYONIC_SPELL) ? MagicMissile.FROST_CONE : MagicMissile.FIRE_CONE,
+				Dungeon.hero.sprite,
 				longestRay.path.get(longestRay.dist/2),
 				callback );
 		Sample.INSTANCE.play( Assets.Sounds.ZAP );
