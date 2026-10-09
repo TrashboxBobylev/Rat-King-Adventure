@@ -88,7 +88,7 @@ public class WandOfLivingEarth extends DamageWand {
 			guardian = (EarthGuardian)Stasis.getStasisAlly();
 		}
 
-		RockArmor buff = curUser.buff(RockArmor.class);
+		RockArmor buff = Dungeon.hero.buff(RockArmor.class);
 		//only grant armor if we are shooting at an enemy, a hiding mimic, or the guardian
 		if ((guardian == null || ch != guardian) && (ch == null
 				|| ch.alignment == Char.Alignment.ALLY
@@ -137,14 +137,14 @@ public class WandOfLivingEarth extends DamageWand {
 				for (int n : PathFinder.NEIGHBOURS9) {
 					int c = bolt.collisionPos + n;
 					if (passable[c] && Actor.findChar( c ) == null
-						&& (closest == -1 || (Dungeon.level.trueDistance(c, curUser.pos) < (Dungeon.level.trueDistance(closest, curUser.pos))))) {
+						&& (closest == -1 || (Dungeon.level.trueDistance(c, Dungeon.hero.pos) < (Dungeon.level.trueDistance(closest, curUser.pos))))) {
 						closest = c;
 					}
 				}
 
 				if (closest == -1){
 					if (armorToAdd > 0) {
-						curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+						Dungeon.hero.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 					}
 					return; //do not spawn guardian or detach buff
 				} else {
@@ -180,13 +180,13 @@ public class WandOfLivingEarth extends DamageWand {
 				
 				if (guardian == null) {
 					if (armorToAdd > 0) {
-						curUser.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
+						Dungeon.hero.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 					}
 				} else {
 					if (guardian.sprite != null) { //may be in stasis
 						guardian.sprite.centerEmitter().burst(MagicMissile.EarthParticle.ATTRACT, 8 + buffedLvl() / 2);
 					}
-					guardian.setInfo(curUser, buffedLvl(), armorToAdd);
+					guardian.setInfo(Dungeon.hero, buffedLvl(), armorToAdd);
 					if (ch.alignment == Char.Alignment.ENEMY || ch.buff(Amok.class) != null) {
 						guardian.aggro(ch);
 					}
