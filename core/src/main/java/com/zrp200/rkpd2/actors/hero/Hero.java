@@ -621,7 +621,7 @@ public class Hero extends Char {
 				return metaTalent.maxPoints;
 			}
 		}
-        if (buff(PetitioMagica.SpellHolder.class) != null){
+        if (buff(PetitioMagica.SpellHolder.class) != null && buff(PetitioMagica.SpellHolder.class).spell != null){
             Talent spellTalent = buff(PetitioMagica.SpellHolder.class).spell.talent();
             if (spellTalent == talent){
                 return spellTalent.maxPoints;
