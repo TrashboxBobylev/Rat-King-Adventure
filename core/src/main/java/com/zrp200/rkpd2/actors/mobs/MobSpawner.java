@@ -76,7 +76,10 @@ public class MobSpawner extends Actor {
 			));
 		}
 		switch(depth){
-
+			case 0:
+				return new ArrayList<>(Arrays.asList(
+						ThreadRipper.class
+			));
 			// Sewers
 			case 1:
 				//3x rat, 1x snake
