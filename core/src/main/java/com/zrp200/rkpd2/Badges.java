@@ -1310,6 +1310,9 @@ public static void validateClericUnlock(){
 
 		ArrayList<Badge> badges = new ArrayList<>(global ? Badges.global : Badges.local);
 
+		//please make it stop
+		badges.remove(null);
+
 		Iterator<Badge> iterator = badges.iterator();
 		while (iterator.hasNext()) {
 			Badge badge = iterator.next();
