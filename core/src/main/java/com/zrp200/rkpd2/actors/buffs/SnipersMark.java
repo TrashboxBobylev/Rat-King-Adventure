@@ -45,6 +45,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -301,6 +302,14 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 		final LinkedList<SnipersMark> queue = new LinkedList( hero.buffs(SnipersMark.class) );
 		{
+			Iterator<SnipersMark> queueFiltering = queue.iterator();
+			while (queueFiltering.hasNext()){
+				SnipersMark mark = queueFiltering.next();
+				if (!(mark instanceof FreeTarget) && mark.getTarget() == null){
+					mark.detach();
+					queueFiltering.remove();
+				}
+			}
 			Collections.sort(queue, (a, b) -> {
 				// fixme does not take percent damage bonus into account
 				// free-targets go after standard marks, since they have to choose their targets
