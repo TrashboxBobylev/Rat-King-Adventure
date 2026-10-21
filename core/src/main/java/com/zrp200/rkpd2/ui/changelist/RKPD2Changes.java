@@ -61,79 +61,14 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 import static com.zrp200.rkpd2.Assets.Interfaces.TALENT_ICONS;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.CLERIC;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.DUELIST;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.HUNTRESS;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.MAGE;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.RAT_KING;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.ROGUE;
-import static com.zrp200.rkpd2.actors.hero.HeroClass.WARRIOR;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.ASSASSIN;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.BATTLEMAGE;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.BERSERKER;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.CENOBITE;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.HIGHNESS;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.KING;
-import static com.zrp200.rkpd2.actors.hero.HeroSubClass.SNIPER;
-import static com.zrp200.rkpd2.actors.hero.Talent.ADVENTUROUS_SNOOZING;
-import static com.zrp200.rkpd2.actors.hero.Talent.BACKUP_BARRIER;
-import static com.zrp200.rkpd2.actors.hero.Talent.BARKSKIN;
-import static com.zrp200.rkpd2.actors.hero.Talent.DUAL_WIELDING;
-import static com.zrp200.rkpd2.actors.hero.Talent.ELITE_DEXTERITY;
-import static com.zrp200.rkpd2.actors.hero.Talent.EVERYTHING_IS_A_WEAPON;
-import static com.zrp200.rkpd2.actors.hero.Talent.EXORCISM;
-import static com.zrp200.rkpd2.actors.hero.Talent.FUN;
-import static com.zrp200.rkpd2.actors.hero.Talent.HEROIC_ENERGY;
-import static com.zrp200.rkpd2.actors.hero.Talent.HEROIC_WIZARDRY;
-import static com.zrp200.rkpd2.actors.hero.Talent.IRON_WILL;
-import static com.zrp200.rkpd2.actors.hero.Talent.KINGS_VISION;
-import static com.zrp200.rkpd2.actors.hero.Talent.KINGS_WISDOM;
-import static com.zrp200.rkpd2.actors.hero.Talent.LETHAL_MOMENTUM;
-import static com.zrp200.rkpd2.actors.hero.Talent.LETHAL_MOMENTUM_2;
-import static com.zrp200.rkpd2.actors.hero.Talent.LIGHT_CLOAK;
-import static com.zrp200.rkpd2.actors.hero.Talent.LIKE_A_BULLET;
-import static com.zrp200.rkpd2.actors.hero.Talent.LIMIT_BREAK;
-import static com.zrp200.rkpd2.actors.hero.Talent.METAEXPRESSION;
-import static com.zrp200.rkpd2.actors.hero.Talent.NATURES_AID;
-import static com.zrp200.rkpd2.actors.hero.Talent.NOBLE_CAUSE;
-import static com.zrp200.rkpd2.actors.hero.Talent.PERFECT_COPY;
-import static com.zrp200.rkpd2.actors.hero.Talent.POINTY_BLACK;
-import static com.zrp200.rkpd2.actors.hero.Talent.RATFORCEMENTS;
-import static com.zrp200.rkpd2.actors.hero.Talent.SORCERY;
-import static com.zrp200.rkpd2.actors.hero.Talent.SOUL_SIPHON;
-import static com.zrp200.rkpd2.actors.hero.Talent.STRONGMAN;
-import static com.zrp200.rkpd2.actors.hero.Talent.WARLOCKS_TOUCH;
+import static com.zrp200.rkpd2.actors.hero.HeroClass.*;
+import static com.zrp200.rkpd2.actors.hero.HeroSubClass.*;
+import static com.zrp200.rkpd2.actors.hero.Talent.*;
 import static com.zrp200.rkpd2.messages.Messages.get;
 import static com.zrp200.rkpd2.messages.Messages.h;
-import static com.zrp200.rkpd2.sprites.CharSprite.NEGATIVE;
-import static com.zrp200.rkpd2.sprites.CharSprite.POSITIVE;
-import static com.zrp200.rkpd2.sprites.CharSprite.WARNING;
+import static com.zrp200.rkpd2.sprites.CharSprite.*;
 import static com.zrp200.rkpd2.sprites.HeroSprite.avatar;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ALUMINUM_SWORD;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARMOR_RAT_KING;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_ARMBAND;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_OMNI;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_SANDALS;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ARTIFACT_TOOLKIT;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.CHOC_AMULET;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.CLEANSING_DART;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.CROWN;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.DREAD_SWORD;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.KIT;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.KROMER_CROWN;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.KROMER_MASK;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.MAGES_STAFF;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.MASK;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_AGATE;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_AMETHYST;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_GARNET;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.RING_RUBY;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.ROYAL_SWORD;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.SEED_SWIFTTHISTLE;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.STONE_ENCHANT;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.TERMINUS;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.TRUE_TERMINUS;
-import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.WAND_UNSTABLE;
+import static com.zrp200.rkpd2.sprites.ItemSpriteSheet.*;
 import static com.zrp200.rkpd2.ui.Icons.CHANGES;
 import static com.zrp200.rkpd2.ui.Icons.DEPTH;
 import static com.zrp200.rkpd2.ui.Icons.DISPLAY_LAND;
@@ -159,9 +94,26 @@ public enum RKPD2Changes {
             {
                     new ChangeInfo("RKA-2.3.0", true, TITLE_COLOR
                     ),
-                    new ChangeInfo("v2.3.5", false, TITLE_COLOR,
+                    new ChangeInfo("v2.3.6", false, TITLE_COLOR,
+                            bugFixes("Fixed following bugs:\n" + list(
+                                    "Talent addition abilities crashing on attempting to sample T3 talents from Rat King",
+                                    "Random wand curse effects still crashing",
+                                    "Crash with empty Petitio Magica tracker",
+                                    "Crash on opening badge screen crash again",
+                                    "Crashes on attempting to spawn mobs on Rat King boss's level",
+                                    "Crash on very old Android devices",
+                                    "Crash with combo timing",
+                                    "Rare instances, when image replacement wouldn't be set up and crash the game",
+                                    "Sniper's special crashing, if their targets do not exist anymore",
+                                    "Imp intro being !!!NO TEXT FOUND!!!",
+                                    "Experience counter getting small sooner, than intended"
+                            ))
+                    ),
+                    new ChangeInfo("v2.3.4-v2.3.5", false, TITLE_COLOR,
                             misc(list(
-                                    "_Faraday Cage_ now grants immunity to electricity blob's paralysis."
+                                    "_Faraday Cage_ now grants immunity to electricity blob's paralysis.",
+                                    "Recoded RNG-ITE-MSS effect to be visually stable and less disorienting.",
+                                    "Kromer Crown and Kromer Mask are no longer semi-hidden in recipe guide."
                             )),
                             bugFixes("Fixed following bugs:\n" + list(
                                     "Spirit Hawk crashing the game, if displayed in the journal (for real)",
@@ -171,15 +123,7 @@ public enum RKPD2Changes {
                                     "Crash for reading Aluminum sword's combo description, when wielded by another creature",
                                     "Crash for ratmogrify rat's description",
                                     "Crashes with autoaiming",
-                                    "Crashes with loading the badges"
-                            ))
-                    ),
-                    new ChangeInfo("v2.3.4", false, TITLE_COLOR,
-                            misc(list(
-                                    "Recoded RNG-ITE-MSS effect to be visually stable and less disorienting.",
-                                    "kromer crown and kromer mask are no longer semi-hidden in recipe guide."
-                            )),
-                            bugFixes("Fixed following bugs:\n" + list(
+                                    "Crashes with loading the badges",
                                     "Chinese translation not being accessible",
                                     "Party Feeling talent crash",
                                     "Spirit Hawk crashing the game, if displayed in the journal",
